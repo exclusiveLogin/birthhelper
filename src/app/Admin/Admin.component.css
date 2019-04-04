@@ -1,0 +1,15 @@
+.bh_admin_header{
+    height: 32px;
+    line-height: 32px;
+    color: #ccc;
+    background-color: #333;
+    font-size: 18pt;
+    width: 100%;
+}
+
+.bh_admin_panel{
+    display: flex;
+    flex-grow: 1;
+    height: calc(100% - 32px);
+    background-color: #ccc;
+}

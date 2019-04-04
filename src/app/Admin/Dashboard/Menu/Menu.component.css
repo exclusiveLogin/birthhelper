@@ -1,0 +1,28 @@
+:host{
+    color: #333;
+    background-color: #ddd;
+    width: 270px;
+    text-align: center;
+}
+
+.bh_admin_menu_item{
+    height: 32px;
+    font-size: 13pt;
+    border-top: 1px black dotted;
+    width: 100%;
+    text-align: center;
+    line-height: 32px;
+    cursor: pointer;
+}
+.bh_admin_menu_item.mutted{
+    opacity: 0.5;
+}
+.bh_admin_menu_item:hover{
+    text-decoration: underline;
+}
+
+.bh_admin_menu_title{
+    font-size: 15pt;
+    color: #333;
+    margin-bottom: 25px;
+}

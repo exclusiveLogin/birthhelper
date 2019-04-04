@@ -1,0 +1,12 @@
+:host{
+    display: flex;
+    flex-wrap: wrap;
+
+}
+.bh_admin_submenu_title{
+    background-color: #555;
+    color: antiquewhite;
+    padding-left: 20px;
+    font-size: 10pt;
+    width: 100%;
+}

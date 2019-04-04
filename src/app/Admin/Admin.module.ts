@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminComponent } from './Admin.component';
 import { Routes, RouterModule } from '@angular/router';
+import { DashboardModule } from './Dashboard/Dashboard.module';
 
 
 const routes: Routes = [
@@ -13,7 +14,10 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild( routes ),
+    DashboardModule,
   ],
-  declarations: [AdminComponent]
+  declarations: [
+    AdminComponent,
+  ]
 })
 export class AdminModule { }

@@ -6,6 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './Home/Home.component';
 import { NotFoundComponent } from './NotFound/NotFound.component';
+import { HeaderComponent } from './Header/Header.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -14,16 +15,19 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    NotFoundComponent,
-  ],
-  imports: [
-    RouterModule.forRoot( routes ),
-    BrowserModule,
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+   declarations: [
+      AppComponent,
+      HomeComponent,
+      NotFoundComponent,
+      HeaderComponent
+   ],
+   imports: [
+      RouterModule.forRoot(routes),
+      BrowserModule
+   ],
+   providers: [],
+   bootstrap: [
+      AppComponent
+   ]
 })
 export class AppModule { }
