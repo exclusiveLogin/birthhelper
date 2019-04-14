@@ -4,10 +4,12 @@ import { DashboardComponent } from './Dashboard.component';
 import { MenuComponent } from './Menu/Menu.component';
 import { SubmenuComponent } from './Submenu/Submenu.component';
 import { SubmenuItemComponent } from './Submenu/SubmenuItem/SubmenuItem.component';
+import { ServicesModule } from './Services/Services.module';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    ServicesModule
   ],
   declarations: [
     DashboardComponent,
