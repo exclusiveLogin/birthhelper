@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { ISettingsParams, RestService } from './rest.service';
 
 export interface IDictItem {
   id: number;
@@ -13,10 +15,17 @@ export interface IDict {
   dict: IDictItem[];
 }
 
+const settingsParams: ISettingsParams = {
+  mode: 'admin',
+  segment: 'dict'
+}
+
 @Injectable()
 export class DictService {
 
-  constructor() {
+  constructor(
+    private rest: RestService,
+  ) {
     console.log('DEVSS DICT');
   }
 
@@ -26,8 +35,13 @@ export class DictService {
     this.DictRepo.add({ dctKey: name, dict });
   }
 
-  public getDict( name: string ): IDictItem[] {
+  public getDict( name: string ): Observable<IDictItem[]> {
     const dictionaries: IDict[] = [ ...this.DictRepo ];
-    return dictionaries.find( dct => dct.dctKey === name ).dict;
+    const targetDict = dictionaries.find( dct => dct.dctKey === name );
+
+    // если нет словаря то делаем попытку загрузить его с бека по ключу
+    if( !!targetDict ) return Observable.of(targetDict.dict);
+    
+    return this.rest.getDict( name );
   }
 }

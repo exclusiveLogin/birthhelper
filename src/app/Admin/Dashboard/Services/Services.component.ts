@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IFieldSetting } from '../../form.service';
+import { DictService, IDictItem } from '../../dict.service';
+import { RestService } from '../../rest.service';
 
 @Component({
   selector: 'app-Services',
@@ -8,7 +10,10 @@ import { IFieldSetting } from '../../form.service';
 })
 export class ServicesComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private dict: DictService,
+    private rest: RestService
+  ) { }
 
   public fields: IFieldSetting[] = [
       {
@@ -25,17 +30,26 @@ export class ServicesComponent implements OnInit {
         id: 'category',
         type: 'select',
         useDict: true,
-        title: 'Категория услуги'
+        title: 'Категория услуги',
+        dctKey: 'service_category',
       },
       {
         id: 'trimester',
         type: 'select',
         useDict: true,
-        title: 'Триместер услуги'
+        title: 'Триместер услуги',
+        dctKey: 'trimesters'
       }
     ];
 
   ngOnInit() {
+    this.fields.forEach( field => {
+      // готовим словари
+      if ( !!field.useDict && !!field.dctKey ){
+          field.loaded = false;
+          this.dict.getDict( field.dctKey ).subscribe( ( dict: IDictItem[] ) => field.dctItems = dict);
+      }
+    })
   }
 
 }
