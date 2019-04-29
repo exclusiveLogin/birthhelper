@@ -7,6 +7,7 @@ import { DictService } from './dict.service';
 import { RestService } from './rest.service';
 import { FormService } from './form.service';
 import { HttpClientModule } from '@angular/common/http';
+import { ApiService } from './api.service';
 
 
 const routes: Routes = [
@@ -28,6 +29,7 @@ const routes: Routes = [
     DictService,
     RestService,
     FormService,
+    ApiService,
   ]
 })
 export class AdminModule { }

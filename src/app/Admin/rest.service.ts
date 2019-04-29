@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { IDictItem } from './dict.service';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
+import { ApiService } from './api.service';
 
 export interface ISettingsParams {
   mode: string;
@@ -23,7 +24,7 @@ export class RestService {
 
   constructor(
     private http: HttpClient,
-
+    private api: ApiService
   ) { 
     console.log('ADMIN REST SERVICE', this);
   }
@@ -45,7 +46,7 @@ export class RestService {
 
     if( path ) Object.keys( path ).forEach(key => path[key] = '/' + path[key]);
 
-    let url = `${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
+    let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
    
     let req = this.http.get( url, { params: data } );
 

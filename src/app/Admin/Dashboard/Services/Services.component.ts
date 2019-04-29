@@ -31,14 +31,14 @@ export class ServicesComponent implements OnInit {
         type: 'select',
         useDict: true,
         title: 'Категория услуги',
-        dctKey: 'service_category',
+        dctKey: 'dict_category_service',
       },
       {
         id: 'trimester',
         type: 'select',
         useDict: true,
         title: 'Триместер услуги',
-        dctKey: 'trimesters'
+        dctKey: 'dict_trimesters'
       }
     ];
 

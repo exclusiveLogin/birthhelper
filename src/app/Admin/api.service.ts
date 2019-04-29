@@ -5,7 +5,7 @@ export class ApiService {
 
 constructor() { }
 
-    private apiBase = 'http://birthhelper.ru/';
+    private apiBase = 'http://91.240.87.153';
 
     private iconPath = 'icons';
 
