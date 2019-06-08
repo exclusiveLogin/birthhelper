@@ -3,6 +3,7 @@ import { IDictItem } from './dict.service';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from './api.service';
+import { IEntityItem, ISet } from './entity.service';
 
 export interface ISettingsParams {
   mode: string;
@@ -33,13 +34,39 @@ export class RestService {
     return null;
   }
 
-  public getDict( name: string): Observable<IDictItem[]> {
+  public getEntitySet( key: string ): Observable<ISet>{
+    const entSetSetting: ISettingsParams = {
+      mode: 'admin',
+      segment: 'entity',
+      resource: key,
+      script: 'set'
+    };
+
+    return this.getData<ISet>( entSetSetting );
+  }
+
+  public getEntities( key: string, page?: number ): Observable<IEntityItem[]> {
+    const entSetting: ISettingsParams = {
+      mode: 'admin',
+      segment: 'entity',
+      resource: key
+    };
+
+    const data: IRestParams = page ? { skip: (20 * (page-1)).toString()} : null;
+
+    return this.getData<IEntityItem[]>( entSetting, data );
+  }
+
+  public getDict( name: string, page?: number ): Observable<IDictItem[]> {
     const dictSetting: ISettingsParams = {
       mode: 'admin',
       segment: 'dict',
       resource: name
     };
-    return this.getData<IDictItem[]>( dictSetting );
+
+    const data: IRestParams = page ? { skip: (20 * (page-1)).toString()} : null;
+
+    return this.getData<IDictItem[]>( dictSetting, data );
   }
 
   public getData<T>( path: ISettingsParams, data?: IRestParams): Observable<T>{

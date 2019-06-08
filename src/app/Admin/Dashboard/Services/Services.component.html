@@ -1,6 +1,8 @@
 <h3>Добавление услуги</h3>
-<div class="bh_block">
+<app-table [key]="'clinics'" [type]="'entity'" [rowsettings]="rowsServices"></app-table>
 
+<div class="bh_block">
+  
   <div class="bh_control" *ngFor="let field of fields">
 
     <label [for]="field.id" class="bh_label">{{ field.title }}</label>
@@ -16,12 +18,15 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="'select'">
-        <select [name]="field.id" [id]="field.id" ></select>
+        <select [name]="field.id" [id]="field.id" *ngIf="field.dctItems" (change)="selectControl(field, $event)">
+          <option *ngIf="field.canBeNull" value>Не выбран</option>
+          <option *ngFor="let item of field.dctItems" [value]="item.id">{{item.title}}</option>
+        </select>
       </ng-container>
 
 
       <ng-container *ngSwitchDefault>
-        <span>TEST {{field.id}}</span>
+        
       </ng-container>
 
 

@@ -1,0 +1,15 @@
+<div class="stats">
+  <span>Таблица: {{key}} </span>
+  <span>тип: {{type === 'dict' ? 'Словарь' : 'Сущность'}} </span>
+  <span>Всего элементов: {{total}} </span>
+  <span>Всего страниц: {{ allPages }} </span>
+</div>
+<div class="bh_table_head">
+  <div class="row" *ngFor="let rs of rowSettings">{{ rs.title }}</div>
+</div>
+<div class="container">
+  <app-cell *ngFor="let item of items; let i = index" [rs]="rowSettings" [data]="item.data"></app-cell>
+</div>
+<div class="bh_table_page">
+  <app-paginator [pages]="allPages" (vc)="pageChanged($event)"></app-paginator>
+</div>

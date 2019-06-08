@@ -8,6 +8,8 @@ import { RestService } from './rest.service';
 import { FormService } from './form.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ApiService } from './api.service';
+import { ProviderService } from './table/provider.service';
+import { EntityService } from './entity.service';
 
 
 const routes: Routes = [
@@ -30,6 +32,8 @@ const routes: Routes = [
     RestService,
     FormService,
     ApiService,
+    ProviderService,
+    EntityService,
   ]
 })
 export class AdminModule { }

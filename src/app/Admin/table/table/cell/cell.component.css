@@ -1,0 +1,14 @@
+:host{
+    display: flex;
+    justify-content: space-around;
+}
+.row{
+    flex-grow: 1;
+    flex-basis: 1px;
+    text-align: center;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px grey solid;
+}

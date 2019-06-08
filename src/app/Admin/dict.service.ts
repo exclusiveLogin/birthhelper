@@ -29,19 +29,7 @@ export class DictService {
     console.log('DEVSS DICT');
   }
 
-  private DictRepo: Set<IDict> = new Set();
-
-  public setDict( name: string, dict: IDictItem[] ): void {
-    this.DictRepo.add({ dctKey: name, dict });
-  }
-
-  public getDict( name: string ): Observable<IDictItem[]> {
-    const dictionaries: IDict[] = [ ...this.DictRepo ];
-    const targetDict = dictionaries.find( dct => dct.dctKey === name );
-
-    // если нет словаря то делаем попытку загрузить его с бека по ключу
-    if( !!targetDict ) return Observable.of(targetDict.dict);
-    
-    return this.rest.getDict( name );
+  public getDict( name: string, page: number = 1 ): Observable<IDictItem[]> {
+    return this.rest.getDict( name, page );
   }
 }

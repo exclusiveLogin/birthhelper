@@ -11,6 +11,8 @@ export interface IFieldSetting {
   loaded?: boolean;
   requred?: boolean;
   initData?: any;
+  dictSelected?:any;
+  canBeNull?: boolean;
 }
 
 @Injectable()

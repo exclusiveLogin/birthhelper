@@ -9,7 +9,7 @@ import { ServicesModule } from './Services/Services.module';
 @NgModule({
   imports: [
     CommonModule,
-    ServicesModule
+    ServicesModule,
   ],
   declarations: [
     DashboardComponent,
