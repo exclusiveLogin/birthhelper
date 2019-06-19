@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { IMenuRepo } from '../Dashboard.component';
+import { MenuService } from '../menu.service';
 
 @Component({
   selector: 'app-Menu',
@@ -7,9 +9,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MenuComponent implements OnInit {
 
-  constructor() { }
+  @Input() public menu: IMenuRepo[];
+
+  constructor( private menuServive: MenuService ) { }
 
   ngOnInit() {
+    console.log('menu init:', this.menu);
+  }
+
+  public selectMenuItem( item: IMenuRepo ){
+    console.log('selected menu item: ', item);
+    this.menuServive.menuStream$.next( item );
   }
 
 }

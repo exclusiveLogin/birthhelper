@@ -5,6 +5,7 @@ import { MenuComponent } from './Menu/Menu.component';
 import { SubmenuComponent } from './Submenu/Submenu.component';
 import { SubmenuItemComponent } from './Submenu/SubmenuItem/SubmenuItem.component';
 import { ServicesModule } from './Services/Services.module';
+import { MenuService } from './menu.service';
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import { ServicesModule } from './Services/Services.module';
   ],
   exports:[
     DashboardComponent
-  ]
+  ],
+  providers:[ MenuService ]
 })
 export class DashboardModule { }

@@ -1,6 +1,10 @@
 :host{
     display: flex;
     justify-content: space-around;
+    cursor: pointer;
+}
+:host:hover{
+    background-color: burlywood !important;
 }
 .row{
     flex-grow: 1;

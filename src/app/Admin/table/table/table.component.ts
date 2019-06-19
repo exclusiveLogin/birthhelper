@@ -1,8 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ProviderService } from '../provider.service';
 import { IDictItem } from '../../dict.service';
 import { IEntity, IEntityItem } from '../../entity.service';
 import { IRowSetting } from './cell/cell.component';
+import { IFiltersParams } from './filters/filters.component';
 
 export interface ITableRows{
   title?: string;
@@ -11,8 +12,8 @@ export interface ITableRows{
   key?:string;
 }
 
-interface ITableItem{
-  data: any;
+export interface ITableItem{
+  data: IEntityItem;
   text?: string;
 }
 
@@ -34,6 +35,7 @@ export class TableComponent implements OnInit {
   @Input('type') private type: string;
   @Input('rowsettings') private rowSettings: IRowSetting[];
 
+  @Output() private select: EventEmitter<ITableItem> = new EventEmitter();
 
   constructor(
     private provider: ProviderService
@@ -83,4 +85,13 @@ export class TableComponent implements OnInit {
     this.provider.getItemPage( this.key, this.type, page ).subscribe((items: IDictItem[] | IEntityItem[]) => this.items = items && <ITableItem[]>items.map(i => this.converter(i)));
   }
 
+  public refreshTable( filters: IFiltersParams[]){
+    console.log('refresh table:', filters);
+  }
+
+  public selectItem( item: ITableItem ){
+    console.log("selected:", item);
+
+    this.select.emit( item );
+  }
 }

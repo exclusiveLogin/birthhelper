@@ -3,6 +3,8 @@ import { IFieldSetting } from '../../form.service';
 import { DictService, IDictItem } from '../../dict.service';
 import { RestService } from '../../rest.service';
 import { IRowSetting } from '../../table/table/cell/cell.component';
+import { ITableItem } from '../../table/table/table.component'
+import { EMENUMODE } from '../Dashboard.component';
 
 @Component({
   selector: 'app-Services',
@@ -11,7 +13,7 @@ import { IRowSetting } from '../../table/table/cell/cell.component';
 })
 export class ServicesComponent implements OnInit {
 
-  @Input() mode: string = 'add';
+  @Input() mode: EMENUMODE;
   private serviceId: number;
 
   constructor(
@@ -75,16 +77,19 @@ export class ServicesComponent implements OnInit {
       }
     });
 
-    if(this.mode === 'edit' && this.serviceId){
-
-      // Получаем услугу
-
-
-      // Заполняем поля значениями полученной услуги
-
-    }
-
     console.log('items:', this.fields);
+  }
+
+  public get isEditMode(): boolean{
+    return this.mode === EMENUMODE.EDIT;
+  }
+
+  public get isCreateMode(): boolean{
+    return this.mode === EMENUMODE.CREATE;
+  }
+
+  public get isDeleteMode(): boolean{
+    return this.mode === EMENUMODE.DELETE;
   }
 
   public selectControl( item: IFieldSetting, ev){
@@ -92,5 +97,10 @@ export class ServicesComponent implements OnInit {
     item.dictSelected = ev.target.value;
   
     console.log('selected:', item, ev);
+  }
+
+  public selectServiceFromTable( service: ITableItem ){
+    console.log('selected service id: ', service.data.id);
+
   }
 }

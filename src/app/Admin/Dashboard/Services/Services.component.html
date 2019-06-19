@@ -1,37 +1,50 @@
-<h3>Добавление услуги</h3>
-<app-table [key]="'services'" [type]="'entity'" [rowsettings]="rowsServices"></app-table>
+<h3 *ngIf="isCreateMode">Добавление услуги</h3>
+<h3 *ngIf="isEditMode">Редактирование услуги</h3>
+<h3 *ngIf="isDeleteMode">Удаление услуги</h3>
+<app-table 
+  *ngIf="isEditMode"
+  [key]="'services'" 
+  [type]="'entity'" 
+  [rowsettings]="rowsServices"
+  (select)="selectServiceFromTable( $event )"></app-table>
 
 <div class="bh_block">
+
+  <ng-container *ngIf="isEditMode || isCreateMode">
+    <div class="bh_control" *ngFor="let field of fields">
+
+      <label [for]="field.id" class="bh_label">{{ field.title }}</label>
+
+      <ng-container [ngSwitch]="field.type">
+
+        <ng-container *ngSwitchCase="'string'">
+          <input type="text" [name]="field.id" [id]="field.id" [placeholder]="'Введите ' + field.title | lowercase" />
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'text'">
+          <textarea [name]="field.id" [id]="field.id" [placeholder]="'Введите ' + field.title | lowercase" ></textarea>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'select'">
+          <select [name]="field.id" [id]="field.id" *ngIf="field.dctItems" (change)="selectControl(field, $event)">
+            <option *ngIf="field.canBeNull" value>Не выбран</option>
+            <option *ngFor="let item of field.dctItems" [value]="item.id">{{item.title}}</option>
+          </select>
+        </ng-container>
+
+
+        <ng-container *ngSwitchDefault>
+          
+        </ng-container>
+
+
+      </ng-container>
+
+    </div>
+  </ng-container>
   
-  <div class="bh_control" *ngFor="let field of fields">
-
-    <label [for]="field.id" class="bh_label">{{ field.title }}</label>
-
-    <ng-container [ngSwitch]="field.type">
-
-      <ng-container *ngSwitchCase="'string'">
-        <input type="text" [name]="field.id" [id]="field.id" [placeholder]="'Введите ' + field.title | lowercase" />
-      </ng-container>
-
-      <ng-container *ngSwitchCase="'text'">
-        <textarea [name]="field.id" [id]="field.id" [placeholder]="'Введите ' + field.title | lowercase" ></textarea>
-      </ng-container>
-
-      <ng-container *ngSwitchCase="'select'">
-        <select [name]="field.id" [id]="field.id" *ngIf="field.dctItems" (change)="selectControl(field, $event)">
-          <option *ngIf="field.canBeNull" value>Не выбран</option>
-          <option *ngFor="let item of field.dctItems" [value]="item.id">{{item.title}}</option>
-        </select>
-      </ng-container>
-
-
-      <ng-container *ngSwitchDefault>
-        
-      </ng-container>
-
-
-    </ng-container>
-
-  </div>
-
+  <button *ngIf="isCreateMode">Создать услугу</button>
+  <button *ngIf="isEditMode">Изменить услугу</button>
+  <button *ngIf="isDeleteMode">Удалить услугу</button>
+  
 </div>
