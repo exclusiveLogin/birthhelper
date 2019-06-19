@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from './api.service';
 import { IEntityItem, ISet } from './entity.service';
+import { ITableFilters } from './table/table/table.component';
 
 export interface ISettingsParams {
   mode: string;
@@ -32,6 +33,17 @@ export class RestService {
 
   public getFormFieldCurrentValue( name: string ): any {
     return null;
+  }
+
+  public getEntityFilters( key: string ): Observable<ITableFilters[]>{
+    const entFiltersSetting: ISettingsParams = {
+      mode: 'admin',
+      segment: 'entity',
+      resource: key,
+      script: 'filters'
+    };
+
+    return this.getData<ITableFilters[]>( entFiltersSetting );
   }
 
   public getEntitySet( key: string ): Observable<ISet>{

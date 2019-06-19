@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ISettingsParams, RestService } from './rest.service';
+import { ITableFilters } from './table/table/table.component';
 
 export interface IEntityItem {
   id: number;
@@ -39,5 +40,9 @@ export class EntityService {
 
   public getEntSet( key: string ): Observable<ISet>{
     return this.rest.getEntitySet( key );
+  }
+
+  public getEntFilters( key: string ): Observable<ITableFilters[]>{
+    return this.rest.getEntityFilters( key );
   }
 }

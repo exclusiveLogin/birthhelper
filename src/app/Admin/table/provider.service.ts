@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { DictService, IDictItem } from '../dict.service';
 import { EntityService, IEntity, ISet } from '../entity.service';
 import { Observable } from 'rxjs/Observable';
+import { ITableFilters } from './table/table.component';
 
 @Injectable()
 export class ProviderService {
@@ -17,6 +18,10 @@ export class ProviderService {
     return type === 'dict' ? this.getDictPage( key, page ) : this.getEntPage( 'ent_' + key, page );
   }
 
+  public getFilters( key: string, type: string ): Observable<ITableFilters[]>{
+    return type === 'dict' ? this.getDictFilters( key ) : this.getEntityFilters( 'ent_' + key );
+  }
+
   public getItemsSet( key: string, type: string ){
     return ( type === 'entity' ) ? this.getEntSet( 'ent_' + key ) : Observable.of(null);
   }
@@ -25,12 +30,24 @@ export class ProviderService {
     return this.dict.getDict( key, page );
   }
 
-  public getEntPage( key: string, page: number = 1){
+  public getFullDict( key: string ) {
+    return this.dict.getDict( key );
+  }
+
+  private getEntPage( key: string, page: number = 1){
     return this.entity.getEnt( key, page );
   }
 
-  public getEntSet( key: string ): Observable<ISet>{
+  private getEntSet( key: string ): Observable<ISet>{
     return this.entity.getEntSet( key );
+  }
+
+  private getDictFilters( key: string ): Observable<ITableFilters[]>{
+    return Observable.of(null);
+  }
+
+  private getEntityFilters( key: string ): Observable<ITableFilters[]>{
+    return this.entity.getEntFilters( key );
   }
 
 }

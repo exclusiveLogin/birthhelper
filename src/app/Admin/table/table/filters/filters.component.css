@@ -1,0 +1,15 @@
+:host{
+    display: flex;
+    flex-wrap: wrap;
+}
+.bh_control{
+    flex-basis: 33%;
+    display: flex;
+    flex-wrap: wrap;
+}
+input, textarea, select{
+    flex-grow: 1;
+    font-size: 12pt;
+    padding: 4px;
+
+}

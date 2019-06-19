@@ -4,6 +4,7 @@
   <span>Всего элементов: {{total}} </span>
   <span>Всего страниц: {{ allPages }} </span>
 </div>
+<app-filters [filters]="filters"></app-filters>
 <div class="bh_table_head">
   <div class="row" *ngFor="let rs of rowSettings">{{ rs.title }}</div>
 </div>

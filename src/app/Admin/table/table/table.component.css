@@ -1,3 +1,8 @@
+.stats{
+    border: 1px orange dotted;
+    line-height: 25px;
+    padding: 10px;
+}
 .bh_table_head{
     border: 1px orange dotted;
     min-height: 35px;

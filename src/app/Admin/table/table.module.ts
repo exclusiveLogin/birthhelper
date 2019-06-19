@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TableComponent } from './table/table.component';
 import { PaginatorComponent } from './table/paginator/paginator.component';
 import { CellComponent } from './table/cell/cell.component';
+import { FiltersComponent } from './table/filters/filters.component';
 
 @NgModule({
   imports: [
@@ -11,7 +12,8 @@ import { CellComponent } from './table/cell/cell.component';
   declarations: [
     TableComponent,
     PaginatorComponent,
-    CellComponent
+    CellComponent,
+    FiltersComponent
   ],
   exports: [
     TableComponent,
