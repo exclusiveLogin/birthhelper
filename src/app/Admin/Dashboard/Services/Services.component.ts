@@ -1,10 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IFieldSetting } from '../../form.service';
+import { IFieldSetting, FormService } from '../../form.service';
 import { DictService, IDictItem } from '../../dict.service';
 import { RestService } from '../../rest.service';
 import { IRowSetting } from '../../table/table/cell/cell.component';
 import { ITableItem } from '../../table/table/table.component'
 import { EMENUMODE } from '../Dashboard.component';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-Services',
@@ -18,6 +19,7 @@ export class ServicesComponent implements OnInit {
 
   constructor(
     private dict: DictService,
+    private forms: FormService,
   ) { }
 
   public rowsServices: IRowSetting[] = [
@@ -63,15 +65,18 @@ export class ServicesComponent implements OnInit {
         type: 'select',
         useDict: true,
         title: 'Триместер услуги',
-        dctKey: 'dict_trimesters',
+        dctKey: 'dict_trimester_service',
         canBeNull: true,
       }
     ];
 
   ngOnInit() {
     this.fields.forEach( field => {
+      // добавить валидаторы если потом введем в систему
+      field.control = new FormControl('');
       // готовим словари
       if ( !!field.useDict && !!field.dctKey ){
+          field.control.setValue(null);
           field.loaded = false;
           this.dict.getDict( field.dctKey ).subscribe( ( dict: IDictItem[] ) => field.dctItems = dict);
       }
@@ -102,5 +107,18 @@ export class ServicesComponent implements OnInit {
   public selectServiceFromTable( service: ITableItem ){
     console.log('selected service id: ', service.data.id);
 
+    // заполняем поля формы
+    if( service.data ) Object.keys( service.data ).forEach( key => {
+      if( key in service.data ){
+        // определяем наличие формы
+        let target = this.fields.find( f => f.id === key);
+        if( !!target && target.control ) target.control.setValue( service.data[ key ]);
+      } 
+    }) 
+  }
+
+  public close(){
+    this.forms.closeForm();
   }
 }
+

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormControl, Validators, FormGroup, AbstractControl } from '@angular/forms';
+import { MenuService } from './Dashboard/menu.service';
 
 export interface IFieldSetting {
   id: string;
@@ -13,12 +14,13 @@ export interface IFieldSetting {
   initData?: any;
   dictSelected?:any;
   canBeNull?: boolean;
+  control?: FormControl;
 }
 
 @Injectable()
 export class FormService {
 
-  constructor() { }
+  constructor( private menuService: MenuService ) { }
 
   public createFormControl( init?:any, requred?: boolean): FormControl {
     return new FormControl(init, requred ? Validators.required : null);
@@ -33,5 +35,10 @@ export class FormService {
     });
 
     return new FormGroup( controls );
+  }
+
+  public closeForm(){
+    //this.menuService.menuStream$.next(null);
+    this.menuService.submenuStream$.next(null);
   }
 }

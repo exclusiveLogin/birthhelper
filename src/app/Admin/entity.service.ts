@@ -9,6 +9,7 @@ export interface IEntityItem {
   title: string;
   icon?: string;
   comment?: string;
+  description?: string;
 }
 
 export interface IEntity {

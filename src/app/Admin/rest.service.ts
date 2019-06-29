@@ -3,7 +3,7 @@ import { IDictItem } from './dict.service';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from './api.service';
-import { IEntityItem, ISet } from './entity.service';
+import { IEntityItem, ISet, IEntity } from './entity.service';
 import { ITableFilters } from './table/table/table.component';
 
 export interface ISettingsParams {
@@ -29,6 +29,10 @@ export class RestService {
     private api: ApiService
   ) { 
     console.log('ADMIN REST SERVICE', this);
+  }
+
+  public createEntity( key: string , data: IEntityItem){
+    
   }
 
   public getFormFieldCurrentValue( name: string ): any {

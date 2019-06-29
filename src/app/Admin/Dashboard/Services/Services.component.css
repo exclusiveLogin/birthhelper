@@ -27,3 +27,12 @@ input, textarea, select{
   justify-content: center;
   color: dimgray;
 }
+.bh_admin_close{
+  justify-self: flex-end;
+}
+.bh_service_title{
+  flex-grow: 1;
+}
+.service_head{
+  display: flex;
+}

@@ -1,6 +1,12 @@
-<h3 *ngIf="isCreateMode">Добавление услуги</h3>
-<h3 *ngIf="isEditMode">Редактирование услуги</h3>
-<h3 *ngIf="isDeleteMode">Удаление услуги</h3>
+<div class="service_head">
+  <h3 class="bh_service_title" *ngIf="isCreateMode">Добавление услуги</h3>
+  <h3 class="bh_service_title" *ngIf="isEditMode">Редактирование услуги</h3>
+  <h3 class="bh_service_title" *ngIf="isDeleteMode">Удаление услуги</h3>
+
+  <button class="bh_admin_close" (click)="close()">Закрыть</button>
+</div> 
+
+
 <app-table 
   *ngIf="isEditMode"
   [key]="'services'" 
@@ -18,16 +24,16 @@
       <ng-container [ngSwitch]="field.type">
 
         <ng-container *ngSwitchCase="'string'">
-          <input type="text" [name]="field.id" [id]="field.id" [placeholder]="'Введите ' + field.title | lowercase" />
+          <input type="text" [name]="field.id" [id]="field.id" [placeholder]="'Введите ' + field.title | lowercase" [formControl]="field.control" />
         </ng-container>
 
         <ng-container *ngSwitchCase="'text'">
-          <textarea [name]="field.id" [id]="field.id" [placeholder]="'Введите ' + field.title | lowercase" ></textarea>
+          <textarea [name]="field.id" [id]="field.id" [placeholder]="'Введите ' + field.title | lowercase" [formControl]="field.control" ></textarea>
         </ng-container>
 
         <ng-container *ngSwitchCase="'select'">
-          <select [name]="field.id" [id]="field.id" *ngIf="field.dctItems" (change)="selectControl(field, $event)">
-            <option *ngIf="field.canBeNull" value>Не выбран</option>
+          <select [name]="field.id" [id]="field.id" *ngIf="field.dctItems" [formControl]="field.control" (change)="selectControl(field, $event)">
+            <option *ngIf="field.canBeNull" [value]="null">Не выбран</option>
             <option *ngFor="let item of field.dctItems" [value]="item.id">{{item.title}}</option>
           </select>
         </ng-container>
