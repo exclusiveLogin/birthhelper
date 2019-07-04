@@ -36,3 +36,10 @@ input, textarea, select{
 .service_head{
   display: flex;
 }
+.ng-invalid{
+  border-bottom: 2px red solid;
+}
+form.ng-invalid::after{
+  content: 'не заполнены обязательные поля';
+  margin-top: -15px;
+}

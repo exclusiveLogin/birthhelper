@@ -1,25 +1,30 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { IFieldSetting, FormService } from '../../form.service';
 import { DictService, IDictItem } from '../../dict.service';
-import { RestService } from '../../rest.service';
 import { IRowSetting } from '../../table/table/cell/cell.component';
 import { ITableItem } from '../../table/table/table.component'
-import { EMENUMODE } from '../Dashboard.component';
-import { FormControl } from '@angular/forms';
+import { EMENUMODE, IMenuRepo } from '../Dashboard.component';
+import { IEntityItem, EntityService } from '../../entity.service';
+import { FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-Services',
-  templateUrl: './Services.component.html',
-  styleUrls: ['./Services.component.css']
+  selector: 'app-editor',
+  templateUrl: './Editor.component.html',
+  styleUrls: ['./Editor.component.css']
 })
-export class ServicesComponent implements OnInit {
+export class EditorComponent implements OnInit {
 
   @Input() mode: EMENUMODE;
-  private serviceId: number;
+  @Input() menu: IMenuRepo;
+
+  private currentService: IEntityItem;
+  public refresh: Function;
+  //public _key: string = 'services';
 
   constructor(
     private dict: DictService,
     private forms: FormService,
+    private ent: EntityService,
   ) { }
 
   public rowsServices: IRowSetting[] = [
@@ -41,11 +46,14 @@ export class ServicesComponent implements OnInit {
     },
   ]
 
+  public form: FormGroup = new FormGroup({});
+  
   public fields: IFieldSetting[] = [
       {
         id: 'title',
         type: 'string',
-        title: 'Название услуги'
+        title: 'Название услуги',
+        requred: true,
       },
       {
         id: 'description',
@@ -58,7 +66,8 @@ export class ServicesComponent implements OnInit {
         useDict: true,
         title: 'Категория услуги',
         dctKey: 'dict_category_service',
-        canBeNull: true,
+        canBeNull: false,
+        initData: 1,
       },
       {
         id: 'trimester',
@@ -73,16 +82,26 @@ export class ServicesComponent implements OnInit {
   ngOnInit() {
     this.fields.forEach( field => {
       // добавить валидаторы если потом введем в систему
-      field.control = new FormControl('');
+      field.control = this.forms.createFormControl(null, field.requred);
       // готовим словари
       if ( !!field.useDict && !!field.dctKey ){
-          field.control.setValue(null);
+          field.initData ?  
+            field.control.setValue(field.initData) : 
+            field.control.setValue(null);
           field.loaded = false;
           this.dict.getDict( field.dctKey ).subscribe( ( dict: IDictItem[] ) => field.dctItems = dict);
       }
     });
 
-    console.log('items:', this.fields);
+    this.forms.registerFields(this.fields, this.form);
+
+    console.log('form:', this.form);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
+    //Add '${implements OnChanges}' to the class.
+    if(changes.mode.currentValue === EMENUMODE.CREATE) this.currentService = null;
   }
 
   public get isEditMode(): boolean{
@@ -104,8 +123,15 @@ export class ServicesComponent implements OnInit {
     console.log('selected:', item, ev);
   }
 
+  public refreshAssign(e){
+    this.refresh = e;
+  }
+
   public selectServiceFromTable( service: ITableItem ){
+    if(!service) {this.currentService = null; return;}
     console.log('selected service id: ', service.data.id);
+    
+    this.currentService = service.data;
 
     // заполняем поля формы
     if( service.data ) Object.keys( service.data ).forEach( key => {
@@ -115,6 +141,19 @@ export class ServicesComponent implements OnInit {
         if( !!target && target.control ) target.control.setValue( service.data[ key ]);
       } 
     }) 
+  }
+
+  public removeEntity(){
+    if(this.currentService && confirm("Уверен что хочешь удалить услугу?")){
+      this.ent.remEnt(this.menu.name, this.currentService.id).subscribe(result => {
+        this.refresh();
+        this.currentService = null;
+      });
+    }
+  }
+
+  public createEntity(){
+
   }
 
   public close(){

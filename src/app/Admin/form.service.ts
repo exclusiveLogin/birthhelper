@@ -26,15 +26,12 @@ export class FormService {
     return new FormControl(init, requred ? Validators.required : null);
   }
 
-  public createForm( fields: IFieldSetting[] ): FormGroup {
+  public registerFields( fields: IFieldSetting[], form: FormGroup ): void {
 
-    let controls: { [name: string]: AbstractControl };
-
-    fields.forEach( field => {
-      controls[ field.id ] = this.createFormControl( field.initData ? field.initData : '', field.requred );
+    fields.forEach(field => {
+      form.registerControl( field.id, field.control);
     });
-
-    return new FormGroup( controls );
+    
   }
 
   public closeForm(){

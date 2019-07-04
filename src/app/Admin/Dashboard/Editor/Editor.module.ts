@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ServicesComponent } from './Services.component';
+import { EditorComponent } from './Editor.component';
 import { TableModule } from '../../table/table.module';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -10,9 +10,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     TableModule,
     ReactiveFormsModule,
   ],
-  declarations: [ServicesComponent],
+  declarations: [EditorComponent],
   exports: [
-    ServicesComponent
+    EditorComponent
   ]
 })
-export class ServicesModule { }
+export class EditorModule { }

@@ -3,6 +3,9 @@
   <span>тип: {{type === 'dict' ? 'Словарь' : 'Сущность'}} </span>
   <span>Всего элементов: {{total}} </span>
   <span>Всего страниц: {{ allPages }} </span>
+  <br>
+  <span *ngIf="currentItem">Выбранный элемент: {{currentItem.data.title}}[ {{currentItem.data.id}} ]</span>
+  <button *ngIf="currentItem" (click)="unselectItem()">Снять выбор</button>
 </div>
 <app-filters [filters]="filters" (update)="refreshTable($event)"></app-filters>
 <div class="bh_table_head">

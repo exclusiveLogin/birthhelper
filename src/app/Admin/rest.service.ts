@@ -35,6 +35,17 @@ export class RestService {
     
   }
 
+  public deleteEntity( key: string, id: number): Observable<string>{
+    const entSetting: ISettingsParams = {
+      mode: 'admin',
+      segment: 'entity',
+      resource: key
+    };
+
+    return this.remData<string>( entSetting, { id: id.toString() });
+    
+  }
+
   public getFormFieldCurrentValue( name: string ): any {
     return null;
   }
@@ -92,6 +103,17 @@ export class RestService {
     let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
    
     let req = this.http.get( url, { params: data } );
+
+    return req as Observable<T>;
+  }
+
+  public remData<T>( path: ISettingsParams, data?: IRestParams): Observable<T>{
+
+    if( path ) Object.keys( path ).forEach(key => path[key] = '/' + path[key]);
+
+    let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
+   
+    let req = this.http.request('delete', url, {body:data} );
 
     return req as Observable<T>;
   }

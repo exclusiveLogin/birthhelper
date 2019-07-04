@@ -4,13 +4,13 @@ import { DashboardComponent } from './Dashboard.component';
 import { MenuComponent } from './Menu/Menu.component';
 import { SubmenuComponent } from './Submenu/Submenu.component';
 import { SubmenuItemComponent } from './Submenu/SubmenuItem/SubmenuItem.component';
-import { ServicesModule } from './Services/Services.module';
+import { EditorModule } from './Editor/Editor.module';
 import { MenuService } from './menu.service';
 
 @NgModule({
   imports: [
     CommonModule,
-    ServicesModule,
+    EditorModule,
   ],
   declarations: [
     DashboardComponent,

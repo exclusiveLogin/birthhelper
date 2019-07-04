@@ -1,7 +1,5 @@
 <app-Menu [menu]="menuRepo"></app-Menu>
 <div class="bh_admin_dashboard">
   <app-Submenu></app-Submenu>
-  <ng-container *ngIf="selectedMenu && selectedMode !== null">
-    <app-Services *ngIf="selectedMenu.name === 'services'" [mode]="selectedMode"></app-Services>
-  </ng-container>
+  <app-editor *ngIf="selectedMenu && selectedMode !== null" [mode]="selectedMode" [menu]="selectedMenu"></app-editor>
 </div>

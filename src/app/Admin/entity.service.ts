@@ -46,4 +46,8 @@ export class EntityService {
   public getEntFilters( key: string ): Observable<ITableFilters[]>{
     return this.rest.getEntityFilters( key );
   }
+
+  public remEnt(name: string, id: number): Observable<string>{
+    return this.rest.deleteEntity('ent_'+name, id);
+  }
 }

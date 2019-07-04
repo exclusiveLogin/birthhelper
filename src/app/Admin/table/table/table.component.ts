@@ -13,7 +13,7 @@ export interface ITableRows{
 }
 
 export interface ITableItem{
-  data: IEntityItem;
+  data: IEntityItem | IDictItem;
   text?: string;
 }
 
@@ -36,6 +36,7 @@ export class TableComponent implements OnInit {
   @Input('rowsettings') private rowSettings: IRowSetting[];
 
   @Output() private select: EventEmitter<ITableItem> = new EventEmitter();
+  @Output() private refresh: EventEmitter<Function> = new EventEmitter();
 
   constructor(
     private provider: ProviderService
@@ -46,11 +47,12 @@ export class TableComponent implements OnInit {
   public currentPage: number = 1;
   public total: number = 0;
   public allPages: number = 1;
+  public currentItem: ITableItem;
 
   ngOnInit() {
     if( this.key && this.type ) {
       // запрос первой страницы таблицы при инициализации
-      this.provider.getItemsFirstPortion( this.key, this.type ).subscribe((items: IDictItem[] | IEntityItem[]) => this.items = items && <ITableItem[]>items.map(i => this.converter(i)));
+      this.provider.getItemsFirstPortion( this.key, this.type ).subscribe((items: ( IDictItem | IEntityItem)[] ) => this.items = items && <ITableItem[]>items.map(i => this.converter(i)));
       // запрос сета для определения статистики таблицы
       this.provider.getItemsSet( this.key, this.type ).subscribe(set => {
         this.total = set && set.total && Number(set.total);
@@ -62,6 +64,7 @@ export class TableComponent implements OnInit {
         this.initFilterDictionaries();
       });
     }
+    this.refresh.emit(this.refreshTable.bind(this));
   }
 
   private initFilterDictionaries(): void {
@@ -73,7 +76,7 @@ export class TableComponent implements OnInit {
     }
   }
 
-  private converter( data: IEntityItem | IDictItem ){
+  private converter( data: IEntityItem | IDictItem ): ITableItem{
     return <ITableItem>{
       data,
       text: data.id.toString()
@@ -82,16 +85,25 @@ export class TableComponent implements OnInit {
 
   public pageChanged(page: number){
     console.log('page changed: ', page);
-    this.provider.getItemPage( this.key, this.type, page ).subscribe((items: IDictItem[] | IEntityItem[]) => this.items = items && <ITableItem[]>items.map(i => this.converter(i)));
+    this.currentPage = page;
+    this.provider.getItemPage( this.key, this.type, page ).subscribe((items: (IDictItem | IEntityItem)[] ) => this.items = items && <ITableItem[]>items.map(i => this.converter(i)));
   }
 
   public refreshTable( filters: IFiltersParams[]){
     console.log('refresh table:', filters);
+    this.currentItem = null;
+    this.pageChanged(1);
   }
 
   public selectItem( item: ITableItem ){
     console.log("selected:", item);
 
     this.select.emit( item );
+    this.currentItem = item;
+  }
+
+  public unselectItem(){
+    this.select.emit( null );
+    this.currentItem = null;
   }
 }

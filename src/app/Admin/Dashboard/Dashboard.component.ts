@@ -10,6 +10,7 @@ export enum EMENUMODE{
 export interface IMenuRepo{
   name: string,
   title: string,
+  type: string,
   modes: EMENUMODE[],
 }
 @Component({
@@ -26,9 +27,11 @@ export class DashboardComponent implements OnInit {
     {
       name: 'services',
       title: 'Услуги',
+      type: 'entity',
       modes: [
         EMENUMODE.CREATE,
         EMENUMODE.EDIT,
+        EMENUMODE.DELETE,
       ]
     }
   ]
