@@ -50,4 +50,9 @@ export class EntityService {
   public remEnt(name: string, id: number): Observable<string>{
     return this.rest.deleteEntity('ent_'+name, id);
   }
+
+  public createEnt(name: string, data: IEntity): Observable<any>{
+    
+    return;
+  }
 }

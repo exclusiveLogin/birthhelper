@@ -153,7 +153,12 @@ export class EditorComponent implements OnInit {
   }
 
   public createEntity(){
-
+    if(this.currentService && confirm("Уверен что хочешь создать услугу?")){
+      this.ent.remEnt(this.menu.name, this.currentService.id).subscribe(result => {
+        this.refresh();
+        this.currentService = null;
+      });
+    }
   }
 
   public close(){

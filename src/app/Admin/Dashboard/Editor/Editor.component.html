@@ -51,8 +51,8 @@
     
   </ng-container>
   
-  <button *ngIf="isCreateMode" [disabled]="!!currentService">Создать услугу</button>
-  <button *ngIf="isEditMode" [disabled]="!currentService">Изменить услугу</button>
+  <button *ngIf="isCreateMode" [disabled]="!!currentService || !!form.invalid">Создать услугу</button>
+  <button *ngIf="isEditMode" [disabled]="!currentService || !!form.invalid">Изменить услугу</button>
   <button *ngIf="isDeleteMode" [disabled]="!currentService" (click)="removeEntity()">Удалить услугу</button>
   
 </div>
