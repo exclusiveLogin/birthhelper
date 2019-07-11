@@ -3,6 +3,7 @@ import { DictService, IDictItem } from '../dict.service';
 import { EntityService, IEntity, ISet } from '../entity.service';
 import { Observable } from 'rxjs/Observable';
 import { ITableFilters } from './table/table.component';
+import { IRestParams } from '../rest.service';
 
 @Injectable()
 export class ProviderService {
@@ -14,8 +15,8 @@ export class ProviderService {
     return type === 'dict' ? this.getDictPage( key ) : this.getEntPage( 'ent_' + key );
   }
 
-  public getItemPage( key: string, type: string, page: number = 1): Observable<IEntity[] | IDictItem[]>{
-    return type === 'dict' ? this.getDictPage( key, page ) : this.getEntPage( 'ent_' + key, page );
+  public getItemPage( key: string, type: string, page: number = 1, queryParams: IRestParams): Observable<IEntity[] | IDictItem[]>{
+    return type === 'dict' ? this.getDictPage( key, page ) : this.getEntPage( 'ent_' + key, page, queryParams );
   }
 
   public getFilters( key: string, type: string ): Observable<ITableFilters[]>{
@@ -34,8 +35,8 @@ export class ProviderService {
     return this.dict.getDict( key );
   }
 
-  private getEntPage( key: string, page: number = 1){
-    return this.entity.getEnt( key, page );
+  private getEntPage( key: string, page: number = 1, qp?: IRestParams){
+    return this.entity.getEnt( key, page, qp );
   }
 
   private getEntSet( key: string ): Observable<ISet>{

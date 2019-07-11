@@ -101,7 +101,10 @@ export class EditorComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
     //Add '${implements OnChanges}' to the class.
-    if(changes.mode.currentValue === EMENUMODE.CREATE) this.currentService = null;
+    if(changes.mode.currentValue === EMENUMODE.CREATE) {
+      this.currentService = null;
+      this.form.reset();
+    }
   }
 
   public get isEditMode(): boolean{
@@ -153,10 +156,39 @@ export class EditorComponent implements OnInit {
   }
 
   public createEntity(){
-    if(this.currentService && confirm("Уверен что хочешь создать услугу?")){
-      this.ent.remEnt(this.menu.name, this.currentService.id).subscribe(result => {
+    // собрать все поля формы в объект сущности
+    let data: IEntityItem = this.form.value;
+    for(let d in data) if(data[d] === null) delete data[d];
+    //debugger;
+    // отправить post с сущностью
+
+    if(confirm("Уверен что хочешь создать услугу?")){
+      this.ent.createEnt(this.menu.name, data).subscribe(result => {
+        //this.refresh();
+        console.log('create ent result: ', result);
+        alert('Сущность успешно создана');
+        this.form.reset();
+        //this.currentService = null;
+      });
+    }
+  }
+
+  public editEntity(){
+
+    let data: IEntityItem = this.form.value;
+    for(let d in data) if(data[d] === null) delete data[d];
+
+    if(this.currentService && confirm("Уверен что хочешь изменить услугу?")){
+
+      data.id = this.currentService.id;
+      this.ent.createEnt(this.menu.name, data).subscribe(result => {
+        
+        console.log('edit ent result: ', result);
+        alert('Сущность успешно изменена');
         this.refresh();
+        this.form.reset();
         this.currentService = null;
+      
       });
     }
   }

@@ -4,6 +4,7 @@ import { IDictItem } from '../../dict.service';
 import { IEntity, IEntityItem } from '../../entity.service';
 import { IRowSetting } from './cell/cell.component';
 import { IFiltersParams } from './filters/filters.component';
+import { IRestParams } from '../../rest.service';
 
 export interface ITableRows{
   title?: string;
@@ -83,16 +84,16 @@ export class TableComponent implements OnInit {
     }
   }
 
-  public pageChanged(page: number){
+  public pageChanged(page: number, qp?: IRestParams){
     console.log('page changed: ', page);
     this.currentPage = page;
-    this.provider.getItemPage( this.key, this.type, page ).subscribe((items: (IDictItem | IEntityItem)[] ) => this.items = items && <ITableItem[]>items.map(i => this.converter(i)));
+    this.provider.getItemPage( this.key, this.type, page, qp ).subscribe((items: (IDictItem | IEntityItem)[] ) => this.items = items && <ITableItem[]>items.map(i => this.converter(i)));
   }
 
-  public refreshTable( filters: IFiltersParams[]){
+  public refreshTable( filters: IFiltersParams){
     console.log('refresh table:', filters);
     this.currentItem = null;
-    this.pageChanged(1);
+    this.pageChanged(1, filters as IRestParams);
   }
 
   public selectItem( item: ITableItem ){

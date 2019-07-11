@@ -31,8 +31,14 @@ export class RestService {
     console.log('ADMIN REST SERVICE', this);
   }
 
-  public createEntity( key: string , data: IEntityItem){
-    
+  public createEntity( key: string , data: IEntityItem): Observable<any>{
+    const entSetting: ISettingsParams = {
+      mode: 'admin',
+      segment: 'entity',
+      resource: key
+    };
+
+    return this.postData(entSetting, data)
   }
 
   public deleteEntity( key: string, id: number): Observable<string>{
@@ -72,7 +78,7 @@ export class RestService {
     return this.getData<ISet>( entSetSetting );
   }
 
-  public getEntities( key: string, page?: number ): Observable<IEntityItem[]> {
+  public getEntities( key: string, page?: number, qp?: IRestParams ): Observable<IEntityItem[]> {
     const entSetting: ISettingsParams = {
       mode: 'admin',
       segment: 'entity',
@@ -80,6 +86,8 @@ export class RestService {
     };
 
     const data: IRestParams = page ? { skip: (20 * (page-1)).toString()} : null;
+
+    if( qp ) Object.assign(data, qp);
 
     return this.getData<IEntityItem[]>( entSetting, data );
   }
@@ -103,6 +111,17 @@ export class RestService {
     let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
    
     let req = this.http.get( url, { params: data } );
+
+    return req as Observable<T>;
+  }
+
+  public postData<T>( path: ISettingsParams, data?: IEntityItem): Observable<T>{
+
+    if( path ) Object.keys( path ).forEach(key => path[key] = '/' + path[key]);
+
+    let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
+   
+    let req = this.http.post( url, data );
 
     return req as Observable<T>;
   }

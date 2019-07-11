@@ -15,9 +15,9 @@ export class FiltersComponent implements OnInit {
   constructor() { }
 
   @Input('filters') public fields: ITableFilters[];
-  @Output() public update: EventEmitter<IFiltersParams[]> = new EventEmitter(null);
+  @Output() public update: EventEmitter<IFiltersParams> = new EventEmitter(null);
 
-  private filters: IFiltersParams[] = [];
+  private filters: IFiltersParams = {};
   private printTimer;
 
   ngOnInit() {

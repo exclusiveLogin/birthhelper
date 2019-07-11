@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { ISettingsParams, RestService } from './rest.service';
+import { ISettingsParams, RestService, IRestParams } from './rest.service';
 import { ITableFilters } from './table/table/table.component';
 
 export interface IEntityItem {
@@ -35,8 +35,8 @@ export class EntityService {
     console.log('DEVSS ENT', this);
   }
 
-  public getEnt( name: string, page: number = 1 ): Observable<IEntityItem[]> {
-    return this.rest.getEntities( name, page );
+  public getEnt( name: string, page: number = 1, qp?: IRestParams ): Observable<IEntityItem[]> {
+    return this.rest.getEntities( name, page, qp );
   }
 
   public getEntSet( key: string ): Observable<ISet>{
@@ -51,8 +51,7 @@ export class EntityService {
     return this.rest.deleteEntity('ent_'+name, id);
   }
 
-  public createEnt(name: string, data: IEntity): Observable<any>{
-    
-    return;
+  public createEnt(name: string, data: IEntityItem): Observable<any>{
+    return this.rest.createEntity('ent_' + name, data);
   }
 }
