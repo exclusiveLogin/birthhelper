@@ -81,6 +81,7 @@ export class EditorComponent implements OnInit {
 
   private rerenderFields(){
     console.log('rerender: ', this.fields);
+    if(!(this.fields && this.fields.length)) return;
     this.fields.forEach( field => {
       // добавить валидаторы если потом введем в систему
       field.control = this.forms.createFormControl(null, field.requred);
@@ -112,6 +113,11 @@ export class EditorComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
     //Add '${implements OnChanges}' to the class.
+    if(!changes.mode) {
+      //this.currentService = null;
+      setTimeout(()=>this.close(),10);
+      return;
+    }
     if(changes.mode.currentValue === EMENUMODE.CREATE) {
       this.currentService = null;
       this.form.reset();
@@ -119,7 +125,7 @@ export class EditorComponent implements OnInit {
     if(!!changes.menu.currentValue) {
       console.log("test menu changed", changes.menu);
       this.ent.getEntSet(this.menu.name).subscribe(set => {
-        this.fields = set.fields.map(f => {
+        this.fields = set.fields && set.fields.map(f => {
           if(f.type === 'id' && !!f.useDict) f.type = 'select';
           f.id = f['key'];
           return f;
