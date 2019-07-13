@@ -10,6 +10,7 @@ export enum EMENUMODE{
 export interface IMenuRepo{
   name: string,
   title: string,
+  titleVoc: string,
   type: string,
   modes: EMENUMODE[],
 }
@@ -27,6 +28,7 @@ export class DashboardComponent implements OnInit {
     {
       name: 'services',
       title: 'Услуги',
+      titleVoc: 'услугу',
       type: 'entity',
       modes: [
         EMENUMODE.CREATE,
@@ -37,6 +39,7 @@ export class DashboardComponent implements OnInit {
     {
       name: 'clinics',
       title: 'Клиники',
+      titleVoc: 'клинику',
       type: 'entity',
       modes: [
         EMENUMODE.CREATE,

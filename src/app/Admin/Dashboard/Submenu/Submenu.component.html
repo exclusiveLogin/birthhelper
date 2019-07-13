@@ -1,8 +1,8 @@
 <div class="bh_admin_submenu_title" *ngIf="menuSelected">Подменю {{menuSelected.title}}</div>
 <ng-container *ngIf="menuSelected">
-    <app-SubmenuItem *ngIf="hasCreateMode" [title]="'Создать услугу'" (click)="selectSubmenuMode('create')"></app-SubmenuItem>
-    <app-SubmenuItem *ngIf="hasEditMode"  [title]="'Редактировать услугу'" (click)="selectSubmenuMode('edit')"></app-SubmenuItem>
-    <app-SubmenuItem *ngIf="hasDeleteMode"  [title]="'Удалить услугу'" (click)="selectSubmenuMode('delete')"></app-SubmenuItem>
+    <app-SubmenuItem *ngIf="hasCreateMode" [title]="'Создать '+menuSelected.titleVoc" (click)="selectSubmenuMode('create')"></app-SubmenuItem>
+    <app-SubmenuItem *ngIf="hasEditMode"  [title]="'Редактировать '+menuSelected.titleVoc" (click)="selectSubmenuMode('edit')"></app-SubmenuItem>
+    <app-SubmenuItem *ngIf="hasDeleteMode"  [title]="'Удалить '+menuSelected.titleVoc" (click)="selectSubmenuMode('delete')"></app-SubmenuItem>
 </ng-container>
 
 

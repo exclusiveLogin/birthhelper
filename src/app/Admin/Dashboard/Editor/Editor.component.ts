@@ -122,7 +122,7 @@ export class EditorComponent implements OnInit {
       this.currentService = null;
       this.form.reset();
     }
-    if(!!changes.menu.currentValue) {
+    if(!!changes.menu && !!changes.menu.currentValue) {
       console.log("test menu changed", changes.menu);
       this.ent.getEntSet(this.menu.name).subscribe(set => {
         this.fields = set.fields && set.fields.map(f => {
