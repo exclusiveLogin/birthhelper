@@ -20,7 +20,13 @@
   justify-content: center;
   display: flex;
 }
-
+.bh_control label{
+  flex-basis: 30%;
+}
+input[readonly]{
+  background-color: darkgrey;
+  opacity: 0.5;
+}
 input, textarea, select{
   font-size: 15pt;
   width: 90%;

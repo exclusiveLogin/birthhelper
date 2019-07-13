@@ -12,19 +12,19 @@ export class ProviderService {
 
 
   public getItemsFirstPortion( key: string, type: string ): Observable<IEntity[] | IDictItem[]>{
-    return type === 'dict' ? this.getDictPage( key ) : this.getEntPage( 'ent_' + key );
+    return type === 'dict' ? this.getDictPage( key ) : this.getEntPage( key );
   }
 
   public getItemPage( key: string, type: string, page: number = 1, queryParams: IRestParams): Observable<IEntity[] | IDictItem[]>{
-    return type === 'dict' ? this.getDictPage( key, page ) : this.getEntPage( 'ent_' + key, page, queryParams );
+    return type === 'dict' ? this.getDictPage( key, page ) : this.getEntPage( key, page, queryParams );
   }
 
   public getFilters( key: string, type: string ): Observable<ITableFilters[]>{
-    return type === 'dict' ? this.getDictFilters( key ) : this.getEntityFilters( 'ent_' + key );
+    return type === 'dict' ? this.getDictFilters( key ) : this.getEntityFilters( key );
   }
 
   public getItemsSet( key: string, type: string ){
-    return ( type === 'entity' ) ? this.getEntSet( 'ent_' + key ) : Observable.of(null);
+    return ( type === 'entity' ) ? this.getEntSet( key ) : Observable.of(null);
   }
 
   public getDictPage( key: string, page: number = 1){

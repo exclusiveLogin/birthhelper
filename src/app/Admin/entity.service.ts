@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ISettingsParams, RestService, IRestParams } from './rest.service';
 import { ITableFilters } from './table/table/table.component';
+import { IFieldSetting } from './form.service';
 
 export interface IEntityItem {
   id: number;
@@ -19,6 +20,7 @@ export interface IEntity {
 
 export interface ISet{
   total: string;
+  fields: IFieldSetting[];
 }
 
 const settingsParams: ISettingsParams = {
@@ -36,15 +38,15 @@ export class EntityService {
   }
 
   public getEnt( name: string, page: number = 1, qp?: IRestParams ): Observable<IEntityItem[]> {
-    return this.rest.getEntities( name, page, qp );
+    return this.rest.getEntities( 'ent_'+name, page, qp );
   }
 
   public getEntSet( key: string ): Observable<ISet>{
-    return this.rest.getEntitySet( key );
+    return this.rest.getEntitySet( 'ent_'+key );
   }
 
   public getEntFilters( key: string ): Observable<ITableFilters[]>{
-    return this.rest.getEntityFilters( key );
+    return this.rest.getEntityFilters( 'ent_'+key );
   }
 
   public remEnt(name: string, id: number): Observable<string>{

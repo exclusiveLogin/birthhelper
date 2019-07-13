@@ -33,7 +33,17 @@ export class DashboardComponent implements OnInit {
         EMENUMODE.EDIT,
         EMENUMODE.DELETE,
       ]
-    }
+    },
+    {
+      name: 'clinics',
+      title: 'Клиники',
+      type: 'entity',
+      modes: [
+        EMENUMODE.CREATE,
+        EMENUMODE.EDIT,
+        EMENUMODE.DELETE,
+      ]
+    },
   ]
 
 

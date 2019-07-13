@@ -49,37 +49,38 @@ export class EditorComponent implements OnInit {
   public form: FormGroup = new FormGroup({});
   
   public fields: IFieldSetting[] = [
-      {
-        id: 'title',
-        type: 'string',
-        title: 'Название услуги',
-        requred: true,
-      },
-      {
-        id: 'description',
-        type: 'text',
-        title: 'Описание услуги'
-      },
-      {
-        id: 'category',
-        type: 'select',
-        useDict: true,
-        title: 'Категория услуги',
-        dctKey: 'dict_category_service',
-        canBeNull: false,
-        initData: 1,
-      },
-      {
-        id: 'trimester',
-        type: 'select',
-        useDict: true,
-        title: 'Триместер услуги',
-        dctKey: 'dict_trimester_service',
-        canBeNull: true,
-      }
+      // {
+      //   id: 'title',
+      //   type: 'string',
+      //   title: 'Название услуги',
+      //   requred: true,
+      // },
+      // {
+      //   id: 'description',
+      //   type: 'text',
+      //   title: 'Описание услуги'
+      // },
+      // {
+      //   id: 'category',
+      //   type: 'select',
+      //   useDict: true,
+      //   title: 'Категория услуги',
+      //   dctKey: 'dict_category_service',
+      //   canBeNull: false,
+      //   initData: 1,
+      // },
+      // {
+      //   id: 'trimester',
+      //   type: 'select',
+      //   useDict: true,
+      //   title: 'Триместер услуги',
+      //   dctKey: 'dict_trimester_service',
+      //   canBeNull: true,
+      // }
     ];
 
-  ngOnInit() {
+  private rerenderFields(){
+    console.log('rerender: ', this.fields);
     this.fields.forEach( field => {
       // добавить валидаторы если потом введем в систему
       field.control = this.forms.createFormControl(null, field.requred);
@@ -94,8 +95,18 @@ export class EditorComponent implements OnInit {
     });
 
     this.forms.registerFields(this.fields, this.form);
+  }
 
-    console.log('form:', this.form);
+  private rerenderValueOfFields(){
+    console.log('rerender: ', this.fields);
+    this.fields.forEach( field => {
+      field.initData && field.control ?  
+        field.control.setValue(field.initData) : 
+        field.control.setValue(null);
+    });
+  }
+
+  ngOnInit() {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -104,6 +115,17 @@ export class EditorComponent implements OnInit {
     if(changes.mode.currentValue === EMENUMODE.CREATE) {
       this.currentService = null;
       this.form.reset();
+    }
+    if(!!changes.menu.currentValue) {
+      console.log("test menu changed", changes.menu);
+      this.ent.getEntSet(this.menu.name).subscribe(set => {
+        this.fields = set.fields.map(f => {
+          if(f.type === 'id' && !!f.useDict) f.type = 'select';
+          f.id = f['key'];
+          return f;
+        });
+        this.rerenderFields();
+      });
     }
   }
 
@@ -131,7 +153,7 @@ export class EditorComponent implements OnInit {
   }
 
   public selectServiceFromTable( service: ITableItem ){
-    if(!service) {this.currentService = null; return;}
+    if(!service) {this.currentService = null; this.form.reset(); this.rerenderValueOfFields(); return;}
     console.log('selected service id: ', service.data.id);
     
     this.currentService = service.data;
@@ -141,6 +163,7 @@ export class EditorComponent implements OnInit {
       if( key in service.data ){
         // определяем наличие формы
         let target = this.fields.find( f => f.id === key);
+        console.log('target control: ', target);
         if( !!target && target.control ) target.control.setValue( service.data[ key ]);
       } 
     }) 

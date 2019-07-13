@@ -9,7 +9,7 @@
 <app-table 
   *ngIf="!!menu && (isEditMode || isDeleteMode)"
   [key]="menu.name" 
-  [type]="'entity'" 
+  [type]="menu.type" 
   [rowsettings]="rowsServices"
   (select)="selectServiceFromTable( $event )"
   (refresh)="refreshAssign($event)"
@@ -20,32 +20,37 @@
   <ng-container *ngIf="isEditMode || isCreateMode">
     <form [formGroup]="form">
       <div class="bh_control" *ngFor="let field of fields">
+        <ng-container *ngIf="!field.hide">
+          <label [for]="field.id" class="bh_label">{{ field.title }}{{field.requred ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull  ? '*' : ''}}</label>
 
-        <label [for]="field.id" class="bh_label">{{ field.title }}{{field.requred ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull  ? '*' : ''}}</label>
+          <ng-container [ngSwitch]="field.type">
 
-        <ng-container [ngSwitch]="field.type">
+            <ng-container *ngSwitchCase="'string'">
+              <input type="text" [name]="field.id" [readonly]="field.readonly"  [id]="field.id" [placeholder]="'Введите ' + (field.title ? field.title : 'текст') | lowercase" [formControl]="field.control" />
+            </ng-container>
 
-          <ng-container *ngSwitchCase="'string'">
-            <input type="text" [name]="field.id" [id]="field.id" [placeholder]="'Введите ' + field.title | lowercase" [formControl]="field.control" />
+            <ng-container *ngSwitchCase="'id'">
+              <input type="text" [name]="field.id" [readonly]="field.readonly" [id]="field.id" [placeholder]="'Введите ' + (field.title ? field.title : 'текст') | lowercase" [formControl]="field.control" />
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'text'">
+              <textarea [name]="field.id" [id]="field.id" [placeholder]="'Введите ' + field.title | lowercase" [formControl]="field.control" ></textarea>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'select'">
+              <select [name]="field.id" [id]="field.id" *ngIf="field.dctItems" [formControl]="field.control" (change)="selectControl(field, $event)">
+                <option *ngIf="field.canBeNull" [value]="null">Не выбран</option>
+                <option *ngFor="let item of field.dctItems" [value]="item.id">{{item.title}}</option>
+              </select>
+            </ng-container>
+
+            <ng-container *ngSwitchDefault>
+              
+            </ng-container>
+
           </ng-container>
-
-          <ng-container *ngSwitchCase="'text'">
-            <textarea [name]="field.id" [id]="field.id" [placeholder]="'Введите ' + field.title | lowercase" [formControl]="field.control" ></textarea>
-          </ng-container>
-
-          <ng-container *ngSwitchCase="'select'">
-            <select [name]="field.id" [id]="field.id" *ngIf="field.dctItems" [formControl]="field.control" (change)="selectControl(field, $event)">
-              <option *ngIf="field.canBeNull" [value]="null">Не выбран</option>
-              <option *ngFor="let item of field.dctItems" [value]="item.id">{{item.title}}</option>
-            </select>
-          </ng-container>
-
-          <ng-container *ngSwitchDefault>
-            
-          </ng-container>
-
         </ng-container>
-
+        
       </div>
     </form>
     
