@@ -17,7 +17,7 @@
 
 <div class="bh_block">
 
-  <ng-container *ngIf="isEditMode || isCreateMode">
+  <ng-container *ngIf="(isEditMode && !!currentService) || isCreateMode">
     <form [formGroup]="form">
       <div class="bh_control" *ngFor="let field of fields">
         <ng-container *ngIf="!field.hide">
