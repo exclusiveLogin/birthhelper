@@ -44,6 +44,10 @@
               </select>
             </ng-container>
 
+            <ng-container *ngSwitchCase="'autocomplete'">
+              <app-autocomplete></app-autocomplete>
+            </ng-container>
+
             <ng-container *ngSwitchDefault>
               
             </ng-container>

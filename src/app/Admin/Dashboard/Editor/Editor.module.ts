@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { EditorComponent } from './Editor.component';
 import { TableModule } from '../../table/table.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AutocompleteComponent } from '../../autocomplete/autocomplete.component';
 
 @NgModule({
   imports: [
@@ -10,7 +11,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     TableModule,
     ReactiveFormsModule,
   ],
-  declarations: [EditorComponent],
+  declarations: [
+    EditorComponent,
+    AutocompleteComponent
+  ],
   exports: [
     EditorComponent
   ]
