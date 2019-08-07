@@ -80,11 +80,12 @@ export class EditorComponent implements OnInit {
     ];
 
   private rerenderFields(){
-    console.log('rerender: ', this.fields);
+    console.log('render: ', this.fields);
     if(!(this.fields && this.fields.length)) return;
     this.fields.forEach( field => {
       // добавить валидаторы если потом введем в систему
       field.control = this.forms.createFormControl(null, field.requred);
+      if(field.readonly) field.control.disable();
       // готовим словари
       if ( !!field.useDict && !!field.dctKey ){
           field.initData ?  

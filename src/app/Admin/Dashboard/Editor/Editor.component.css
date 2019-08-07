@@ -21,7 +21,7 @@
   display: flex;
 }
 .bh_control label{
-  flex-basis: 30%;
+  flex-basis: 200px;
 }
 input[readonly]{
   background-color: darkgrey;
@@ -48,4 +48,14 @@ input, textarea, select{
 form.ng-invalid::after{
   content: 'не заполнены обязательные поля';
   margin-top: -15px;
+}
+.bh_control .bh_control_half{
+  justify-content: flex-start;
+  width: 100%;
+  display: flex;
+}
+.bh_control .bh_control_half input{
+  width: 25px;
+  height: 25px;
+  margin-left: -25px;
 }

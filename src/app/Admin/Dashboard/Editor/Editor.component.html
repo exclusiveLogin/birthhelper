@@ -21,35 +21,42 @@
     <form [formGroup]="form">
       <div class="bh_control" *ngFor="let field of fields">
         <ng-container *ngIf="!field.hide">
-          <label [for]="field.id" class="bh_label">{{ field.title }}{{field.requred ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull  ? '*' : ''}}</label>
-
           <ng-container [ngSwitch]="field.type">
 
             <ng-container *ngSwitchCase="'string'">
+              <label [for]="field.id" class="bh_label">{{ field.title }}{{field.requred ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull  ? '*' : ''}}</label>
               <input type="text" [name]="field.id" [readonly]="field.readonly"  [id]="field.id" [placeholder]="'Введите ' + (field.title ? field.title : 'текст') | lowercase" [formControl]="field.control" />
             </ng-container>
 
             <ng-container *ngSwitchCase="'id'">
+              <label [for]="field.id" class="bh_label">{{ field.title }}{{field.requred ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull  ? '*' : ''}}</label>
               <input type="text" [name]="field.id" [readonly]="field.readonly" [id]="field.id" [placeholder]="'Введите ' + (field.title ? field.title : 'текст') | lowercase" [formControl]="field.control" />
             </ng-container>
 
             <ng-container *ngSwitchCase="'text'">
-              <textarea [name]="field.id" [id]="field.id" [placeholder]="'Введите ' + field.title | lowercase" [formControl]="field.control" ></textarea>
+              <label [for]="field.id" class="bh_label">{{ field.title }}{{field.requred ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull  ? '*' : ''}}</label>
+              <textarea [name]="field.id" [id]="field.id" [readonly]="field.readonly" [placeholder]="'Введите ' + field.title | lowercase" [formControl]="field.control" ></textarea>
             </ng-container>
 
             <ng-container *ngSwitchCase="'select'">
-              <select [name]="field.id" [id]="field.id" *ngIf="field.dctItems" [formControl]="field.control" (change)="selectControl(field, $event)">
+              <label [for]="field.id" class="bh_label">{{ field.title }}{{field.requred ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull  ? '*' : ''}}</label>
+
+              <select [name]="field.id" [id]="field.id" [disabled]="field.readonly" *ngIf="field.dctItems" [formControl]="field.control" (change)="selectControl(field, $event)">
                 <option *ngIf="field.canBeNull" [value]="null">Не выбран</option>
                 <option *ngFor="let item of field.dctItems" [value]="item.id">{{item.title}}</option>
               </select>
             </ng-container>
 
             <ng-container *ngSwitchCase="'autocomplete'">
+              <label [for]="field.id" class="bh_label">{{ field.title }}{{field.requred ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull  ? '*' : ''}}</label>
               <app-autocomplete></app-autocomplete>
             </ng-container>
 
-            <ng-container *ngSwitchDefault>
-              
+            <ng-container *ngSwitchCase="'flag'">
+              <div class="bh_control_half">
+                <label [for]="field.id" class="bh_label">{{ field.title }}{{field.requred ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull  ? '*' : ''}}</label>
+                <input type="checkbox" [name]="field.id" [id]="field.id" [formControl]="field.control" [readonly]="field.readonly">
+              </div>
             </ng-container>
 
           </ng-container>
