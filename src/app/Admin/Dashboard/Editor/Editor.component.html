@@ -10,7 +10,6 @@
   *ngIf="!!menu && (isEditMode || isDeleteMode)"
   [key]="menu.name" 
   [type]="menu.type" 
-  [rowsettings]="rowsServices"
   (select)="selectServiceFromTable( $event )"
   (refresh)="refreshAssign($event)"
 ></app-table>
@@ -66,6 +65,11 @@
     </form>
     
   </ng-container>
+
+  <ng-container *ngIf="menu.type === 'container'">
+    <span>Для контейнеров</span>
+  </ng-container>
+  
   
   <button *ngIf="isCreateMode" [disabled]="!!currentService || !!form.invalid" (click)="createEntity()">Создать услугу</button>
   <button *ngIf="isEditMode" [disabled]="!currentService || !!form.invalid" (click)="editEntity()">Изменить услугу</button>

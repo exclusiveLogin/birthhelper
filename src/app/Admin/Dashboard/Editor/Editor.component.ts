@@ -27,57 +27,8 @@ export class EditorComponent implements OnInit {
     private ent: EntityService,
   ) { }
 
-  public rowsServices: IRowSetting[] = [
-    {
-      key: 'id',
-      title: 'ID'
-    },
-    {
-      key: 'title',
-      title: 'Название'
-    },
-    {
-      key: 'description',
-      title: 'Описание'
-    },
-    {
-      key: 'category',
-      title: 'Категория'
-    },
-  ]
-
   public form: FormGroup = new FormGroup({});
-  
-  public fields: IFieldSetting[] = [
-      // {
-      //   id: 'title',
-      //   type: 'string',
-      //   title: 'Название услуги',
-      //   requred: true,
-      // },
-      // {
-      //   id: 'description',
-      //   type: 'text',
-      //   title: 'Описание услуги'
-      // },
-      // {
-      //   id: 'category',
-      //   type: 'select',
-      //   useDict: true,
-      //   title: 'Категория услуги',
-      //   dctKey: 'dict_category_service',
-      //   canBeNull: false,
-      //   initData: 1,
-      // },
-      // {
-      //   id: 'trimester',
-      //   type: 'select',
-      //   useDict: true,
-      //   title: 'Триместер услуги',
-      //   dctKey: 'dict_trimester_service',
-      //   canBeNull: true,
-      // }
-    ];
+  public fields: IFieldSetting[] = [];
 
   private rerenderFields(){
     console.log('render: ', this.fields);

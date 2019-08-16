@@ -34,7 +34,6 @@ export interface ITableFilters{
 export class TableComponent implements OnInit {
   @Input('key') private key: string;
   @Input('type') private type: string;
-  @Input('rowsettings') private rowSettings: IRowSetting[];
 
   @Output() private select: EventEmitter<ITableItem> = new EventEmitter();
   @Output() private refresh: EventEmitter<Function> = new EventEmitter();
@@ -49,6 +48,7 @@ export class TableComponent implements OnInit {
   public total: number = 0;
   public allPages: number = 1;
   public currentItem: ITableItem;
+  public rowSettings: IRowSetting[];
 
   ngOnInit() {
     if( this.key && this.type ) {
@@ -58,6 +58,7 @@ export class TableComponent implements OnInit {
       this.provider.getItemsSet( this.key, this.type ).subscribe(set => {
         this.total = set && set.total && Number(set.total);
         this.allPages = Math.floor( this.total / 20 ) + 1;
+        this.rowSettings = set.fields && set.fields.filter(f => !f.hide && !!f.showOnTable).map(f => ({key: f.key, title: f.title}));
       });
       // запрос фильтров таблицы
       this.provider.getFilters( this.key, this.type ).subscribe( filters => {
