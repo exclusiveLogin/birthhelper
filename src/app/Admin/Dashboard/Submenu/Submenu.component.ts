@@ -12,6 +12,7 @@ export class SubmenuComponent implements OnInit {
   constructor( private menuService: MenuService ) { }
 
   public menuSelected: IMenuRepo;
+  public _mode: EMENUMODE.CREATE | EMENUMODE.DELETE | EMENUMODE.EDIT;
 
   ngOnInit() {
     this.menuService.menuStream$.subscribe( mi => {
@@ -19,6 +20,18 @@ export class SubmenuComponent implements OnInit {
 
       this.menuSelected = mi;
     })
+  }
+
+  public genCreateMode(){
+    return EMENUMODE.CREATE;
+  }
+
+  public genEditMode(){
+    return EMENUMODE.EDIT;
+  }
+
+  public genDeleteMode(){
+    return EMENUMODE.DELETE;
   }
 
   public get hasCreateMode(): boolean{

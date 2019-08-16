@@ -52,13 +52,17 @@ export class TableComponent implements OnInit {
 
   ngOnInit() {
     if( this.key && this.type ) {
-      // запрос первой страницы таблицы при инициализации
-      this.provider.getItemsFirstPortion( this.key, this.type ).subscribe((items: ( IDictItem | IEntityItem)[] ) => this.items = items && <ITableItem[]>items.map(i => this.converter(i)));
       // запрос сета для определения статистики таблицы
       this.provider.getItemsSet( this.key, this.type ).subscribe(set => {
-        this.total = set && set.total && Number(set.total);
-        this.allPages = Math.floor( this.total / 20 ) + 1;
-        this.rowSettings = set.fields && set.fields.filter(f => !f.hide && !!f.showOnTable).map(f => ({key: f.key, title: f.title}));
+        if(!!set){
+          this.total = set && set.total && Number(set.total);
+          this.allPages = Math.floor( this.total / 20 ) + 1;
+          this.rowSettings = set.fields && set.fields.filter(f => !f.hide && !!f.showOnTable).map(f => ({key: f.key, title: f.title}));
+
+          // запрос первой страницы таблицы при инициализации
+          this.provider.getItemsFirstPortion( this.key, this.type ).subscribe((items: ( IDictItem | IEntityItem)[] ) => this.items = items && <ITableItem[]>items.map(i => this.converter(i)));
+      
+        }
       });
       // запрос фильтров таблицы
       this.provider.getFilters( this.key, this.type ).subscribe( filters => {

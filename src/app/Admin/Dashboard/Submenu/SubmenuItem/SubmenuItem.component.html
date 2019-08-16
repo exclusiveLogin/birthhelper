@@ -1,2 +1,6 @@
-<i class="fas fa-baby fa-7x item_icon"></i>
+<!-- <i class="fas fa-baby fa-7x item_icon"></i> -->
+<i *ngIf="isCreateMode" class="fas fa-plus-square fa-2x item_icon"></i>
+<i *ngIf="isEditMode" class="fas fa-baby fa-edit fa-2x item_icon"></i>
+<i *ngIf="isDeleteMode" class="fas fa-trash-alt fa-2x item_icon"></i>
+
 <span class="item_title">{{title || 'NA'}}</span>

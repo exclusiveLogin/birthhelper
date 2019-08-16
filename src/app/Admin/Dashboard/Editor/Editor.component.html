@@ -67,7 +67,11 @@
   </ng-container>
 
   <ng-container *ngIf="menu.type === 'container'">
-    <span>Для контейнеров</span>
+      <app-table 
+        *ngIf="!!menu && (isEditMode)"
+        [key]="menu.name" 
+        [type]="'repo'" 
+    ></app-table>
   </ng-container>
   
   

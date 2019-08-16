@@ -47,6 +47,17 @@ export class DashboardComponent implements OnInit {
         EMENUMODE.DELETE,
       ]
     },
+    {
+      name: 'phone_containers',
+      title: 'Контейнеры телефонов',
+      titleVoc: 'контейнер',
+      type: 'container',
+      modes: [
+        EMENUMODE.CREATE,
+        EMENUMODE.DELETE,
+        EMENUMODE.EDIT,
+      ]
+    }
   ]
 
 

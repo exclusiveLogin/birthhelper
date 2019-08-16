@@ -4,6 +4,7 @@ import { EntityService, IEntity, ISet } from '../entity.service';
 import { Observable } from 'rxjs/Observable';
 import { ITableFilters } from './table/table.component';
 import { IRestParams } from '../rest.service';
+import { of } from 'rxjs/observable/of';
 
 @Injectable()
 export class ProviderService {
@@ -24,7 +25,7 @@ export class ProviderService {
   }
 
   public getItemsSet( key: string, type: string ){
-    return ( type === 'entity' ) ? this.getEntSet( key ) : Observable.of(null);
+    return ( type === 'entity' || type === 'container' ) ? this.getEntSet( key ) : of(null);
   }
 
   public getDictPage( key: string, page: number = 1){
