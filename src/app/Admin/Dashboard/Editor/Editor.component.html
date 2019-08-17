@@ -66,11 +66,12 @@
     
   </ng-container>
 
-  <ng-container *ngIf="menu.type === 'container'">
+  <ng-container *ngIf="menu && menu.type === 'container'">
       <app-table 
         *ngIf="!!menu && (isEditMode)"
         [key]="menu.name" 
-        [type]="'repo'" 
+        [type]="'repo'"
+        [multiselect]="true" 
     ></app-table>
   </ng-container>
   

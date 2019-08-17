@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ProviderService } from '../provider.service';
 import { IDictItem } from '../../dict.service';
-import { IEntity, IEntityItem } from '../../entity.service';
+import { IEntity, IEntityItem, IContainer } from '../../entity.service';
 import { IRowSetting } from './cell/cell.component';
 import { IFiltersParams } from './filters/filters.component';
 import { IRestParams } from '../../rest.service';
@@ -34,6 +34,7 @@ export interface ITableFilters{
 export class TableComponent implements OnInit {
   @Input('key') private key: string;
   @Input('type') private type: string;
+  @Input('multiselect') private: boolean = false;
 
   @Output() private select: EventEmitter<ITableItem> = new EventEmitter();
   @Output() private refresh: EventEmitter<Function> = new EventEmitter();
@@ -60,8 +61,21 @@ export class TableComponent implements OnInit {
           this.rowSettings = set.fields && set.fields.filter(f => !f.hide && !!f.showOnTable).map(f => ({key: f.key, title: f.title}));
 
           // запрос первой страницы таблицы при инициализации
-          this.provider.getItemsFirstPortion( this.key, this.type ).subscribe((items: ( IDictItem | IEntityItem)[] ) => this.items = items && <ITableItem[]>items.map(i => this.converter(i)));
-      
+          if(this.type === 'repo') {
+            const cont: IContainer = set.container;
+            if(cont){
+              this.type = 'entity';
+              this.key = cont.db_entity;
+              this.provider.getItemsSet( this.key, this.type ).subscribe(newset => {
+                this.total = newset && newset.total && Number(newset.total);
+                this.allPages = Math.floor( this.total / 20 ) + 1;
+                this.rowSettings = newset.fields && newset.fields.filter(f => !f.hide && !!f.showOnTable).map(f => ({key: f.key, title: f.title}));
+                this.provider.getItemsFirstPortion( this.key, this.type ).subscribe((items: IEntityItem[] ) => this.items = items && <ITableItem[]>items.map(i => this.converter(i)));
+              });
+            }
+          } else{
+            this.provider.getItemsFirstPortion( this.key, this.type ).subscribe((items: ( IDictItem | IEntityItem)[] ) => this.items = items && <ITableItem[]>items.map(i => this.converter(i)));
+          }
         }
       });
       // запрос фильтров таблицы

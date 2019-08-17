@@ -25,7 +25,7 @@ export class ProviderService {
   }
 
   public getItemsSet( key: string, type: string ){
-    return ( type === 'entity' || type === 'container' ) ? this.getEntSet( key ) : of(null);
+    return ( type === 'entity' || type === 'container' || type === 'repo' ) ? this.getEntSet( key ) : of(null);
   }
 
   public getDictPage( key: string, page: number = 1){

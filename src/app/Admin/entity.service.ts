@@ -13,6 +13,18 @@ export interface IEntityItem {
   description?: string;
 }
 
+export interface IContainer{
+  container_id_key: string;
+  db_entity: string;
+  db_links: string;
+  db_list: string;
+  entity_fields: string[];
+  entity_key: string;
+  name: string;
+  overrided_fields: string[];
+  title: string;
+}
+
 export interface IEntity {
   key: string;
   entities: IEntityItem[];
