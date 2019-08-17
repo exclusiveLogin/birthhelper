@@ -10,6 +10,7 @@
 <app-filters [filters]="filters" (update)="refreshTable($event)"></app-filters>
 <div class="bh_table_head">
   <div class="row" *ngFor="let rs of rowSettings">{{ rs.title }}</div>
+  <div class="row" *ngIf="type === 'dummy'">Удалить</div>
 </div>
 <div class="container">
   <app-cell 
@@ -19,6 +20,15 @@
     [data]="item.data"
     (click)="selectItem( item )"></app-cell>
 </div>
+<div class="container" *ngIf="type === 'dummy'">
+    <app-cell 
+      *ngFor="let item of dummyItems; let i = index" 
+      [rs]="rowSettings" 
+      [data]="item.data"
+      [modes]="['remove']"
+      (remove)="deselectItem( item )"
+      ></app-cell>
+  </div>
 <div class="bh_table_page">
   <app-paginator [pages]="allPages" (vc)="pageChanged($event)"></app-paginator>
 </div>

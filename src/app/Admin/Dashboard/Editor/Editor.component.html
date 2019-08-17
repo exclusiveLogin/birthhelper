@@ -74,13 +74,15 @@
         [type]="'repo'"
         [multiselect]="true" 
         (select)="repoSelected( $event )"
+        (dummyKey)="setDummyKey( $event )"
     ></app-table>
     <div class="full"><i class="fas fa-chevron-down fa-3x"></i></div>
 
     <app-table 
-        *ngIf="!!menu && (isEditMode)"
+        *ngIf="!!menu && (isEditMode) && dummyKey"
         [type]="'dummy'" 
-        (select)="containerUnselected( $event )"
+        [key]="dummyKey"
+        [dummyItems]="dummyItems"
     ></app-table>
 
   </ng-container>

@@ -16,3 +16,8 @@
     justify-content: center;
     border-right: 1px grey solid;
 }
+button.remove{
+    color: aliceblue;
+    background-color: brown;
+    padding: 5px;
+}

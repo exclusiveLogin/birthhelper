@@ -29,6 +29,8 @@ export class EditorComponent implements OnInit {
 
   public form: FormGroup = new FormGroup({});
   public fields: IFieldSetting[] = [];
+  public dummyItems: ITableItem[] = [];
+  public dummyKey: string;
 
   private rerenderFields(){
     console.log('render: ', this.fields);
@@ -127,8 +129,14 @@ export class EditorComponent implements OnInit {
     }) 
   }
 
-  public repoSelected(selected: ITableItem | ITableItem[]){
-    console.log('selected: ', selected);
+  public setDummyKey( key ){
+    console.log('dummyKey: ', key);
+    if( key ) this.dummyKey = key;
+  }
+
+  public repoSelected(selected: ITableItem[]){
+    this.dummyItems = selected;
+    console.log('selected: ', selected, 'dummyItems:', this.dummyItems);
   }
 
   public removeEntity(){

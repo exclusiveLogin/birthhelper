@@ -1,1 +1,2 @@
 <div class="row" *ngFor="let row of rows">{{ row }}</div>
+<button class="remove row" *ngIf="hasRemoveMode" (click)="removeMe()">Удалить</button>

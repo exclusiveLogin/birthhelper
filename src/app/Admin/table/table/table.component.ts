@@ -36,9 +36,11 @@ export class TableComponent implements OnInit {
   @Input('key') private key: string;
   @Input('type') private type: string;
   @Input('multiselect') private multiselect: boolean = false;
+  @Input('dummyItems') public dummyItems: ITableItem[];
 
   @Output() private select: EventEmitter<ITableItem | ITableItem[]> = new EventEmitter();
   @Output() private refresh: EventEmitter<Function> = new EventEmitter();
+  @Output() private dummyKey: EventEmitter<string> = new EventEmitter();
 
   constructor(
     private provider: ProviderService
@@ -55,12 +57,27 @@ export class TableComponent implements OnInit {
 
   ngOnInit() {
     if( this.key && this.type ) {
+      if(this.type === 'dummy'){
+        this.provider.getItemsSet( this.key, 'entity' ).subscribe(dummySet => {
+          if(!!dummySet){
+            console.log('dummySet:', dummySet);
+            this.total = dummySet && dummySet.total && Number(dummySet.total);
+            this.allPages = Math.floor( this.total / 20 ) + 1;
+            this.rowSettings = dummySet.fields && dummySet.fields.filter(f => !f.hide && !!f.showOnTable).map(f => ({key: f.key, title: f.title}));
+          }
+        })
+      }
       // запрос сета для определения статистики таблицы
       this.provider.getItemsSet( this.key, this.type ).subscribe(set => {
         if(!!set){
           this.total = set && set.total && Number(set.total);
           this.allPages = Math.floor( this.total / 20 ) + 1;
           this.rowSettings = set.fields && set.fields.filter(f => !f.hide && !!f.showOnTable).map(f => ({key: f.key, title: f.title}));
+
+          if(this.type === 'repo') {
+            const cont: IContainer = set.container;
+            this.dummyKey.emit(cont.db_entity);
+          }
 
           // запрос первой страницы таблицы при инициализации
           if(this.type === 'repo') {
@@ -137,5 +154,10 @@ export class TableComponent implements OnInit {
     this.currentItem = null;
 
     this.currentItems = [];
+  }
+
+  public deselectItem(item: ITableItem){
+    item.selected = false;
+    this.dummyItems = this.dummyItems.filter(di => di.selected);
   }
 }
