@@ -67,12 +67,22 @@
   </ng-container>
 
   <ng-container *ngIf="menu && menu.type === 'container'">
+
       <app-table 
         *ngIf="!!menu && (isEditMode)"
         [key]="menu.name" 
         [type]="'repo'"
         [multiselect]="true" 
+        (select)="repoSelected( $event )"
     ></app-table>
+    <div class="full"><i class="fas fa-chevron-down fa-3x"></i></div>
+
+    <app-table 
+        *ngIf="!!menu && (isEditMode)"
+        [type]="'dummy'" 
+        (select)="containerUnselected( $event )"
+    ></app-table>
+
   </ng-container>
   
   

@@ -29,3 +29,8 @@
 app-cell:nth-child(odd){
     background-color: bisque;
 }
+
+app-cell.selected{
+    opacity: 0.4;
+    background-color: coral;
+}

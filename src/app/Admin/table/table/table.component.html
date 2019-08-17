@@ -13,6 +13,7 @@
 </div>
 <div class="container">
   <app-cell 
+    [ngClass]="{'selected': !!item.selected}"
     *ngFor="let item of items; let i = index" 
     [rs]="rowSettings" 
     [data]="item.data"

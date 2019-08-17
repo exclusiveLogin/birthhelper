@@ -16,6 +16,7 @@ export interface ITableRows{
 export interface ITableItem{
   data: IEntityItem | IDictItem;
   text?: string;
+  selected?: boolean;
 }
 
 export interface ITableFilters{
@@ -34,9 +35,9 @@ export interface ITableFilters{
 export class TableComponent implements OnInit {
   @Input('key') private key: string;
   @Input('type') private type: string;
-  @Input('multiselect') private: boolean = false;
+  @Input('multiselect') private multiselect: boolean = false;
 
-  @Output() private select: EventEmitter<ITableItem> = new EventEmitter();
+  @Output() private select: EventEmitter<ITableItem | ITableItem[]> = new EventEmitter();
   @Output() private refresh: EventEmitter<Function> = new EventEmitter();
 
   constructor(
@@ -49,6 +50,7 @@ export class TableComponent implements OnInit {
   public total: number = 0;
   public allPages: number = 1;
   public currentItem: ITableItem;
+  public currentItems: ITableItem[];
   public rowSettings: IRowSetting[];
 
   ngOnInit() {
@@ -118,6 +120,14 @@ export class TableComponent implements OnInit {
   public selectItem( item: ITableItem ){
     console.log("selected:", item);
 
+    if(this.multiselect) {
+      item.selected = !!!item.selected;
+      this.currentItems = this.items.filter(i => !!i.selected);
+      this.select.emit(this.currentItems);
+      
+      return;
+    }
+
     this.select.emit( item );
     this.currentItem = item;
   }
@@ -125,5 +135,7 @@ export class TableComponent implements OnInit {
   public unselectItem(){
     this.select.emit( null );
     this.currentItem = null;
+
+    this.currentItems = [];
   }
 }

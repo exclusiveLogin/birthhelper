@@ -112,7 +112,7 @@ export class EditorComponent implements OnInit {
 
   public selectServiceFromTable( service: ITableItem ){
     if(!service) {this.currentService = null; this.form.reset(); this.rerenderValueOfFields(); return;}
-    console.log('selected service id: ', service.data.id);
+    console.log('selected service: ', service);
     
     this.currentService = service.data;
 
@@ -125,6 +125,10 @@ export class EditorComponent implements OnInit {
         if( !!target && target.control ) target.control.setValue( service.data[ key ]);
       } 
     }) 
+  }
+
+  public repoSelected(selected: ITableItem | ITableItem[]){
+    console.log('selected: ', selected);
   }
 
   public removeEntity(){
