@@ -1,3 +1,10 @@
+:host{
+    display: flex;
+    justify-content: stretch;
+    flex-direction: column;
+    height: 100%;
+}
+
 .bh_admin_header{
     height: 32px;
     line-height: 32px;
@@ -10,6 +17,6 @@
 .bh_admin_panel{
     display: flex;
     flex-grow: 1;
-    height: calc(100% - 32px);
+    /* height: calc(100% - 32px); */
     background-color: #ccc;
 }

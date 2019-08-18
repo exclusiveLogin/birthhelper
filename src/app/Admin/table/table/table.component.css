@@ -27,7 +27,7 @@
     justify-content: space-around;
 }
 app-cell:nth-child(odd){
-    background-color: bisque;
+    background-color: beige;
 }
 
 app-cell.selected{
