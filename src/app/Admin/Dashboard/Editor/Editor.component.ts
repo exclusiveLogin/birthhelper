@@ -6,6 +6,7 @@ import { ITableItem } from '../../table/table/table.component'
 import { EMENUMODE, IMenuRepo } from '../Dashboard.component';
 import { IEntityItem, EntityService } from '../../entity.service';
 import { FormGroup } from '@angular/forms';
+import { ContainerService } from '../../container.service';
 
 @Component({
   selector: 'app-editor',
@@ -25,6 +26,7 @@ export class EditorComponent implements OnInit {
     private dict: DictService,
     private forms: FormService,
     private ent: EntityService,
+    private cont: ContainerService,
   ) { }
 
   public form: FormGroup = new FormGroup({});
@@ -126,7 +128,24 @@ export class EditorComponent implements OnInit {
         console.log('target control: ', target);
         if( !!target && target.control ) target.control.setValue( service.data[ key ]);
       } 
-    }) 
+    }); 
+
+    if(this.menu.type === 'container'){
+      // получаем контейнер по типу и id 
+      this.cont.getContainer(this.menu.containerKey, service.data.id).subscribe(containerData => {
+        console.log('GET container DATA:', containerData);
+        containerData.forEach(cd => 
+          {
+            if(!cd.items) return;
+            this.dummyItems = cd.items.map(itemsEnt => <ITableItem>({
+              data: itemsEnt.entity,
+              text: ''+itemsEnt.entity.id,
+              selected: true, 
+            }))
+          }
+        );
+      });
+    }
   }
 
   public setDummyKey( key ){
@@ -135,7 +154,7 @@ export class EditorComponent implements OnInit {
   }
 
   public repoSelected(selected: ITableItem[]){
-    this.dummyItems = selected;
+    this.dummyItems.push(...selected);
     console.log('selected: ', selected, 'dummyItems:', this.dummyItems);
   }
 

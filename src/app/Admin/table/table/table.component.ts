@@ -1,10 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ProviderService } from '../provider.service';
 import { IDictItem } from '../../dict.service';
-import { IEntity, IEntityItem, IContainer } from '../../entity.service';
+import { IEntity, IEntityItem } from '../../entity.service';
 import { IRowSetting } from './cell/cell.component';
 import { IFiltersParams } from './filters/filters.component';
 import { IRestParams } from '../../rest.service';
+import { IContainer } from '../../container.service';
 
 export interface ITableRows{
   title?: string;
@@ -60,9 +61,6 @@ export class TableComponent implements OnInit {
       if(this.type === 'dummy'){
         this.provider.getItemsSet( this.key, 'entity' ).subscribe(dummySet => {
           if(!!dummySet){
-            console.log('dummySet:', dummySet);
-            this.total = dummySet && dummySet.total && Number(dummySet.total);
-            this.allPages = Math.floor( this.total / 20 ) + 1;
             this.rowSettings = dummySet.fields && dummySet.fields.filter(f => !f.hide && !!f.showOnTable).map(f => ({key: f.key, title: f.title}));
           }
         })
@@ -139,7 +137,7 @@ export class TableComponent implements OnInit {
 
     if(this.multiselect) {
       item.selected = !!!item.selected;
-      this.currentItems = this.items.filter(i => !!i.selected);
+      this.currentItems = [item];
       this.select.emit(this.currentItems);
       
       return;

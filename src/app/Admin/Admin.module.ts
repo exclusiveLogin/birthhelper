@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ApiService } from './api.service';
 import { ProviderService } from './table/provider.service';
 import { EntityService } from './entity.service';
+import { ContainerService } from './container.service';
 
 
 const routes: Routes = [
@@ -34,6 +35,7 @@ const routes: Routes = [
     ApiService,
     ProviderService,
     EntityService,
+    ContainerService,
   ]
 })
 export class AdminModule { }

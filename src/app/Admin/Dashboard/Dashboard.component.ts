@@ -9,6 +9,7 @@ export enum EMENUMODE{
 
 export interface IMenuRepo{
   name: string,
+  containerKey?: string,
   title: string,
   titleVoc: string,
   type: string,
@@ -49,6 +50,7 @@ export class DashboardComponent implements OnInit {
     },
     {
       name: 'phone_containers',
+      containerKey: 'container_phones',
       title: 'Контейнеры телефонов',
       titleVoc: 'контейнер',
       type: 'container',

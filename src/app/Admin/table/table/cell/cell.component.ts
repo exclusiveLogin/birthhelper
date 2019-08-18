@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
 import { IEntityItem } from '../../../entity.service';
 import { IDictItem } from '../../../dict.service';
 
@@ -19,7 +19,7 @@ export interface IRow{
   templateUrl: './cell.component.html',
   styleUrls: ['./cell.component.css']
 })
-export class CellComponent implements OnInit {
+export class CellComponent implements OnInit, OnChanges {
 
   @Input('rs') private rowSetting: IRowSetting[] = [];
   @Input('data') private data: IEntityItem | IDictItem;
@@ -36,6 +36,14 @@ export class CellComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.rerender()
+  }
+
+  ngOnChanges( sc: SimpleChanges ){
+    this.rerender();
+  }
+
+  public rerender(){
     if(this.data && this.rowSetting) this.rows = this.converter(this.data);
   }
 

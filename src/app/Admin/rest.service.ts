@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { ApiService } from './api.service';
 import { IEntityItem, ISet, IEntity } from './entity.service';
 import { ITableFilters } from './table/table/table.component';
+import { IContainer, IContainerData } from './container.service';
 
 export interface ISettingsParams {
   mode: string;
@@ -90,6 +91,32 @@ export class RestService {
     if( qp ) Object.assign(data, qp);
 
     return this.getData<IEntityItem[]>( entSetting, data );
+  }
+
+  public getContainersList( key: string, page?: number, qp?: IRestParams ): Observable<IContainerData[]> {
+
+    const entSetting: ISettingsParams = {
+      mode: 'admin',
+      segment: 'container',
+      resource: key
+    };
+
+    const data: IRestParams = page ? { skip: (20 * (page-1)).toString()} : null;
+
+    if( qp ) Object.assign(data, qp);
+
+    return this.getData<IContainerData[]>( entSetting, data );
+  }
+
+  public getContainerFromId( key: string, id: number, qp?: IRestParams ): Observable<IContainerData[]> {
+
+    const entSetting: ISettingsParams = {
+      mode: 'admin',
+      segment: `containers/${key}`,
+      resource: ''+id
+    };
+
+    return this.getData<IContainerData[]>( entSetting, qp );
   }
 
   public getDict( name: string, page?: number ): Observable<IDictItem[]> {
