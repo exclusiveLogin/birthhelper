@@ -40,6 +40,8 @@ export class TableComponent implements OnInit {
   @Input('dummyItems') public dummyItems: ITableItem[];
 
   @Output() private select: EventEmitter<ITableItem | ITableItem[]> = new EventEmitter();
+  @Output() private deselect: EventEmitter<number> = new EventEmitter();
+  @Output() private deselector$: EventEmitter<Function> = new EventEmitter();
   @Output() private refresh: EventEmitter<Function> = new EventEmitter();
   @Output() private dummyKey: EventEmitter<string> = new EventEmitter();
 
@@ -57,6 +59,7 @@ export class TableComponent implements OnInit {
   public rowSettings: IRowSetting[];
 
   ngOnInit() {
+    this.deselector$.emit(this.deselector.bind(this));
     if( this.key && this.type ) {
       if(this.type === 'dummy'){
         this.provider.getItemsSet( this.key, 'entity' ).subscribe(dummySet => {
@@ -104,6 +107,14 @@ export class TableComponent implements OnInit {
     this.refresh.emit(this.refreshTable.bind(this));
   }
 
+  private deselector(id: number){
+    this.items.forEach(i => {
+      debugger;
+      if(i.data.id == +id) i.selected = false;  
+    });
+    console.log("YEP ", id, this.items);
+  }
+
   private initFilterDictionaries(): void {
     if( this.filters && this.filters.length ){
       this.filters.forEach((f: ITableFilters) => {
@@ -134,11 +145,11 @@ export class TableComponent implements OnInit {
 
   public selectItem( item: ITableItem ){
     console.log("selected:", item);
-
     if(this.multiselect) {
-      item.selected = !!!item.selected;
-      this.currentItems = [item];
-      this.select.emit(this.currentItems);
+      item.selected = true;
+      let newItem = JSON.parse(JSON.stringify(item));
+      this.currentItems = [ newItem ];
+      if(this.currentItems[0].selected) this.select.emit(this.currentItems);
       
       return;
     }
@@ -157,5 +168,7 @@ export class TableComponent implements OnInit {
   public deselectItem(item: ITableItem){
     item.selected = false;
     this.dummyItems = this.dummyItems.filter(di => di.selected);
+    this.deselect.emit(item.data.id);
+    console.log("rem dummyExist:", this.dummyItems);
   }
 }

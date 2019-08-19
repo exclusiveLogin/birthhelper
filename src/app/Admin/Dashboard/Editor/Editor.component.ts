@@ -20,7 +20,6 @@ export class EditorComponent implements OnInit {
 
   private currentService: IEntityItem;
   public refresh: Function;
-  //public _key: string = 'services';
 
   constructor(
     private dict: DictService,
@@ -33,6 +32,7 @@ export class EditorComponent implements OnInit {
   public fields: IFieldSetting[] = [];
   public dummyItems: ITableItem[] = [];
   public dummyKey: string;
+  public deselectFn: Function;
 
   private rerenderFields(){
     console.log('render: ', this.fields);
@@ -154,7 +154,9 @@ export class EditorComponent implements OnInit {
   }
 
   public repoSelected(selected: ITableItem[]){
+    if(this.dummyItems.some(di => selected.some(s => s.data.id === di.data.id))) return;
     this.dummyItems.push(...selected);
+    this.dummyItems = this.dummyItems.filter(di => !!di.selected);
     console.log('selected: ', selected, 'dummyItems:', this.dummyItems);
   }
 
@@ -205,8 +207,16 @@ export class EditorComponent implements OnInit {
     }
   }
 
+  public deselectAssign(fn){
+    this.deselectFn = fn;
+  }
+
   public close(){
     this.forms.closeForm();
+  }
+
+  public deselectFromContainer(id){
+    if(this.deselectFn) this.deselectFn(id);
   }
 }
 

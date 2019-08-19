@@ -75,6 +75,7 @@
         [multiselect]="true" 
         (select)="repoSelected( $event )"
         (dummyKey)="setDummyKey( $event )"
+        (deselector$)="deselectAssign( $event )"
     ></app-table>
     <div class="full"><i class="fas fa-chevron-down fa-3x"></i></div>
 
@@ -83,6 +84,7 @@
         [type]="'dummy'" 
         [key]="dummyKey"
         [dummyItems]="dummyItems"
+        (deselect)="deselectFromContainer( $event )"
     ></app-table>
 
   </ng-container>
