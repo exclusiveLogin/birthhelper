@@ -216,6 +216,7 @@ export class EditorComponent implements OnInit {
   }
 
   public deselectFromContainer(id){
+    this.dummyItems = this.dummyItems.filter(di => di.data.id !== id);
     if(this.deselectFn) this.deselectFn(id);
   }
 }
