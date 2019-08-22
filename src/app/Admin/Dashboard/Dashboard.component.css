@@ -3,10 +3,6 @@
     background-color: #eee;
     flex-grow: 1;
 }
-
-.bh_admin_menu{
-
-}
 .bh_admin_dashboard{
     flex-grow: 1;
     display: flex;

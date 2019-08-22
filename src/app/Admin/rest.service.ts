@@ -163,7 +163,7 @@ export class RestService {
 
     let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
    
-    let req = this.http.get( url, { params: data } ).pipe(tap(()=>this.loader.hide(), ()=> this.loader.setError()));
+    let req = this.http.get( url, { params: data } ).pipe(tap(()=>this.loader.hide(), (err)=> this.loader.setError(err.message ? err.message : 'Ошибка: ' + err)));
 
     this.loader.show();
 
@@ -176,7 +176,7 @@ export class RestService {
 
     let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
    
-    let req = this.http.post( url, data ).pipe(tap(()=>this.loader.hide(), ()=> this.loader.setError()));;
+    let req = this.http.post( url, data ).pipe(tap(()=>this.loader.hide(), (err)=> this.loader.setError(err.message ? err.message : 'Ошибка: ' + err)));;
 
     this.loader.show();
 
@@ -190,7 +190,7 @@ export class RestService {
     let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
    
     let req = this.http.post( url, data.body )
-      .pipe(tap(()=>this.loader.hide(), ()=> this.loader.setError()));
+      .pipe(tap(()=>this.loader.hide(), (err)=> this.loader.setError(err.message ? err.message : 'Ошибка: ' + err)));
 
     this.loader.show();
 
@@ -203,7 +203,7 @@ export class RestService {
 
     let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
    
-    let req = this.http.request('delete', url, {body:data} ).pipe(tap(()=>this.loader.hide(), ()=> this.loader.setError()));;
+    let req = this.http.request('delete', url, {body:data} ).pipe(tap(()=>this.loader.hide(), (err)=> this.loader.setError(err.message ? err.message : 'Ошибка: ' + err)));;
 
     this.loader.show();
 

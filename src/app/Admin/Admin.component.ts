@@ -25,4 +25,12 @@ export class AdminComponent implements OnInit {
   public get isError(): boolean{
     return this.loader.error;
   }
+
+  public get hasErrorText(): boolean{
+    return !!this.loader.errorText
+  }
+
+  public get errorText(): string{
+    return this.loader.errorText;
+  }
 }

@@ -9,24 +9,30 @@ constructor() { }
 
 private _state: boolean = false;
 private _error: boolean = false;
+private _error_str: string = null;
 
 public show(){
     setTimeout(()=>this._state = true, 1);
-    //this._state = true;
     }
 
 public hide(){
-    setTimeout(()=>{ this._state = false;},500);
-    //this._state = false;
+    setTimeout(()=> this._state = false, 1500);
     this.unsetError();
     }
 
-public setError(){
-    this._error = true;
+public setError(text?: string){
+    setTimeout(() => {
+        this._error = true;
+        this._error_str = text ? text : null;
+    } , 1500);
+    
 }
 
 public unsetError(){
-    this._error = false;
+    setTimeout(() => {
+        this._error = false;
+        this._error_str = null;
+    } , 1);
 }
 
 public get state(): boolean{
@@ -35,6 +41,10 @@ public get state(): boolean{
 
 public get error(): boolean{
     return this._error;
+}
+
+public get errorText(): string{
+    return this._error_str;
 }
 
 }

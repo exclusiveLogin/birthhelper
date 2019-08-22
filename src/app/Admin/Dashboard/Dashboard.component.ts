@@ -50,7 +50,7 @@ export class DashboardComponent implements OnInit {
     },
     {
       name: 'phone_containers',
-      containerKey: 'container_phones',
+      containerKey: 'container_phones!',
       title: 'Контейнеры телефонов',
       titleVoc: 'контейнер',
       type: 'container',
