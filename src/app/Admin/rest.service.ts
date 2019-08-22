@@ -6,6 +6,8 @@ import { ApiService } from './api.service';
 import { IEntityItem, ISet, IEntity } from './entity.service';
 import { ITableFilters } from './table/table/table.component';
 import { IContainer, IContainerData } from './container.service';
+import { LoaderService } from './loader.service';
+import { tap } from 'rxjs/operators';
 
 export interface ISettingsParams {
   mode: string;
@@ -27,7 +29,8 @@ export class RestService {
 
   constructor(
     private http: HttpClient,
-    private api: ApiService
+    private api: ApiService,
+    private loader: LoaderService,
   ) { 
     console.log('ADMIN REST SERVICE', this);
   }
@@ -119,6 +122,17 @@ export class RestService {
     return this.getData<IContainerData[]>( entSetting, qp );
   }
 
+  public saveContainer(key: string, id: number, qp?:IRestBody): Observable<any>{
+
+    const entSetting: ISettingsParams = {
+      mode: 'admin',
+      segment: `containers/${key}`,
+      resource: ''+id
+    };
+
+    return this.postDataContainer( entSetting, qp );
+  }
+
   public getDict( name: string, page?: number ): Observable<IDictItem[]> {
     const dictSetting: ISettingsParams = {
       mode: 'admin',
@@ -137,7 +151,9 @@ export class RestService {
 
     let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
    
-    let req = this.http.get( url, { params: data } );
+    let req = this.http.get( url, { params: data } ).pipe(tap(()=>this.loader.hide()));
+
+    this.loader.show();
 
     return req as Observable<T>;
   }
@@ -148,7 +164,22 @@ export class RestService {
 
     let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
    
-    let req = this.http.post( url, data );
+    let req = this.http.post( url, data ).pipe(tap(()=>this.loader.hide()));;
+
+    this.loader.show();
+
+    return req as Observable<T>;
+  }
+
+  public postDataContainer<T>( path: ISettingsParams, data?: IRestBody): Observable<T>{
+
+    if( path ) Object.keys( path ).forEach(key => path[key] = '/' + path[key]);
+
+    let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
+   
+    let req = this.http.post( url, data.body ).pipe(tap(()=>this.loader.hide()));;
+
+    this.loader.show();
 
     return req as Observable<T>;
   }
@@ -159,8 +190,10 @@ export class RestService {
 
     let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
    
-    let req = this.http.request('delete', url, {body:data} );
+    let req = this.http.request('delete', url, {body:data} ).pipe(tap(()=>this.loader.hide()));;
 
+    this.loader.show();
+    
     return req as Observable<T>;
   }
 

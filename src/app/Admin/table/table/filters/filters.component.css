@@ -2,14 +2,18 @@
     display: flex;
     flex-wrap: wrap;
 }
+
+.bh_control label{
+    padding: 10px;
+}
 .bh_control{
-    flex-basis: 33%;
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
 }
 input, textarea, select{
     flex-grow: 1;
     font-size: 12pt;
     padding: 4px;
-
+    margin: 10px;
 }

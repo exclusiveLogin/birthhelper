@@ -166,8 +166,6 @@ export class TableComponent implements OnInit {
   }
 
   public deselectItem(item: ITableItem){
-    item.selected = false;
-    this.dummyItems = this.dummyItems.filter(di => !!di.selected);
     this.deselect.emit(item.data.id);
     console.log("rem dummyExist:", this.dummyItems);
   }

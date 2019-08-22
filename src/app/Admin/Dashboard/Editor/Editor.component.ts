@@ -7,6 +7,7 @@ import { EMENUMODE, IMenuRepo } from '../Dashboard.component';
 import { IEntityItem, EntityService } from '../../entity.service';
 import { FormGroup } from '@angular/forms';
 import { ContainerService } from '../../container.service';
+import { IRestBody } from '../../rest.service';
 
 @Component({
   selector: 'app-editor',
@@ -161,7 +162,8 @@ export class EditorComponent implements OnInit {
   }
 
   public removeEntity(){
-    if(this.currentService && confirm("Уверен что хочешь удалить услугу?")){
+    //if(this.currentService && /*confirm("Уверен что хочешь удалить услугу?")*/){
+    if(this.currentService){
       this.ent.remEnt(this.menu.name, this.currentService.id).subscribe(result => {
         this.refresh();
         this.currentService = null;
@@ -173,16 +175,13 @@ export class EditorComponent implements OnInit {
     // собрать все поля формы в объект сущности
     let data: IEntityItem = this.form.value;
     for(let d in data) if(data[d] === null) delete data[d];
-    //debugger;
     // отправить post с сущностью
-
-    if(confirm("Уверен что хочешь создать услугу?")){
+    if(true || confirm("Уверен что хочешь создать" + this.menu.titleVoc +' ?')){
       this.ent.createEnt(this.menu.name, data).subscribe(result => {
-        //this.refresh();
-        console.log('create ent result: ', result);
-        alert('Сущность успешно создана');
+        //alert('Сущность успешно создана');
         this.form.reset();
-        //this.currentService = null;
+        this.currentService = null;
+        this.forms.closeForm();
       });
     }
   }
@@ -192,13 +191,13 @@ export class EditorComponent implements OnInit {
     let data: IEntityItem = this.form.value;
     for(let d in data) if(data[d] === null) delete data[d];
 
-    if(this.currentService && confirm("Уверен что хочешь изменить услугу?")){
+    //if(this.currentService && confirm("Уверен что хочешь изменить услугу?")){
 
+    if(this.currentService){
       data.id = this.currentService.id;
       this.ent.createEnt(this.menu.name, data).subscribe(result => {
         
-        console.log('edit ent result: ', result);
-        alert('Сущность успешно изменена');
+        //alert('Сущность успешно изменена');
         this.refresh();
         this.form.reset();
         this.currentService = null;
@@ -218,6 +217,18 @@ export class EditorComponent implements OnInit {
   public deselectFromContainer(id){
     this.dummyItems = this.dummyItems.filter(di => di.data.id !== id);
     if(this.deselectFn) this.deselectFn(id);
+  }
+
+  public saveItemsOfContainer(){
+    let ids4save = this.dummyItems.map(di => di.data.id);
+    const body: IRestBody = { body: { ids: ids4save}};
+    this.cont.saveContainer(this.menu.containerKey, this.currentService.id, body )
+      .subscribe(result => {
+        //alert('Данные сохранены');
+        this.refresh();
+        //this.close();
+        this.currentService = null;
+      });    
   }
 }
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DictService } from './dict.service';
+import { LoaderService } from './loader.service';
 
 @Component({
   selector: 'app-Admin',
@@ -8,10 +9,17 @@ import { DictService } from './dict.service';
 })
 export class AdminComponent implements OnInit {
 
-  constructor( private dct: DictService ) { }
+  constructor( 
+    private dct: DictService,
+    private loader: LoaderService, 
+    ) { }
 
   ngOnInit() {
 
+  }
+
+  public get isLoading(): boolean{
+    return this.loader.state;
   }
 
 }

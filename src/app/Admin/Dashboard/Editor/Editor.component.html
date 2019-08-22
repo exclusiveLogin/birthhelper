@@ -65,33 +65,35 @@
     </form>
     
   </ng-container>
-
-  <ng-container *ngIf="menu && menu.type === 'container' && !!currentService">
-
-      <app-table 
-        *ngIf="!!menu && (isEditMode)"
-        [key]="menu.name" 
-        [type]="'repo'"
-        [multiselect]="true" 
-        (select)="repoSelected( $event )"
-        (dummyKey)="setDummyKey( $event )"
-        (deselector$)="deselectAssign( $event )"
-    ></app-table>
-    <div class="full"><i class="fas fa-chevron-down fa-3x"></i></div>
-
-    <app-table 
-        *ngIf="!!menu && (isEditMode) && dummyKey"
-        [type]="'dummy'" 
-        [key]="dummyKey"
-        [dummyItems]="dummyItems"
-        (deselect)="deselectFromContainer( $event )"
-    ></app-table>
-
-  </ng-container>
-  
   
   <button *ngIf="isCreateMode" [disabled]="!!currentService || !!form.invalid" (click)="createEntity()">Создать {{menu.titleVoc}}</button>
   <button *ngIf="isEditMode" [disabled]="!currentService || !!form.invalid" (click)="editEntity()">Изменить {{menu.titleVoc}}</button>
   <button *ngIf="isDeleteMode" [disabled]="!currentService" (click)="removeEntity()">Удалить {{menu.titleVoc}}</button>
+
+  <ng-container *ngIf="menu && menu.type === 'container' && !!currentService">
+
+    <app-table 
+      *ngIf="!!menu && (isEditMode)"
+      [key]="menu.name" 
+      [type]="'repo'"
+      [multiselect]="true" 
+      (select)="repoSelected( $event )"
+      (dummyKey)="setDummyKey( $event )"
+      (deselector$)="deselectAssign( $event )"
+    ></app-table>
+
+  <div class="full" *ngIf="!!menu && (isEditMode)"><i class="fas fa-chevron-down fa-3x"></i></div>
+
+  <app-table 
+      *ngIf="!!menu && (isEditMode) && dummyKey"
+      [type]="'dummy'" 
+      [key]="dummyKey"
+      [dummyItems]="dummyItems"
+      (deselect)="deselectFromContainer( $event )"
+  ></app-table>
+
+  <button *ngIf="isEditMode" [disabled]="!currentService || !!form.invalid" (click)="saveItemsOfContainer()">Зафиксировать содержимое контейнера</button>
+
+</ng-container>
   
 </div>

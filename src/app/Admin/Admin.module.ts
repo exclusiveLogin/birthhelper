@@ -11,6 +11,7 @@ import { ApiService } from './api.service';
 import { ProviderService } from './table/provider.service';
 import { EntityService } from './entity.service';
 import { ContainerService } from './container.service';
+import { LoaderService } from './loader.service';
 
 
 const routes: Routes = [
@@ -36,6 +37,7 @@ const routes: Routes = [
     ProviderService,
     EntityService,
     ContainerService,
+    LoaderService,
   ]
 })
 export class AdminModule { }

@@ -19,9 +19,11 @@
   flex-basis: 75%;
   justify-content: center;
   display: flex;
+  align-items: center;
 }
 .bh_control label{
   flex-basis: 200px;
+  padding: 10px;
 }
 input[readonly]{
   background-color: darkgrey;
@@ -32,6 +34,7 @@ input, textarea, select{
   width: 90%;
   justify-content: center;
   color: dimgray;
+  margin: 10px;
 }
 .bh_admin_close{
   justify-self: flex-end;

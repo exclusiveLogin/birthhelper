@@ -3,6 +3,7 @@
     justify-content: stretch;
     flex-direction: column;
     height: 100%;
+    background-color: #333;
 }
 
 .bh_admin_header{
@@ -19,4 +20,34 @@
     flex-grow: 1;
     /* height: calc(100% - 32px); */
     background-color: #ccc;
+}
+#loader{
+    width: 100%;
+    height: 1px;
+    background: #333;
+    transition: all .5s ease;
+}
+#loader_line{
+    height: 1px;
+    box-shadow: 0 0 3px 0px orange;
+    background: orange;
+    
+}
+@keyframes loader{
+    from{width: 0;}
+    to{width: 100%;}
+}
+#loader.hide{
+    opacity: 0;
+}
+#loader_line.hide{
+    animation-fill-mode: backwards;
+    animation-play-state: paused;
+}
+#loader_line.play{
+    animation-name: loader;
+    animation-duration: 1s;
+    animation-direction: normal;
+    animation-iteration-count: 1;
+    animation-play-state: running;
 }

@@ -1,4 +1,5 @@
 <div class="bh_admin_header">BirthHelper админка</div>
+<div id="loader" [ngClass]="{'hide': !isLoading}"><div id="loader_line" [ngClass]="{'hide': !isLoading, 'play':isLoading}"></div></div>
 <div class="bh_admin_panel">
   <app-Dashboard></app-Dashboard>
 </div>
