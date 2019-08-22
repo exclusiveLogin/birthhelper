@@ -10,7 +10,7 @@ import { NotFoundComponent } from './NotFound/NotFound.component';
 import { HeaderComponent } from './Header/Header.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', redirectTo: '/admin', pathMatch: 'full' },
   { path: 'admin', loadChildren: './Admin/Admin.module#AdminModule' },
   { path: '**', component: NotFoundComponent },
 ];
