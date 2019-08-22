@@ -34,8 +34,8 @@ export interface ITableFilters{
   styleUrls: ['./table.component.css']
 })
 export class TableComponent implements OnInit {
-  @Input('key') private key: string;
-  @Input('type') private type: string;
+  @Input('key') public key: string;
+  @Input('type') public type: string;
   @Input('multiselect') private multiselect: boolean = false;
   @Input('dummyItems') public dummyItems: ITableItem[];
 

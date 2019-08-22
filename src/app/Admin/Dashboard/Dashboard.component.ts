@@ -22,7 +22,7 @@ export interface IMenuRepo{
 })
 export class DashboardComponent implements OnInit {
 
-  private selectedMenu: IMenuRepo;
+  public selectedMenu: IMenuRepo;
   public selectedMode: EMENUMODE;
 
   public readonly menuRepo: IMenuRepo[] = [

@@ -19,7 +19,7 @@ export class EditorComponent implements OnInit {
   @Input() mode: EMENUMODE;
   @Input() menu: IMenuRepo;
 
-  private currentService: IEntityItem;
+  public currentService: IEntityItem;
   public refresh: Function;
 
   constructor(
