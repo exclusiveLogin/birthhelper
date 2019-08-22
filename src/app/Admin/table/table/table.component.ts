@@ -57,6 +57,7 @@ export class TableComponent implements OnInit {
   public currentItem: ITableItem;
   public currentItems: ITableItem[];
   public rowSettings: IRowSetting[];
+  public currentError: string;
 
   ngOnInit() {
     this.deselector$.emit(this.deselector.bind(this));
@@ -86,23 +87,28 @@ export class TableComponent implements OnInit {
             if(cont){
               this.type = 'entity';
               this.key = cont.db_entity;
-              this.provider.getItemsSet( this.key, this.type ).subscribe(newset => {
-                this.total = newset && newset.total && Number(newset.total);
-                this.allPages = Math.floor( this.total / 20 ) + 1;
-                this.rowSettings = newset.fields && newset.fields.filter(f => !f.hide && !!f.showOnTable).map(f => ({key: f.key, title: f.title}));
-                this.provider.getItemsFirstPortion( this.key, this.type ).subscribe((items: IEntityItem[] ) => this.items = items && <ITableItem[]>items.map(i => this.converter(i)));
-              });
+              this.provider.getItemsSet( this.key, this.type )
+                .subscribe(newset => {
+                  this.total = newset && newset.total && Number(newset.total);
+                  this.allPages = Math.floor( this.total / 20 ) + 1;
+                  this.rowSettings = newset.fields && newset.fields.filter(f => !f.hide && !!f.showOnTable).map(f => ({key: f.key, title: f.title}));
+                  this.provider.getItemsFirstPortion( this.key, this.type )
+                    .subscribe((items: IEntityItem[] ) => this.items = items && <ITableItem[]>items.map(i => this.converter(i)),
+                      (err) => this.currentError = err.message ? err.message : err);
+                }, (err) => this.currentError = err.message ? err.message : err);
             }
           } else{
-            this.provider.getItemsFirstPortion( this.key, this.type ).subscribe((items: ( IDictItem | IEntityItem)[] ) => this.items = items && <ITableItem[]>items.map(i => this.converter(i)));
+            this.provider.getItemsFirstPortion( this.key, this.type )
+              .subscribe((items: ( IDictItem | IEntityItem)[] ) => this.items = items && <ITableItem[]>items.map(i => this.converter(i)),
+               (err) => this.currentError = err.message ? err.message : err);
           }
         }
-      });
+      }, (err) => this.currentError = err.message ? err.message : err);
       // запрос фильтров таблицы
       this.provider.getFilters( this.key, this.type ).subscribe( filters => {
         this.filters = filters;
         this.initFilterDictionaries();
-      });
+      }, (err) => this.currentError = err.message ? err.message : err);
     }
     this.refresh.emit(this.refreshTable.bind(this));
   }

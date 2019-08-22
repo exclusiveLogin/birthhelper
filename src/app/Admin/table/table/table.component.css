@@ -34,3 +34,9 @@ app-cell.selected{
     opacity: 0.4;
     background-color: coral;
 }
+
+.bh_table_error_block{
+    background-color: brown;
+    color: antiquewhite;
+    padding: 5px;
+}

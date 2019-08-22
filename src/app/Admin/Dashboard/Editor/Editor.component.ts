@@ -34,6 +34,7 @@ export class EditorComponent implements OnInit {
   public dummyItems: ITableItem[] = [];
   public dummyKey: string;
   public deselectFn: Function;
+  public currentError: string;
 
   private rerenderFields(){
     console.log('render: ', this.fields);
@@ -88,7 +89,7 @@ export class EditorComponent implements OnInit {
           return f;
         });
         this.rerenderFields();
-      });
+      }, (err) => this.currentError = err.message ? err.message : err);
     }
   }
 
@@ -145,7 +146,7 @@ export class EditorComponent implements OnInit {
             }))
           }
         );
-      });
+      }, (err) => this.currentError = err.message ? err.message : err);
     }
   }
 
@@ -169,13 +170,13 @@ export class EditorComponent implements OnInit {
           this.cont.removeContainer(this.menu.containerKey, this.currentService.id).subscribe( result => {
             this.refresh();
             this.currentService = null;
-          });
+          }, (err) => this.currentError = err.message ? err.message : err);
           break;
         case 'entity':
           this.ent.remEnt(this.menu.name, this.currentService.id).subscribe(result => {
             this.refresh();
             this.currentService = null;
-          });
+          }, (err) => this.currentError = err.message ? err.message : err);
           break;
 
       }
@@ -193,7 +194,7 @@ export class EditorComponent implements OnInit {
         this.form.reset();
         this.currentService = null;
         this.forms.closeForm();
-      });
+      }, (err) => this.currentError = err.message ? err.message : err);
     }
   }
 
@@ -213,7 +214,7 @@ export class EditorComponent implements OnInit {
         this.form.reset();
         this.currentService = null;
       
-      });
+      }, (err) => this.currentError = err.message ? err.message : err);
     }
   }
 
@@ -239,7 +240,11 @@ export class EditorComponent implements OnInit {
         this.refresh();
         //this.close();
         this.currentService = null;
-      });    
+      }, (err) => this.currentError = err.message ? err.message : err);    
+  }
+
+  public closeCurrentError(){
+    this.currentError = null;
   }
 }
 

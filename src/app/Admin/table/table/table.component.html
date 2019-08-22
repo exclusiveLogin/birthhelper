@@ -6,6 +6,7 @@
   <br>
   <span *ngIf="currentItem">Выбранный элемент: {{currentItem.data.title}}[ {{currentItem.data.id}} ]</span>
   <button *ngIf="currentItem" (click)="unselectItem()">Снять выбор</button>
+  <div class="bh_table_error_block" *ngIf="currentError">{{ currentError }}</div>
 </div>
 <app-filters [filters]="filters" (update)="refreshTable($event)"></app-filters>
 <div class="bh_table_head">
