@@ -8,7 +8,7 @@
 </div> 
 
 <app-table 
-  *ngIf="!!menu && (isEditMode || isDeleteMode)"
+  *ngIf="!!menu && ( true || isEditMode || isDeleteMode)"
   [key]="menu.name" 
   [type]="menu.type" 
   (select)="selectServiceFromTable( $event )"
