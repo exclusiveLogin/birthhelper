@@ -131,7 +131,7 @@ export class EditorComponent implements OnInit {
       } 
     }); 
 
-    if(this.menu.type === 'container'){
+    if(this.menu.type === 'container' && this.isEditMode){
       // получаем контейнер по типу и id 
       this.cont.getContainer(this.menu.containerKey, service.data.id).subscribe(containerData => {
         console.log('GET container DATA:', containerData);
@@ -164,10 +164,21 @@ export class EditorComponent implements OnInit {
   public removeEntity(){
     //if(this.currentService && /*confirm("Уверен что хочешь удалить услугу?")*/){
     if(this.currentService){
-      this.ent.remEnt(this.menu.name, this.currentService.id).subscribe(result => {
-        this.refresh();
-        this.currentService = null;
-      });
+      switch(this.menu.type){
+        case 'container':
+          this.cont.removeContainer(this.menu.containerKey, this.currentService.id).subscribe( result => {
+            this.refresh();
+            this.currentService = null;
+          });
+          break;
+        case 'entity':
+          this.ent.remEnt(this.menu.name, this.currentService.id).subscribe(result => {
+            this.refresh();
+            this.currentService = null;
+          });
+          break;
+
+      }
     }
   }
 

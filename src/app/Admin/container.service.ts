@@ -41,4 +41,8 @@ public saveContainer( name: string, container_id: number, qp?: IRestBody): Obser
     return this.rest.saveContainer(name, container_id, qp);
 }
 
+public removeContainer( name, container_id): Observable<any>{
+    return this.rest.removeContainer( name, container_id);
+}
+
 }

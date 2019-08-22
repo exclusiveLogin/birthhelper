@@ -22,4 +22,7 @@ export class AdminComponent implements OnInit {
     return this.loader.state;
   }
 
+  public get isError(): boolean{
+    return this.loader.error;
+  }
 }

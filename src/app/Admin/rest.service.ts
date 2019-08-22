@@ -133,6 +133,18 @@ export class RestService {
     return this.postDataContainer( entSetting, qp );
   }
 
+  public removeContainer(key: string, id: number): Observable<any>{
+    
+    const entSetting: ISettingsParams = {
+      mode: 'admin',
+      segment: `containers/${key}`,
+      resource: ''+id
+    };
+    const data = {};
+
+    return this.remData(entSetting, data);
+  }
+
   public getDict( name: string, page?: number ): Observable<IDictItem[]> {
     const dictSetting: ISettingsParams = {
       mode: 'admin',
@@ -151,7 +163,7 @@ export class RestService {
 
     let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
    
-    let req = this.http.get( url, { params: data } ).pipe(tap(()=>this.loader.hide()));
+    let req = this.http.get( url, { params: data } ).pipe(tap(()=>this.loader.hide(), ()=> this.loader.setError()));
 
     this.loader.show();
 
@@ -164,7 +176,7 @@ export class RestService {
 
     let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
    
-    let req = this.http.post( url, data ).pipe(tap(()=>this.loader.hide()));;
+    let req = this.http.post( url, data ).pipe(tap(()=>this.loader.hide(), ()=> this.loader.setError()));;
 
     this.loader.show();
 
@@ -177,7 +189,8 @@ export class RestService {
 
     let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
    
-    let req = this.http.post( url, data.body ).pipe(tap(()=>this.loader.hide()));;
+    let req = this.http.post( url, data.body )
+      .pipe(tap(()=>this.loader.hide(), ()=> this.loader.setError()));
 
     this.loader.show();
 
@@ -190,10 +203,10 @@ export class RestService {
 
     let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
    
-    let req = this.http.request('delete', url, {body:data} ).pipe(tap(()=>this.loader.hide()));;
+    let req = this.http.request('delete', url, {body:data} ).pipe(tap(()=>this.loader.hide(), ()=> this.loader.setError()));;
 
     this.loader.show();
-    
+
     return req as Observable<T>;
   }
 
