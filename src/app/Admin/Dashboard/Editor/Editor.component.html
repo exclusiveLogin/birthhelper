@@ -1,8 +1,8 @@
 <div class="bh_error_block" *ngIf="currentError">{{currentError}} <i class="far fa-times-circle" (click)="closeCurrentError()"></i></div>
 <div class="service_head">
-  <h3 class="bh_service_title" *ngIf="isCreateMode">Добавление услуги</h3>
-  <h3 class="bh_service_title" *ngIf="isEditMode">Редактирование услуги</h3>
-  <h3 class="bh_service_title" *ngIf="isDeleteMode">Удаление услуги</h3>
+  <h3 class="bh_service_title" *ngIf="isCreateMode">Добавление {{menu.titleVocs}}</h3>
+  <h3 class="bh_service_title" *ngIf="isEditMode">Редактирование {{menu.titleVocs}}</h3>
+  <h3 class="bh_service_title" *ngIf="isDeleteMode">Удаление {{menu.titleVocs}}</h3>
 
   <button class="bh_admin_close" (click)="close()">Закрыть</button>
 </div> 

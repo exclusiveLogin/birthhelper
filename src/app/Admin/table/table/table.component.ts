@@ -140,7 +140,13 @@ export class TableComponent implements OnInit {
   public pageChanged(page: number, qp?: IRestParams){
     console.log('page changed: ', page);
     this.currentPage = page;
-    this.provider.getItemPage( this.key, this.type, page, qp ).subscribe((items: (IDictItem | IEntityItem)[] ) => this.items = items && <ITableItem[]>items.map(i => this.converter(i)));
+    this.provider.getItemPage( this.key, this.type, page, qp )
+      .subscribe((items: (IDictItem | IEntityItem)[] ) => {
+        this.items = items && <ITableItem[]>items.map(i => this.converter(i));
+        //this.total = items.length;
+        //this.allPages = Math.floor( this.total / 20 ) + 1;
+      },
+      (err) => this.currentError = err.message ? err.message : err);
   }
 
   public refreshTable( filters: IFiltersParams){

@@ -12,6 +12,7 @@ export interface IMenuRepo{
   containerKey?: string,
   title: string,
   titleVoc: string,
+  titleVocs: string,
   type: string,
   modes: EMENUMODE[],
 }
@@ -30,6 +31,7 @@ export class DashboardComponent implements OnInit {
       name: 'services',
       title: 'Услуги',
       titleVoc: 'услугу',
+      titleVocs: 'услуги',
       type: 'entity',
       modes: [
         EMENUMODE.CREATE,
@@ -41,6 +43,7 @@ export class DashboardComponent implements OnInit {
       name: 'clinics',
       title: 'Клиники',
       titleVoc: 'клинику',
+      titleVocs: 'клиники',
       type: 'entity',
       modes: [
         EMENUMODE.CREATE,
@@ -53,6 +56,7 @@ export class DashboardComponent implements OnInit {
       containerKey: 'container_phones',
       title: 'Контейнеры телефонов',
       titleVoc: 'контейнер',
+      titleVocs: 'контейнера',
       type: 'container',
       modes: [
         EMENUMODE.CREATE,
