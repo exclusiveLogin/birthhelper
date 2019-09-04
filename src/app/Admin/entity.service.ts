@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ISettingsParams, RestService, IRestParams } from './rest.service';
 import { ITableFilters } from './table/table/table.component';
-import { IFieldSetting } from './form.service';
+import { IFieldSetting, ILinkFieldSetting } from './form.service';
 
 export interface IEntityItem {
   id: number;
@@ -21,6 +21,7 @@ export interface IEntity {
 export interface ISet{
   total: string;
   fields: IFieldSetting[];
+  links: ILinkFieldSetting[];
 }
 
 const settingsParams: ISettingsParams = {

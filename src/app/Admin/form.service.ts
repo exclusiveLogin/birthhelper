@@ -10,12 +10,22 @@ export interface IFieldSetting {
   dctKey?: string;
   dctItems?: any[];
   loaded?: boolean;
-  requred?: boolean;
+  required?: boolean;
   initData?: any;
   dictSelected?:any;
   canBeNull?: boolean;
   control?: FormControl;
   readonly?: boolean;
+}
+
+export interface ILinkFieldSetting {
+  id: string;
+  title: string;
+  type?: string;
+  loaded?: boolean;
+  required?: boolean;
+  initData?: any;
+  withDebugField?: boolean;
 }
 
 @Injectable()
@@ -24,7 +34,7 @@ export class FormService {
   constructor( private menuService: MenuService ) { }
 
   public createFormControl( init?:any, requred?: boolean): FormControl {
-    return new FormControl(init, requred ? Validators.required : null);
+    return new FormControl(init, requred ? [Validators.required] : null);
   }
 
   public registerFields( fields: IFieldSetting[], form: FormGroup ): void {

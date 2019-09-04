@@ -52,6 +52,18 @@ export class DashboardComponent implements OnInit {
       ]
     },
     {
+      name: 'phones',
+      title: 'Телефоны системы',
+      titleVoc: 'телефон',
+      titleVocs: 'телефоны',
+      type: 'entity',
+      modes: [
+        EMENUMODE.CREATE,
+        EMENUMODE.EDIT,
+        EMENUMODE.DELETE,
+      ]
+    },
+    {
       name: 'phone_containers',
       containerKey: 'container_phones',
       title: 'Контейнеры телефонов',

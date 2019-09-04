@@ -62,6 +62,9 @@ form.ng-invalid::after{
   height: 25px;
   margin-left: -25px;
 }
+.bh_link_control{
+  
+}
 .bh_error_block{
   background-color: brown;
   color: antiquewhite;

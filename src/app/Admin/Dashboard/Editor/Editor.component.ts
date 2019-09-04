@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
-import { IFieldSetting, FormService } from '../../form.service';
+import { IFieldSetting, FormService, ILinkFieldSetting } from '../../form.service';
 import { DictService, IDictItem } from '../../dict.service';
 import { IRowSetting } from '../../table/table/cell/cell.component';
 import { ITableItem } from '../../table/table/table.component'
@@ -31,8 +31,8 @@ export class EditorComponent implements OnInit {
 
   public form: FormGroup = new FormGroup({});
   public fields: IFieldSetting[] = [];
+  public linkFields: ILinkFieldSetting[] = [];
   public dummyItems: ITableItem[] = [];
-  public dummyKey: string;
   public deselectFn: Function;
   public currentError: string;
 
@@ -41,7 +41,7 @@ export class EditorComponent implements OnInit {
     if(!(this.fields && this.fields.length)) return;
     this.fields.forEach( field => {
       // добавить валидаторы если потом введем в систему
-      field.control = this.forms.createFormControl(null, field.requred);
+      field.control = this.forms.createFormControl(null, field.required);
       if(field.readonly) field.control.disable();
       // готовим словари
       if ( !!field.useDict && !!field.dctKey ){
@@ -54,6 +54,7 @@ export class EditorComponent implements OnInit {
     });
 
     this.forms.registerFields(this.fields, this.form);
+    console.log('dev form:', this.form);
   }
 
   private rerenderValueOfFields(){
@@ -88,6 +89,7 @@ export class EditorComponent implements OnInit {
           f.id = f['key'];
           return f;
         });
+        this.linkFields = set.links;
         this.rerenderFields();
       }, (err) => this.currentError = err.message ? err.message : err);
     }
@@ -132,6 +134,7 @@ export class EditorComponent implements OnInit {
       } 
     }); 
 
+    // Получение данных для контейнеров
     if(this.menu.type === 'container' && this.isEditMode){
       // получаем контейнер по типу и id 
       this.cont.getContainer(this.menu.containerKey, service.data.id).subscribe(containerData => {
@@ -148,11 +151,6 @@ export class EditorComponent implements OnInit {
         );
       }, (err) => this.currentError = err.message ? err.message : err);
     }
-  }
-
-  public setDummyKey( key ){
-    console.log('dummyKey: ', key);
-    if( key ) this.dummyKey = key;
   }
 
   public repoSelected(selected: ITableItem[]){
