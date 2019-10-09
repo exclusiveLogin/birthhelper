@@ -75,7 +75,7 @@ export class TableComponent implements OnInit {
       this.provider.getItemsSet( this.key, this.type ).subscribe(set => {
         if(!!set){
           this.total = set && set.total && Number(set.total);
-          this.allPages = Math.floor( this.total / 20 ) + 1;
+          this.allPages = this.total ? Math.floor( this.total / 20 ) + 1 : 1;
           this.rowSettings = set.fields && set.fields.filter(f => !f.hide && !!f.showOnTable).map(f => ({key: f.key, title: f.title}));
 
           // запрос первой страницы таблицы при инициализации
@@ -87,7 +87,7 @@ export class TableComponent implements OnInit {
               this.provider.getItemsSet( this.key, this.type )
                 .subscribe(newset => {
                   this.total = newset && newset.total && Number(newset.total);
-                  this.allPages = Math.floor( this.total / 20 ) + 1;
+                  this.allPages = this.total ? Math.floor( this.total / 20 ) + 1 : 1;
                   this.rowSettings = newset.fields && newset.fields.filter(f => !f.hide && !!f.showOnTable).map(f => ({key: f.key, title: f.title}));
                   this.provider.getItemsFirstPortion( this.key, this.type )
                     .subscribe((items: IEntityItem[] ) => this.items = items && <ITableItem[]>items.map(i => this.converter(i)),

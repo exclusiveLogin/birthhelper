@@ -5,7 +5,7 @@
   <h3 class="bh_service_title" *ngIf="isDeleteMode">Удаление {{menu.titleVocs}}</h3>
 
   <button *ngIf="isEditMode && menu && menu.type === 'container'" [disabled]="!currentService || !!form.invalid" (click)="saveItemsOfContainer()">
-      <i class="fas fa-lock"></i> Зафиксировать состояние конетейнера
+      <i class="fas fa-lock"></i> Зафиксировать состояние контейнера
   </button>
 
   <button *ngIf="isCreateMode" [disabled]="!!currentService || !!form.invalid" (click)="createEntity()"><i class="fas fa-plus-square"></i>Создать {{menu.titleVoc}}</button>

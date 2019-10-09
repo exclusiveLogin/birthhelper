@@ -40,6 +40,19 @@ export class DashboardComponent implements OnInit {
       ]
     },
     {
+      name: 'service_containers',
+      containerKey: 'container_services',
+      title: 'Контейнеры услуг',
+      titleVoc: 'контейнер',
+      titleVocs: 'контейнера',
+      type: 'container',
+      modes: [
+        EMENUMODE.CREATE,
+        EMENUMODE.DELETE,
+        EMENUMODE.EDIT,
+      ]
+    },
+    {
       name: 'clinics',
       title: 'Клиники',
       titleVoc: 'клинику',
