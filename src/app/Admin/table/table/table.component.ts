@@ -69,7 +69,8 @@ export class TableComponent implements OnInit {
             this.rowSettings = dummySet.fields && dummySet.fields.filter(f => !f.hide && !!f.showOnTable).map(f => ({key: f.key, title: f.title}));
             if(this.df) this.rowSettings = this.rowSettings.filter(rs => this.df.some(f => f === rs.key));
           }
-        })
+        });
+        return;
       }
       // запрос сета для определения статистики таблицы
       this.provider.getItemsSet( this.key, this.type ).subscribe(set => {
@@ -113,11 +114,11 @@ export class TableComponent implements OnInit {
                (err) => this.currentError = err.message ? err.message : err);
           }
         }
-      }, (err) => this.currentError = err.message ? err.message : err);
-      // запрос фильтров таблицы
-      this.provider.getFilters( this.key, this.type ).subscribe( filters => {
-        this.filters = filters;
-        this.initFilterDictionaries();
+        this.provider.getFilters( this.key, this.type ).subscribe( filters => {
+          this.filters = filters;
+          this.initFilterDictionaries();
+        }, (err) => this.currentError = err.message ? err.message : err);
+
       }, (err) => this.currentError = err.message ? err.message : err);
     }
     this.refresh.emit(this.refreshTable.bind(this));
