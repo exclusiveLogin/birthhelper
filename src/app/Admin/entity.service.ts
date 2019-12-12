@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { ISettingsParams, RestService, IRestParams } from './rest.service';
 import { ITableFilters } from './table/table/table.component';
 import { IFieldSetting, ILinkFieldSetting } from './form.service';
+import {IContainer} from './container.service';
 
 export interface IEntityItem {
   id: number;
@@ -22,6 +23,8 @@ export interface ISet{
   total: string;
   fields: IFieldSetting[];
   links: ILinkFieldSetting[];
+  container?: IContainer;
+  slot: string;
 }
 
 const settingsParams: ISettingsParams = {
@@ -52,6 +55,10 @@ export class EntityService {
 
   public remEnt(name: string, id: number): Observable<string>{
     return this.rest.deleteEntity('ent_'+name, id);
+  }
+
+  public removeSlotEntity(name: string, id: number): Observable<string>{
+    return this.rest.removeSlotEntity(name, id);
   }
 
   public createEnt(name: string, data: IEntityItem): Observable<any>{

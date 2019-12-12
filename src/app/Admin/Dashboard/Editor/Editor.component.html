@@ -14,12 +14,12 @@
 
   <button (click)="close()"><i class="fas fa-window-close" ></i>Закрыть панель</button>
 
-</div> 
+</div>
 
-<app-table 
+<app-table
   *ngIf="!!menu && ( true || isEditMode || isDeleteMode)"
-  [key]="menu.name" 
-  [type]="menu.type" 
+  [key]="menu.name"
+  [type]="menu.type"
   (select)="selectServiceFromTable( $event )"
   (refresh)="refreshAssign($event)"
 ></app-table>
@@ -33,22 +33,22 @@
           <ng-container [ngSwitch]="field.type">
 
             <ng-container *ngSwitchCase="'string'">
-              <label [for]="field.id" class="bh_label">{{ field.title }}{{field.requred ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull  ? '*' : ''}}</label>
+              <label [for]="field.id" class="bh_label">{{ field.title }}{{field.required ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull  ? '*' : ''}}</label>
               <input type="text" [name]="field.id" [readonly]="field.readonly"  [id]="field.id" [placeholder]="'Введите ' + (field.title ? field.title : 'текст') | lowercase" [formControl]="field.control" />
             </ng-container>
 
             <ng-container *ngSwitchCase="'id'">
-              <label [for]="field.id" class="bh_label">{{ field.title }}{{field.requred ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull  ? '*' : ''}}</label>
+              <label [for]="field.id" class="bh_label">{{ field.title }}{{field.required ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull  ? '*' : ''}}</label>
               <input type="text" [name]="field.id" [readonly]="field.readonly" [id]="field.id" [placeholder]="'Введите ' + (field.title ? field.title : 'текст') | lowercase" [formControl]="field.control" />
             </ng-container>
 
             <ng-container *ngSwitchCase="'text'">
-              <label [for]="field.id" class="bh_label">{{ field.title }}{{field.requred ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull  ? '*' : ''}}</label>
+              <label [for]="field.id" class="bh_label">{{ field.title }}{{field.required ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull  ? '*' : ''}}</label>
               <textarea [name]="field.id" [id]="field.id" [readonly]="field.readonly" [placeholder]="'Введите ' + field.title | lowercase" [formControl]="field.control" ></textarea>
             </ng-container>
 
             <ng-container *ngSwitchCase="'select'">
-              <label [for]="field.id" class="bh_label">{{ field.title }}{{field.requred ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull  ? '*' : ''}}</label>
+              <label [for]="field.id" class="bh_label">{{ field.title }}{{field.required ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull  ? '*' : ''}}</label>
 
               <select [name]="field.id" [id]="field.id" [disabled]="field.readonly" *ngIf="field.dctItems" [formControl]="field.control" (change)="selectControl(field, $event)">
                 <option *ngIf="field.canBeNull" [value]="null">Не выбран</option>
@@ -57,13 +57,13 @@
             </ng-container>
 
             <ng-container *ngSwitchCase="'autocomplete'">
-              <label [for]="field.id" class="bh_label">{{ field.title }}{{field.requred ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull  ? '*' : ''}}</label>
+              <label [for]="field.id" class="bh_label">{{ field.title }}{{field.required ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull  ? '*' : ''}}</label>
               <app-autocomplete></app-autocomplete>
             </ng-container>
 
             <ng-container *ngSwitchCase="'flag'">
               <div class="bh_control_half">
-                <label [for]="field.id" class="bh_label">{{ field.title }}{{field.requred ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull  ? '*' : ''}}</label>
+                <label [for]="field.id" class="bh_label">{{ field.title }}{{field.required ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull  ? '*' : ''}}</label>
                 <input type="checkbox" [name]="field.id" [id]="field.id" [formControl]="field.control" [readonly]="field.readonly">
               </div>
             </ng-container>
@@ -72,7 +72,7 @@
 
           </ng-container>
         </ng-container>
-        
+
       </div>
 
       <div class="bh_link_control" *ngFor="let field of linkFields">
@@ -81,30 +81,43 @@
           <ng-container *ngSwitchCase="'repo'">
             <ng-container *ngIf="menu && menu.type === 'container' && !!currentService">
 
-              <app-table 
+              <app-table
                 *ngIf="!!menu && (isEditMode)"
                 [title]="field.title"
-                [key]="menu.name" 
+                [key]="menu.name"
                 [type]="field.type"
-                [multiselect]="field.multiselect" 
+                [multiselect]="field.multiselect"
                 (select)="repoSelected( $event )"
                 (deselector$)="deselectAssign( $event )"
               ></app-table>
-          
+
               <div class="full" *ngIf="!!menu && (isEditMode)"><i class="fas fa-chevron-down fa-3x"></i></div>
-            
-              <app-table 
+
+              <app-table
                   *ngIf="!!menu && (isEditMode) && field.entKey"
                   [title]="field.dummyTitle"
-                  [type]="'dummy'" 
+                  [type]="'dummy'"
                   [key]="field.entKey"
                   [dummyItems]="dummyItems"
                   [dummyFields]=""
                   (deselect)="deselectFromContainer( $event )"
               ></app-table>
-            
+
               <button class="full" *ngIf="isEditMode" [disabled]="!currentService || !!form.invalid" (click)="saveItemsOfContainer()"><i class="fas fa-lock"></i>Зафиксировать содержимое контейнера</button>
-            
+
+            </ng-container>
+
+            <ng-container *ngIf="menu && menu.type === 'slot'">
+
+              <app-table
+                *ngIf="!!menu && (isEditMode || isCreateMode)"
+                [title]="field.title"
+                [type]="field.entType"
+                [key]="field.entKey"
+                (select)="slotTablesSelected( $event, field )"
+                (deselector$)="deselectSlotsServiceAssign( $event )"
+              ></app-table>
+
             </ng-container>
           </ng-container>
 
@@ -112,11 +125,11 @@
       </div>
 
     </form>
-    
+
   </ng-container>
 
   <button *ngIf="isCreateMode" [disabled]="!!currentService || !!form.invalid" (click)="createEntity()"><i class="fas fa-plus-square"></i>Создать {{menu.titleVoc}}</button>
   <button *ngIf="isEditMode" [disabled]="!currentService || !!form.invalid" (click)="editEntity()"><i class="fas fa-edit"></i>Изменить {{menu.titleVoc}}</button>
   <button *ngIf="isDeleteMode" [disabled]="!currentService" (click)="removeEntity()"><i class="far fa-trash-alt"></i>Удалить {{menu.titleVoc}}</button>
-  
+
 </div>

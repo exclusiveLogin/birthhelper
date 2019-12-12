@@ -16,6 +16,8 @@ export interface IFieldSetting {
   canBeNull?: boolean;
   control?: FormControl;
   readonly?: boolean;
+  hide?: boolean;
+  proxyTo?: string;
 }
 
 export interface ILinkFieldSetting {
@@ -26,6 +28,11 @@ export interface ILinkFieldSetting {
   required?: boolean;
   initData?: any;
   withDebugField?: boolean;
+  multiselect?: boolean;
+  entKey?: string;
+  dummyTitle?: string;
+  entType?: string;
+  proxyTo?: string;
 }
 
 @Injectable()
@@ -42,7 +49,7 @@ export class FormService {
     fields.forEach(field => {
       form.registerControl( field.id, field.control);
     });
-    
+
   }
 
   public closeForm(){

@@ -17,7 +17,7 @@ export interface ISettingsParams {
 };
 
 export interface IRestParams {
-  [name: string]: string; 
+  [name: string]: string;
 }
 
 export interface IRestBody {
@@ -31,7 +31,7 @@ export class RestService {
     private http: HttpClient,
     private api: ApiService,
     private loader: LoaderService,
-  ) { 
+  ) {
     console.log('ADMIN REST SERVICE', this);
   }
 
@@ -53,7 +53,19 @@ export class RestService {
     };
 
     return this.remData<string>( entSetting, { id: id.toString() });
-    
+
+  }
+
+  public removeSlotEntity( key: string, id: number): Observable<string>{
+    const entSetting: ISettingsParams = {
+      mode: 'admin',
+      segment: 'slots',
+      resource: key,
+      script: id.toString()
+    };
+
+    return this.remData<string>( entSetting);
+
   }
 
   public getFormFieldCurrentValue( name: string ): any {
@@ -134,7 +146,7 @@ export class RestService {
   }
 
   public removeContainer(key: string, id: number): Observable<any>{
-    
+
     const entSetting: ISettingsParams = {
       mode: 'admin',
       segment: `containers/${key}`,
@@ -162,7 +174,7 @@ export class RestService {
     if( path ) Object.keys( path ).forEach(key => path[key] = '/' + path[key]);
 
     let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
-   
+
     let req = this.http.get( url, { params: data } ).pipe(tap(()=>this.loader.hide(), (err)=> this.loader.setError(err.message ? err.message : 'Ошибка: ' + err)));
 
     this.loader.show();
@@ -175,7 +187,7 @@ export class RestService {
     if( path ) Object.keys( path ).forEach(key => path[key] = '/' + path[key]);
 
     let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
-   
+
     let req = this.http.post( url, data ).pipe(tap(()=>this.loader.hide(), (err)=> this.loader.setError(err.message ? err.message : 'Ошибка: ' + err)));;
 
     this.loader.show();
@@ -188,7 +200,7 @@ export class RestService {
     if( path ) Object.keys( path ).forEach(key => path[key] = '/' + path[key]);
 
     let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
-   
+
     let req = this.http.post( url, data.body )
       .pipe(tap(()=>this.loader.hide(), (err)=> this.loader.setError(err.message ? err.message : 'Ошибка: ' + err)));
 
@@ -202,7 +214,7 @@ export class RestService {
     if( path ) Object.keys( path ).forEach(key => path[key] = '/' + path[key]);
 
     let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
-   
+
     let req = this.http.request('delete', url, {body:data} ).pipe(tap(()=>this.loader.hide(), (err)=> this.loader.setError(err.message ? err.message : 'Ошибка: ' + err)));;
 
     this.loader.show();

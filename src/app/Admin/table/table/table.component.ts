@@ -5,7 +5,7 @@ import { IEntity, IEntityItem } from '../../entity.service';
 import { IRowSetting } from './cell/cell.component';
 import { IFiltersParams } from './filters/filters.component';
 import { IRestParams } from '../../rest.service';
-import { IContainer } from '../../container.service';
+import {IContainer, ISlot} from '../../container.service';
 
 export interface ITableRows{
   title?: string;
@@ -25,7 +25,7 @@ export interface ITableFilters{
   title: string,
   type: string,
   db_name: string,
-  items: IDictItem[], 
+  items: IDictItem[],
 }
 
 @Component({
@@ -81,9 +81,22 @@ export class TableComponent implements OnInit {
           // запрос первой страницы таблицы при инициализации
           if(this.type === 'repo') {
             const cont: IContainer = set.container;
+            const slot: ISlot = set.slot;
             if(cont){
               this.type = 'entity';
               this.key = cont.db_entity;
+              this.provider.getItemsSet( this.key, this.type )
+                .subscribe(newset => {
+                  this.total = newset && newset.total && Number(newset.total);
+                  this.allPages = this.total ? Math.floor( this.total / 20 ) + 1 : 1;
+                  this.rowSettings = newset.fields && newset.fields.filter(f => !f.hide && !!f.showOnTable).map(f => ({key: f.key, title: f.title}));
+                  this.provider.getItemsFirstPortion( this.key, this.type )
+                    .subscribe((items: IEntityItem[] ) => this.items = items && <ITableItem[]>items.map(i => this.converter(i)),
+                      (err) => this.currentError = err.message ? err.message : err);
+                }, (err) => this.currentError = err.message ? err.message : err);
+            } else if(slot){
+              this.type = 'entity';
+              this.key = slot.db_entity;
               this.provider.getItemsSet( this.key, this.type )
                 .subscribe(newset => {
                   this.total = newset && newset.total && Number(newset.total);
@@ -110,10 +123,13 @@ export class TableComponent implements OnInit {
     this.refresh.emit(this.refreshTable.bind(this));
   }
 
-  private deselector(id: number){
+  private deselector(id?: number){
+    if(!id) {
+      this.items.forEach(i => i.selected = false);
+      return;
+    }
     this.items.forEach(i => {
-      debugger;
-      if(i.data.id == +id) i.selected = false;  
+      if(i.data.id == +id) i.selected = false;
     });
     console.log("YEP ", id, this.items);
   }
@@ -160,7 +176,7 @@ export class TableComponent implements OnInit {
       let newItem = JSON.parse(JSON.stringify(item));
       this.currentItems = [ newItem ];
       if(this.currentItems[0].selected) this.select.emit(this.currentItems);
-      
+
       return;
     }
 

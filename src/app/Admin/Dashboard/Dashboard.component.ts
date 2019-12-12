@@ -7,14 +7,15 @@ export enum EMENUMODE{
   'DELETE',
 }
 
-export interface IMenuRepo{
-  name: string,
-  containerKey?: string,
-  title: string,
-  titleVoc: string,
-  titleVocs: string,
-  type: string,
-  modes: EMENUMODE[],
+export interface IMenuRepo {
+  name: string;
+  containerKey?: string;
+  slotKey?: string;
+  title: string;
+  titleVoc: string;
+  titleVocs: string;
+  type: string;
+  modes: EMENUMODE[];
 }
 @Component({
   selector: 'app-Dashboard',
@@ -88,6 +89,19 @@ export class DashboardComponent implements OnInit {
         EMENUMODE.DELETE,
         EMENUMODE.EDIT,
       ]
+    },
+    {
+      name: 'services_slots',
+      slotKey: 'slot_service_natal',
+      title: 'Слоты услуг родовспоможения',
+      titleVoc: 'слот',
+      titleVocs: 'слота',
+      type: 'slot',
+      modes: [
+        EMENUMODE.CREATE,
+        EMENUMODE.DELETE,
+        EMENUMODE.EDIT,
+      ]
     }
   ]
 
@@ -101,6 +115,6 @@ export class DashboardComponent implements OnInit {
     this.menuService.submenuStream$.subscribe( mode => this.selectedMode = mode);
   }
 
-  
+
 
 }
