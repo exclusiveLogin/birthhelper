@@ -55,6 +55,7 @@ export class TableComponent implements OnInit {
   public currentPage: number = 1;
   public total: number = 0;
   public allPages: number = 1;
+  public paginator: boolean = true;
   public currentItem: ITableItem;
   public currentItems: ITableItem[];
   public rowSettings: IRowSetting[];
@@ -166,6 +167,7 @@ export class TableComponent implements OnInit {
 
   public refreshTable( filters: IFiltersParams){
     console.log('refresh table:', filters);
+    this.paginator = !Object.keys(filters).some(k => !!k);
     this.currentItem = null;
     this.pageChanged(1, filters as IRestParams);
   }
