@@ -1,15 +1,22 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
 import { IEntityItem } from '../../../entity.service';
-import { IDictItem } from '../../../dict.service';
+import {DictService, IDictItem} from '../../../dict.service';
+import {Observable} from 'rxjs/Observable';
+import {of} from 'rxjs/observable/of';
+import {forkJoin} from 'rxjs/observable/forkJoin';
+import {map} from 'rxjs/operators';
 
 export interface IRowSetting{
   key: string,
   title: string,
   type?: string,
-  titleFn?: (any) => string,
+  useDict?: boolean,
+  dctKey?: string,
+  titleFn?: (any) => Observable<string>,
+  titleDictKey?: string,
 }
 
-export interface IRow{
+export interface IColumn{
   title: string,
   key: string
 }
@@ -27,12 +34,14 @@ export class CellComponent implements OnInit, OnChanges {
 
   @Output('remove') private remove: EventEmitter<null> = new EventEmitter();
 
-  public rows:IRow[]=[];
+  public cols:Observable<string[]>;
 
-  constructor() { }
+  constructor( private dictService: DictService) { }
 
-  private converter( data ){
-    return this.rowSetting.map( rs => rs.titleFn ? rs.titleFn(data[rs.key]) : data[rs.key]);
+  private converter( data ): Observable<string[]>{
+    let rows$ = this.rowSetting.map( rs => rs.titleFn ? rs.titleFn(data[rs.key]) : of(data[rs.key]));
+    let obs = forkJoin(...rows$);
+    return obs;
   }
 
   ngOnInit() {
@@ -44,7 +53,23 @@ export class CellComponent implements OnInit, OnChanges {
   }
 
   public rerender(){
-    if(this.data && this.rowSetting) this.rows = this.converter(this.data);
+    if(this.data && this.rowSetting) {
+      this.rowSetting
+        .filter(rs => !rs.titleFn && (rs.useDict && rs.dctKey))
+        .forEach(rs => rs.titleFn =
+          (itemId) => this.dictService.getDict(rs.dctKey)
+            .pipe(
+              map(dictItems => {
+
+                if(!dictItems) return null;
+
+                let targetDI = dictItems.find(i => i.id === itemId);
+                return targetDI ? (rs.titleDictKey ?  targetDI[rs.titleDictKey] : targetDI.title) : null;
+              })
+            )
+        );
+      this.cols = this.converter(this.data);
+    }
   }
 
   public removeMe(){

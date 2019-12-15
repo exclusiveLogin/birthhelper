@@ -59,6 +59,7 @@ export class TableComponent implements OnInit {
   public currentItem: ITableItem;
   public currentItems: ITableItem[];
   public rowSettings: IRowSetting[];
+  //@todo добавить delete mode в RS для построения как шапки так и кнопки
   public currentError: string;
 
   ngOnInit() {
@@ -67,7 +68,7 @@ export class TableComponent implements OnInit {
       if(this.type === 'dummy'){
         this.provider.getItemsSet( this.key, 'entity' ).subscribe(dummySet => {
           if(!!dummySet){
-            this.rowSettings = dummySet.fields && dummySet.fields.filter(f => !f.hide && !!f.showOnTable).map(f => ({key: f.key, title: f.title}));
+            this.rowSettings = dummySet.fields && dummySet.fields.filter(f => !f.hide && !!f.showOnTable);
             if(this.df) this.rowSettings = this.rowSettings.filter(rs => this.df.some(f => f === rs.key));
           }
         });
@@ -78,7 +79,7 @@ export class TableComponent implements OnInit {
         if(!!set){
           this.total = set && set.total && Number(set.total);
           this.allPages = this.total ? Math.floor( this.total / 20 ) + 1 : 1;
-          this.rowSettings = set.fields && set.fields.filter(f => !f.hide && !!f.showOnTable).map(f => ({key: f.key, title: f.title}));
+          this.rowSettings = set.fields && set.fields.filter(f => !f.hide && !!f.showOnTable);
 
           // запрос первой страницы таблицы при инициализации
           if(this.type === 'repo') {
@@ -91,7 +92,7 @@ export class TableComponent implements OnInit {
                 .subscribe(newset => {
                   this.total = newset && newset.total && Number(newset.total);
                   this.allPages = this.total ? Math.floor( this.total / 20 ) + 1 : 1;
-                  this.rowSettings = newset.fields && newset.fields.filter(f => !f.hide && !!f.showOnTable).map(f => ({key: f.key, title: f.title}));
+                  this.rowSettings = newset.fields && newset.fields.filter(f => !f.hide && !!f.showOnTable);
                   this.provider.getItemsFirstPortion( this.key, this.type )
                     .subscribe((items: IEntityItem[] ) => this.items = items && <ITableItem[]>items.map(i => this.converter(i)),
                       (err) => this.currentError = err.message ? err.message : err);
@@ -103,7 +104,7 @@ export class TableComponent implements OnInit {
                 .subscribe(newset => {
                   this.total = newset && newset.total && Number(newset.total);
                   this.allPages = this.total ? Math.floor( this.total / 20 ) + 1 : 1;
-                  this.rowSettings = newset.fields && newset.fields.filter(f => !f.hide && !!f.showOnTable).map(f => ({key: f.key, title: f.title}));
+                  this.rowSettings = newset.fields && newset.fields.filter(f => !f.hide && !!f.showOnTable);
                   this.provider.getItemsFirstPortion( this.key, this.type )
                     .subscribe((items: IEntityItem[] ) => this.items = items && <ITableItem[]>items.map(i => this.converter(i)),
                       (err) => this.currentError = err.message ? err.message : err);
@@ -167,7 +168,7 @@ export class TableComponent implements OnInit {
 
   public refreshTable( filters: IFiltersParams){
     console.log('refresh table:', filters);
-    this.paginator = !Object.keys(filters).some(k => !!k);
+    this.paginator = filters ? !Object.keys(filters).some(k => !!k) : false;
     this.currentItem = null;
     this.pageChanged(1, filters as IRestParams);
   }

@@ -1,2 +1,2 @@
-<div class="row" *ngFor="let row of rows">{{ row }}</div>
+<div class="row" *ngFor="let col of cols | async">{{ col || '' }}</div>
 <button class="remove row" *ngIf="hasRemoveMode" (click)="removeMe()">Удалить</button>
