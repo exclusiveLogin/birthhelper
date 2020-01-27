@@ -15,6 +15,7 @@ export interface IFieldSetting {
   dictSelected?:any;
   canBeNull?: boolean;
   control?: FormControl;
+  mirrorControl?: FormControl;
   readonly?: boolean;
   hide?: boolean;
   proxyTo?: string;

@@ -4,11 +4,13 @@ import { ISettingsParams, RestService, IRestParams } from './rest.service';
 import { ITableFilters } from './table/table/table.component';
 import { IFieldSetting, ILinkFieldSetting } from './form.service';
 import {IContainer} from './container.service';
+import {IImage} from './Dashboard/Editor/components/image/image.component';
+import {map} from 'rxjs/operators';
 
 export interface IEntityItem {
   id: number;
-  name: string;
-  title: string;
+  name?: string;
+  title?: string;
   icon?: string;
   comment?: string;
   description?: string;
@@ -45,8 +47,22 @@ export class EntityService {
     return this.rest.getEntities( 'ent_'+name, page, qp );
   }
 
+  public getEntity( name: string, id: number ): Observable<IEntityItem[]> {
+    return this.rest.getEntity( 'ent_'+name, id);
+  }
+
   public getEntSet( key: string ): Observable<ISet>{
     return this.rest.getEntitySet( 'ent_'+key );
+  }
+
+  public getImage(id: number): Observable<IImage>{
+    return this.getEntity('images', id).pipe(
+      map(ImageSet => ImageSet.length ? ImageSet[0] : null )
+    ) as any as Observable<IImage>;
+  }
+
+  public uploadImg( file ){
+    return this.rest.uploadImage( file );
   }
 
   public getEntFilters( key: string ): Observable<ITableFilters[]>{

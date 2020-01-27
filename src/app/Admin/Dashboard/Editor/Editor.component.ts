@@ -42,8 +42,13 @@ export class EditorComponent implements OnInit {
     console.log('render: ', this.fields);
     if(!(this.fields && this.fields.length)) return;
     this.fields.forEach( field => {
+
       // добавить валидаторы если потом введем в систему
       field.control = this.forms.createFormControl(null, field.required);
+
+      // регистрация теневого контрола для загрузки файла
+      if(field.type === 'img') field.mirrorControl = this.forms.createFormControl(null);
+
       if(field.readonly) {
         field.control.disable();
       }
@@ -59,6 +64,12 @@ export class EditorComponent implements OnInit {
 
     this.forms.registerFields(this.fields, this.form);
     console.log('dev form:', this.form);
+  }
+
+  public uploadImage(file: Event){
+    console.log('file to upload', file);
+    if(file.target['files'][0]) this.ent.uploadImg( file.target['files'][0] ).subscribe(data => console.log('answer:' , data))
+
   }
 
   private rerenderValueOfFields(){

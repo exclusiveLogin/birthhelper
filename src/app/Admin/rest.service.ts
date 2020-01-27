@@ -45,6 +45,30 @@ export class RestService {
     return this.postData(entSetting, data)
   }
 
+  public uploadImage( file: File ){
+    const fileSetting: ISettingsParams = {
+      mode: 'admin',
+      segment: 'entity',
+      resource: 'file',
+    };
+
+    let data: FormData = new FormData();
+    data.append('photo', file);
+
+    return this.uploadData( fileSetting, data );
+  }
+
+  public getEntity( key: string , id: number): Observable<any>{
+    const entSetting: ISettingsParams = {
+      mode: 'admin',
+      segment: 'entity',
+      resource: key,
+      script: id.toString()
+    };
+
+    return this.getData(entSetting);
+  }
+
   public deleteEntity( key: string, id: number): Observable<string>{
     const entSetting: ISettingsParams = {
       mode: 'admin',
@@ -176,6 +200,22 @@ export class RestService {
     let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
 
     let req = this.http.get( url, { params: data } ).pipe(tap(()=>this.loader.hide(), (err)=> this.loader.setError(err.message ? err.message : 'Ошибка: ' + err)));
+
+    this.loader.show();
+
+    return req as Observable<T>;
+  }
+
+  public uploadData<T>( path: ISettingsParams, data?: FormData): Observable<T>{
+
+    if( path ) Object.keys( path ).forEach(key => path[key] = '/' + path[key]);
+
+    let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
+
+    let req = this.http.post( url, data )
+      .pipe(
+        tap(()=>this.loader.hide(), (err)=> this.loader.setError(err.message ? err.message : 'Ошибка: ' + err))
+      );
 
     this.loader.show();
 

@@ -4,6 +4,7 @@ import { EditorComponent } from './Editor.component';
 import { TableModule } from '../../table/table.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AutocompleteComponent } from '../../autocomplete/autocomplete.component';
+import { ImageComponent } from './components/image/image.component';
 
 @NgModule({
   imports: [
@@ -13,7 +14,8 @@ import { AutocompleteComponent } from '../../autocomplete/autocomplete.component
   ],
   declarations: [
     EditorComponent,
-    AutocompleteComponent
+    AutocompleteComponent,
+    ImageComponent
   ],
   exports: [
     EditorComponent

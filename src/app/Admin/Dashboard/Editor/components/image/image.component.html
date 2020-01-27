@@ -1,0 +1,5 @@
+<div class="img_container" *ngIf="image">
+  <img [src]="image.url" />
+  <span>{{ image.title ? image.title : 'Без названия'}}</span>
+  <button>Удалить</button>
+</div>
