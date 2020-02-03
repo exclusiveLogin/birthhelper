@@ -55,10 +55,9 @@ export class EntityService {
     return this.rest.getEntitySet( 'ent_'+key );
   }
 
-  public getImage(id: number): Observable<IImage>{
-    return this.getEntity('images', id).pipe(
-      map(ImageSet => ImageSet.length ? ImageSet[0] : null )
-    ) as any as Observable<IImage>;
+  public getFile(id: number, type='images', multi?:boolean): Observable<any>{
+    return this.getEntity(type, id)
+      .pipe( map(ImageSet => !multi? ImageSet.length ? ImageSet[0] : null : ImageSet )) as any as Observable<IImage>;
   }
 
   public uploadImg( file ){

@@ -6,9 +6,10 @@ export class ApiService {
 
 constructor() { }
 
-    private apiBase = environment.baseUrl;//'http://localhost';//'http://91.240.87.153';
+    private apiBase = environment.baseUrl;
 
     private iconPath = 'icons';
+    private filePath = 'uploads';
 
     public getApiPath(): string {
         return this.apiBase;

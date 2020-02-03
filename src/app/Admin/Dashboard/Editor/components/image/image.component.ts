@@ -1,14 +1,18 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {EntityService} from '../../../../entity.service';
-import {filter} from 'rxjs/operators';
+import {filter, map} from 'rxjs/operators';
+import {environment} from '../../../../../../environments/environment';
 
 export interface IImage {
   id: number,
-  url: string,
+  file_id: number,
   title: string,
-  description: string;
-  datetime_create: string;
-  datetime_update: string;
+  description: string,
+  datetime_update: string,
+  datetime_create: string,
+  _id: number
+  type: string
+  filename: string
 }
 
 @Component({
@@ -30,9 +34,12 @@ export class ImageComponent implements OnInit, OnChanges {
   }
 
   rerender() {
-    if (this.id) this.entityService.getImage(this.id).pipe(
-      filter(img => !!img)
-    ).subscribe( (image: IImage) => this.image = image );
+    if (this.id) this.entityService.getFile(this.id).pipe(
+      filter(img => !!img),
+    ).subscribe( (image: IImage) => {
+      this.image = image;
+      this.image.filename = environment.fileSever + '/' + this.image.filename;
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

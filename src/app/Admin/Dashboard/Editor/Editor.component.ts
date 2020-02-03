@@ -7,7 +7,7 @@ import { EMENUMODE, IMenuRepo } from '../Dashboard.component';
 import { IEntityItem, EntityService } from '../../entity.service';
 import { FormGroup } from '@angular/forms';
 import { ContainerService } from '../../container.service';
-import { IRestBody } from '../../rest.service';
+import {IFile, IRestBody} from '../../rest.service';
 
 @Component({
   selector: 'app-editor',
@@ -66,9 +66,16 @@ export class EditorComponent implements OnInit {
     console.log('dev form:', this.form);
   }
 
-  public uploadImage(file: Event){
+  public uploadImage(file: Event, field: IFieldSetting){
     console.log('file to upload', file);
-    if(file.target['files'][0]) this.ent.uploadImg( file.target['files'][0] ).subscribe(data => console.log('answer:' , data))
+    if(file.target['files'][0]) this.ent.uploadImg( file.target['files'][0] ).subscribe(data => {
+      console.log('answer:' , data);
+      if(data.file && data.file.id){
+        const file_id = data.file.id;
+        field.control.setValue(file_id);
+        field.mirrorControl.setValue('');
+      }
+    })
 
   }
 

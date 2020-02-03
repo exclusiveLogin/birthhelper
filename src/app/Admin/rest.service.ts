@@ -23,6 +23,19 @@ export interface IRestParams {
 export interface IRestBody {
   body: any;
 }
+export interface IFileSaveResponse {
+  status: string,
+  file: {
+   id: number
+  }
+}
+
+export interface IFile {
+  "id": number,
+  "filename": string,
+  "folder": string,
+  "type": string
+}
 
 @Injectable()
 export class RestService {
@@ -45,7 +58,7 @@ export class RestService {
     return this.postData(entSetting, data)
   }
 
-  public uploadImage( file: File ){
+  public uploadImage( file: File ): Observable<IFileSaveResponse>{
     const fileSetting: ISettingsParams = {
       mode: 'admin',
       segment: 'entity',
