@@ -35,7 +35,7 @@
             <ng-container *ngSwitchCase="'img'">
               <label [for]="field.id" class="bh_label">{{ field.title }}{{field.required ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull  ? '*' : ''}}</label>
               <ng-container *ngIf="field.control.value else img_upload_tpl">
-                <app-image [id]="field.control.value" [attr.name]="field.id"></app-image>
+                <app-image [id]="field.control.value" [attr.name]="field.id" [control]="field.control"></app-image>
               </ng-container>
 
               <ng-template #img_upload_tpl>

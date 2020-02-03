@@ -2,6 +2,7 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 import {EntityService} from '../../../../entity.service';
 import {filter, map} from 'rxjs/operators';
 import {environment} from '../../../../../../environments/environment';
+import {FormControl} from '@angular/forms';
 
 export interface IImage {
   id: number,
@@ -27,6 +28,8 @@ export class ImageComponent implements OnInit, OnChanges {
   ) { }
 
   @Input('id') id: number;
+  @Input('control') fieldControl: FormControl;
+
   public image: IImage;
 
   ngOnInit() {
@@ -38,12 +41,16 @@ export class ImageComponent implements OnInit, OnChanges {
       filter(img => !!img),
     ).subscribe( (image: IImage) => {
       this.image = image;
-      this.image.filename = environment.fileSever + '/' + this.image.filename;
+      this.image.filename = environment.fileServer + '/' + this.image.filename;
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.rerender();
+  }
+
+  public removeImage(){
+    if(this.fieldControl) this.fieldControl.setValue(false);
   }
 
 }
