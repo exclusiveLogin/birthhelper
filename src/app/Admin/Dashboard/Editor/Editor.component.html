@@ -125,7 +125,20 @@
                 [title]="field.title"
                 [type]="field.entType"
                 [key]="field.entKey"
-                (select)="slotTablesSelected( $event, field )"
+                (select)="linkFromTableSelected( $event, field )"
+                (deselector$)="deselectSlotsServiceAssign( $event )"
+              ></app-table>
+
+            </ng-container>
+
+            <ng-container *ngIf="menu && menu.type === 'entity'">
+
+              <app-table
+                *ngIf="!!menu && (isEditMode || isCreateMode)"
+                [title]="field.title"
+                [type]="field.entType"
+                [key]="field.entKey"
+                (select)="linkFromTableSelected( $event, field )"
                 (deselector$)="deselectSlotsServiceAssign( $event )"
               ></app-table>
 

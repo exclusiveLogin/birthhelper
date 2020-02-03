@@ -102,6 +102,18 @@ export class DashboardComponent implements OnInit {
         EMENUMODE.DELETE,
         EMENUMODE.EDIT,
       ]
+    },
+    {
+      name: 'images',
+      title: 'Изображения системы',
+      titleVoc: 'изображение',
+      titleVocs: 'изображения',
+      type: 'entity',
+      modes: [
+        EMENUMODE.CREATE,
+        EMENUMODE.DELETE,
+        EMENUMODE.EDIT,
+      ]
     }
   ]
 

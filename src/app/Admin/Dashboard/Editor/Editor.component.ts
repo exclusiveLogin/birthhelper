@@ -184,7 +184,7 @@ export class EditorComponent implements OnInit {
     }
   }
 
-  public slotTablesSelected(selected: ITableItem, field: ILinkFieldSetting ){
+  public linkFromTableSelected(selected: ITableItem, field: ILinkFieldSetting ){
     if( !!selected.data && selected.data.id ){
       const key = field.proxyTo || field.entKey;
       this.form.get(key) ? this.form.get(key).setValue(selected.data.id) : null;
