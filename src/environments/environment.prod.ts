@@ -3,4 +3,5 @@ export const environment = {
   baseUrl: 'http://91.240.87.153',
   fileServer: 'http://91.240.87.153:9080',
   backend: 'http://91.240.87.153:3000',
+  static: 'http://localhost:3000/static',
 };
