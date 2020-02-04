@@ -15,6 +15,7 @@ export interface IMenuRepo {
   titleVoc: string;
   titleVocs: string;
   type: string;
+  mime?: string;
   modes: EMENUMODE[];
 }
 @Component({
@@ -109,6 +110,7 @@ export class DashboardComponent implements OnInit {
       titleVoc: 'изображение',
       titleVocs: 'изображения',
       type: 'entity',
+      mime: 'image',
       modes: [
         EMENUMODE.CREATE,
         EMENUMODE.DELETE,

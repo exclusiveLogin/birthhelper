@@ -6,6 +6,7 @@ import { IRowSetting } from './cell/cell.component';
 import { IFiltersParams } from './filters/filters.component';
 import { IRestParams } from '../../rest.service';
 import {IContainer, ISlot} from '../../container.service';
+import {environment} from '../../../../environments/environment';
 
 export interface ITableRows{
   title?: string;
@@ -18,6 +19,7 @@ export interface ITableItem{
   data: IEntityItem | IDictItem;
   text?: string;
   selected?: boolean;
+  image?: string;
 }
 
 export interface ITableFilters{
@@ -28,6 +30,11 @@ export interface ITableFilters{
   items: IDictItem[],
 }
 
+export interface IImageOptions {
+  urlType: string,
+  urlKey: string
+}
+
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
@@ -36,6 +43,7 @@ export interface ITableFilters{
 export class TableComponent implements OnInit {
   @Input('key') public key: string;
   @Input('type') public type: string;
+  @Input('imageOptions') public imageOptions: IImageOptions;
   @Input('multiselect') private multiselect: boolean = false;
   @Input('dummyItems') public dummyItems: ITableItem[];
   @Input('dummyFields') public df: string[];
@@ -94,7 +102,10 @@ export class TableComponent implements OnInit {
                   this.allPages = this.total ? Math.floor( this.total / 20 ) + 1 : 1;
                   this.rowSettings = newset.fields && newset.fields.filter(f => !f.hide && !!f.showOnTable);
                   this.provider.getItemsFirstPortion( this.key, this.type )
-                    .subscribe((items: IEntityItem[] ) => this.items = items && <ITableItem[]>items.map(i => this.converter(i)),
+                    .subscribe((items: IEntityItem[] ) => {
+                      this.items = items && <ITableItem[]>items.map(i => this.converter(i));
+                      this.finishItemsPhase();
+                    },
                       (err) => this.currentError = err.message ? err.message : err);
                 }, (err) => this.currentError = err.message ? err.message : err);
             } else if(slot){
@@ -106,13 +117,19 @@ export class TableComponent implements OnInit {
                   this.allPages = this.total ? Math.floor( this.total / 20 ) + 1 : 1;
                   this.rowSettings = newset.fields && newset.fields.filter(f => !f.hide && !!f.showOnTable);
                   this.provider.getItemsFirstPortion( this.key, this.type )
-                    .subscribe((items: IEntityItem[] ) => this.items = items && <ITableItem[]>items.map(i => this.converter(i)),
+                    .subscribe((items: IEntityItem[] ) => {
+                      this.items = items && <ITableItem[]>items.map(i => this.converter(i));
+                      this.finishItemsPhase();
+                    },
                       (err) => this.currentError = err.message ? err.message : err);
                 }, (err) => this.currentError = err.message ? err.message : err);
             }
           } else{
             this.provider.getItemsFirstPortion( this.key, this.type )
-              .subscribe((items: ( IDictItem | IEntityItem)[] ) => this.items = items && <ITableItem[]>items.map(i => this.converter(i)),
+              .subscribe((items: ( IDictItem | IEntityItem)[] ) => {
+                this.items = items && <ITableItem[]>items.map(i => this.converter(i));
+                this.finishItemsPhase();
+              },
                (err) => this.currentError = err.message ? err.message : err);
           }
         }
@@ -124,6 +141,16 @@ export class TableComponent implements OnInit {
       }, (err) => this.currentError = err.message ? err.message : err);
     }
     this.refresh.emit(this.refreshTable.bind(this));
+  }
+
+  private imageGenerator(){
+    if( this.imageOptions && this.imageOptions.urlType === 'simple' ){
+      this.items.forEach(i => i.image = environment.static + '/' + i.data[this.imageOptions.urlKey])
+    }
+  }
+
+  private finishItemsPhase(){
+    this.imageGenerator();
   }
 
   private deselector(id?: number){
@@ -159,6 +186,7 @@ export class TableComponent implements OnInit {
     this.provider.getItemPage( this.key, this.type, page, qp )
       .subscribe((items: (IDictItem | IEntityItem)[] ) => {
         this.items = items && <ITableItem[]>items.map(i => this.converter(i));
+        this.finishItemsPhase();
         //this.total = items.length;
         //this.allPages = Math.floor( this.total / 20 ) + 1;
         //@todo сделать пересчет сета при работе с фильтрами

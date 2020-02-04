@@ -20,6 +20,7 @@
     *ngFor="let item of items; let i = index"
     [rs]="rowSettings"
     [data]="item.data"
+    [image]="item.image"
     (click)="selectItem( item )"></app-cell>
 </div>
 <div class="container" *ngIf="type === 'dummy'">
@@ -27,6 +28,7 @@
       *ngFor="let item of dummyItems; let i = index"
       [rs]="rowSettings"
       [data]="item.data"
+      [image]="item.image"
       [modes]="['remove']"
       (remove)="deselectItem( item )"
       ></app-cell>

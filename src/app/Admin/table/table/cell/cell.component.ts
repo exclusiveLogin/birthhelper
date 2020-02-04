@@ -30,8 +30,8 @@ export class CellComponent implements OnInit, OnChanges {
 
   @Input('rs') private rowSetting: IRowSetting[] = [];
   @Input('data') private data: IEntityItem | IDictItem;
+  @Input('image') public image: string;
   @Input('modes') private modes: string[];
-
   @Output('remove') private remove: EventEmitter<null> = new EventEmitter();
 
   public cols:Observable<string[]>;

@@ -2,7 +2,7 @@ import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { IFieldSetting, FormService, ILinkFieldSetting } from '../../form.service';
 import { DictService, IDictItem } from '../../dict.service';
 import { IRowSetting } from '../../table/table/cell/cell.component';
-import { ITableItem } from '../../table/table/table.component'
+import {IImageOptions, ITableItem} from '../../table/table/table.component';
 import { EMENUMODE, IMenuRepo } from '../Dashboard.component';
 import { IEntityItem, EntityService } from '../../entity.service';
 import { FormGroup } from '@angular/forms';
@@ -185,7 +185,7 @@ export class EditorComponent implements OnInit {
   }
 
   public linkFromTableSelected(selected: ITableItem, field: ILinkFieldSetting ){
-    if( !!selected.data && selected.data.id ){
+    if( !!selected && !!selected.data && selected.data.id ){
       const key = field.proxyTo || field.entKey;
       this.form.get(key) ? this.form.get(key).setValue(selected.data.id) : null;
     }

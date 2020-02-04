@@ -41,7 +41,7 @@ export class ImageComponent implements OnInit, OnChanges {
       filter(img => !!img),
     ).subscribe( (image: IImage) => {
       this.image = image;
-      this.image.filename = environment.fileServer + '/' + this.image.filename;
+      this.image.filename = environment.static + '/' + this.image.filename;
     });
   }
 

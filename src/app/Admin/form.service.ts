@@ -19,6 +19,7 @@ export interface IFieldSetting {
   readonly?: boolean;
   hide?: boolean;
   proxyTo?: string;
+  image?: { urlType: string, urlKey: string };
 }
 
 export interface ILinkFieldSetting {
@@ -34,6 +35,7 @@ export interface ILinkFieldSetting {
   dummyTitle?: string;
   entType?: string;
   proxyTo?: string;
+  image?: { urlType: string, urlKey: string };
 }
 
 @Injectable()
