@@ -37,6 +37,12 @@ export interface IFile {
   "type": string
 }
 
+export interface IFileAdditionalData {
+  title?: string,
+  description?: string,
+  position?: any,
+}
+
 @Injectable()
 export class RestService {
 
@@ -58,7 +64,7 @@ export class RestService {
     return this.postData(entSetting, data)
   }
 
-  public uploadImage( file: File ): Observable<IFileSaveResponse>{
+  public uploadImage( file: File, _data?: IFileAdditionalData ): Observable<IFileSaveResponse>{
     const fileSetting: ISettingsParams = {
       mode: 'admin',
       segment: 'entity',
@@ -67,6 +73,7 @@ export class RestService {
 
     let data: FormData = new FormData();
     data.append('photo', file);
+    data.append('meta', JSON.stringify(_data));
 
     return this.uploadData( fileSetting, data );
   }

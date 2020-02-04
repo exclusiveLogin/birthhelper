@@ -8,16 +8,17 @@
 .bh_block{
   display: flex;
   margin: 20px;
+  padding: 10px;
   flex-direction: column;
   background-color: bisque;
-  box-shadow: 5px 5px 0 0 rgba(100, 100, 100, 0.3);
+  box-shadow: 5px 5px 5px 1px rgba(100, 100, 100, 0.3);
   justify-content: center;
+  border: 2px solid rgba(100, 100, 100, 0.3);
 }
 
 .bh_control{
   margin: 15px;
   flex-basis: 75%;
-  justify-content: center;
   display: flex;
   align-items: center;
 }
@@ -63,7 +64,7 @@ form.ng-invalid::after{
   margin-left: -25px;
 }
 .bh_link_control{
-  
+
 }
 .bh_error_block{
   background-color: brown;

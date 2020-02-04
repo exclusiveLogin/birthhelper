@@ -21,3 +21,7 @@ button.remove{
     background-color: brown;
     padding: 5px;
 }
+.img_block:hover{
+  transition: all 0.1s ease-in-out;
+  transform: scale(3);
+}

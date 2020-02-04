@@ -16,6 +16,8 @@ export interface IFieldSetting {
   canBeNull?: boolean;
   control?: FormControl;
   mirrorControl?: FormControl;
+  titleControl?: FormControl;
+  descriptionControl?: FormControl;
   readonly?: boolean;
   hide?: boolean;
   proxyTo?: string;

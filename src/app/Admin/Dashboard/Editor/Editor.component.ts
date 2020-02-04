@@ -7,7 +7,7 @@ import { EMENUMODE, IMenuRepo } from '../Dashboard.component';
 import { IEntityItem, EntityService } from '../../entity.service';
 import { FormGroup } from '@angular/forms';
 import { ContainerService } from '../../container.service';
-import {IFile, IRestBody} from '../../rest.service';
+import {IFile, IFileAdditionalData, IRestBody} from '../../rest.service';
 
 @Component({
   selector: 'app-editor',
@@ -47,7 +47,11 @@ export class EditorComponent implements OnInit {
       field.control = this.forms.createFormControl(null, field.required);
 
       // регистрация теневого контрола для загрузки файла
-      if(field.type === 'img') field.mirrorControl = this.forms.createFormControl(null);
+      if(field.type === 'img') {
+        field.mirrorControl = this.forms.createFormControl(null);
+        field.titleControl = this.forms.createFormControl(null);
+        field.descriptionControl = this.forms.createFormControl(null);
+      }
 
       if(field.readonly) {
         field.control.disable();
@@ -66,16 +70,29 @@ export class EditorComponent implements OnInit {
     console.log('dev form:', this.form);
   }
 
-  public uploadImage(file: Event, field: IFieldSetting){
-    console.log('file to upload', file);
-    if(file.target['files'][0]) this.ent.uploadImg( file.target['files'][0] ).subscribe(data => {
-      console.log('answer:' , data);
-      if(data.file && data.file.id){
-        const file_id = data.file.id;
-        field.control.setValue(file_id);
-        field.mirrorControl.setValue('');
-      }
-    })
+  public setImageForUpload( ev ){
+    if(ev.target['files'][0]) this.fileForUpload = ev.target['files'][0];
+  }
+
+  private fileForUpload: File;
+
+  public uploadImage(field: IFieldSetting){
+    console.log('file to upload', field);
+    if( this.fileForUpload ){
+      let _data: IFileAdditionalData = {
+        title: field.titleControl.value,
+        description: field.descriptionControl.value
+      };
+
+      this.ent.uploadImg( this.fileForUpload, _data ).subscribe(data => {
+        if(data.file && data.file.id){
+          const file_id = data.file.id;
+          field.control.setValue( file_id );
+          field.mirrorControl.setValue('');
+          this.fileForUpload = null;
+        }
+      })
+    }
 
   }
 

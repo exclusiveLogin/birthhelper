@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { ISettingsParams, RestService, IRestParams } from './rest.service';
+import {ISettingsParams, RestService, IRestParams, IFileAdditionalData} from './rest.service';
 import { ITableFilters } from './table/table/table.component';
 import { IFieldSetting, ILinkFieldSetting } from './form.service';
 import {IContainer} from './container.service';
@@ -60,8 +60,8 @@ export class EntityService {
       .pipe( map(ImageSet => !multi? ImageSet.length ? ImageSet[0] : null : ImageSet )) as any as Observable<IImage>;
   }
 
-  public uploadImg( file ){
-    return this.rest.uploadImage( file );
+  public uploadImg( file, data?: IFileAdditionalData ){
+    return this.rest.uploadImage( file, data );
   }
 
   public getEntFilters( key: string ): Observable<ITableFilters[]>{
