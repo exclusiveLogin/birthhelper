@@ -2,11 +2,12 @@
 // The build system defaults to the dev environment which uses `environment.ts`, but if you do
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
+import * as env from '../../env.js';
 
 export const environment = {
   production: false,
-  baseUrl: 'http://localhost',
-  fileServer: 'http://localhost:9080',
-  backend: 'http://localhost:3000',
-  static: 'http://localhost:3000/static',
+  baseUrl: env['baseUrl'] || 'http://localhost',
+  fileServer: env['fileServer'] || 'http://localhost:9080',
+  backend: env['backend'] || 'http://localhost:3000',
+  static: env['static'] || 'http://localhost:3000/static',
 };
