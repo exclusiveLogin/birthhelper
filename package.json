@@ -5,10 +5,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod",
+    "build": "npm run envgen && ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "envgen": "echo 'environment generating... ' && node envgen.js && echo 'environment generated'"
   },
   "private": true,
   "dependencies": {
