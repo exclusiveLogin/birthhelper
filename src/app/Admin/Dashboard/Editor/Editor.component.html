@@ -104,7 +104,7 @@
       </div>
 
       <div class="bh_link_control" *ngFor="let field of linkFields">
-        <ng-container [ngSwitch]="field.type">
+        <ng-container [ngSwitch]="field.type" *ngIf="!field.hide">
 
           <ng-container *ngSwitchCase="'repo'">
             <ng-container *ngIf="menu && menu.type === 'container' && !!currentService">
@@ -133,7 +133,9 @@
                   [imageOptions]="field.image"
               ></app-table>
 
-              <button class="full" *ngIf="isEditMode" [disabled]="!currentService || !!form.invalid" (click)="saveItemsOfContainer()"><i class="fas fa-lock"></i>Зафиксировать содержимое контейнера</button>
+              <button class="full" *ngIf="isEditMode" [disabled]="!currentService || !!form.invalid" (click)="saveItemsOfContainer()">
+                <i class="fas fa-lock"></i>Зафиксировать содержимое контейнера
+              </button>
 
             </ng-container>
 

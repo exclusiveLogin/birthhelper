@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import {Component, OnInit, Input, SimpleChanges, OnDestroy} from '@angular/core';
 import { IFieldSetting, FormService, ILinkFieldSetting } from '../../form.service';
 import { DictService, IDictItem } from '../../dict.service';
 import { IRowSetting } from '../../table/table/cell/cell.component';
@@ -8,13 +8,16 @@ import { IEntityItem, EntityService } from '../../entity.service';
 import { FormGroup } from '@angular/forms';
 import { ContainerService } from '../../container.service';
 import {IFile, IFileAdditionalData, IRestBody} from '../../rest.service';
+import {Subject} from 'rxjs/Subject';
+import {distinct, finalize} from 'rxjs/operators';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-editor',
   templateUrl: './Editor.component.html',
   styleUrls: ['./Editor.component.css']
 })
-export class EditorComponent implements OnInit {
+export class EditorComponent implements OnInit, OnDestroy {
 
   @Input() mode: EMENUMODE;
   @Input() menu: IMenuRepo;
@@ -37,6 +40,62 @@ export class EditorComponent implements OnInit {
   public deselectSlotServiceFn: Function;
   public deselectSlotContragentFn: Function;
   public currentError: string;
+
+  private conditionsSubscribers: {[name:string]: ILinkFieldSetting[]} = {};
+  private conditionsSubscribersSetter$ = new Subject<string>();
+  private conditionsSubscribersSubscription: Subscription;
+
+  registerConditionStream(){
+    //складываем эмиттеров событий(без повторений)
+    if(!!this.conditionsSubscribersSubscription) this.conditionsSubscribersSubscription.unsubscribe();
+    this.conditionsSubscribersSubscription = this.conditionsSubscribersSetter$.pipe(
+      distinct()
+    ).subscribe( fieldName => this.conditionsSubscribers[fieldName] = []);
+
+    //формируем новый сет подписчиков на поля
+    this.registerConditionSubs();
+  }
+
+  registerConditionSubs(){
+    //формируем подписчиков
+    this.linkFields.forEach(lf => {
+      if(lf.conditionField) this.conditionsSubscribersSetter$.next(lf.conditionField);
+    });
+
+    Object.keys(this.conditionsSubscribers).forEach(key => {
+      this.conditionsSubscribers[key] = this.linkFields.filter(field => field.conditionField === key);
+    });
+
+  }
+
+  checkConditionFields(fieldKey?: string){
+    if(!!fieldKey && !!this.conditionsSubscribers[fieldKey]){
+
+      let curField = this.fields.find(f => f.id === fieldKey);
+      let curentValueRAW = curField.control.value;
+      let value = curField.type == 'select' && curField.useDict ? curField.dctItems.find(di => di.id.toString() == curentValueRAW.toString() ) : curentValueRAW
+      this.conditionsSubscribers[fieldKey].forEach(subField => {
+        subField.hide = subField.conditionKey ? subField.conditionValue !== value[subField.conditionKey] : subField.conditionValue !== value;
+
+        if(subField.proxyTo) this.form.get(subField.proxyTo).setValue(null);
+      });
+
+    } else {
+
+      Object.keys(this.conditionsSubscribers).forEach(fk => {
+        let curField = this.fields.find(f => f.id === fk);
+        let curentValueRAW = curField.control.value;
+        let value = curField.type == 'select' && curField.useDict && curField.dctItems ?
+          curField.dctItems.find(di => di.id.toString() == curentValueRAW.toString() ) :
+          curentValueRAW;
+
+        this.conditionsSubscribers[fk].forEach(subField => {
+          subField.hide = subField.conditionKey ? subField.conditionValue !== value[subField.conditionKey] : subField.conditionValue !== value;
+        })
+      });
+
+    }
+  }
 
   private rerenderFields(){
     console.log('render: ', this.fields);
@@ -128,7 +187,10 @@ export class EditorComponent implements OnInit {
           f.id = f['key'];
           return f;
         });
+
         this.linkFields = set.links;
+
+        this.registerConditionStream();
         this.rerenderFields();
       }, (err) => this.currentError = err.message ? err.message : err);
     }
@@ -149,6 +211,8 @@ export class EditorComponent implements OnInit {
   public selectControl( item: IFieldSetting, ev){
 
     item.dictSelected = ev.target.value;
+
+    this.checkConditionFields(item.id);
 
     console.log('selected:', item, ev);
   }
@@ -190,6 +254,8 @@ export class EditorComponent implements OnInit {
         );
       }, (err) => this.currentError = err.message ? err.message : err);
     }
+
+    this.checkConditionFields();
   }
 
   public repoSelected(selected: ITableItem[] | ITableItem){
@@ -301,6 +367,10 @@ export class EditorComponent implements OnInit {
 
   public closeCurrentError(){
     this.currentError = null;
+  }
+
+  ngOnDestroy() {
+    if(!!this.conditionsSubscribersSubscription) this.conditionsSubscribersSubscription.unsubscribe();
   }
 }
 

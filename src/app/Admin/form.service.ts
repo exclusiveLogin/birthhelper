@@ -38,6 +38,10 @@ export interface ILinkFieldSetting {
   entType?: string;
   proxyTo?: string;
   image?: { urlType: string, urlKey: string };
+  conditionField: string;
+  conditionKey: string;
+  conditionValue: number | string;
+  hide?:boolean;
 }
 
 @Injectable()
@@ -61,4 +65,6 @@ export class FormService {
     //this.menuService.menuStream$.next(null);
     this.menuService.submenuStream$.next(null);
   }
+
+
 }
