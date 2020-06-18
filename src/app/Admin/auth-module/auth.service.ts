@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
 interface ISecure {
   user: string,
@@ -7,7 +8,7 @@ interface ISecure {
 @Injectable()
 export class AuthService {
 
-  constructor() { }
+  constructor( private router: Router) { }
   private token = '72b4e261-bf20-4a72-9e47-ade621aba648';
 
   public isAuthorized(){
@@ -16,5 +17,10 @@ export class AuthService {
 
     let secure: ISecure = JSON.parse(secureData);
     return this.token === secure.token;
+  }
+
+  public logout(){
+    localStorage.setItem('bh_secure', JSON.stringify({}));
+    this.router.navigate(['/admin/non']);
   }
 }

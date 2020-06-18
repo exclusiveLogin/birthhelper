@@ -13,6 +13,15 @@
     background-color: #333;
     font-size: 18pt;
     width: 100%;
+    padding: 10px;
+}
+.bh_admin_header .exit{
+  float: right;
+  right: 20px;
+  position: relative;
+  font-size: 0.7em;
+  /* text-decoration: underline; */
+  cursor: pointer;
 }
 
 .bh_admin_panel{

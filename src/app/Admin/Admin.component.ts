@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DictService } from './dict.service';
 import { LoaderService } from './loader.service';
+import {AuthService} from './auth-module/auth.service';
 
 @Component({
   selector: 'app-Admin',
@@ -9,13 +10,18 @@ import { LoaderService } from './loader.service';
 })
 export class AdminComponent implements OnInit {
 
-  constructor( 
+  constructor(
     private dct: DictService,
-    private loader: LoaderService, 
+    private loader: LoaderService,
+    private auth: AuthService
     ) { }
 
   ngOnInit() {
 
+  }
+
+  public exit(){
+    this.auth.logout();
   }
 
   public get isLoading(): boolean{
