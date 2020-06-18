@@ -12,6 +12,9 @@ import { ProviderService } from './table/provider.service';
 import { EntityService } from './entity.service';
 import { ContainerService } from './container.service';
 import { LoaderService } from './loader.service';
+import {AdminRoutingModule} from './admin-routing/admin-routing.module';
+import {NonAuthComponent} from './auth-module/auth/non-auth/non-auth.component';
+import {AuthComponent} from './auth-module/auth/auth.component';
 
 
 const routes: Routes = [
@@ -25,9 +28,12 @@ const routes: Routes = [
     RouterModule.forChild( routes ),
     DashboardModule,
     HttpClientModule,
+    AdminRoutingModule
   ],
   declarations: [
     AdminComponent,
+    NonAuthComponent,
+    AuthComponent
   ],
   providers: [
     DictService,
