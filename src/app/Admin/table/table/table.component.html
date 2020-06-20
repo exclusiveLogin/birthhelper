@@ -8,7 +8,7 @@
   <span *ngIf="currentItem">Выбранный элемент: {{currentItem.data.title}}[ {{currentItem.data.id}} ]</span>
   <button *ngIf="currentItem" (click)="unselectItem()">Снять выбор</button>
   <div class="bh_table_error_block" *ngIf="currentError">{{ currentError }}</div>
-  <img class="img_block" *ngIf="currentItem && currentItem.image" [src]="currentItem.image" width="150"/>
+  <img class="img_block" *ngIf="currentItem && currentItem.image" [src]="currentItem.image" width="35"/>
 </div>
 <app-filters [filters]="filters" (update)="refreshTable($event)"></app-filters>
 <div class="bh_table_head">

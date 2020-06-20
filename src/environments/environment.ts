@@ -9,5 +9,5 @@ export const environment = {
   baseUrl: env['baseUrl'] || 'http://localhost',
   fileServer: env['fileServer'] || 'http://localhost:9080',
   backend: env['backend'] || 'http://localhost:3000',
-  static: env['static'] || 'http://localhost:3000/static',
+  static: env['static'] || 'http://localhost:4200/static',
 };

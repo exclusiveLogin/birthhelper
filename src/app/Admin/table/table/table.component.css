@@ -41,11 +41,15 @@ app-cell.selected{
     padding: 5px;
 }
 .img_block{
-  margin: 0px 50px;
-  border-radius: 10px;
-  box-shadow: 5px 5px 10px 0px rgba(0,0,0,0.2);
+  width: 35px;
+  height: 35px;
+  margin: -12px 10px;
+  border-radius: 5px;
+  background-size: cover;
 }
 .img_block:hover{
   transition: all 0.1s ease-in-out;
-  transform: scale(3);
+  transform: scale(10);
+  /*width: unset;*/
+  /*height: unset;*/
 }
