@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, SimpleChanges, OnDestroy} from '@angular/core';
+import {Component, OnInit, Input, SimpleChanges, OnDestroy, NgZone, AfterViewChecked, AfterViewInit} from '@angular/core';
 import { IFieldSetting, FormService, ILinkFieldSetting } from '../../form.service';
 import { DictService, IDictItem } from '../../dict.service';
 import { IRowSetting } from '../../table/table/cell/cell.component';
@@ -9,7 +9,7 @@ import { FormGroup } from '@angular/forms';
 import { ContainerService } from '../../container.service';
 import {IFile, IFileAdditionalData, IRestBody} from '../../rest.service';
 import {Subject} from 'rxjs/Subject';
-import {distinct, finalize} from 'rxjs/operators';
+import {distinct} from 'rxjs/operators';
 import {Subscription} from 'rxjs/Subscription';
 
 @Component({
@@ -17,10 +17,12 @@ import {Subscription} from 'rxjs/Subscription';
   templateUrl: './Editor.component.html',
   styleUrls: ['./Editor.component.css']
 })
-export class EditorComponent implements OnInit, OnDestroy {
+export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Input() mode: EMENUMODE;
   @Input() menu: IMenuRepo;
+
+  public stable = false;
 
   public currentService: IEntityItem;
   public refresh: Function;
@@ -167,6 +169,10 @@ export class EditorComponent implements OnInit, OnDestroy {
   ngOnInit() {
   }
 
+  ngAfterViewInit() {
+    setTimeout(()=>this.stable = true, 1000);
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
     //Add '${implements OnChanges}' to the class.
@@ -253,6 +259,10 @@ export class EditorComponent implements OnInit, OnDestroy {
           }
         );
       }, (err) => this.currentError = err.message ? err.message : err);
+    }
+
+    if(this.isCreateMode) {
+      this.form.get('id') ? this.form.get('id').setValue(null) : null;
     }
 
     this.checkConditionFields();

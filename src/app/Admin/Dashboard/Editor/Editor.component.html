@@ -1,5 +1,5 @@
 <div class="bh_error_block" *ngIf="currentError">{{currentError}} <i class="far fa-times-circle" (click)="closeCurrentError()"></i></div>
-<div class="service_head">
+<div class="service_head" *ngIf="stable">
   <h3 class="bh_service_title" *ngIf="isCreateMode">Добавление {{menu.titleVocs}}</h3>
   <h3 class="bh_service_title" *ngIf="isEditMode">Редактирование {{menu.titleVocs}}</h3>
   <h3 class="bh_service_title" *ngIf="isDeleteMode">Удаление {{menu.titleVocs}}</h3>
@@ -8,7 +8,7 @@
       <i class="fas fa-lock"></i> Зафиксировать состояние контейнера
   </button>
 
-  <button *ngIf="isCreateMode" [disabled]="!!currentService || !!form.invalid" (click)="createEntity()"><i class="fas fa-plus-square"></i>Создать {{menu.titleVoc}}</button>
+  <button *ngIf="isCreateMode" [disabled]="!!form.invalid" (click)="createEntity()"><i class="fas fa-plus-square"></i>Создать {{menu.titleVoc}}</button>
   <button *ngIf="isEditMode" [disabled]="!currentService || !!form.invalid" (click)="editEntity()"><i class="fas fa-edit"></i>Изменить {{menu.titleVoc}}</button>
   <button *ngIf="isDeleteMode" [disabled]="!currentService" (click)="removeEntity()"><i class="far fa-trash-alt"></i>Удалить {{menu.titleVoc}}</button>
 
@@ -175,7 +175,7 @@
 
   </ng-container>
 
-  <button *ngIf="isCreateMode" [disabled]="!!currentService || !!form.invalid" (click)="createEntity()"><i class="fas fa-plus-square"></i>Создать {{menu.titleVoc}}</button>
+  <button *ngIf="isCreateMode" [disabled]="!!form.invalid" (click)="createEntity()"><i class="fas fa-plus-square"></i>Создать {{menu.titleVoc}}</button>
   <button *ngIf="isEditMode" [disabled]="!currentService || !!form.invalid" (click)="editEntity()"><i class="fas fa-edit"></i>Изменить {{menu.titleVoc}}</button>
   <button *ngIf="isDeleteMode" [disabled]="!currentService" (click)="removeEntity()"><i class="far fa-trash-alt"></i>Удалить {{menu.titleVoc}}</button>
 
