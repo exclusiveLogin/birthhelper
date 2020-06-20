@@ -30,6 +30,18 @@ export class DashboardComponent implements OnInit {
 
   public readonly menuRepo: IMenuRepo[] = [
     {
+      name: 'doctor',
+      title: 'Специалисты',
+      titleVoc: 'специалиста',
+      titleVocs: 'специалисты',
+      type: 'entity',
+      modes: [
+        EMENUMODE.CREATE,
+        EMENUMODE.EDIT,
+        EMENUMODE.DELETE,
+      ]
+    },
+    {
       name: 'services',
       title: 'Услуги',
       titleVoc: 'услугу',
@@ -111,6 +123,45 @@ export class DashboardComponent implements OnInit {
       titleVocs: 'изображения',
       type: 'entity',
       mime: 'image',
+      modes: [
+        EMENUMODE.CREATE,
+        EMENUMODE.DELETE,
+        EMENUMODE.EDIT,
+      ]
+    },
+    {
+      name: 'birthtype',
+      title: 'Виды родов(словарь)',
+      titleVoc: 'вид родов',
+      titleVocs: 'виды родов',
+      type: 'entity',
+      //mime: 'image',
+      modes: [
+        EMENUMODE.CREATE,
+        EMENUMODE.DELETE,
+        EMENUMODE.EDIT,
+      ]
+    },
+    {
+      name: 'doctor_position',
+      title: 'Должности врачей(словарь)',
+      titleVoc: 'должность',
+      titleVocs: 'должности',
+      type: 'entity',
+      //mime: 'image',
+      modes: [
+        EMENUMODE.CREATE,
+        EMENUMODE.DELETE,
+        EMENUMODE.EDIT,
+      ]
+    },
+    {
+      name: 'doctor_category',
+      title: 'Категории врачей(словарь)',
+      titleVoc: 'категория',
+      titleVocs: 'категории',
+      type: 'entity',
+      //mime: 'image',
       modes: [
         EMENUMODE.CREATE,
         EMENUMODE.DELETE,
