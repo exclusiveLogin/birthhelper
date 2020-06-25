@@ -17,15 +17,9 @@ import {NonAuthComponent} from './auth-module/auth/non-auth/non-auth.component';
 import {AuthComponent} from './auth-module/auth/auth.component';
 
 
-const routes: Routes = [
-  { path: '', component: AdminComponent },
-];
-
-
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild( routes ),
     DashboardModule,
     HttpClientModule,
     AdminRoutingModule
