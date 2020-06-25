@@ -1,12 +1,13 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ProviderService } from '../provider.service';
 import { IDictItem } from '../../dict.service';
-import { IEntity, IEntityItem } from '../../entity.service';
+import { IEntityItem, ISet } from '../../entity.service';
 import { IRowSetting } from './cell/cell.component';
 import { IFiltersParams } from './filters/filters.component';
 import { IRestParams } from '../../rest.service';
 import {IContainer, ISlot} from '../../container.service';
 import {environment} from '../../../../environments/environment';
+import {catchError, tap} from 'rxjs/operators';
 
 export interface ITableRows{
   title?: string;
@@ -67,8 +68,28 @@ export class TableComponent implements OnInit {
   public currentItem: ITableItem;
   public currentItems: ITableItem[];
   public rowSettings: IRowSetting[];
-  //@todo добавить delete mode в RS для построения как шапки так и кнопки
   public currentError: string;
+  private currentSet: ISet;
+
+  private refreshFilters(){
+    this.provider.getFilters( this.key, this.type ).subscribe( filters => {
+      this.filters = filters;
+      this.initFilterDictionaries();
+    }, (err) => this.currentError = err.message ? err.message : err);
+  }
+
+  private refreshSet(){
+    return this.provider.getItemsSet( this.key, this.type ).pipe(
+      tap((set)=>{
+        if(!!set){
+          this.total = set && set.total && Number(set.total);
+          this.allPages = this.total ? Math.floor( this.total / 20 ) + 1 : 1;
+          this.rowSettings = set.fields && set.fields.filter(f => !f.hide && !!f.showOnTable);
+        }
+      }),
+      catchError(err => this.currentError = err.message ? err.message : err)
+    )
+  }
 
   ngOnInit() {
     this.deselector$.emit(this.deselector.bind(this));
@@ -82,63 +103,53 @@ export class TableComponent implements OnInit {
         });
         return;
       }
-      // запрос сета для определения статистики таблицы
-      this.provider.getItemsSet( this.key, this.type ).subscribe(set => {
-        if(!!set){
-          this.total = set && set.total && Number(set.total);
-          this.allPages = this.total ? Math.floor( this.total / 20 ) + 1 : 1;
-          this.rowSettings = set.fields && set.fields.filter(f => !f.hide && !!f.showOnTable);
 
-          // запрос первой страницы таблицы при инициализации
-          if(this.type === 'repo') {
-            const cont: IContainer = set.container;
-            const slot: ISlot = set.slot;
-            if(cont){
-              this.type = 'entity';
-              this.key = cont.db_entity;
-              this.provider.getItemsSet( this.key, this.type )
-                .subscribe(newset => {
-                  this.total = newset && newset.total && Number(newset.total);
-                  this.allPages = this.total ? Math.floor( this.total / 20 ) + 1 : 1;
-                  this.rowSettings = newset.fields && newset.fields.filter(f => !f.hide && !!f.showOnTable);
-                  this.provider.getItemsFirstPortion( this.key, this.type )
-                    .subscribe((items: IEntityItem[] ) => {
+      this.refreshSet().subscribe(set => {
+        // запрос первой страницы таблицы при инициализации
+        if(this.type === 'repo') {
+          const cont: IContainer = set.container;
+          const slot: ISlot = set.slot;
+          if(cont){
+            this.type = 'entity';
+            this.key = cont.db_entity;
+            this.provider.getItemsSet( this.key, this.type )
+              .subscribe(newset => {
+                this.total = newset && newset.total && Number(newset.total);
+                this.allPages = this.total ? Math.floor( this.total / 20 ) + 1 : 1;
+                this.rowSettings = newset.fields && newset.fields.filter(f => !f.hide && !!f.showOnTable);
+                this.provider.getItemsFirstPortion( this.key, this.type )
+                  .subscribe((items: IEntityItem[] ) => {
                       this.items = items && <ITableItem[]>items.map(i => this.converter(i));
                       this.finishItemsPhase();
                     },
-                      (err) => this.currentError = err.message ? err.message : err);
-                }, (err) => this.currentError = err.message ? err.message : err);
-            } else if(slot){
-              this.type = 'entity';
-              this.key = slot.db_entity;
-              this.provider.getItemsSet( this.key, this.type )
-                .subscribe(newset => {
-                  this.total = newset && newset.total && Number(newset.total);
-                  this.allPages = this.total ? Math.floor( this.total / 20 ) + 1 : 1;
-                  this.rowSettings = newset.fields && newset.fields.filter(f => !f.hide && !!f.showOnTable);
-                  this.provider.getItemsFirstPortion( this.key, this.type )
-                    .subscribe((items: IEntityItem[] ) => {
+                    (err) => this.currentError = err.message ? err.message : err);
+              }, (err) => this.currentError = err.message ? err.message : err);
+          } else if(slot){
+            this.type = 'entity';
+            this.key = slot.db_entity;
+            this.provider.getItemsSet( this.key, this.type )
+              .subscribe(newset => {
+                this.total = newset && newset.total && Number(newset.total);
+                this.allPages = this.total ? Math.floor( this.total / 20 ) + 1 : 1;
+                this.rowSettings = newset.fields && newset.fields.filter(f => !f.hide && !!f.showOnTable);
+                this.provider.getItemsFirstPortion( this.key, this.type )
+                  .subscribe((items: IEntityItem[] ) => {
                       this.items = items && <ITableItem[]>items.map(i => this.converter(i));
                       this.finishItemsPhase();
                     },
-                      (err) => this.currentError = err.message ? err.message : err);
-                }, (err) => this.currentError = err.message ? err.message : err);
-            }
-          } else{
-            this.provider.getItemsFirstPortion( this.key, this.type )
-              .subscribe((items: ( IDictItem | IEntityItem)[] ) => {
+                    (err) => this.currentError = err.message ? err.message : err);
+              }, (err) => this.currentError = err.message ? err.message : err);
+          }
+        } else{
+          this.provider.getItemsFirstPortion( this.key, this.type )
+            .subscribe((items: ( IDictItem | IEntityItem)[] ) => {
                 this.items = items && <ITableItem[]>items.map(i => this.converter(i));
                 this.finishItemsPhase();
               },
-               (err) => this.currentError = err.message ? err.message : err);
-          }
+              (err) => this.currentError = err.message ? err.message : err);
         }
-        this.provider.getFilters( this.key, this.type ).subscribe( filters => {
-          this.filters = filters;
-          this.initFilterDictionaries();
-        }, (err) => this.currentError = err.message ? err.message : err);
-
-      }, (err) => this.currentError = err.message ? err.message : err);
+      })
+      this.refreshFilters();
     }
     this.refresh.emit(this.refreshTable.bind(this));
   }
@@ -196,8 +207,9 @@ export class TableComponent implements OnInit {
 
   public refreshTable( filters: IFiltersParams){
     console.log('refresh table:', filters);
-    this.paginator = filters ? !Object.keys(filters).some(k => !!k) : false;
+    this.paginator = filters ? !Object.keys(filters).some(k => !!k) : true;
     this.currentItem = null;
+    this.refreshSet().subscribe();
     this.pageChanged(1, filters as IRestParams);
   }
 
