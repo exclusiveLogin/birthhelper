@@ -191,6 +191,10 @@ export class TableComponent implements OnInit {
     }
   }
 
+  public hasImages(): boolean {
+    return this.items.some(i => !!i.image);
+  }
+
   public pageChanged(page: number, qp?: IRestParams){
     console.log('page changed: ', page);
     this.currentPage = page;

@@ -12,6 +12,7 @@
 </div>
 <app-filters [filters]="filters" (update)="refreshTable($event)"></app-filters>
 <div class="bh_table_head">
+  <div class="row imagerow" *ngIf="hasImages()"><i class="far fa-image"></i></div>
   <div class="row" *ngFor="let rs of rowSettings">{{ rs.title }}</div>
   <div class="row" *ngIf="type === 'dummy'">Удалить</div>
 </div>

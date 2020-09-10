@@ -53,3 +53,6 @@ app-cell.selected{
   /*width: unset;*/
   /*height: unset;*/
 }
+.imagerow{
+  max-width: 40px;
+}
