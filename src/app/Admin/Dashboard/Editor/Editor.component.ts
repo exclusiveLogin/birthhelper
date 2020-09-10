@@ -183,6 +183,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
           this.toastr.success('Файл загружен', 'id: ' + data.file.id);
           field.imageControl.setValue('');
           this.fileForUpload = null;
+          this.refresh();
         }
       });
     }
