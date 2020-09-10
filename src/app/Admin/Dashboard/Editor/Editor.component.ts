@@ -11,6 +11,7 @@ import {IFile, IFileAdditionalData, IRestBody} from '../../rest.service';
 import {Subject} from 'rxjs/Subject';
 import {distinct} from 'rxjs/operators';
 import {Subscription} from 'rxjs/Subscription';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-editor',
@@ -32,7 +33,9 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
     private forms: FormService,
     private ent: EntityService,
     private cont: ContainerService,
-  ) { }
+    private toastr: ToastrService,
+  ) {
+  }
 
   public form: FormGroup = new FormGroup({});
   public fields: IFieldSetting[] = [];
@@ -92,8 +95,10 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
           curentValueRAW;
 
         this.conditionsSubscribers[fk].forEach(subField => {
-          subField.hide = subField.conditionKey ? subField.conditionValue !== value[subField.conditionKey] : subField.conditionValue !== value;
-        })
+          subField.hide = subField.conditionKey ?
+            subField.conditionValue !== value[subField.conditionKey] :
+            subField.conditionValue !== value;
+        });
       });
 
     }
@@ -127,6 +132,14 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
 
+    this.linkFields.forEach(field => {
+      if(field.imageLoader) {
+        field.imageControl = this.forms.createFormControl(null);
+        field.titleControl = this.forms.createFormControl(null);
+        field.descriptionControl = this.forms.createFormControl(null);
+      }
+    });
+
     this.forms.registerFields(this.fields, this.form);
     console.log('dev form:', this.form);
   }
@@ -157,6 +170,25 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
+  public uploadImageWithLoader(field: ILinkFieldSetting): void {
+    console.log('file to upload with loader', field);
+    if( this.fileForUpload ){
+      const _data: IFileAdditionalData = {
+        title: field.titleControl.value,
+        description: field.descriptionControl.value
+      };
+
+      this.ent.uploadImg( this.fileForUpload, _data ).subscribe(data => {
+        if(data.file && data.file.id) {
+          this.toastr.success('Файл загружен', 'id: ' + data.file.id);
+          field.imageControl.setValue('');
+          this.fileForUpload = null;
+        }
+      });
+    }
+
+  }
+
   private rerenderValueOfFields(){
     console.log('rerender: ', this.fields);
     this.fields.forEach( field => {
@@ -167,6 +199,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    console.log('TOASTR: ', this.toastr);
   }
 
   ngAfterViewInit() {

@@ -106,6 +106,30 @@
       <div class="bh_link_control" *ngFor="let field of linkFields">
         <ng-container [ngSwitch]="field.type" *ngIf="!field.hide">
 
+          <ng-container *ngIf="field.imageLoader">
+
+              <label [for]="'uploader'" class="bh_label">Загрузчик изображений</label>
+
+              <div class="bh_panel_block">
+                <div class="bh_block">
+                  <input type="file"
+                          (change)="setImageForUpload( $event )"
+                          [readonly]="field.readonly"
+                          [id]="'uploader'"
+                          [placeholder]="'Введите ' + (field.title ? field.title : 'текст') | lowercase"
+                          [formControl]="field.imageControl"/>
+
+                  <input [formControl]="field.titleControl" type="text" id="file_title" placeholder="Введите название картинки">
+
+                  <input [formControl]="field.descriptionControl" type="text" id="file_description" placeholder="Введите описание картинки">
+
+                  <button (click)="uploadImageWithLoader( field )">Загрузить</button>
+                </div>
+              </div>
+
+          </ng-container>
+
+
           <ng-container *ngSwitchCase="'repo'">
             <ng-container *ngIf="menu && menu.type === 'container' && !!currentService">
 

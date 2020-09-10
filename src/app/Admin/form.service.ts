@@ -41,7 +41,11 @@ export interface ILinkFieldSetting {
   conditionField: string;
   conditionKey: string;
   conditionValue: number | string;
-  hide?:boolean;
+  hide?: boolean;
+  imageLoader?: boolean;
+  imageControl?: FormControl;
+  titleControl?: FormControl;
+  descriptionControl?: FormControl;
 }
 
 @Injectable()
