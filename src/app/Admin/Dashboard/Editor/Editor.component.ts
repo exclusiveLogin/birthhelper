@@ -183,6 +183,10 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
           this.toastr.success('Файл загружен', 'id: ' + data.file.id);
           field.imageControl.setValue('');
           this.fileForUpload = null;
+          field.refresher && field.refresher();
+          if(field.proxyTo) {
+            this.form.get(field.proxyTo).setValue(data.file.id);
+          }
           this.refresh();
         }
       });
@@ -259,6 +263,10 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public refreshAssign(e){
     this.refresh = e;
+  }
+
+  public refreshAsignByField( field: ILinkFieldSetting | IFieldSetting , e){
+    field.refresher = e;
   }
 
   public selectServiceFromTable( service: ITableItem ){

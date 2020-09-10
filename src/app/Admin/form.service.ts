@@ -22,6 +22,7 @@ export interface IFieldSetting {
   hide?: boolean;
   proxyTo?: string;
   image?: { urlType: string, urlKey: string };
+  refresher?: Function;
 }
 
 export interface ILinkFieldSetting {
@@ -46,6 +47,7 @@ export interface ILinkFieldSetting {
   imageControl?: FormControl;
   titleControl?: FormControl;
   descriptionControl?: FormControl;
+  refresher?: Function;
 }
 
 @Injectable()
