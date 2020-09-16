@@ -329,38 +329,43 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public removeEntity(){
     //if(this.currentService && /*confirm("Уверен что хочешь удалить услугу?")*/){
-    if(this.currentService){
+    if(this.currentService && confirm("Уверен что хочешь удалить " + this.menu.titleVoc)){
+
       switch(this.menu.type){
         case 'container':
           this.cont.removeContainer(this.menu.containerKey, this.currentService.id).subscribe( result => {
             this.refresh();
             this.currentService = null;
+            this.toastr.success('Удаление сущности ', 'Сущность ' +  this.menu.titleVoc + ' успешно удалена');
           }, (err) => this.currentError = err.message ? err.message : err);
           break;
         case 'entity':
           this.ent.remEnt(this.menu.name, this.currentService.id).subscribe(result => {
             this.refresh();
             this.currentService = null;
+            this.toastr.success('Удаление сущности ', 'Сущность ' +  this.menu.titleVoc + ' успешно удалена');
           }, (err) => this.currentError = err.message ? err.message : err);
           break;
         case 'slot':
           this.ent.removeSlotEntity(this.menu.slotKey, this.currentService.id).subscribe(result => {
             this.refresh();
             this.currentService = null;
+            this.toastr.success('Удаление сущности ', 'Сущность ' +  this.menu.titleVoc + ' успешно удалена');
           }, (err) => this.currentError = err.message ? err.message : err);
           break;
       }
     }
   }
 
-  public createEntity(){
+  public createEntity(): void {
     // собрать все поля формы в объект сущности
     let data: IEntityItem = this.form.getRawValue();
     for(let d in data) if(data[d] === null) delete data[d];
     // отправить post с сущностью
-    if(true || confirm("Уверен что хочешь создать" + this.menu.titleVoc +' ?')){
+    if(confirm("Уверен что хочешь создать " + this.menu.titleVoc + ' ?')) {
       this.ent.createEnt(this.menu.name, data).subscribe(result => {
         //alert('Сущность успешно создана');
+        this.toastr.success('Создание сущности', 'Сущность ' +  this.menu.titleVoc + ' успешно создана');
         this.form.reset();
         this.currentService = null;
         this.forms.closeForm();
@@ -384,11 +389,19 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
         this.form.reset();
         this.currentService = null;
 
+        this.toastr.success('Редактирование сущности', 'Сущность ' + this.menu.titleVoc + ' успешно изменена');
+
       }, (err) => this.currentError = err.message ? err.message : err);
     }
   }
 
-  public deselectAssign(fn){
+  public dictReseter(): void {
+    if (!!this.menu && !!this.menu.isDict) {
+      this.dict.resetDict();
+    }
+  }
+
+  public deselectAssign(fn): void {
     this.deselectFn = fn;
   }
 

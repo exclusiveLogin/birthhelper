@@ -17,6 +17,7 @@ export interface IMenuRepo {
   type: string;
   mime?: string;
   modes: EMENUMODE[];
+  isDict?: boolean;
 }
 @Component({
   selector: 'app-Dashboard',
@@ -161,6 +162,7 @@ export class DashboardComponent implements OnInit {
       titleVoc: 'вид родов',
       titleVocs: 'виды родов',
       type: 'entity',
+      isDict: true,
       //mime: 'image',
       modes: [
         EMENUMODE.CREATE,
@@ -174,6 +176,7 @@ export class DashboardComponent implements OnInit {
       titleVoc: 'должность',
       titleVocs: 'должности',
       type: 'entity',
+      isDict: true,
       //mime: 'image',
       modes: [
         EMENUMODE.CREATE,
@@ -187,6 +190,7 @@ export class DashboardComponent implements OnInit {
       titleVoc: 'категория',
       titleVocs: 'категории',
       type: 'entity',
+      isDict: true,
       //mime: 'image',
       modes: [
         EMENUMODE.CREATE,
@@ -200,6 +204,7 @@ export class DashboardComponent implements OnInit {
       titleVoc: 'специализация',
       titleVocs: 'специализации',
       type: 'entity',
+      isDict: true,
       //mime: 'image',
       modes: [
         EMENUMODE.CREATE,
@@ -213,6 +218,7 @@ export class DashboardComponent implements OnInit {
       titleVoc: 'удобство',
       titleVocs: 'удобства',
       type: 'entity',
+      isDict: true,
       //mime: 'image',
       modes: [
         EMENUMODE.CREATE,

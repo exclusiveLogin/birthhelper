@@ -28,7 +28,7 @@ export class DictService {
   constructor(
     private rest: RestService,
   ) {
-    console.log('DEVSS DICT');
+    console.log('DEVSS DICT', this);
   }
 
   private dictRepo: { [key: string]: IDictItem[] } = {};
@@ -47,5 +47,14 @@ export class DictService {
       );
 
     return this.dictGetStreams$[name];
+  }
+
+  public resetDict(key?: string): void {
+    if (key && this.dictRepo[key]) {
+      delete this.dictRepo[key];
+      return;
+    }
+
+    this.dictRepo = {};
   }
 }
