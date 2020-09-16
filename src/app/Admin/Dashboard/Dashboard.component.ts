@@ -104,6 +104,32 @@ export class DashboardComponent implements OnInit {
       ]
     },
     {
+      name: 'facilities_containers',
+      containerKey: 'container_facilities',
+      title: 'Контейнеры удобств в клиниках',
+      titleVoc: 'контейнер',
+      titleVocs: 'контейнера',
+      type: 'container',
+      modes: [
+        EMENUMODE.CREATE,
+        EMENUMODE.DELETE,
+        EMENUMODE.EDIT,
+      ]
+    },
+    {
+      name: 'specialities_clinic_containers',
+      containerKey: 'container_specialities',
+      title: 'Контейнеры специализаций клиник',
+      titleVoc: 'контейнер',
+      titleVocs: 'контейнера',
+      type: 'container',
+      modes: [
+        EMENUMODE.CREATE,
+        EMENUMODE.DELETE,
+        EMENUMODE.EDIT,
+      ]
+    },
+    {
       name: 'services_slots',
       slotKey: 'slot_service_natal',
       title: 'Слоты услуг родовспоможения',
@@ -160,6 +186,32 @@ export class DashboardComponent implements OnInit {
       title: 'Категории врачей(словарь)',
       titleVoc: 'категория',
       titleVocs: 'категории',
+      type: 'entity',
+      //mime: 'image',
+      modes: [
+        EMENUMODE.CREATE,
+        EMENUMODE.DELETE,
+        EMENUMODE.EDIT,
+      ]
+    },
+    {
+      name: 'specialities_clinic',
+      title: 'Специализация клиник(словарь)',
+      titleVoc: 'специализация',
+      titleVocs: 'специализации',
+      type: 'entity',
+      //mime: 'image',
+      modes: [
+        EMENUMODE.CREATE,
+        EMENUMODE.DELETE,
+        EMENUMODE.EDIT,
+      ]
+    },
+    {
+      name: 'facilities',
+      title: 'Удобства клиник(словарь)',
+      titleVoc: 'удобство',
+      titleVocs: 'удобства',
       type: 'entity',
       //mime: 'image',
       modes: [

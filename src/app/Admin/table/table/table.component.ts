@@ -111,7 +111,7 @@ export class TableComponent implements OnInit {
           const slot: ISlot = set.slot;
           if(cont){
             this.type = 'entity';
-            this.key = cont.db_entity;
+            this.key = cont.entity_key;
             this.provider.getItemsSet( this.key, this.type )
               .subscribe(newset => {
                 this.total = newset && newset.total && Number(newset.total);
