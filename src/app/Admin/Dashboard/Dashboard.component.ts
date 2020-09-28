@@ -225,6 +225,20 @@ export class DashboardComponent implements OnInit {
         EMENUMODE.DELETE,
         EMENUMODE.EDIT,
       ]
+    },
+    {
+      name: 'slot_clinic_type',
+      title: 'Вид услуги клиник(словарь)',
+      titleVoc: 'услуга',
+      titleVocs: 'услуги',
+      type: 'entity',
+      isDict: true,
+      //mime: 'image',
+      modes: [
+        EMENUMODE.CREATE,
+        EMENUMODE.DELETE,
+        EMENUMODE.EDIT,
+      ]
     }
   ]
 
