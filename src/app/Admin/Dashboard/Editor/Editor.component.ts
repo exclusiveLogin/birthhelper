@@ -204,7 +204,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
-    console.log('TOASTR: ', this.toastr);
+    this.forms.registerInRepo('editor', this.form);
   }
 
   ngAfterViewInit() {

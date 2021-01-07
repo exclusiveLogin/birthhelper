@@ -142,6 +142,7 @@
                 (select)="repoSelected( $event )"
                 (deselector$)="deselectAssign( $event )"
                 [imageOptions]="field.image"
+                [filterLinkParams]="field.filterLinks"
               ></app-table>
 
               <div class="full" *ngIf="!!menu && (isEditMode)"><i class="fas fa-chevron-down fa-3x"></i></div>
