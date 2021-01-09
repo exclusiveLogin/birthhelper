@@ -144,6 +144,19 @@ export class DashboardComponent implements OnInit {
       ]
     },
     {
+      name: 'doctor_slots',
+      slotKey: 'slot_service_natal',
+      title: 'Слоты услуг персонала',
+      titleVoc: 'слот',
+      titleVocs: 'слота',
+      type: 'slot',
+      modes: [
+        EMENUMODE.CREATE,
+        EMENUMODE.DELETE,
+        EMENUMODE.EDIT,
+      ]
+    },
+    {
       name: 'images',
       title: 'Изображения системы',
       titleVoc: 'изображение',

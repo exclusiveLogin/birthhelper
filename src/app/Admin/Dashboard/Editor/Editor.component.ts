@@ -1,13 +1,12 @@
-import {Component, OnInit, Input, SimpleChanges, OnDestroy, NgZone, AfterViewChecked, AfterViewInit} from '@angular/core';
+import {Component, OnInit, Input, SimpleChanges, OnDestroy, AfterViewInit} from '@angular/core';
 import { IFieldSetting, FormService, ILinkFieldSetting } from '../../form.service';
 import { DictService, IDictItem } from '../../dict.service';
-import { IRowSetting } from '../../table/table/cell/cell.component';
-import {IImageOptions, ITableItem} from '../../table/table/table.component';
+import {ITableItem} from '../../table/table/table.component';
 import { EMENUMODE, IMenuRepo } from '../Dashboard.component';
 import { IEntityItem, EntityService } from '../../entity.service';
 import { FormGroup } from '@angular/forms';
 import { ContainerService } from '../../container.service';
-import {IFile, IFileAdditionalData, IRestBody} from '../../rest.service';
+import { IFileAdditionalData, IRestBody} from '../../rest.service';
 import {Subject} from 'rxjs/Subject';
 import {distinct} from 'rxjs/operators';
 import {Subscription} from 'rxjs/Subscription';
@@ -43,7 +42,6 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
   public dummyItems: ITableItem[] = [];
   public deselectFn: Function;
   public deselectSlotServiceFn: Function;
-  public deselectSlotContragentFn: Function;
   public currentError: string;
 
   private conditionsSubscribers: {[name:string]: ILinkFieldSetting[]} = {};

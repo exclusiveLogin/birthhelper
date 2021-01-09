@@ -1,30 +1,44 @@
 <div class="bh_control" *ngFor="let field of fields">
 
-    <label [for]="field.id" class="bh_label">{{ field.title }}</label>
+  <label [for]="field.name" class="bh_label">{{ field.title }}</label>
 
-    <ng-container [ngSwitch]="field.type">
+  <ng-container [ngSwitch]="field.type">
 
-      <ng-container *ngSwitchCase="'string'">
-        <input (input)="printFilters($event, field.name)" type="text" [name]="field.name" [id]="field.name" [placeholder]="'Введите ' + field.title | lowercase" />
-      </ng-container>
+    <ng-container *ngSwitchCase="'string'">
+      <input
+        [formControl]="field.control"
+        type="text"
+        [name]="field.name"
+        [id]="field.name"
+        [placeholder]="'Введите ' + field.title | lowercase"
+      />
+    </ng-container>
 
-      <ng-container *ngSwitchCase="'text'">
-        <textarea [name]="field.name" [id]="field.name" [placeholder]="'Введите ' + field.title | lowercase" ></textarea>
-      </ng-container>
+    <ng-container *ngSwitchCase="'text'">
+        <textarea
+          [name]="field.name"
+          [id]="field.name"
+          [placeholder]="'Введите ' + field.title | lowercase"></textarea>
+    </ng-container>
 
-      <ng-container *ngSwitchCase="'id'">
-        <select [name]="field.name" [id]="field.name" *ngIf="field.items" (change)="selectFilters(field, $event)">
-          <option value>Не выбран</option>
-          <option *ngFor="let item of field.items" [value]="item.id">{{item.title}}</option>
-        </select>
-      </ng-container>
+    <ng-container *ngSwitchCase="'id'">
+      <select
+        [name]="field.name"
+        [id]="field.name"
+        *ngIf="field.items$"
+        [formControl]="field.control"
+      >
+        <option value>Не выбран</option>
+        <option *ngFor="let item of field.items$ | async" [value]="item.id">{{item.title}}</option>
+      </select>
+    </ng-container>
 
 
-      <ng-container *ngSwitchDefault>
-        
-      </ng-container>
-
+    <ng-container *ngSwitchDefault>
 
     </ng-container>
 
-  </div>
+
+  </ng-container>
+
+</div>

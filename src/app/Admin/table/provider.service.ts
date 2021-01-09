@@ -16,7 +16,7 @@ export class ProviderService {
     return type === 'dict' ? this.getDictPage( key ) : this.getEntPage( key );
   }
 
-  public getItemPage( key: string, type: string, page: number = 1, queryParams: IRestParams): Observable<IEntityItem[] | IDictItem[]>{
+  public getItemPage( key: string, type: string, page: number = 1, queryParams: IRestParams = {}): Observable<IEntityItem[] | IDictItem[]>{
     return type === 'dict' ? this.getDictPage( key, page ) : this.getEntPage( key, page, queryParams );
   }
 
