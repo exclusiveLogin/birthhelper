@@ -17,3 +17,7 @@ input, textarea, select{
     padding: 4px;
     margin: 10px;
 }
+input[readonly]{
+  background-color: darkgrey;
+  opacity: 0.5;
+}

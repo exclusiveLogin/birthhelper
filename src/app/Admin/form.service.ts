@@ -5,6 +5,7 @@ import {Observable} from 'rxjs/Observable';
 import {NeverObservable} from 'rxjs/observable/NeverObservable';
 import {of} from 'rxjs/observable/of';
 import {distinctUntilChanged, filter, map, pluck, tap} from 'rxjs/operators';
+import {ITableFilter} from './table/table/table.component';
 
 export interface IFieldSetting {
   id: string;
@@ -44,6 +45,8 @@ export interface ILinkFieldSetting {
   dummyTitle?: string;
   entType?: string;
   proxyTo?: string;
+  readonly?: boolean;
+  filters?: ITableFilter[];
   image?: { urlType: string, urlKey: string };
   conditionField: string;
   conditionKey: string;
@@ -54,7 +57,6 @@ export interface ILinkFieldSetting {
   titleControl?: FormControl;
   descriptionControl?: FormControl;
   refresher?: Function;
-  filterLinks?: IFilterLink[];
 }
 
 export interface IFilterLink {
@@ -102,7 +104,9 @@ export class FormService {
   getFormFieldVC$(formKey: string, fieldKey: string): Observable<string | number> {
     if (this.formsRepo && this.formsRepo[formKey]) {
       return this.formsRepo[formKey].valueChanges.pipe(
+        map(() => this.formsRepo[formKey].getRawValue()),
         filter(data => !!data),
+        tap(data => console.log('getFormFieldVC$:data: ', data)),
         distinctUntilChanged((prev, next) => prev[fieldKey] === next[fieldKey]),
         pluck(fieldKey),
       );

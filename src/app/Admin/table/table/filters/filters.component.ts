@@ -1,9 +1,11 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {ITableFilters} from '../table.component';
+import {Component, OnInit, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
+import {ITableFilter} from '../table.component';
 import {FormService, IFilterLink} from '../../../form.service';
 import {Observable} from 'rxjs';
 import {debounceTime, filter, map, mergeAll, mergeMap, tap} from 'rxjs/operators';
 import {merge} from 'rxjs/observable/merge';
+import {Subscription} from 'rxjs/Subscription';
+import {FormGroup} from '@angular/forms';
 
 export interface IFiltersParams {
   [name: string]: string;
@@ -14,28 +16,48 @@ export interface IFiltersParams {
   templateUrl: './filters.component.html',
   styleUrls: ['./filters.component.css']
 })
-export class FiltersComponent implements OnInit {
+export class FiltersComponent implements OnInit, OnDestroy {
 
   constructor(
     private forms: FormService,
   ) {
   }
 
-  @Input('filters') public fields$: Observable<ITableFilters[]>;
-  @Input('filterLinkParams') flp: IFilterLink[] = [];
+  @Input('filters') public fields$: Observable<ITableFilter[]>;
   @Output() public update: EventEmitter<IFiltersParams> = new EventEmitter(null);
 
   private filters: IFiltersParams = {};
-  public fields: ITableFilters[];
+  public fields: ITableFilter[];
+  private flpSubs: Subscription[] = [];
+  private fieldSub: Subscription;
+  public form = new FormGroup({});
 
   ngOnInit() {
+
     if (this.fields$) {
-      this.fields$.pipe(
+      this.fieldSub = this.fields$.pipe(
         // all fields
         filter(f => !!f && !!f.length),
-        tap(f => this.fields = f),
+        tap(f => this.fields = f || []),
+        tap(() => {
+          const flp = this.fields.filter(f => !!f.formLink).map(f => ({...f.formLink, key: f.name}));
+
+          this.flpSubs.forEach(s => s.unsubscribe());
+          this.flpSubs = [];
+          flp.forEach(f => {
+            const sub = this.forms.getFormFieldVC$(f.formKey, f.formFieldKey).subscribe(value => {
+              console.log('SUBS link key', f, ' value: ', value);
+              const tf = this.fields.find(field => field.name === f.key);
+              if (tf) {
+                tf.control.setValue(value);
+                this.setFilters(f.key, value);
+              }
+              this.flpSubs.push(sub);
+            });
+          });
+        }),
         tap((f) => f.forEach(ff => {
-          if(ff.value){
+          if (ff.value) {
             ff.control.setValue(ff.value);
             this.setFilters(ff.name, ff.value);
           }
@@ -55,15 +77,8 @@ export class FiltersComponent implements OnInit {
         this.setFilters(name, value);
       });
     }
-    //   if (!this.flp) this.flp = [];
-    //     this.flp.forEach(f => this.forms.getFormFieldVC$(f.formKey, f.formFieldKey).subscribe(value => {
-    //         const tf = this.fields.find(field => field.name === f.filterFieldKey);
-    //         if (tf){
-    //             tf.control.setValue(value);
-    //             this.setFilters(f.filterFieldKey, value);
-    //         }
-    //     }));
-    //     console.log('filters:', this.fields);
+
+    console.log('filters:', this.fields);
   }
 
   private setFilters(name: string, value: any) {
@@ -81,5 +96,11 @@ export class FiltersComponent implements OnInit {
 
   private updateTable() {
     this.update.emit(this.filters)
+  }
+
+  ngOnDestroy(): void {
+    this.fieldSub.unsubscribe();
+    this.flpSubs.forEach(f => f.unsubscribe());
+    this.flpSubs = [];
   }
 }

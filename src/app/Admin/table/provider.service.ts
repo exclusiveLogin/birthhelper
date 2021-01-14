@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { DictService, IDictItem } from '../dict.service';
 import {EntityService, IEntity, IEntityItem, ISet} from '../entity.service';
 import { Observable } from 'rxjs/Observable';
-import { ITableFilters } from './table/table.component';
+import { ITableFilter } from './table/table.component';
 import { IRestParams } from '../rest.service';
 import { of } from 'rxjs/observable/of';
 
@@ -20,7 +20,7 @@ export class ProviderService {
     return type === 'dict' ? this.getDictPage( key, page ) : this.getEntPage( key, page, queryParams );
   }
 
-  public getFilters( key: string, type: string ): Observable<ITableFilters[]>{
+  public getFilters( key: string, type: string ): Observable<ITableFilter[]>{
     return type === 'dict' ? this.getDictFilters( key ) : this.getEntityFilters( key );
   }
 
@@ -44,11 +44,11 @@ export class ProviderService {
     return this.entity.getEntSet( key );
   }
 
-  private getDictFilters( key: string ): Observable<ITableFilters[]>{
+  private getDictFilters( key: string ): Observable<ITableFilter[]>{
     return Observable.of(null);
   }
 
-  private getEntityFilters( key: string ): Observable<ITableFilters[]>{
+  private getEntityFilters( key: string ): Observable<ITableFilter[]>{
     return this.entity.getEntFilters( key );
   }
 

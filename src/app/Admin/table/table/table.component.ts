@@ -28,14 +28,19 @@ export interface ITableItem {
   image?: string;
 }
 
-export interface ITableFilters {
+export interface ITableFilter {
   name: string,
   title: string,
   type: string,
   db_name: string,
+  readonly?: boolean,
   items$: Observable<IDictItem[]>,
   control: FormControl;
   value?: any;
+  formLink?: {
+    formKey?: string,
+    formFieldKey?: string,
+  }
 }
 
 export interface IImageOptions {
@@ -55,8 +60,8 @@ export class TableComponent implements OnInit {
   @Input('multiselect') private multiselect: boolean = false;
   @Input('dummyItems') public dummyItems: ITableItem[];
   @Input('dummyFields') public df: string[];
-  @Input('filterLinkParams') public flp: IFilterLink[];
   @Input() public title: string;
+  @Input() public filters: ITableFilter[];
 
   @Output() private select: EventEmitter<ITableItem | ITableItem[]> = new EventEmitter();
   @Output() private deselect: EventEmitter<number> = new EventEmitter();
@@ -65,12 +70,11 @@ export class TableComponent implements OnInit {
 
   constructor(
     private provider: ProviderService,
-    private forms: FormService,
   ) {
   }
 
   public items: ITableItem[] = [];
-  public filters$: Observable<ITableFilters[]>;
+  public filters$: Observable<ITableFilter[]>;
   public currentPage: number = 1;
   public total: number = 0;
   public allPages: number = 1;
@@ -135,10 +139,21 @@ export class TableComponent implements OnInit {
       this.finishItemsPhase()
     });
 
-    this.filters$ = this.provider.getFilters(this.key, this.type).pipe(
+    this.filters$ = this.filters ?
+      of(this.filters).pipe(
+        tap(filters => {
+          filters.forEach(f => {
+            f.control = new FormControl({value: f.value || '', disabled: f.readonly });
+            if (f.db_name) {
+              f.items$ = this.provider.getFullDict(f.db_name).pipe(filter(d => !!d));
+            }
+          });
+        })
+      ) :
+      this.provider.getFilters(this.key, this.type).pipe(
       tap(filters => {
         filters.forEach(f => {
-          f.control = new FormControl();
+          f.control = new FormControl({value: f.value || '', disabled: f.readonly });
           if (f.db_name) {
             f.items$ = this.provider.getFullDict(f.db_name).pipe(filter(d => !!d));
           }
