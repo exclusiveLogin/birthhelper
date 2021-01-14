@@ -21,3 +21,7 @@ input[readonly]{
   background-color: darkgrey;
   opacity: 0.5;
 }
+.filter_form{
+  width: 100%;
+  display: flex;
+}

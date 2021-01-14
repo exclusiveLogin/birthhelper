@@ -138,7 +138,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
           .pipe(filter(data => !!data))
           .subscribe((dict: IDictItem[]) => {
             field.dctItems = dict;
-            if (field.required && !field.initData && dict[0]) {
+            if (field.required && !field.canBeNull && !field.initData && dict[0]) {
               field.control.setValue(dict[0]['id']);
               this.checkConditionFields();
             }
@@ -216,6 +216,9 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
       field.initData && field.control ?
         field.control.setValue(field.initData) :
         field.control.setValue(null);
+      if (field.required && !field.canBeNull && !field.initData && !!field.dctItems && !!field.dctItems.length) {
+        field.control.setValue(field.dctItems[0]['id']);
+      }
     });
   }
 
@@ -238,6 +241,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
     if (changes.mode.currentValue === EMENUMODE.CREATE) {
       this.currentService = null;
       this.form.reset();
+      this.rerenderValueOfFields();
     }
     if (!!changes.menu && !!changes.menu.currentValue) {
       console.log('test menu changed', changes.menu);
@@ -307,6 +311,16 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
           console.log('target control: ', target);
           if (!!target && target.control) {
             target.control.setValue(service.data[key]);
+            if (
+              service.data[key] === null &&
+              target.required &&
+              !target.canBeNull &&
+              !target.initData &&
+              !!target.dctItems &&
+              !!target.dctItems.length
+            ) {
+              target.control.setValue(target.dctItems[0]['id']);
+            }
           }
         }
       });
