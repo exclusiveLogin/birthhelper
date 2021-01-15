@@ -365,10 +365,12 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public linkFromTableSelected(selected: ITableItem, field: ILinkFieldSetting) {
+    let value = null;
     if (!!selected && !!selected.data && selected.data.id) {
-      const key = field.proxyTo || field.entKey;
-      this.form.get(key) ? this.form.get(key).setValue(selected.data.id) : null;
+      value = selected.data.id
     }
+    const key = field.proxyTo || field.entKey;
+    this.form.get(key) ? this.form.get(key).setValue(value) : null;
     console.log('new form state: ', this.form.value);
   }
 
