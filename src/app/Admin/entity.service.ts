@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import {ISettingsParams, RestService, IRestParams, IFileAdditionalData} from './rest.service';
-import { ITableFilters } from './table/table/table.component';
+import { ITableFilter } from './table/table/table.component';
 import { IFieldSetting, ILinkFieldSetting } from './form.service';
 import {IContainer} from './container.service';
 import {IImage} from './Dashboard/Editor/components/image/image.component';
@@ -64,7 +64,7 @@ export class EntityService {
     return this.rest.uploadImage( file, data );
   }
 
-  public getEntFilters( key: string ): Observable<ITableFilters[]>{
+  public getEntFilters( key: string ): Observable<ITableFilter[]>{
     return this.rest.getEntityFilters( 'ent_'+key );
   }
 

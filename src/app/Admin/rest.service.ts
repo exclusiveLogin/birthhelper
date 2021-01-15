@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from './api.service';
 import { IEntityItem, ISet, IEntity } from './entity.service';
-import { ITableFilters } from './table/table/table.component';
+import { ITableFilter } from './table/table/table.component';
 import { IContainer, IContainerData } from './container.service';
 import { LoaderService } from './loader.service';
 import { tap } from 'rxjs/operators';
@@ -116,7 +116,7 @@ export class RestService {
     return null;
   }
 
-  public getEntityFilters( key: string ): Observable<ITableFilters[]>{
+  public getEntityFilters( key: string ): Observable<ITableFilter[]>{
     const entFiltersSetting: ISettingsParams = {
       mode: 'admin',
       segment: 'entity',
@@ -124,7 +124,7 @@ export class RestService {
       script: 'filters'
     };
 
-    return this.getData<ITableFilters[]>( entFiltersSetting );
+    return this.getData<ITableFilter[]>( entFiltersSetting );
   }
 
   public getEntitySet( key: string ): Observable<ISet>{
