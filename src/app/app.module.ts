@@ -12,7 +12,7 @@ import { HeaderComponent } from './Header/Header.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/admin', pathMatch: 'full' },
-  { path: 'admin', loadChildren: './Admin/Admin.module#AdminModule' },
+  { path: 'admin', loadChildren: () => import('./Admin/Admin.module').then(m => m.AdminModule) },
   { path: '**', component: NotFoundComponent },
 ];
 
