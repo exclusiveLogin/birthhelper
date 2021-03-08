@@ -26,8 +26,9 @@
     "core-js": "^2.4.1",
     "ngx-toastr": "^8.10.2",
     "rxjs": "^6.6.6",
-    "zone.js": "^0.8.19",
-    "rxjs-compat": "^6.0.0-rc.0"
+    "rxjs-compat": "^6.0.0-rc.0",
+    "rxjs-tslint": "^0.1.8",
+    "zone.js": "^0.8.19"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.8.0",
