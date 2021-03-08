@@ -24,7 +24,7 @@ const routes: Routes = [
       HeaderComponent
    ],
    imports: [
-      RouterModule.forRoot(routes),
+      RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
       BrowserModule,
       ReactiveFormsModule,
       BrowserAnimationsModule,
