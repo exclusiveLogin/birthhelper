@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import {ISettingsParams, RestService, IRestParams, IFileAdditionalData} from './rest.service';
 import { ITableFilter } from './table/table/table.component';
 import { IFieldSetting, ILinkFieldSetting } from './form.service';

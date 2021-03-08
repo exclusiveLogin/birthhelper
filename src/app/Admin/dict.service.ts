@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable , of} from 'rxjs';
 import { ISettingsParams, RestService } from './rest.service';
 import {share, tap} from 'rxjs/operators';
-import {of} from 'rxjs/observable/of';
 
 export interface IDictItem {
   id: number;

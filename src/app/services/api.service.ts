@@ -1,6 +1,7 @@
+
+import {of as observableOf, Observable} from 'rxjs';
 import { Injectable } from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
+
 
 @Injectable()
 export class ApiService {
@@ -21,15 +22,15 @@ export class ApiService {
   }
 
   public getIconPathRx( type: string ): Observable<string> {
-    return Observable.of( this[type.toUpperCase()+'_ICONS'] );
+    return observableOf( this[type.toUpperCase()+'_ICONS'] );
   }
 
   public getImagePathRx( type: string ): Observable<string> {
-    return Observable.of( this[type.toUpperCase()+'_IMAGE'] );
+    return observableOf( this[type.toUpperCase()+'_IMAGE'] );
   }
 
   public getApiRx(): Observable<string> {
-    return Observable.of(this.MAINAPI);
+    return observableOf(this.MAINAPI);
   }
 
 }

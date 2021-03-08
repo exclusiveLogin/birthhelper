@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IDictItem } from './dict.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from './api.service';
 import { IEntityItem, ISet, IEntity } from './entity.service';

@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { DictService, IDictItem } from '../dict.service';
 import {EntityService, IEntity, IEntityItem, ISet} from '../entity.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  of } from 'rxjs';
 import { ITableFilter } from './table/table.component';
 import { IRestParams } from '../rest.service';
-import { of } from 'rxjs/observable/of';
 
 @Injectable()
 export class ProviderService {

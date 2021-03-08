@@ -1,10 +1,8 @@
 import {Component, OnInit, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
 import {ITableFilter} from '../table.component';
 import {FormService, IFilterLink} from '../../../form.service';
-import {Observable} from 'rxjs';
+import {Observable, merge, Subscription} from 'rxjs';
 import {debounceTime, filter, map, mergeAll, mergeMap, tap} from 'rxjs/operators';
-import {merge} from 'rxjs/observable/merge';
-import {Subscription} from 'rxjs/Subscription';
 import {FormGroup} from '@angular/forms';
 
 export interface IFiltersParams {

@@ -7,9 +7,8 @@ import {IEntityItem, EntityService} from '../../entity.service';
 import {FormGroup} from '@angular/forms';
 import {ContainerService} from '../../container.service';
 import {IFileAdditionalData, IRestBody} from '../../rest.service';
-import {Subject} from 'rxjs/Subject';
+import {Subject, Subscription} from 'rxjs';
 import {distinct, filter} from 'rxjs/operators';
-import {Subscription} from 'rxjs/Subscription';
 import {ToastrService} from 'ngx-toastr';
 
 @Component({

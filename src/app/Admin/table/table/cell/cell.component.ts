@@ -1,9 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
 import { IEntityItem } from '../../../entity.service';
 import {DictService, IDictItem} from '../../../dict.service';
-import {Observable} from 'rxjs/Observable';
-import {of} from 'rxjs/observable/of';
-import {forkJoin} from 'rxjs/observable/forkJoin';
+import {Observable, of, forkJoin} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 export interface IRowSetting{

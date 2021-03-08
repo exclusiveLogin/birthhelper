@@ -10,9 +10,7 @@ import {environment} from '../../../../environments/environment';
 import {catchError, filter, finalize, map, switchMap, take, tap} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
 import {FormService, IFilterLink} from '../../form.service';
-import {Observable} from 'rxjs';
-import {of} from 'rxjs/observable/of';
-import {Subject} from 'rxjs/Subject';
+import {Observable, of, Subject} from 'rxjs';
 
 export interface ITableRows {
   title?: string;

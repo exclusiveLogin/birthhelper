@@ -1,9 +1,8 @@
 import {Injectable} from '@angular/core';
 import {FormControl, Validators, FormGroup} from '@angular/forms';
 import {MenuService} from './Dashboard/menu.service';
-import {Observable} from 'rxjs/Observable';
+import {Observable, of} from 'rxjs';
 import {NeverObservable} from 'rxjs/observable/NeverObservable';
-import {of} from 'rxjs/observable/of';
 import {distinctUntilChanged, filter, map, pluck, tap} from 'rxjs/operators';
 import {ITableFilter} from './table/table/table.component';
 
