@@ -1,6 +1,6 @@
 import { Injectable, Output } from '@angular/core';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class LoaderService {
 
 
@@ -25,7 +25,7 @@ public setError(text?: string){
         this._error = true;
         this._error_str = text ? text : null;
     } , 1500);
-    
+
 }
 
 public unsetError(){

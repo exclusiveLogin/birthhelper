@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 interface ISecure {
-  user: string,
-  token: string
+  user: string;
+  token: string;
 }
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AuthService {
 
   constructor( private router: Router) { }

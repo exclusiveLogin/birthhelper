@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { DictService, IDictItem } from '../dict.service';
-import {EntityService, IEntityItem, ISet} from '../entity.service';
+import { IEntityItem, ISet} from '../entity.model';
 import { Observable ,  of } from 'rxjs';
 import { ITableFilter } from './table/table.component';
 import { IRestParams } from '../rest.service';
+import {EntityService} from '../entity.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ProviderService {
 
   constructor( private dict: DictService, private entity: EntityService ) { }

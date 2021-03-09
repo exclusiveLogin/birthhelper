@@ -14,12 +14,12 @@ export interface ILoginResponse {
   user_title: string;
   msg: string;
 }
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class AuthService {
 
   constructor(
-    public http: HttpClient, 
-    public api: ApiService, 
+    public http: HttpClient,
+    public api: ApiService,
     private router: Router,
     ) {
       console.log('AUTH SERVICE', this);
@@ -37,10 +37,10 @@ export class AuthService {
           password: login.password
         }
       }
-      
+
       )
         .subscribe((response: ILoginResponse) => {
-      
+
           if (response) {
             this.isLoggedSuccess = response.auth;
             this.currentAuthorizedLogin = response && response.login;

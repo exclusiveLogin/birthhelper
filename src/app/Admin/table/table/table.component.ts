@@ -1,11 +1,10 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {ProviderService} from '../provider.service';
 import {IDictItem} from '../../dict.service';
-import {IEntityItem, ISet} from '../../entity.service';
+import {IEntityItem, ISet} from '../../entity.model';
 import {IRowSetting} from './cell/cell.component';
 import {IFiltersParams} from './filters/filters.component';
 import {IRestParams} from '../../rest.service';
-import {IContainer, ISlot} from '../../container.service';
 import {environment} from '../../../../environments/environment';
 import {catchError, filter, finalize, map, switchMap, take, tap} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';

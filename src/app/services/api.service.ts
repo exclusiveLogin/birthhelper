@@ -3,7 +3,7 @@ import {of as observableOf, Observable} from 'rxjs';
 import { Injectable } from '@angular/core';
 
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class ApiService {
   private MAINAPI = 'http://91.240.87.153/backend/';
 

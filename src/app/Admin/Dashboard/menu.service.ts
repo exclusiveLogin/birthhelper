@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { IMenuRepo, EMENUMODE } from './Dashboard.component';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class MenuService {
 
     private menuEventBus: BehaviorSubject<IMenuRepo> = new BehaviorSubject(null);
