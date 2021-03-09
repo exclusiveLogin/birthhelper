@@ -6,7 +6,7 @@ import * as env from '../../env.js';
 
 export const environment = {
   production: false,
-  baseUrl: env['baseUrl'] || 'http://localhost/api',
+  baseUrl: env['baseUrl'] || 'http://localhost:4200/api',
   fileServer: env['fileServer'] || 'http://localhost:9080',
   backend: env['backend'] || 'http://localhost:3000',
   static: env['static'] || 'http://localhost:4200/static',
