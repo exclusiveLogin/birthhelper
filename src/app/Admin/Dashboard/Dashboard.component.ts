@@ -17,6 +17,7 @@ export interface IMenuRepo {
   type: string;
   mime?: string;
   modes: EMENUMODE[];
+  isDict?: boolean;
 }
 @Component({
   selector: 'app-Dashboard',
@@ -104,9 +105,48 @@ export class DashboardComponent implements OnInit {
       ]
     },
     {
-      name: 'services_slots',
+      name: 'facilities_containers',
+      containerKey: 'container_facilities',
+      title: 'Контейнеры удобств в клиниках',
+      titleVoc: 'контейнер',
+      titleVocs: 'контейнера',
+      type: 'container',
+      modes: [
+        EMENUMODE.CREATE,
+        EMENUMODE.DELETE,
+        EMENUMODE.EDIT,
+      ]
+    },
+    {
+      name: 'specialities_clinic_containers',
+      containerKey: 'container_specialities',
+      title: 'Контейнеры специализаций клиник',
+      titleVoc: 'контейнер',
+      titleVocs: 'контейнера',
+      type: 'container',
+      modes: [
+        EMENUMODE.CREATE,
+        EMENUMODE.DELETE,
+        EMENUMODE.EDIT,
+      ]
+    },
+    {
+      name: 'placement_slots',
+      slotKey: 'slot_placement',
+      title: 'Слоты услуг размещения',
+      titleVoc: 'слот',
+      titleVocs: 'слота',
+      type: 'slot',
+      modes: [
+        EMENUMODE.CREATE,
+        EMENUMODE.DELETE,
+        EMENUMODE.EDIT,
+      ]
+    },
+    {
+      name: 'doctor_slots',
       slotKey: 'slot_service_natal',
-      title: 'Слоты услуг родовспоможения',
+      title: 'Слоты услуг персонала',
       titleVoc: 'слот',
       titleVocs: 'слота',
       type: 'slot',
@@ -135,6 +175,7 @@ export class DashboardComponent implements OnInit {
       titleVoc: 'вид родов',
       titleVocs: 'виды родов',
       type: 'entity',
+      isDict: true,
       //mime: 'image',
       modes: [
         EMENUMODE.CREATE,
@@ -148,6 +189,7 @@ export class DashboardComponent implements OnInit {
       titleVoc: 'должность',
       titleVocs: 'должности',
       type: 'entity',
+      isDict: true,
       //mime: 'image',
       modes: [
         EMENUMODE.CREATE,
@@ -161,6 +203,49 @@ export class DashboardComponent implements OnInit {
       titleVoc: 'категория',
       titleVocs: 'категории',
       type: 'entity',
+      isDict: true,
+      //mime: 'image',
+      modes: [
+        EMENUMODE.CREATE,
+        EMENUMODE.DELETE,
+        EMENUMODE.EDIT,
+      ]
+    },
+    {
+      name: 'specialities_clinic',
+      title: 'Специализация клиник(словарь)',
+      titleVoc: 'специализация',
+      titleVocs: 'специализации',
+      type: 'entity',
+      isDict: true,
+      //mime: 'image',
+      modes: [
+        EMENUMODE.CREATE,
+        EMENUMODE.DELETE,
+        EMENUMODE.EDIT,
+      ]
+    },
+    {
+      name: 'facilities',
+      title: 'Удобства клиник(словарь)',
+      titleVoc: 'удобство',
+      titleVocs: 'удобства',
+      type: 'entity',
+      isDict: true,
+      //mime: 'image',
+      modes: [
+        EMENUMODE.CREATE,
+        EMENUMODE.DELETE,
+        EMENUMODE.EDIT,
+      ]
+    },
+    {
+      name: 'slot_clinic_type',
+      title: 'Вид услуги клиник(словарь)',
+      titleVoc: 'услуга',
+      titleVocs: 'услуги',
+      type: 'entity',
+      isDict: true,
       //mime: 'image',
       modes: [
         EMENUMODE.CREATE,

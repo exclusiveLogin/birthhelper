@@ -30,7 +30,7 @@
     <form [formGroup]="form">
       <div class="bh_control" *ngFor="let field of fields">
         <ng-container *ngIf="!field.hide">
-          <ng-container [ngSwitch]="field.type">
+          <ng-container [ngSwitch]="field.type" *ngIf="!(isCreateMode && menu.mime === 'image')">
 
             <ng-container *ngSwitchCase="'img'">
               <label [for]="field.id" class="bh_label">{{ field.title }}{{field.required ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull  ? '*' : ''}}</label>
@@ -106,6 +106,30 @@
       <div class="bh_link_control" *ngFor="let field of linkFields">
         <ng-container [ngSwitch]="field.type" *ngIf="!field.hide">
 
+          <ng-container *ngIf="field.imageLoader && !!isCreateMode">
+
+              <label [for]="'uploader'" class="bh_label">Загрузчик изображений</label>
+
+              <div class="bh_panel_block">
+                <div class="bh_block">
+                  <input type="file"
+                          (change)="setImageForUpload( $event )"
+                          [readonly]="field.readonly"
+                          [id]="'uploader'"
+                          [placeholder]="'Введите ' + (field.title ? field.title : 'текст') | lowercase"
+                          [formControl]="field.imageControl"/>
+
+                  <input [formControl]="field.titleControl" type="text" id="file_title" placeholder="Введите название картинки">
+
+                  <input [formControl]="field.descriptionControl" type="text" id="file_description" placeholder="Введите описание картинки">
+
+                  <button (click)="uploadImageWithLoader( field )">Загрузить</button>
+                </div>
+              </div>
+
+          </ng-container>
+
+
           <ng-container *ngSwitchCase="'repo'">
             <ng-container *ngIf="menu && menu.type === 'container' && !!currentService">
 
@@ -118,6 +142,7 @@
                 (select)="repoSelected( $event )"
                 (deselector$)="deselectAssign( $event )"
                 [imageOptions]="field.image"
+                [filters]="field.filters"
               ></app-table>
 
               <div class="full" *ngIf="!!menu && (isEditMode)"><i class="fas fa-chevron-down fa-3x"></i></div>
@@ -149,6 +174,7 @@
                 (select)="linkFromTableSelected( $event, field )"
                 (deselector$)="deselectSlotsServiceAssign( $event )"
                 [imageOptions]="field.image"
+                [filters]="field.filters"
               ></app-table>
 
             </ng-container>
@@ -163,6 +189,8 @@
                 (select)="linkFromTableSelected( $event, field )"
                 (deselector$)="deselectSlotsServiceAssign( $event )"
                 [imageOptions]="field.image"
+                (refresh)="refreshAsignByField( field, $event )"
+                [filters]="field.filters"
               ></app-table>
 
             </ng-container>
