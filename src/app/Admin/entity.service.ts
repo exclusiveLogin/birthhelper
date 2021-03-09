@@ -2,39 +2,16 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {ISettingsParams, RestService, IRestParams, IFileAdditionalData} from './rest.service';
 import { ITableFilter } from './table/table/table.component';
-import { IFieldSetting, ILinkFieldSetting } from './form.service';
-import {IContainer} from './container.service';
 import {IImage} from './Dashboard/Editor/components/image/image.component';
 import {map} from 'rxjs/operators';
-
-export interface IEntityItem {
-  id: number;
-  name?: string;
-  title?: string;
-  icon?: string;
-  comment?: string;
-  description?: string;
-}
-
-export interface IEntity {
-  key: string;
-  entities: IEntityItem[];
-}
-
-export interface ISet{
-  total: string;
-  fields: IFieldSetting[];
-  links: ILinkFieldSetting[];
-  container?: IContainer;
-  slot: string;
-}
+import {IEntityItem, ISet} from './entity.model';
 
 const settingsParams: ISettingsParams = {
   mode: 'admin',
   segment: 'entity'
-}
+};
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class EntityService {
 
   constructor(

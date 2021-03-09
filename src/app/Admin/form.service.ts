@@ -64,7 +64,7 @@ export interface IFilterLink {
   formFieldKey: string;
 }
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class FormService {
 
   formsRepo: { [key: string]: FormGroup };

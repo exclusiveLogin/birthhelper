@@ -20,6 +20,6 @@ let routes: Routes = [
   ],
   declarations: [],
   exports: [ RouterModule ],
-  providers: [ AuthGuard, AuthService ]
+  providers: []
 })
 export class AdminRoutingModule { }

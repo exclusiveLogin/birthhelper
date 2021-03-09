@@ -21,7 +21,7 @@ const settingsParams: ISettingsParams = {
   segment: 'dict'
 }
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class DictService {
 
   constructor(

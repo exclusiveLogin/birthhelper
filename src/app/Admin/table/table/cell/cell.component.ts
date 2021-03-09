@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
-import { IEntityItem } from '../../../entity.service';
+import { IEntityItem } from '../../../entity.model';
 import {DictService, IDictItem} from '../../../dict.service';
 import {Observable, of, forkJoin} from 'rxjs';
 import {map} from 'rxjs/operators';

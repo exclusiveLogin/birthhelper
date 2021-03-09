@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
 import { IDictItem } from './dict.service';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 import { ApiService } from './api.service';
-import { IEntityItem, ISet, IEntity } from './entity.service';
+import { IEntityItem, ISet } from './entity.model';
 import { ITableFilter } from './table/table/table.component';
-import { IContainer, IContainerData } from './container.service';
+import { IContainer, IContainerData } from './container.model';
 import { LoaderService } from './loader.service';
 import { tap } from 'rxjs/operators';
+import {HttpClient} from '@angular/common/http';
 
 export interface ISettingsParams {
   mode: string;
   segment: string;
   script?: string;
   resource?: string;
-};
+}
 
 export interface IRestParams {
   [name: string]: string;
@@ -24,26 +24,26 @@ export interface IRestBody {
   body: any;
 }
 export interface IFileSaveResponse {
-  status: string,
+  status: string;
   file: {
    id: number
-  }
+  };
 }
 
 export interface IFile {
-  "id": number,
-  "filename": string,
-  "folder": string,
-  "type": string
+  id: number;
+  filename: string;
+  folder: string;
+  type: string;
 }
 
 export interface IFileAdditionalData {
-  title?: string,
-  description?: string,
-  position?: any,
+  title?: string;
+  description?: string;
+  position?: any;
 }
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class RestService {
 
   constructor(
@@ -145,7 +145,7 @@ export class RestService {
       resource: key
     };
 
-    const data: IRestParams = page ? { skip: (20 * (page-1)).toString()} : null;
+    const data: IRestParams = page ? { skip: (20 * (page - 1)).toString()} : null;
 
     if( qp ) Object.assign(data, qp);
 

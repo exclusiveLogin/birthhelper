@@ -5,6 +5,7 @@ import { TableModule } from '../../table/table.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AutocompleteComponent } from '../../autocomplete/autocomplete.component';
 import { ImageComponent } from './components/image/image.component';
+import {ToastrService} from 'ngx-toastr';
 
 @NgModule({
   imports: [
@@ -19,6 +20,9 @@ import { ImageComponent } from './components/image/image.component';
   ],
   exports: [
     EditorComponent
+  ],
+  providers: [
+    ToastrService,
   ]
 })
 export class EditorModule { }

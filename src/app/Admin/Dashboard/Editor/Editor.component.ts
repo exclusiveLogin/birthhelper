@@ -3,13 +3,14 @@ import {IFieldSetting, FormService, ILinkFieldSetting} from '../../form.service'
 import {DictService, IDictItem} from '../../dict.service';
 import {ITableItem} from '../../table/table/table.component';
 import {EMENUMODE, IMenuRepo} from '../Dashboard.component';
-import {IEntityItem, EntityService} from '../../entity.service';
+import {IEntityItem} from '../../entity.model';
 import {FormGroup} from '@angular/forms';
 import {ContainerService} from '../../container.service';
 import {IFileAdditionalData, IRestBody} from '../../rest.service';
 import {Subject, Subscription} from 'rxjs';
 import {distinct, filter} from 'rxjs/operators';
 import {ToastrService} from 'ngx-toastr';
+import {EntityService} from '../../entity.service';
 
 @Component({
   selector: 'app-editor',
