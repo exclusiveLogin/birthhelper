@@ -2,8 +2,8 @@ import * as env from '../../env.js';
 
 export const environment = {
   production: true,
-  baseUrl: env['baseUrl'] || 'http://185.178.46.248',
-  fileServer: env['fileServer'] || 'http://185.178.46.248:9080',
-  backend: env['backend'] || 'http://185.178.46.248:3000',
-  static: env['static'] || 'http://185.178.46.248:3000/static',
+  baseUrl: env['baseUrl'] || 'http://birthhelper.ru',
+  fileServer: env['fileServer'] || 'http://birthhelper.ru:9080',
+  backend: env['backend'] || 'http://birthhelper.ru:3000',
+  static: env['static'] || 'http://birthhelper.ru:3000/static',
 };

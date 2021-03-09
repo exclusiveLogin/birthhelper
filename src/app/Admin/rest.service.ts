@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { IDictItem } from './dict.service';
-import { Observable } from 'rxjs';
+import {Observable, of} from 'rxjs';
 import { ApiService } from './api.service';
 import { IEntityItem, ISet } from './entity.model';
 import { ITableFilter } from './table/table/table.component';
 import { IContainer, IContainerData } from './container.model';
 import { LoaderService } from './loader.service';
-import { tap } from 'rxjs/operators';
+import {catchError, filter, tap} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 
 export interface ISettingsParams {
@@ -54,17 +54,17 @@ export class RestService {
     console.log('ADMIN REST SERVICE', this);
   }
 
-  public createEntity( key: string , data: IEntityItem): Observable<any>{
+  public createEntity( key: string , data: IEntityItem): Observable<any> {
     const entSetting: ISettingsParams = {
       mode: 'admin',
       segment: 'entity',
       resource: key
     };
 
-    return this.postData(entSetting, data)
+    return this.postData(entSetting, data);
   }
 
-  public uploadImage( file: File, _data?: IFileAdditionalData ): Observable<IFileSaveResponse>{
+  public uploadImage( file: File, _data?: IFileAdditionalData ): Observable<IFileSaveResponse> {
     const fileSetting: ISettingsParams = {
       mode: 'admin',
       segment: 'entity',
@@ -78,7 +78,7 @@ export class RestService {
     return this.uploadData( fileSetting, data );
   }
 
-  public getEntity( key: string , id: number): Observable<any>{
+  public getEntity( key: string , id: number): Observable<any> {
     const entSetting: ISettingsParams = {
       mode: 'admin',
       segment: 'entity',
@@ -89,7 +89,7 @@ export class RestService {
     return this.getData(entSetting);
   }
 
-  public deleteEntity( key: string, id: number): Observable<string>{
+  public deleteEntity( key: string, id: number): Observable<string> {
     const entSetting: ISettingsParams = {
       mode: 'admin',
       segment: 'entity',
@@ -100,7 +100,7 @@ export class RestService {
 
   }
 
-  public removeSlotEntity( key: string, id: number): Observable<string>{
+  public removeSlotEntity( key: string, id: number): Observable<string> {
     const entSetting: ISettingsParams = {
       mode: 'admin',
       segment: 'slots',
@@ -116,7 +116,7 @@ export class RestService {
     return null;
   }
 
-  public getEntityFilters( key: string ): Observable<ITableFilter[]>{
+  public getEntityFilters( key: string ): Observable<ITableFilter[]> {
     const entFiltersSetting: ISettingsParams = {
       mode: 'admin',
       segment: 'entity',
@@ -147,7 +147,7 @@ export class RestService {
 
     const data: IRestParams = page ? { skip: (20 * (page - 1)).toString()} : null;
 
-    if( qp ) Object.assign(data, qp);
+    if ( qp ) Object.assign(data, qp);
 
     return this.getData<IEntityItem[]>( entSetting, data );
   }
@@ -162,7 +162,7 @@ export class RestService {
 
     const data: IRestParams = page ? { skip: (20 * (page-1)).toString()} : null;
 
-    if( qp ) Object.assign(data, qp);
+    if ( qp ) Object.assign(data, qp);
 
     return this.getData<IContainerData[]>( entSetting, data );
   }
@@ -172,29 +172,29 @@ export class RestService {
     const entSetting: ISettingsParams = {
       mode: 'admin',
       segment: `containers/${key}`,
-      resource: ''+id
+      resource: '' + id
     };
 
     return this.getData<IContainerData[]>( entSetting, qp );
   }
 
-  public saveContainer(key: string, id: number, qp?:IRestBody): Observable<any>{
+  public saveContainer(key: string, id: number, qp?: IRestBody): Observable<any> {
 
     const entSetting: ISettingsParams = {
       mode: 'admin',
       segment: `containers/${key}`,
-      resource: ''+id
+      resource: '' + id
     };
 
     return this.postDataContainer( entSetting, qp );
   }
 
-  public removeContainer(key: string, id: number): Observable<any>{
+  public removeContainer(key: string, id: number): Observable<any> {
 
     const entSetting: ISettingsParams = {
       mode: 'admin',
       segment: `containers/${key}`,
-      resource: ''+id
+      resource: '' + id
     };
     const data = {};
 
@@ -213,28 +213,25 @@ export class RestService {
     return this.getData<IDictItem[]>( dictSetting, data );
   }
 
-  public getData<T>( path: ISettingsParams, data?: IRestParams): Observable<T>{
-
-    if( path ) Object.keys( path ).forEach(key => path[key] = '/' + path[key]);
-
-    let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
-
-    let req = this.http.get( url, { params: data } ).pipe(tap(()=>this.loader.hide(), (err)=> this.loader.setError(err.message ? err.message : 'Ошибка: ' + err)));
-
-    this.loader.show();
-
-    return req as Observable<T>;
+  pathGen(path: ISettingsParams): void {
+    Object.keys( path ).forEach(key => path[key] = '/' + path[key]);
   }
+  public getData<T>( path: ISettingsParams, data?: IRestParams): Observable<T> {
 
-  public uploadData<T>( path: ISettingsParams, data?: FormData): Observable<T>{
+    if ( path ) {
+      this.pathGen(path);
+    }
 
-    if( path ) Object.keys( path ).forEach(key => path[key] = '/' + path[key]);
+    const url = `${ this.api.getApiPath() }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
 
-    let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
-
-    let req = this.http.post( url, data )
+    const req = this.http.get(
+      url, { params: data })
       .pipe(
-        tap(()=>this.loader.hide(), (err)=> this.loader.setError(err.message ? err.message : 'Ошибка: ' + err))
+        filter(d => !!d),
+        tap(
+          () => this.loader.hide(),
+          (err) => this.loader.setError(err.message ? err.message : 'Ошибка: ' + err)
+        )
       );
 
     this.loader.show();
@@ -242,13 +239,43 @@ export class RestService {
     return req as Observable<T>;
   }
 
-  public postData<T>( path: ISettingsParams, data?: IEntityItem): Observable<T>{
+  public uploadData<T>( path: ISettingsParams, data?: FormData): Observable<T> {
 
-    if( path ) Object.keys( path ).forEach(key => path[key] = '/' + path[key]);
+    if ( path ) {
+      this.pathGen(path);
+    }
 
-    let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
+    const url = `${ this.api.getApiPath() }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
 
-    let req = this.http.post( url, data ).pipe(tap(()=>this.loader.hide(), (err)=> this.loader.setError(err.message ? err.message : 'Ошибка: ' + err)));;
+    const req = this.http.post( url, data )
+      .pipe(
+        filter(d => !!d),
+        tap(
+          () => this.loader.hide(),
+          (err) => this.loader.setError(err.message ? err.message : 'Ошибка: ' + err)
+        )
+      );
+
+    this.loader.show();
+
+    return req as Observable<T>;
+  }
+
+  public postData<T>( path: ISettingsParams, data?: IEntityItem): Observable<T> {
+
+    if ( path ) {
+      this.pathGen(path);
+    }
+
+    const url = `${ this.api.getApiPath() }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
+
+    const req = this.http.post( url, data ).pipe(
+      filter(d => !!d),
+      tap(
+        () => this.loader.hide(),
+        (err) => this.loader.setError(err.message ? err.message : 'Ошибка: ' + err)
+      )
+    );
 
     this.loader.show();
 
@@ -257,25 +284,40 @@ export class RestService {
 
   public postDataContainer<T>( path: ISettingsParams, data?: IRestBody): Observable<T>{
 
-    if( path ) Object.keys( path ).forEach(key => path[key] = '/' + path[key]);
+    if (path) {
+      this.pathGen(path);
+    }
 
-    let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
+    const url = `${ this.api.getApiPath()}${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
 
-    let req = this.http.post( url, data.body )
-      .pipe(tap(()=>this.loader.hide(), (err)=> this.loader.setError(err.message ? err.message : 'Ошибка: ' + err)));
+    const req = this.http.post( url, data.body ).pipe(
+      filter(d => !!d),
+      tap(
+        () => this.loader.hide(),
+        (err) => this.loader.setError(err.message ? err.message : 'Ошибка: ' + err)
+      )
+    );
 
     this.loader.show();
 
     return req as Observable<T>;
   }
 
-  public remData<T>( path: ISettingsParams, data?: IRestParams): Observable<T>{
+  public remData<T>( path: ISettingsParams, data?: IRestParams): Observable<T> {
 
-    if( path ) Object.keys( path ).forEach(key => path[key] = '/' + path[key]);
+    if (path) {
+      this.pathGen(path);
+    }
 
-    let url = `${ this.api.getApiPath() + ':3000' }${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
+    const url = `${ this.api.getApiPath()}${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
 
-    let req = this.http.request('delete', url, {body:data} ).pipe(tap(()=>this.loader.hide(), (err)=> this.loader.setError(err.message ? err.message : 'Ошибка: ' + err)));;
+    const req = this.http.request('delete', url, {body: data} ).pipe(
+      filter(d => !!d),
+      tap(
+        () => this.loader.hide(),
+        (err) => this.loader.setError(err.message ? err.message : 'Ошибка: ' + err)
+      )
+    );
 
     this.loader.show();
 
