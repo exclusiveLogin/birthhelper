@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  front:
+    image: "exclusivelogin/birthhelper-front"
+    ports:
+    - "8092:80"
+  back:
+    image: "exclusivelogin/birthhelper-back"
+    ports:
+    - "8091:3000"
+    volumes:
+    - "/var/www/html/birthhelper_backend/uploads/:/usr/src/app/uploads/"
+  guide:
+    image: "exclusivelogin/birthhelper-guide"
+    ports:
+    - "8090:80"
