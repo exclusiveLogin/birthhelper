@@ -7,30 +7,30 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
   styleUrls: ['./autocomplete.component.css'],
   providers: [{
     provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(()=>AutocompleteComponent),
+    useExisting: forwardRef(() => AutocompleteComponent),
     multi: true
   }]
 })
 export class AutocompleteComponent implements OnInit, ControlValueAccessor {
 
-  registerOnChange(fn){
+  constructor() { }
+
+  @Input() dict: string;
+
+  registerOnChange(fn) {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn){
+  registerOnTouched(fn) {
     this.onTouched = fn;
   }
 
-  writeValue( value: any ){
+  writeValue( value: any ) {
     this.onChange(value);
   }
 
   private onChange: any = () => {};
   private onTouched: any = () => {};
-
-  @Input() dict: string;
-
-  constructor() { }
 
   ngOnInit() {
 

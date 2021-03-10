@@ -19,9 +19,9 @@ export class AuthComponent implements OnInit {
     this.route.queryParams.subscribe(qp => {
       this.token = qp['token'];
 
-      if(this.token) {
+      if (this.token) {
         localStorage.setItem('bh_secure', JSON.stringify({user: 'demo', token: this.token}));
-        setTimeout(()=> this.router.navigate(['admin']),3000);
+        setTimeout(() => this.router.navigate(['admin']), 3000);
       }
     });
   }

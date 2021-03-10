@@ -93,7 +93,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
   }
 
   private updateTable() {
-    this.update.emit(this.filters)
+    this.update.emit(this.filters);
   }
 
   ngOnDestroy(): void {

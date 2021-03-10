@@ -15,7 +15,7 @@ export interface IEntity {
   entities: IEntityItem[];
 }
 
-export interface ISet{
+export interface ISet {
   total: string;
   fields: IFieldSetting[];
   links: ILinkFieldSetting[];

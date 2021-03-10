@@ -19,35 +19,35 @@ export class SubmenuComponent implements OnInit {
       console.log('menu selected:', mi);
 
       this.menuSelected = mi;
-    })
+    });
   }
 
-  public genCreateMode(){
+  public genCreateMode() {
     return EMENUMODE.CREATE;
   }
 
-  public genEditMode(){
+  public genEditMode() {
     return EMENUMODE.EDIT;
   }
 
-  public genDeleteMode(){
+  public genDeleteMode() {
     return EMENUMODE.DELETE;
   }
 
-  public get hasCreateMode(): boolean{
-    return this.menuSelected.modes.some( mode => mode === EMENUMODE.CREATE)
+  public get hasCreateMode(): boolean {
+    return this.menuSelected.modes.some( mode => mode === EMENUMODE.CREATE);
   }
 
-  public get hasEditMode(): boolean{
-    return this.menuSelected.modes.some( mode => mode === EMENUMODE.EDIT)
+  public get hasEditMode(): boolean {
+    return this.menuSelected.modes.some( mode => mode === EMENUMODE.EDIT);
   }
 
-  public get hasDeleteMode(): boolean{
-    return this.menuSelected.modes.some( mode => mode === EMENUMODE.DELETE)
+  public get hasDeleteMode(): boolean {
+    return this.menuSelected.modes.some( mode => mode === EMENUMODE.DELETE);
   }
 
-  public selectSubmenuMode( mode: string){
-    switch(mode){
+  public selectSubmenuMode( mode: string) {
+    switch (mode) {
       case 'create':
         this.menuService.submenuStream$.next( EMENUMODE.CREATE );
         break;
@@ -60,7 +60,7 @@ export class SubmenuComponent implements OnInit {
       default:
         break;
     }
-    
+
   }
 
 }

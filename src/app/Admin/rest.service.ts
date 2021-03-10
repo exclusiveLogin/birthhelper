@@ -71,7 +71,7 @@ export class RestService {
       resource: 'file',
     };
 
-    let data: FormData = new FormData();
+    const data: FormData = new FormData();
     data.append('photo', file);
     data.append('meta', JSON.stringify(_data));
 
@@ -127,7 +127,7 @@ export class RestService {
     return this.getData<ITableFilter[]>( entFiltersSetting );
   }
 
-  public getEntitySet( key: string ): Observable<ISet>{
+  public getEntitySet( key: string ): Observable<ISet> {
     const entSetSetting: ISettingsParams = {
       mode: 'admin',
       segment: 'entity',
@@ -147,7 +147,7 @@ export class RestService {
 
     const data: IRestParams = page ? { skip: (20 * (page - 1)).toString()} : null;
 
-    if ( qp ) Object.assign(data, qp);
+    if ( qp ) { Object.assign(data, qp); }
 
     return this.getData<IEntityItem[]>( entSetting, data );
   }
@@ -160,9 +160,9 @@ export class RestService {
       resource: key
     };
 
-    const data: IRestParams = page ? { skip: (20 * (page-1)).toString()} : null;
+    const data: IRestParams = page ? { skip: (20 * (page - 1)).toString()} : null;
 
-    if ( qp ) Object.assign(data, qp);
+    if ( qp ) { Object.assign(data, qp); }
 
     return this.getData<IContainerData[]>( entSetting, data );
   }
@@ -208,7 +208,7 @@ export class RestService {
       resource: name
     };
 
-    const data: IRestParams = page ? { skip: (20 * (page-1)).toString()} : null;
+    const data: IRestParams = page ? { skip: (20 * (page - 1)).toString()} : null;
 
     return this.getData<IDictItem[]>( dictSetting, data );
   }
@@ -282,7 +282,7 @@ export class RestService {
     return req as Observable<T>;
   }
 
-  public postDataContainer<T>( path: ISettingsParams, data?: IRestBody): Observable<T>{
+  public postDataContainer<T>( path: ISettingsParams, data?: IRestBody): Observable<T> {
 
     if (path) {
       this.pathGen(path);

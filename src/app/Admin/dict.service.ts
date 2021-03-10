@@ -19,7 +19,7 @@ export interface IDict {
 const settingsParams: ISettingsParams = {
   mode: 'admin',
   segment: 'dict'
-}
+};
 
 @Injectable({providedIn: 'root'})
 export class DictService {
@@ -34,13 +34,13 @@ export class DictService {
   private dictGetStreams$: { [key: string]: Observable<IDictItem[]> } = {};
 
   public getDict( name: string, page: number = 1 ): Observable<IDictItem[]> {
-    if( name && this.dictRepo[name] ) return of(this.dictRepo[name]);
-    if( this.dictGetStreams$[name] ) return this.dictGetStreams$[name];
+    if ( name && this.dictRepo[name] ) { return of(this.dictRepo[name]); }
+    if ( this.dictGetStreams$[name] ) { return this.dictGetStreams$[name]; }
 
     this.dictGetStreams$[name] = this.rest.getDict( name, page )
       .pipe(
         tap(dict => {
-          if( dict ) this.dictRepo[name] = dict;
+          if ( dict ) { this.dictRepo[name] = dict; }
         }),
         share()
       );

@@ -17,7 +17,7 @@ export class MenuComponent implements OnInit {
     console.log('menu init:', this.menu);
   }
 
-  public selectMenuItem( item: IMenuRepo ){
+  public selectMenuItem( item: IMenuRepo ) {
     console.log('selected menu item: ', item);
     this.menuServive.menuStream$.next( item );
   }

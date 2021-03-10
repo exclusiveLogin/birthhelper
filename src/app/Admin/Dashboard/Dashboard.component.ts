@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuService } from './menu.service';
 
-export enum EMENUMODE{
+export enum EMENUMODE {
   'CREATE',
   'EDIT',
   'DELETE',
@@ -176,7 +176,7 @@ export class DashboardComponent implements OnInit {
       titleVocs: 'виды родов',
       type: 'entity',
       isDict: true,
-      //mime: 'image',
+      // mime: 'image',
       modes: [
         EMENUMODE.CREATE,
         EMENUMODE.DELETE,
@@ -190,7 +190,7 @@ export class DashboardComponent implements OnInit {
       titleVocs: 'должности',
       type: 'entity',
       isDict: true,
-      //mime: 'image',
+      // mime: 'image',
       modes: [
         EMENUMODE.CREATE,
         EMENUMODE.DELETE,
@@ -204,7 +204,7 @@ export class DashboardComponent implements OnInit {
       titleVocs: 'категории',
       type: 'entity',
       isDict: true,
-      //mime: 'image',
+      // mime: 'image',
       modes: [
         EMENUMODE.CREATE,
         EMENUMODE.DELETE,
@@ -218,7 +218,7 @@ export class DashboardComponent implements OnInit {
       titleVocs: 'специализации',
       type: 'entity',
       isDict: true,
-      //mime: 'image',
+      // mime: 'image',
       modes: [
         EMENUMODE.CREATE,
         EMENUMODE.DELETE,
@@ -232,7 +232,7 @@ export class DashboardComponent implements OnInit {
       titleVocs: 'удобства',
       type: 'entity',
       isDict: true,
-      //mime: 'image',
+      // mime: 'image',
       modes: [
         EMENUMODE.CREATE,
         EMENUMODE.DELETE,
@@ -246,14 +246,14 @@ export class DashboardComponent implements OnInit {
       titleVocs: 'услуги',
       type: 'entity',
       isDict: true,
-      //mime: 'image',
+      // mime: 'image',
       modes: [
         EMENUMODE.CREATE,
         EMENUMODE.DELETE,
         EMENUMODE.EDIT,
       ]
     }
-  ]
+  ];
 
 
   constructor(private menuService: MenuService ) { }

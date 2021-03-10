@@ -8,11 +8,11 @@ export class MenuService {
     private menuEventBus: BehaviorSubject<IMenuRepo> = new BehaviorSubject(null);
     private submenuEventBus: BehaviorSubject<EMENUMODE> = new BehaviorSubject(null);
 
-    public get menuStream$(): BehaviorSubject<IMenuRepo>{
+    public get menuStream$(): BehaviorSubject<IMenuRepo> {
         return this.menuEventBus;
     }
 
-    public get submenuStream$(): BehaviorSubject<EMENUMODE>{
+    public get submenuStream$(): BehaviorSubject<EMENUMODE> {
         return this.submenuEventBus;
     }
 

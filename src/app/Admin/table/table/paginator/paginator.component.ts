@@ -18,35 +18,35 @@ export class PaginatorComponent implements OnInit {
 
   }
 
-  private emitPage(){
+  private emitPage() {
     this.vc.emit(this.currentPage);
     console.log('ping');
   }
 
-  public getPages(): string[]{
-    let strArr = []; 
-    if( this.pages ){
-      for(let i = 1; i < this.pages + 1; i++){
+  public getPages(): string[] {
+    const strArr = [];
+    if ( this.pages ) {
+      for (let i = 1; i < this.pages + 1; i++) {
         strArr.push(i);
       }
       return strArr;
-    } 
+    }
   }
 
-  public selectPage(page: number){
+  public selectPage(page: number) {
     this.currentPage = page;
     this.emitPage();
   }
 
-  public nextPage(){
-    if( this.currentPage < this.pages ) {
+  public nextPage() {
+    if ( this.currentPage < this.pages ) {
       this.currentPage++;
       this.emitPage();
     }
   }
 
-  public prevPage(){
-    if(this.currentPage > 1) {
+  public prevPage() {
+    if (this.currentPage > 1) {
       this.currentPage--;
       this.emitPage();
     }

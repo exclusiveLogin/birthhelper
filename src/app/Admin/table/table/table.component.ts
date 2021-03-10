@@ -26,23 +26,23 @@ export interface ITableItem {
 }
 
 export interface ITableFilter {
-  name: string,
-  title: string,
-  type: string,
-  db_name: string,
-  readonly?: boolean,
-  items$: Observable<IDictItem[]>,
+  name: string;
+  title: string;
+  type: string;
+  db_name: string;
+  readonly?: boolean;
+  items$: Observable<IDictItem[]>;
   control: FormControl;
   value?: any;
   formLink?: {
     formKey?: string,
     formFieldKey?: string,
-  }
+  };
 }
 
 export interface IImageOptions {
-  urlType: string,
-  urlKey: string
+  urlType: string;
+  urlKey: string;
 }
 
 @Component({
@@ -51,12 +51,17 @@ export interface IImageOptions {
   styleUrls: ['./table.component.css']
 })
 export class TableComponent implements OnInit {
-  @Input('key') public key: string;
-  @Input('type') public type: string;
-  @Input('imageOptions') public imageOptions: IImageOptions;
-  @Input('multiselect') private multiselect: boolean = false;
-  @Input('dummyItems') public dummyItems: ITableItem[];
-  @Input('dummyFields') public df: string[];
+
+  constructor(
+    private provider: ProviderService,
+  ) {
+  }
+  @Input() public key: string;
+  @Input() public type: string;
+  @Input() public imageOptions: IImageOptions;
+  @Input() private multiselect = false;
+  @Input() public dummyItems: ITableItem[];
+  @Input() public df: string[];
   @Input() public title: string;
   @Input() public filters: ITableFilter[];
 
@@ -65,37 +70,18 @@ export class TableComponent implements OnInit {
   @Output() private deselector$: EventEmitter<Function> = new EventEmitter();
   @Output() private refresh: EventEmitter<Function> = new EventEmitter();
 
-  constructor(
-    private provider: ProviderService,
-  ) {
-  }
-
   public items: ITableItem[] = [];
   public filters$: Observable<ITableFilter[]>;
-  public currentPage: number = 1;
-  public total: number = 0;
-  public allPages: number = 1;
-  public paginator: boolean = true;
+  public currentPage = 1;
+  public total = 0;
+  public allPages = 1;
+  public paginator = true;
   public currentItem: ITableItem;
   public currentItems: ITableItem[];
   public rowSettings: IRowSetting[];
   public currentError: string;
   private refreshTable$ = new Subject();
   private qp: IRestParams = {};
-
-  private setStats(set: ISet){
-    this.total = set && set.total && Number(set.total);
-    this.allPages = this.total ? Math.floor(this.total / 20) + 1 : 1;
-    this.rowSettings = set.fields && set.fields.filter(f => !f.hide && !!f.showOnTable);
-  }
-  private refreshSet() {
-    return this.provider.getItemsSet(this.key, this.type).pipe(
-      tap((set) => {
-        this.setStats(set);
-      }),
-      catchError(err => this.currentError = err.message ? err.message : err)
-    );
-  }
 
   items$ = this.refreshTable$.pipe(
     switchMap(() => this.refreshSet()),
@@ -119,7 +105,7 @@ export class TableComponent implements OnInit {
       return { ...data, set: data.set, needUpdateSet };
     }),
     switchMap((data) => {
-      return data.needUpdateSet ? this.refreshSet() : of(data.set)
+      return data.needUpdateSet ? this.refreshSet() : of(data.set);
     }),
     switchMap(() => this.provider.getItemPage(this.key, this.type, this.currentPage, this.qp)),
     filter(data => !!data),
@@ -130,10 +116,24 @@ export class TableComponent implements OnInit {
     }),
   );
 
+  private setStats(set: ISet) {
+    this.total = set && set.total && Number(set.total);
+    this.allPages = this.total ? Math.floor(this.total / 20) + 1 : 1;
+    this.rowSettings = set.fields && set.fields.filter(f => !f.hide && !!f.showOnTable);
+  }
+  private refreshSet() {
+    return this.provider.getItemsSet(this.key, this.type).pipe(
+      tap((set) => {
+        this.setStats(set);
+      }),
+      catchError(err => this.currentError = err.message ? err.message : err)
+    );
+  }
+
   ngOnInit() {
     this.items$.subscribe(d => {
       this.items = d;
-      this.finishItemsPhase()
+      this.finishItemsPhase();
     });
 
     this.filters$ = this.filters ?
@@ -197,7 +197,7 @@ export class TableComponent implements OnInit {
       return;
     }
     this.items.forEach(i => {
-      if (i.data.id == +id) {
+      if (i.data.id === +id) {
         i.selected = false;
       }
     });
@@ -233,7 +233,7 @@ export class TableComponent implements OnInit {
     console.log('selected:', item);
     if (this.multiselect) {
       item.selected = true;
-      let newItem = JSON.parse(JSON.stringify(item));
+      const newItem = JSON.parse(JSON.stringify(item));
       this.currentItems = [newItem];
       if (this.currentItems[0].selected) {
         this.select.emit(this.currentItems);
@@ -255,6 +255,6 @@ export class TableComponent implements OnInit {
 
   public deselectItem(item: ITableItem) {
     this.deselect.emit(item.data.id);
-    console.log("rem dummyExist:", this.dummyItems);
+    console.log('rem dummyExist:', this.dummyItems);
   }
 }

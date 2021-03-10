@@ -5,15 +5,15 @@ import {environment} from '../../../../../../environments/environment';
 import {FormControl} from '@angular/forms';
 
 export interface IImage {
-  id: number,
-  file_id: number,
-  title: string,
-  description: string,
-  datetime_update: string,
-  datetime_create: string,
-  _id: number
-  type: string
-  filename: string
+  id: number;
+  file_id: number;
+  title: string;
+  description: string;
+  datetime_update: string;
+  datetime_create: string;
+  _id: number;
+  type: string;
+  filename: string;
 }
 
 @Component({
@@ -37,7 +37,7 @@ export class ImageComponent implements OnInit, OnChanges {
   }
 
   rerender() {
-    if (this.id) this.entityService.getFile(this.id).pipe(
+    if (this.id) { this.entityService.getFile(this.id).pipe(
       tap(image => {
         if (!image) {
           this.fieldControl.setValue(null);
@@ -48,14 +48,15 @@ export class ImageComponent implements OnInit, OnChanges {
       this.image = image;
       this.image.filename = environment.static + '/' + this.image.filename;
     });
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.rerender();
   }
 
-  public removeImage(){
-    if(this.fieldControl) this.fieldControl.setValue(false);
+  public removeImage() {
+    if (this.fieldControl) { this.fieldControl.setValue(false); }
   }
 
 }

@@ -19,14 +19,6 @@ import {EntityService} from '../../entity.service';
 })
 export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  @Input() mode: EMENUMODE;
-  @Input() menu: IMenuRepo;
-
-  public stable = false;
-
-  public currentService: IEntityItem;
-  public refresh: Function;
-
   constructor(
     private dict: DictService,
     private forms: FormService,
@@ -35,6 +27,26 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
     private toastr: ToastrService,
   ) {
   }
+
+  public get isEditMode(): boolean {
+    return this.mode === EMENUMODE.EDIT;
+  }
+
+  public get isCreateMode(): boolean {
+    return this.mode === EMENUMODE.CREATE;
+  }
+
+  public get isDeleteMode(): boolean {
+    return this.mode === EMENUMODE.DELETE;
+  }
+
+  @Input() mode: EMENUMODE;
+  @Input() menu: IMenuRepo;
+
+  public stable = false;
+
+  public currentService: IEntityItem;
+  public refresh: Function;
 
   public form: FormGroup = new FormGroup({});
   public fields: IFieldSetting[] = [];
@@ -48,8 +60,10 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
   private conditionsSubscribersSetter$ = new Subject<string>();
   private conditionsSubscribersSubscription: Subscription;
 
+  private fileForUpload: File;
+
   registerConditionStream() {
-    //складываем эмиттеров событий(без повторений)
+    // складываем эмиттеров событий(без повторений)
     if (!!this.conditionsSubscribersSubscription) {
       this.conditionsSubscribersSubscription.unsubscribe();
     }
@@ -57,12 +71,12 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
       distinct()
     ).subscribe(fieldName => this.conditionsSubscribers[fieldName] = []);
 
-    //формируем новый сет подписчиков на поля
+    // формируем новый сет подписчиков на поля
     this.registerConditionSubs();
   }
 
   registerConditionSubs() {
-    //формируем подписчиков
+    // формируем подписчиков
     this.linkFields.forEach(lf => {
       if (lf.conditionField) {
         this.conditionsSubscribersSetter$.next(lf.conditionField);
@@ -78,9 +92,9 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
   checkConditionFields(fieldKey?: string) {
     if (!!fieldKey && !!this.conditionsSubscribers[fieldKey]) {
 
-      let curField = this.fields.find(f => f.id === fieldKey);
-      let curentValueRAW = curField.control.value;
-      let value = curField.type == 'select' && curField.useDict ? curField.dctItems.find(di => di.id.toString() == curentValueRAW.toString()) : curentValueRAW;
+      const curField = this.fields.find(f => f.id === fieldKey);
+      const curentValueRAW = curField.control.value;
+      const value = curField.type == 'select' && curField.useDict ? curField.dctItems.find(di => di.id.toString() == curentValueRAW.toString()) : curentValueRAW;
       this.conditionsSubscribers[fieldKey].forEach(subField => {
         subField.hide = subField.conditionKey ? subField.conditionValue !== value[subField.conditionKey] : subField.conditionValue !== value;
 
@@ -92,9 +106,9 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
 
       Object.keys(this.conditionsSubscribers).forEach(fk => {
-        let curField = this.fields.find(f => f.id === fk);
-        let curentValueRAW = curField.control.value;
-        let value = curField.type == 'select' && curField.useDict && curField.dctItems ?
+        const curField = this.fields.find(f => f.id === fk);
+        const curentValueRAW = curField.control.value;
+        const value = curField.type == 'select' && curField.useDict && curField.dctItems ?
           curField.dctItems.find(di => di.id.toString() == curentValueRAW.toString()) :
           curentValueRAW;
 
@@ -164,12 +178,10 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  private fileForUpload: File;
-
   public uploadImage(field: IFieldSetting) {
     console.log('file to upload', field);
     if (this.fileForUpload) {
-      let _data: IFileAdditionalData = {
+      const _data: IFileAdditionalData = {
         title: field.titleControl.value,
         description: field.descriptionControl.value
       };
@@ -231,10 +243,10 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
-    //Add '${implements OnChanges}' to the class.
+    // Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
+    // Add '${implements OnChanges}' to the class.
     if (!changes.mode) {
-      //this.currentService = null;
+      // this.currentService = null;
       setTimeout(() => this.close(), 10);
       return;
     }
@@ -260,18 +272,6 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
         this.rerenderFields();
       }, (err) => this.currentError = err.message ? err.message : err);
     }
-  }
-
-  public get isEditMode(): boolean {
-    return this.mode === EMENUMODE.EDIT;
-  }
-
-  public get isCreateMode(): boolean {
-    return this.mode === EMENUMODE.CREATE;
-  }
-
-  public get isDeleteMode(): boolean {
-    return this.mode === EMENUMODE.DELETE;
   }
 
   public selectControl(item: IFieldSetting, ev) {
@@ -307,7 +307,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
       Object.keys(service.data).forEach(key => {
         if (key in service.data) {
           // определяем наличие формы
-          let target = this.fields.find(f => f.id === key);
+          const target = this.fields.find(f => f.id === key);
           console.log('target control: ', target);
           if (!!target && target.control) {
             target.control.setValue(service.data[key]);
@@ -367,7 +367,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
   public linkFromTableSelected(selected: ITableItem, field: ILinkFieldSetting) {
     let value = null;
     if (!!selected && !!selected.data && selected.data.id) {
-      value = selected.data.id
+      value = selected.data.id;
     }
     const key = field.proxyTo || field.entKey;
     this.form.get(key) ? this.form.get(key).setValue(value) : null;
@@ -375,7 +375,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public removeEntity() {
-    //if(this.currentService && /*confirm("Уверен что хочешь удалить услугу?")*/){
+    // if(this.currentService && /*confirm("Уверен что хочешь удалить услугу?")*/){
     if (this.currentService && confirm('Уверен что хочешь удалить ' + this.menu.titleVoc)) {
 
       switch (this.menu.type) {
@@ -406,8 +406,8 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public createEntity(): void {
     // собрать все поля формы в объект сущности
-    let data: IEntityItem = this.form.getRawValue();
-    for (let d in data) {
+    const data: IEntityItem = this.form.getRawValue();
+    for (const d in data) {
       if (data[d] === null) {
         delete data[d];
       }
@@ -415,7 +415,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
     // отправить post с сущностью
     if (confirm('Уверен что хочешь создать ' + this.menu.titleVoc + ' ?')) {
       this.ent.createEnt(this.menu.name, data).subscribe(result => {
-        //alert('Сущность успешно создана');
+        // alert('Сущность успешно создана');
         this.toastr.success('Создание сущности', 'Сущность ' + this.menu.titleVoc + ' успешно создана');
         this.form.reset();
         this.currentService = null;
@@ -426,20 +426,20 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public editEntity() {
 
-    let data: IEntityItem = this.form.getRawValue();
-    for (let d in data) {
+    const data: IEntityItem = this.form.getRawValue();
+    for (const d in data) {
       if (data[d] === null) {
         delete data[d];
       }
     }
 
-    //if(this.currentService && confirm("Уверен что хочешь изменить услугу?")){
+    // if(this.currentService && confirm("Уверен что хочешь изменить услугу?")){
 
     if (this.currentService) {
       data.id = this.currentService.id;
       this.ent.createEnt(this.menu.name, data).subscribe(result => {
 
-        //alert('Сущность успешно изменена');
+        // alert('Сущность успешно изменена');
         this.refresh();
         this.form.reset();
         this.currentService = null;
@@ -476,13 +476,13 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public saveItemsOfContainer() {
-    let ids4save = this.dummyItems.map(di => di.data.id);
+    const ids4save = this.dummyItems.map(di => di.data.id);
     const body: IRestBody = {body: {ids: ids4save}};
     this.cont.saveContainer(this.menu.containerKey, this.currentService.id, body)
       .subscribe(result => {
-        //alert('Данные сохранены');
+        // alert('Данные сохранены');
         this.refresh();
-        //this.close();
+        // this.close();
         this.currentService = null;
       }, (err) => this.currentError = err.message ? err.message : err);
   }

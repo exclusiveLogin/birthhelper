@@ -8,11 +8,11 @@ import {NonAuthComponent} from '../auth-module/auth/non-auth/non-auth.component'
 import {AuthComponent} from '../auth-module/auth/auth.component';
 
 
-let routes: Routes = [
+const routes: Routes = [
   { path: '', pathMatch: 'full', canActivate: [AuthGuard], component: AdminComponent },
   { path: 'auth', pathMatch: 'full', component: AuthComponent },
   { path: 'non', pathMatch: 'full', component: NonAuthComponent }
-]
+];
 @NgModule({
   imports: [
     CommonModule,

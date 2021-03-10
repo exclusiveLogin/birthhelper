@@ -13,15 +13,15 @@ export class SubmenuItemComponent implements OnInit {
 
   constructor() { }
 
-  public get isCreateMode(): boolean{
+  public get isCreateMode(): boolean {
     return this.mode === EMENUMODE.CREATE;
   }
 
-  public get isEditMode(): boolean{
+  public get isEditMode(): boolean {
     return this.mode === EMENUMODE.EDIT;
   }
 
-  public get isDeleteMode(): boolean{
+  public get isDeleteMode(): boolean {
     return this.mode === EMENUMODE.DELETE;
   }
 
