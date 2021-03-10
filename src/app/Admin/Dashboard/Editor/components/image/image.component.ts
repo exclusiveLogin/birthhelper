@@ -1,6 +1,6 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {EntityService} from '../../../../entity.service';
-import {filter, map} from 'rxjs/operators';
+import {filter, map, tap} from 'rxjs/operators';
 import {environment} from '../../../../../../environments/environment';
 import {FormControl} from '@angular/forms';
 
@@ -38,6 +38,11 @@ export class ImageComponent implements OnInit, OnChanges {
 
   rerender() {
     if (this.id) this.entityService.getFile(this.id).pipe(
+      tap(image => {
+        if (!image) {
+          this.fieldControl.setValue(null);
+        }
+      }),
       filter(img => !!img),
     ).subscribe( (image: IImage) => {
       this.image = image;

@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.js",
-    "start-local": "ng serve --env=local",
+    "start:local": "ng serve --configuration=local",
     "build": "npm run envgen && ng build --prod",
     "docker:build": "npm run build && sudo docker build -t exclusivelogin/birthhelper-front .",
     "docker:publish": "npm run docker:build && sudo docker login && sudo docker push exclusivelogin/birthhelper-front",
