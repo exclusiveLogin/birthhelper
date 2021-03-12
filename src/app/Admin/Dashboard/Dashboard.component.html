@@ -1,5 +1,12 @@
-<app-Menu [menu]="menuRepo"></app-Menu>
-<div class="bh_admin_dashboard">
-  <app-Submenu></app-Submenu>
-  <app-editor *ngIf="selectedMenu && selectedMode !== null" [mode]="selectedMode" [menu]="selectedMenu"></app-editor>
+<div class="container-fluid">
+  <div class="row" style="display: flex; flex-grow: 1">
+
+    <app-Menu class="col-md-4 col-12" [menu]="menuRepo"></app-Menu>
+    <div class="bh_admin_dashboard col-md-8 col-12">
+      <app-Submenu></app-Submenu>
+      <app-editor *ngIf="selectedMenu && selectedMode !== null" [mode]="selectedMode" [menu]="selectedMenu"></app-editor>
+    </div>
+
+  </div>
 </div>
+

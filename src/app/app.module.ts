@@ -6,7 +6,6 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 
 import {AppComponent} from './app.component';
-import {HomeComponent} from './Home/Home.component';
 import {NotFoundComponent} from './NotFound/NotFound.component';
 import {HeaderComponent} from './Header/Header.component';
 import {HttpClientModule} from '@angular/common/http';
@@ -21,7 +20,6 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
     NotFoundComponent,
     HeaderComponent,
     MainComponent

@@ -1,19 +1,20 @@
 :host{
-    color: #333;
-    background-color: #ddd;
-    width: 270px;
-    text-align: center;
+  box-shadow: 0 0 30px 0 #2d333f;
+  border-radius: 15px;
 }
-
 .bh_admin_menu_item{
     height: 32px;
     font-size: 13pt;
-    border-top: 1px black dotted;
+    border-bottom: 1px black solid;
     width: 100%;
     text-align: center;
     line-height: 32px;
     cursor: pointer;
 }
+:last-child.bh_admin_menu_item{
+  margin-bottom: 15px;
+}
+
 .bh_admin_menu_item.mutted{
     opacity: 0.5;
 }
@@ -22,7 +23,9 @@
 }
 
 .bh_admin_menu_title{
-    font-size: 15pt;
-    color: #333;
-    margin-bottom: 25px;
+  font-size: 11pt;
+  color: #333;
+  margin-bottom: 12px;
+  text-align: center;
+  font-weight: bold;
 }

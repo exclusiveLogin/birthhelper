@@ -1,27 +1,3 @@
 :host{
-    display: flex;
-    flex-wrap: wrap;
-}
 
-.bh_control label{
-    padding: 10px;
-}
-.bh_control{
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-}
-input, textarea, select{
-    flex-grow: 1;
-    font-size: 12pt;
-    padding: 4px;
-    margin: 10px;
-}
-input[readonly]{
-  background-color: darkgrey;
-  opacity: 0.5;
-}
-.filter_form{
-  width: 100%;
-  display: flex;
 }

@@ -1,21 +1,17 @@
-:host{
-    display: flex;
-    justify-content: space-around;
-    cursor: pointer;
-}
-:host:hover{
+tr:hover{
     background-color: burlywood !important;
 }
-.row{
-    flex-grow: 1;
-    flex-basis: 1px;
-    text-align: center;
-    min-height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-right: 1px grey solid;
+:host{
+  display: contents;
 }
+td{
+  border-right: #2d333f;
+}
+
+:last-child.col{
+  border-right: none;
+}
+
 button.remove{
     color: aliceblue;
     background-color: brown;
