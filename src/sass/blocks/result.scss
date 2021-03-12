@@ -1,0 +1,48 @@
+.result {
+  width: calc(100% - 266px);
+  border-radius: 5px;
+  background: $white;
+  box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.06);
+}
+
+.result__header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 13px 28px;
+}
+
+.result__header-txt {
+  display: block;
+  margin: 0 10px 0 0;
+  font-size: 16px;
+  line-height: 1.19;
+  text-align: left;
+  color: $black;
+}
+
+.result__header-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 28px;
+  height: 28px;
+  margin: 0 4px;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+}
+
+.result__selector {
+  margin: 0 -4px 0 0;
+}
+
+.result__body {
+  padding: 0 20px 0 10px;
+  border-top: 2px solid rgba(45, 51, 63, 0.1);
+
+  &--map {
+    display: flex;
+    padding: 0;
+    border-top: 0;
+  }
+}

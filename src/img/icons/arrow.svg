@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+    <g id="prefix__ic-keyboard-arrow-right-24px" opacity="0.5" transform="translate(-.05 .25)">
+        <path id="prefix__Path_130" fill="none" d="M0-.25h24v24H0z" data-name="Path 130" transform="translate(.05)"/>
+        <g id="prefix__back" transform="rotate(90 4.65 13.4)">
+            <g id="prefix__Group_427" data-name="Group 427">
+                <path id="prefix__Path_351" fill="#2d333f" d="M106.161 6l-4.489-4.489a.658.658 0 0 1 0-.928l.393-.393a.657.657 0 0 1 .928 0l5.345 5.345a.662.662 0 0 1 0 .932L103 11.808a.658.658 0 0 1-.928 0l-.393-.393a.657.657 0 0 1 0-.928z" data-name="Path 351" transform="translate(-101.48)"/>
+            </g>
+        </g>
+    </g>
+</svg>

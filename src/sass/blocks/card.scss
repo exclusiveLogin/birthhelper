@@ -1,0 +1,303 @@
+.card {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 10px 5px 15px 225px;
+}
+
+.card__photo {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  display: block;
+  width: 200px;
+  height: 180px;
+  margin: 0 15px 0 0;
+  border-radius: 3px;
+}
+
+.card__photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card__description {
+  position: relative;
+  width: 100%;
+  padding: 0;
+}
+
+.card__description-top {
+  position: relative;
+  padding: 5px 160px 0 0;
+}
+
+.card__ttl {
+  display: block;
+  min-height: 57px;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.19;
+  color: $black;
+  text-decoration: none;
+}
+
+.card__map {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 13px 0 0;
+}
+
+.card__map-icon {
+  margin: 0 10px 0 0;
+}
+
+.card__map-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 121px;
+  height: 22px;
+  border: none;
+  border-radius: 5px;
+  font-size: 12px;
+  line-height: 1.17;
+  color: $blue;
+  background-color: transparentize($blue, 0.9);
+  cursor: pointer;
+}
+
+.card__address {
+  width: 100%;
+  margin: 5px 0 0;
+  font-size: 14px;
+  line-height: 1.14;
+  color: $black;
+}
+
+.card__tags {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin: 15px 0 0;
+}
+
+.card__tags-ttl {
+  margin: 0 10px 0 0;
+  font-size: 12px;
+  line-height: 1.17;
+  color: transparentize($black, 0.5);
+}
+
+.card__tags-txt {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.17;
+  color: $black;
+}
+
+.card__controls {
+  position: absolute;
+  right: 0;
+  top: 5px;
+}
+
+.card__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 30px 0 0;
+  padding: 0 0 0 30px;
+}
+
+.card__btn-group {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.card__price {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 14px;
+  line-height: 1.14;
+}
+
+.card__price-ttl {
+  color: transparentize($black, 0.5);
+  margin: 0 10px 0 0;
+}
+
+.card__price-cnt {
+  color: $black;
+  font-weight: 500;
+
+  &--green {
+    color: $green;
+  }
+}
+
+.card__btn {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 160px;
+  height: 40px;
+  margin: 0 0 0 10px;
+  border: none;
+  border-radius: 3px;
+  padding: 0;
+
+  &--green {
+    margin: 0;
+    background: $green;
+
+    .card__btn-txt {
+      font-size: 12px;
+      line-height: 1.17;
+    }
+
+    &:hover {
+      background: #56d888;
+    }
+  }
+
+  &--blue {
+    background: $blue;
+
+    .card__btn-txt {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.14;
+    }
+
+    &:hover {
+      background: #6896f5;
+    }
+  }
+}
+
+.card__btn-txt {
+  color: $white;
+}
+
+.card__btn-icon {
+  display: none;
+  font-size: 0;
+}
+
+.card__btn-tooltip-icon {
+  width: 18px;
+  height: 18px;
+  margin: 0 0 0 10px;
+
+  &:hover {
+    .card__btn-tooltip {
+      display: block;
+    }
+  }
+}
+
+.card__btn-tooltip {
+  display: none;
+  position: absolute;
+  top: -50px;
+  right: 0;
+  width: 247px;
+  padding: 15px;
+  border-radius: 4px;
+  box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.15);
+  background-color: $white;
+  color: $dark;
+
+  &::before {
+    position: absolute;
+    content: "";
+    bottom: -20px;
+    right: 17px;
+    border-top: 10px solid $white;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+  }
+}
+
+.result__body--map {
+  .card {
+    padding: 35px 25px 25px;
+
+    &:hover,
+    .actice {
+      background: rgba(72, 127, 241, 0.05);
+    }
+  }
+
+  .card__photo {
+    display: none;
+  }
+
+  .card__description-top {
+    padding: 0;
+  }
+
+  .card__ttl {
+    width: calc(100% - 123px);
+    font-size: 14px;
+    min-height: 63px;
+  }
+
+  .card__map {
+    margin: 8px 0 0;
+  }
+
+  .card__map-btn {
+    display: none;
+  }
+
+  .card__address {
+    width: auto;
+    margin: 0;
+  }
+
+  .card__tags {
+    display: none;
+  }
+
+  .card__footer {
+    padding: 0;
+    margin: 0;
+  }
+
+  .card__btn {
+    margin: 0 0 0 5px;
+  }
+  .card__btn--offer {
+    width: 40px;
+
+    .card__btn-txt {
+      display: none;
+    }
+
+    .card__btn-icon {
+      display: block;
+    }
+  }
+
+  .card__price-ttl {
+    display: block;
+  }
+
+  .card__price-cnt {
+    display: block;
+    margin: 5px 0 0;
+  }
+
+  .card__controls {
+    top: 0;
+  }
+}

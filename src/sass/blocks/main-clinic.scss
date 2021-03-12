@@ -1,0 +1,21 @@
+.main-clinic {
+  width: calc(100% - 230px);
+  padding-left: 230px;
+}
+
+.main-clinic__messages {
+  position: absolute;
+  right: -318px;
+  top: 0;
+}
+
+.main-clinic__columns {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 35px 0 0;
+}
+
+.main-clinic__filter {
+  margin: 0 24px 0 0;
+}

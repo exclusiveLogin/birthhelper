@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__planning" width="30" height="30" viewBox="0 0 30 30">
+    <defs>
+        <style>
+            .prefix__cls-1{fill:#fa6770}
+        </style>
+    </defs>
+    <g id="prefix__Group_1485" data-name="Group 1485" transform="translate(17.578 17.695)">
+        <g id="prefix__Group_1484" data-name="Group 1484">
+            <path id="prefix__Path_1429" d="M306.152 302a6.152 6.152 0 0 0 0 12.3 6.153 6.153 0 1 0 0-12.3zm1.758 7.031h-1.758a.878.878 0 0 1-.879-.879v-1.758a.879.879 0 0 1 1.758 0v.879h.879a.879.879 0 0 1 0 1.758z" class="prefix__cls-1" data-name="Path 1429" transform="translate(-300 -302)"/>
+        </g>
+    </g>
+    <g id="prefix__Group_1487" data-name="Group 1487" transform="translate(0 22.09)">
+        <g id="prefix__Group_1486" data-name="Group 1486">
+            <path id="prefix__Path_1430" d="M3.516 377H1.758a1.758 1.758 0 0 0 0 3.516h1.758a1.758 1.758 0 0 0 0-3.516z" class="prefix__cls-1" data-name="Path 1430" transform="translate(0 -377)"/>
+        </g>
+    </g>
+    <g id="prefix__Group_1489" data-name="Group 1489" transform="translate(0 13.301)">
+        <g id="prefix__Group_1488" data-name="Group 1488">
+            <path id="prefix__Path_1431" d="M3.516 227H1.758a1.758 1.758 0 0 0 0 3.516h1.758a1.758 1.758 0 0 0 0-3.516z" class="prefix__cls-1" data-name="Path 1431" transform="translate(0 -227)"/>
+        </g>
+    </g>
+    <g id="prefix__Group_1491" data-name="Group 1491" transform="translate(0 4.395)">
+        <g id="prefix__Group_1490" data-name="Group 1490">
+            <path id="prefix__Path_1432" d="M3.516 75H1.758a1.758 1.758 0 0 0 0 3.516h1.758a1.758 1.758 0 0 0 0-3.516z" class="prefix__cls-1" data-name="Path 1432" transform="translate(0 -75)"/>
+        </g>
+    </g>
+    <g id="prefix__Group_1493" data-name="Group 1493" transform="translate(3.516)">
+        <g id="prefix__Group_1492" data-name="Group 1492">
+            <path id="prefix__Path_1433" d="M81.973 0H62.637A2.64 2.64 0 0 0 60 2.637a3.516 3.516 0 0 1 0 7.031v1.875a3.516 3.516 0 0 1 0 7.031v1.758a3.516 3.516 0 0 1 0 7.031A2.64 2.64 0 0 0 62.637 30H75.3a7.877 7.877 0 0 1 4.911-14.062 8.249 8.249 0 0 1 4.512 1.339V2.637A2.742 2.742 0 0 0 81.973 0z" class="prefix__cls-1" data-name="Path 1433" transform="translate(-60)"/>
+        </g>
+    </g>
+</svg>

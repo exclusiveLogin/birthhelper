@@ -1,0 +1,18 @@
+.social__btn-group {
+  display: flex;
+  margin: 5px 0 0;
+}
+
+.social__btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 42px;
+  height: 42px;
+  margin: 0 11px 0 0;
+
+  &:last-child {
+    margin: 0;
+  }
+}
+

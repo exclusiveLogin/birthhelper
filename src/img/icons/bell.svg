@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+    <defs>
+        <style>
+            .prefix__cls-2{fill:#487ff1}
+        </style>
+    </defs>
+    <g id="prefix__Group_1099" data-name="Group 1099" transform="translate(-35 -627)">
+        <path id="prefix__Rectangle_435" fill="none" d="M0 0H22V22H0z" data-name="Rectangle 435" transform="translate(35 627)"/>
+        <g id="prefix__bell" transform="translate(-4.675 617)">
+            <g id="prefix__Group_1096" data-name="Group 1096" transform="translate(42.675 13)">
+                <g id="prefix__Group_1095" data-name="Group 1095">
+                    <path id="prefix__Path_1165" d="M58.618 26.077l-1.373-2.227a6.478 6.478 0 0 1-.97-3.4V18.5a5.476 5.476 0 0 0-4-5.217 4.723 4.723 0 0 0-3.2 0 5.476 5.476 0 0 0-4 5.217v1.951a6.482 6.482 0 0 1-.969 3.4l-1.374 2.227a.379.379 0 0 0 0 .392.4.4 0 0 0 .347.2h15.2a.4.4 0 0 0 .348-.2.381.381 0 0 0-.009-.393z" class="prefix__cls-2" data-name="Path 1165" transform="translate(-42.675 -13)"/>
+                </g>
+            </g>
+            <g id="prefix__Group_1098" data-name="Group 1098" transform="translate(48.156 27.444)">
+                <g id="prefix__Group_1097" data-name="Group 1097">
+                    <path id="prefix__Path_1166" d="M188.815 469.333a2.817 2.817 0 0 0 5.039 0z" class="prefix__cls-2" data-name="Path 1166" transform="translate(-188.815 -469.333)"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

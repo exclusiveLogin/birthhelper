@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
+    <g id="prefix__Group_810" data-name="Group 810" transform="translate(0 0)">
+        <g id="prefix__Group_441" data-name="Group 441" transform="translate(0 0)">
+            <path id="prefix__Rectangle_435-2" fill="none" d="M0 0H28V28H0z" data-name="Rectangle 435" transform="translate(0 0)"/>
+            <path id="prefix__Path_352" d="M22.216 3l-.176.033-5.864 2.273L9.588 3 3.4 5.086a.553.553 0 0 0-.4.527v16.6a.544.544 0 0 0 .549.549l.176-.033 5.864-2.273 6.588 2.306 6.193-2.086a.553.553 0 0 0 .4-.527v-16.6A.544.544 0 0 0 22.216 3zm-6.04 17.569l-6.588-2.317V5.2l6.588 2.317z" class="prefix__cls-3" data-name="Path 352" transform="translate(1 1)" fill="#2d333f"/>
+        </g>
+    </g>
+</svg>

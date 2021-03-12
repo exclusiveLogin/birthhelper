@@ -1,0 +1,55 @@
+.search {
+  background: $white;
+  border-radius: 5px;
+  box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.06);
+  padding: 15px 20px;
+}
+
+.search__input {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 31px 0 0;
+  border-radius: 5px;
+  border: solid 1px rgba(45, 51, 63, 0.1);
+  width: 100%;
+  max-width: 260px;
+  height: 44px;
+  background: url("../../img/icons/ic-search-24px.svg") no-repeat 14px center;
+  padding: 14px 20px 14px 47px;
+  font-size: 14px;
+  line-height: 1.14;
+  text-align: left;
+  color: $dark;
+  outline: none;
+
+  &:hover {
+    border-color: rgba(72, 127, 241, 0.65);
+  }
+
+  &:focus {
+    border-color: rgba(72, 127, 241, 0.65);
+  }
+}
+
+.search__btn {
+  display: inline-block;
+  vertical-align: middle;
+  width: 88px;
+  height: 36px;
+  text-align: center;
+  border-radius: 5px;
+  border: solid 1px $blue;
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.14;
+  letter-spacing: normal;
+  color: $blue;
+  background: $white;
+  padding: 10px 15px;
+
+  &:hover {
+    background: transparentize($blue, 0.9);
+  }
+}

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="23.893" height="26" viewBox="0 0 23.893 26">
+    <defs>
+        <style>
+            .prefix__cls-1{fill:#487ff1}
+        </style>
+    </defs>
+    <g id="prefix__businessman" transform="translate(-14.33)">
+        <path id="prefix__Path_1497" d="M65.562 8.794a4.4 4.4 0 1 0-4.4-4.4 4.4 4.4 0 0 0 4.4 4.4z" class="prefix__cls-1" data-name="Path 1497" transform="translate(-42.665)"/>
+        <path id="prefix__Path_1498" d="M175.95 185.307a4.973 4.973 0 1 0 4.973 4.973 4.978 4.978 0 0 0-4.973-4.973zm3.029 3.94l-3.249 3.249a.837.837 0 0 1-1.184 0l-1.625-1.625a.837.837 0 1 1 1.184-1.184l1.033 1.033 2.658-2.658a.837.837 0 0 1 1.184 1.184z" class="prefix__cls-1" data-name="Path 1498" transform="translate(-142.699 -169.252)"/>
+        <path id="prefix__Path_1499" d="M31.463 124.355v-.776A3.87 3.87 0 0 0 28.8 119.9h-.007c-2.524-.446-2.626-.226-2.806-.146-2.791 1.426-3.382 1.426-6.173 0A16.034 16.034 0 0 0 17 119.9a3.9 3.9 0 0 0-2.674 3.7v6.025a1.635 1.635 0 0 0 1.635 1.635h10.992a6.335 6.335 0 0 1 4.51-6.9z" class="prefix__cls-1" data-name="Path 1499" transform="translate(0 -109.421)"/>
+    </g>
+</svg>

@@ -1,0 +1,29 @@
+.main {
+  position: relative;
+  flex-grow: 1;
+  padding: 45px 0;
+
+  &--index {
+    background-image: url(../../img/main-bg.png);
+  }
+}
+
+.main__nav {
+  margin: 35px auto 0;
+}
+
+.main__directions {
+  margin: 35px auto 5px;
+}
+
+.main__tabs {
+  margin: 21px 0 0;
+}
+
+.main__steps {
+  margin: 35px auto 48px;
+}
+
+.main__accordion {
+  margin: 35px auto 120px;
+}

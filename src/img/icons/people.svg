@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="30.72" height="30" viewBox="0 0 30.72 30">
+    <defs>
+        <style>
+            .prefix__cls-1{fill:#17d0c3}
+        </style>
+    </defs>
+    <g id="prefix__people" transform="translate(-.5 -6.5)">
+        <g id="prefix__Group_1501" data-name="Group 1501" transform="translate(.5 17.599)">
+            <g id="prefix__Group_1499" data-name="Group 1499" transform="translate(0 5.32)">
+                <path id="prefix__Path_1436" d="M30.32 436H1.4a.9.9 0 0 1-.9-.9 3.6 3.6 0 0 1 3.6-3.6h23.52a3.6 3.6 0 0 1 3.6 3.6.9.9 0 0 1-.9.9z" class="prefix__cls-1" data-name="Path 1436" transform="translate(-.5 -422.419)"/>
+                <path id="prefix__Path_1437" d="M3.8 298.1a3.3 3.3 0 1 1 3.3-3.3 3.3 3.3 0 0 1-3.3 3.3z" class="prefix__cls-1" data-name="Path 1437" transform="translate(-.5 -290.819)"/>
+                <path id="prefix__Path_1438" d="M398.888 281.716v.322h2.7v-1.881z" class="prefix__cls-1" data-name="Path 1438" transform="translate(-374.985 -280.157)"/>
+            </g>
+            <g id="prefix__Group_1500" data-name="Group 1500" transform="translate(7.502)">
+                <path id="prefix__Path_1439" d="M146.959 200.49h-6.817v-3.16l4.264-2.462a1.824 1.824 0 0 0 .716-2.433 1.8 1.8 0 0 0-2.484-.7l-5.2 3a1.792 1.792 0 0 0-.893 1.559h-.008v2.4h-9.563a2.7 2.7 0 0 0-.923.162 5.087 5.087 0 0 1-.514 4.823 2.686 2.686 0 0 0 1.438.415h19.943a1.824 1.824 0 0 0 1.837-1.749 1.8 1.8 0 0 0-1.796-1.855z" class="prefix__cls-1" data-name="Path 1439" transform="translate(-125.541 -191.49)"/>
+            </g>
+        </g>
+        <g id="prefix__Group_1502" data-name="Group 1502" transform="translate(9.703 13.853)">
+            <path id="prefix__Path_1440" d="M168.372 129.873a6.269 6.269 0 0 0-1.843-.794 5.391 5.391 0 0 1-7.722-.037 6.3 6.3 0 0 0-4.917 6.147v1.2a1.8 1.8 0 0 0 1.8 1.8h4.8a.9.9 0 0 0 .9-.9.9.9 0 0 0-.9-.9h-3a.9.9 0 0 1-.9-.9v-1.775a.917.917 0 0 1 .856-.924.9.9 0 0 1 .943.9v.9h2.1a2.688 2.688 0 0 1 1.768.662 3.556 3.556 0 0 1 .932-.78l5.2-3 1.136-.656a6.323 6.323 0 0 0-1.153-.943z" class="prefix__cls-1" data-name="Path 1440" transform="translate(-153.89 -129.042)"/>
+        </g>
+        <path id="prefix__Path_1441" d="M244.1 13.7a3.6 3.6 0 1 1 3.6-3.6 3.6 3.6 0 0 1-3.6 3.6z" class="prefix__cls-1" data-name="Path 1441" transform="translate(-225.6)"/>
+    </g>
+</svg>

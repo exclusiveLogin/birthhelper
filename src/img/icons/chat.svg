@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="-2 -2 22 22">
+    <defs>
+        <style>
+            .prefix__cls-1{fill:#487ff1}
+        </style>
+    </defs>
+    <g id="prefix__chat">
+        <path id="prefix__Path_1163" d="M162.633 153.786a6.58 6.58 0 0 0-.592-9.206 7.525 7.525 0 0 1-7.228 9.576l-1.8-.011a6.555 6.555 0 0 0 4.64 1.917l6.111-.031a.469.469 0 0 0 .327-.8z" class="prefix__cls-1" data-name="Path 1163" transform="translate(-148.234 -140.062)"/>
+        <path id="prefix__Path_1164" d="M6.578 13.156A6.577 6.577 0 1 0 1.6 10.88L.14 12.323a.469.469 0 0 0 .327.8z" class="prefix__cls-1" data-name="Path 1164"/>
+    </g>
+</svg>

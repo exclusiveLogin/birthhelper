@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+    <g id="prefix__Group_1679" data-name="Group 1679" transform="translate(-1603 -253)">
+        <circle id="prefix__Ellipse_116" cx="12" cy="12" r="12" fill="#487ff1" data-name="Ellipse 116" opacity="0.25" transform="translate(1603 253)"/>
+        <g id="prefix__ic-mail-24px" transform="translate(1606 256)">
+            <path id="prefix__Path_1523" fill="#487ff1" d="M15.5 4h-12a1.5 1.5 0 0 0-1.493 1.5L2 14.5A1.5 1.5 0 0 0 3.5 16h12a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 15.5 4zm0 3l-6 3.75L3.5 7V5.5l6 3.75 6-3.75z" data-name="Path 1523" transform="translate(-.5 -1)"/>
+            <path id="prefix__Path_1524" fill="none" d="M0 0h18v18H0z" data-name="Path 1524"/>
+        </g>
+    </g>
+</svg>

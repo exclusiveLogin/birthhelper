@@ -1,0 +1,40 @@
+.contacts {
+  text-align: right;
+}
+
+.contacts__txt {
+  font-size: 14px;
+  line-height: 1.57;
+  color: $black;
+  margin: 0;
+}
+
+.contacts__phone {
+  display: block;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 0.79;
+  color: $black;
+  margin: 5px 0 0;
+  text-decoration: none;
+}
+
+.contacts__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  float: right;
+  width: 143px;
+  height: 31px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: #edf2fe;
+  font-size: 14px;
+  color: $blue;
+  margin: 12px 0 0 0;
+
+  &:hover {
+    background-color: transparentize($blue, 0.7);
+  }
+}

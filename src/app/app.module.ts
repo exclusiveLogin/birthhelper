@@ -10,9 +10,10 @@ import {HomeComponent} from './Home/Home.component';
 import {NotFoundComponent} from './NotFound/NotFound.component';
 import {HeaderComponent} from './Header/Header.component';
 import {HttpClientModule} from '@angular/common/http';
+import { MainComponent } from './main/main.component';
 
 const routes: Routes = [
-  {path: '', redirectTo: '/admin', pathMatch: 'full'},
+  {path: '', component: MainComponent},
   {path: 'admin', loadChildren: () => import('./Admin/Admin.module').then(m => m.AdminModule)},
   {path: '**', component: NotFoundComponent},
 ];
@@ -22,7 +23,8 @@ const routes: Routes = [
     AppComponent,
     HomeComponent,
     NotFoundComponent,
-    HeaderComponent
+    HeaderComponent,
+    MainComponent
   ],
   imports: [
     RouterModule.forRoot(routes, {relativeLinkResolution: 'legacy'}),

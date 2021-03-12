@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+    <defs>
+        <style>
+            .prefix__cls-2{fill:#487ff1}
+        </style>
+    </defs>
+    <g id="prefix__Group_1106" data-name="Group 1106" transform="translate(-35 -671)">
+        <path id="prefix__Rectangle_435" fill="none" d="M0 0H22V22H0z" data-name="Rectangle 435" transform="translate(35 671)"/>
+        <g id="prefix__shopping-cart" transform="translate(37 663.33)">
+            <g id="prefix__Group_1101" data-name="Group 1101" transform="translate(10.761 22.75)">
+                <g id="prefix__Group_1100" data-name="Group 1100">
+                    <path id="prefix__Path_1167" d="M294.312 338.862a1.96 1.96 0 1 0 1.96 1.96 1.983 1.983 0 0 0-1.96-1.96z" class="prefix__cls-2" data-name="Path 1167" transform="translate(-292.352 -338.862)"/>
+                </g>
+            </g>
+            <g id="prefix__Group_1103" data-name="Group 1103" transform="translate(0 10.67)">
+                <g id="prefix__Group_1102" data-name="Group 1102">
+                    <path id="prefix__Path_1168" d="M16.17 13.4c-.038 0-.094-.019-.151-.019H4.146l-.188-1.263A1.688 1.688 0 0 0 2.28 10.67H.754a.754.754 0 1 0 0 1.508H2.28a.2.2 0 0 1 .188.17L3.637 20.3a2.066 2.066 0 0 0 2.035 1.753h7.84a2.094 2.094 0 0 0 2.035-1.658l1.225-6.125a.745.745 0 0 0-.602-.87z" class="prefix__cls-2" data-name="Path 1168" transform="translate(0 -10.67)"/>
+                </g>
+            </g>
+            <g id="prefix__Group_1105" data-name="Group 1105" transform="translate(4.088 22.75)">
+                <g id="prefix__Group_1104" data-name="Group 1104">
+                    <path id="prefix__Path_1169" d="M114.9 340.728a1.949 1.949 0 0 0-1.941-1.866 1.971 1.971 0 0 0-1.885 2.035 1.932 1.932 0 0 0 1.922 1.866h.038a1.956 1.956 0 0 0 1.866-2.035z" class="prefix__cls-2" data-name="Path 1169" transform="translate(-111.07 -338.862)"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

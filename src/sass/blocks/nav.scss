@@ -1,0 +1,63 @@
+.nav__list {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav__item {
+  padding: 30px 35px 25px 30px;
+  background: $white;
+  border-radius: 5px;
+
+  &:hover {
+    box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.05);
+  }
+
+  &-planning {
+    .nav__link {
+      color: #fa6770;
+    }
+  }
+
+  &-clinic {
+    .nav__link {
+      color: #f87937;
+    }
+  }
+
+  &-mhospital {
+    .nav__link {
+      color: #dd71e3;
+    }
+  }
+
+  &-recovery {
+    .nav__link {
+      color: #17d0c3;
+    }
+  }
+}
+
+.nav__icon {
+  width: 30px;
+  height: auto;
+}
+
+.nav__txt {
+  font-size: 16px;
+  line-height: 1.19;
+  color: $black;
+  margin: 31px 0 0;
+}
+
+.nav__link {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.19;
+  color: #f87937;
+  margin: 15px 0 0;
+  text-decoration: none;
+}

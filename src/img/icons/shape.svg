@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+    <defs>
+        <style>
+            .prefix__cls-2{fill:#487ff1}
+        </style>
+    </defs>
+    <g id="prefix__Group_1093" data-name="Group 1093" transform="translate(-35 -583)">
+        <path id="prefix__Rectangle_435" fill="none" d="M0 0H22V22H0z" data-name="Rectangle 435" transform="translate(35 583)"/>
+        <g id="prefix__shape" transform="translate(-67.885 585)">
+            <g id="prefix__Group_1572" data-name="Group 1572" transform="translate(108.885)">
+                <g id="prefix__Group_1571" data-name="Group 1571">
+                    <path id="prefix__Path_1466" d="M109.032 262.4c-.525 2.925.525 6.75.525 8.775h3a23.926 23.926 0 0 1 1.2-5.25l-.225-.225a18.035 18.035 0 0 0-4.5-3.3z" class="prefix__cls-2" data-name="Path 1466" transform="translate(-108.885 -253.175)"/>
+                    <path id="prefix__Path_1467" d="M269.258 262.4a18.036 18.036 0 0 0-4.5 3.3l-.225.225a23.924 23.924 0 0 1 1.2 5.25h3c0-2.025 1.05-5.85.525-8.775z" class="prefix__cls-2" data-name="Path 1467" transform="translate(-259.061 -253.175)"/>
+                    <path id="prefix__Path_1468" d="M135.5 4.5c0-2.025 1.275-2.025 1.5-4.5h-9c.225 2.475 1.5 2.475 1.5 4.5z" class="prefix__cls-2" data-name="Path 1468" transform="translate(-127.328)"/>
+                    <path id="prefix__Path_1469" d="M125.209 149.333h-6a7.05 7.05 0 0 0-1.875 3.225 18.483 18.483 0 0 1 4.875 3.525 18.483 18.483 0 0 1 4.875-3.525 7.05 7.05 0 0 0-1.875-3.225z" class="prefix__cls-2" data-name="Path 1469" transform="translate(-117.037 -144.083)"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
