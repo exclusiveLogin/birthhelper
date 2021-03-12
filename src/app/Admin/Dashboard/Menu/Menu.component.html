@@ -1,4 +1,4 @@
-<div class="bh_admin_menu_title">Меню</div>
+<div class="bh_admin_menu_title">Главное меню</div>
 
 <!-- <div class="bh_admin_menu_item">Услуги сайта</div>
 <div class="bh_admin_menu_item">Пользователи</div>
@@ -8,6 +8,6 @@
 <div class="bh_admin_menu_item">Настройки</div> -->
 
 
-<div class="bh_admin_menu_item" 
+<div class="bh_admin_menu_item"
     *ngFor="let menuItem of menu"
     (click)="selectMenuItem( menuItem )">{{ menuItem.title }}</div>

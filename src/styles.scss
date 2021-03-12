@@ -1,17 +1,18 @@
 @import "sass/style";
+@import "~bootstrap/dist/css/bootstrap.css";
 /* You can add global styles to this file, and also import other style files */
-body{
-    margin: 0;
-    height: 100%;
+body {
+  margin: 0;
+  height: 100%;
 }
 
-html{
-    margin: 0;
-    height: 100%;
+html {
+  margin: 0;
+  height: 100%;
 }
 
-.full{
-    display: flex;
-    width: 100%;
-    justify-content: center;
+.full {
+  display: flex;
+  width: 100%;
+  justify-content: center;
 }

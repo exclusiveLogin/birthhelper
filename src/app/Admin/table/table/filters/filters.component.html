@@ -1,7 +1,10 @@
 <form class="filter_form" [formGroup]="form">
-  <div class="bh_control" *ngFor="let field of fields">
 
-    <label [for]="field.name" class="bh_label">{{ field.title }}</label>
+  <div class="input-group mb-3" *ngFor="let field of fields">
+
+    <div class="input-group-prepend">
+      <span class="input-group-text" [id]="field.name">{{ field.title }}</span>
+    </div>
 
     <ng-container [ngSwitch]="field.type">
 
@@ -12,6 +15,8 @@
           [name]="field.name"
           [id]="field.name"
           [placeholder]="'Введите ' + field.title | lowercase"
+          class="form-control"
+          [attr.aria-describedby]="field.name"
         />
       </ng-container>
 
@@ -20,6 +25,8 @@
           [name]="field.name"
           [id]="field.name"
           [placeholder]="'Введите ' + field.title | lowercase"
+          class="form-control"
+          [attr.aria-describedby]="field.name"
         ></textarea>
       </ng-container>
 
@@ -29,6 +36,8 @@
           [id]="field.name"
           *ngIf="field.items$"
           [formControl]="field.control"
+          [attr.aria-describedby]="field.name"
+          class="form-control"
         >
           <option value>Не выбран</option>
           <option *ngFor="let item of field.items$ | async" [value]="item.id">{{item.title}}</option>
