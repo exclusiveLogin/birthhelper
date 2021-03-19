@@ -14,7 +14,7 @@ services:
     image: "exclusivelogin/birthhelper-guide"
     ports:
     - "8090:80"
-  guide:
+  hellgame24_back:
     image: "exclusivelogin/hellgame24-back"
     ports:
     - "8093:80"
