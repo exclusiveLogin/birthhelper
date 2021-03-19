@@ -18,3 +18,7 @@ services:
     image: "exclusivelogin/hellgame24-back"
     ports:
     - "8093:80"
+  hellgame24_front:
+    image: "exclusivelogin/hellgame24-front"
+    ports:
+    - "8094:80"
