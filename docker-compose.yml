@@ -6,7 +6,6 @@ services:
     - "8092:80"
   back:
     image: "exclusivelogin/birthhelper-back"
-    stop_signal: SIGINT
     ports:
     - "8091:3000"
     volumes:
@@ -25,4 +24,3 @@ services:
     - "8094:80"
   hellgame24_bot:
     image: "exclusivelogin/hellgame24-bot"
-    stop_signal: SIGINT
