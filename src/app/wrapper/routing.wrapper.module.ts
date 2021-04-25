@@ -7,6 +7,7 @@ import {WrapperComponent} from './wrapper.component';
 const routes: Routes = [{
   path: '',
   redirectTo: 'search',
+  pathMatch: 'full',
 }, {
   path: 'search',
   loadChildren: () => import('../search/search.module').then(m => m.SearchModule),

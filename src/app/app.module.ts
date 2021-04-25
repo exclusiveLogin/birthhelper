@@ -6,7 +6,6 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import {AppComponent} from './app.component';
 import {NotFoundComponent} from './NotFound/NotFound.component';
-import {HeaderComponent} from './Header/Header.component';
 import {HttpClientModule} from '@angular/common/http';
 import { MainComponent } from './main/main.component';
 import { WrapperComponent } from './wrapper/wrapper.component';
@@ -23,7 +22,6 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     NotFoundComponent,
-    HeaderComponent,
     MainComponent,
     WrapperComponent,
     MenuComponent
