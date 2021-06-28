@@ -6,8 +6,8 @@ import * as env from '../../env.js';
 
 export const environment = {
     production: false,
-    baseUrl: env['baseUrl'] || 'http://localhost:3000',
-    fileServer: env['fileServer'] || 'http://localhost:3000',
-    backend: env['backend'] || 'http://localhost:3000',
-    static: env['static'] || 'http://localhost:3000/static',
+    baseUrl: env['baseUrl'] || 'http://birthhelper.ru/api',
+    fileServer: env['fileServer'] || 'http://birthhelper.ru:9080',
+    backend: env['backend'] || 'http://birthhelper.ru/api',
+    static: env['static'] || 'http://birthhelper.ru/api/static',
 };

@@ -1,14 +1,14 @@
 const PROXY_CONFIG = [
   {
     context: [ '/static' ],
-    target: 'http://185.178.46.248/api',
+    target: 'http://birthhelper.ru/api',
     changeOrigin: true,
     logLevel: "debug",
     secure: false
   },
   {
-    context: [ '/api' ],
-    target: 'http://185.178.46.248',
+    context: [ '/' ],
+    target: 'http://birthhelper.ru',
     changeOrigin: true,
     logLevel: "debug",
     secure: false

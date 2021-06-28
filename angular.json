@@ -68,6 +68,20 @@
                   "with": "src/environments/environment.local.ts"
                 }
               ]
+            },
+            "remote": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.remote.ts"
+                }
+              ]
             }
           }
         },
@@ -82,6 +96,9 @@
             },
             "local": {
               "browserTarget": "birthhelper:build:local"
+            },
+            "remote": {
+              "browserTarget": "birthhelper:build:remote"
             }
           }
         },
