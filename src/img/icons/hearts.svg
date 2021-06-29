@@ -1,7 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="17.413" viewBox="0 0 22 17.413">
     <defs>
         <style>
-            .prefix__cls-1{fill:#487ff1}
+            .prefix__cls-1{fill: #ed7255
+            }
         </style>
     </defs>
     <g id="prefix__heart" transform="translate(0 -53.38)">
