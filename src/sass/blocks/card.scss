@@ -31,7 +31,7 @@
 
 .card__description-top {
   position: relative;
-  padding: 5px 160px 0 0;
+  padding: 5px;
 }
 
 .card__ttl {
@@ -83,7 +83,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  margin: 15px 0 0;
+  margin: 35px 0 0;
 }
 
 .card__tags-ttl {
@@ -146,12 +146,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 160px;
+  //width: 160px;
   height: 40px;
   margin: 0 0 0 10px;
   border: none;
   border-radius: 3px;
-  padding: 0;
+  //padding: 0;
 
   &--green {
     margin: 0;

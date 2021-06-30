@@ -46,6 +46,12 @@ export class ClinicCardComponent implements OnInit {
     constructor() {
     }
 
+    wrapped = false;
+
+    wrap(): void {
+        this.wrapped = true;
+    }
+
     ngOnInit(): void {
     }
 

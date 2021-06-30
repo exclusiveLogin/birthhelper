@@ -63,11 +63,10 @@ export class RestService {
     public getEntityList(key: string, page?: number, qp?: IRestParams): Observable<any[]> {
         const entSetting: ISettingsParams = {
             mode: 'api',
-            segment: 'entity',
-            resource: key
+            segment: key,
         };
 
-        const data: IRestParams = page ? {skip: (20 * (page - 1)).toString()} : null;
+        const data: IRestParams = page ? {skip: (20 * (page - 1)).toString()} : {};
 
         if (qp) {
             Object.assign(data, qp);
