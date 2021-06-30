@@ -1,36 +1,21 @@
-
-import {of as observableOf, Observable} from 'rxjs';
 import { Injectable } from '@angular/core';
-
+import { environment } from '../../environments/environment';
 
 @Injectable({providedIn: 'root'})
 export class ApiService {
-  private MAINAPI = 'http://91.240.87.153/backend/';
 
-  constructor() { }
+constructor() { }
 
-  public getApi(): string {
-    return this.MAINAPI;
-  }
+    private apiBase = environment.baseUrl;
 
-  public getIconPath( type: string ){
-    return this[type.toUpperCase()+'_ICONS'];
-  }
+    private iconPath = 'icons';
+    private filePath = 'uploads';
 
-  public getImagePath( type: string ){
-    return this[type.toUpperCase()+'_IMAGE'];
-  }
+    public getApiPath(): string {
+        return this.apiBase;
+    }
 
-  public getIconPathRx( type: string ): Observable<string> {
-    return observableOf( this[type.toUpperCase()+'_ICONS'] );
-  }
-
-  public getImagePathRx( type: string ): Observable<string> {
-    return observableOf( this[type.toUpperCase()+'_IMAGE'] );
-  }
-
-  public getApiRx(): Observable<string> {
-    return observableOf(this.MAINAPI);
-  }
-
+    public getIconPath(): string {
+        return this.iconPath;
+    }
 }
