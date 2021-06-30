@@ -1,9 +1,8 @@
 <div class="clinics__item">
     <div class="card">
-        <div class="card__photo"><img src="img/clinic/clinic1.jpg"
-                                      srcset="img/clinic/clinic1@2x.jpg 2x, img/clinic/clinic1@3x.jpg 3x"
-                                      class="card__photo-img"
-                                      alt="ФГБУ «Национальный медицинский исследовательский центр акушерства, гинекологии перинатологии имени академика В.И.Кулакова»">
+        <div class="card__photo"><img class="img_clinic"
+                                      [src]="url"
+                                      [alt]="viewClinic?.title">
             <div class="card__photo-mark-block mark-block">
                 <div class="mark-block__item"><img src="img/icons/person.svg" class="mark-block__icon" alt="">
                     <div class="mark-block__tooltip"><span class="mark-block__tooltip-txt">Клиника доброжелательная к ребёнку</span>
@@ -16,15 +15,18 @@
             </div>
         </div>
         <div class="card__description">
-            <div class="card__description-top"><a href="#" class="card__ttl">ФГБУ «Национальный медицинский
-                исследовательский центр акушерства, гинекологии перинатологии имени академика В.И.Кулакова»</a>
+            <div class="card__description-top"><a href="#" class="card__ttl">{{viewClinic.title}}</a>
+                <div class="card__tags">
+                    <span class="card__tags-ttl">Описание:</span>
+                    <span class="card__tags-txt">{{viewClinic.description}}</span>
+                </div>
+
                 <div class="card__map">
                     <div class="card__map-icon"><img src="img/icons/place.svg" alt=""></div>
                     <button class="card__map-btn">Показать на карте</button>
-                    <p class="card__address">Москва, ул. Академика Опарина, 4</p></div>
-                <div class="card__tags"><span class="card__tags-ttl">Совпадения:</span> <span class="card__tags-txt">роды в воде; естественные роды; размещение в палате - 1 человек; трансфер из больницы</span>
+                    <p class="card__address">{{viewClinic.address}}</p>
                 </div>
-            </div>
+
             <div class="card__controls card-controls">
                 <div class="card-controls__btn-group">
                     <button class="card-controls__btn card-controls__btn-bookmark">
@@ -40,18 +42,19 @@
                     </button>
                     <button class="card-controls__btn card-controls__btn-other"><img
                             src="img/icons/ic-show-chart-24px.svg" alt=""></button>
-                    <button class="card-controls__btn card-controls__btn-rating"><span class="card-controls__btn-txt">8,6</span>
+                    <button class="card-controls__btn card-controls__btn-rating"><span class="card-controls__btn-txt">{{viewClinic.stat_value}}</span>
                     </button>
                 </div>
                 <div class="card-controls__cnt"><a href="#" class="card-controls__link">Оставить отзыв</a> <span
-                        class="card-controls__txt">143 отзыва</span></div>
+                        class="card-controls__txt">Всего {{viewClinic.stat_count}}</span></div>
             </div>
             <div class="card__footer"><p class="card__price"><span class="card__price-ttl">Пакеты услуг от:</span>
-                <span class="card__price-cnt card__price-cnt--green">1 200 000 рублей</span></p>
+                <span class="card__price-cnt card__price-cnt--green">{{viewClinic.price_from}}</span></p>
                 <div class="card__btn-group">
-                    <button class="card__btn card__btn--green card__btn--offer"><span class="card__btn-txt">Спецпредложение<br>+5 опций в подарок</span>
-                        <span class="card__btn-icon"><img src="img/icons/ic-new-releases-24px.svg" alt=""></span></button>
-                    <button class="card__btn card__btn--blue"><span class="card__btn-txt">Хочу в роддом</span> <span
+<!--                    <button class="card__btn card__btn&#45;&#45;green card__btn&#45;&#45;offer"><span class="card__btn-txt">Спецпредложение<br>+5 опций в подарок</span>-->
+<!--                        <span class="card__btn-icon"><img src="img/icons/ic-new-releases-24px.svg" alt=""></span>-->
+<!--                    </button>-->
+                    <button class="card__btn card__btn--blue"><span class="card__btn-txt">Перейти на страницу роддома</span> <span
                             class="card__btn-tooltip-icon"><img src="img/icons/ic-info-outline-24px.svg" alt=""> <span
                             class="card__btn-tooltip">tooltip</span></span></button>
                 </div>

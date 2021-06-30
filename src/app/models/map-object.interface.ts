@@ -1,4 +1,4 @@
-import {IClinicMini} from 'src/app/models/clinic.interface';
+import {IClinicMini} from 'app/models/clinic.interface';
 
 type MapObjectEntity = IClinicMini;
 
@@ -25,4 +25,14 @@ export interface AddressSrc {
     block: string;
     position_lat: number;
     position_lon: number;
+}
+
+export interface MetaPhoto {
+    id: number;
+    file_id: number;
+    title: string;
+    description: string;
+    datetime_update: string;
+    datetime_create: string;
+    filename: string;
 }

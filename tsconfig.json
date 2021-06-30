@@ -19,6 +19,11 @@
       "dom"
     ],
     "module": "es2020",
-    "baseUrl": "./"
+    "baseUrl": "src",
+    "paths": {
+      "@environments/*": [
+        "environments/*"
+      ],
+    }
   }
 }
