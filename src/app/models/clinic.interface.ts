@@ -66,8 +66,8 @@ export class Clinic {
             status_iho: !!src.status_iho || false,
         };
 
-        const addr: AddressSrc = src?.meta?.address_id?.[0] as AddressSrc;
-        const ph: MetaPhoto = src?.meta?.image_id?.[0] as MetaPhoto;
+        const addr: AddressSrc = src?.meta?.address_id as AddressSrc;
+        const ph: MetaPhoto = src?.meta?.image_id as MetaPhoto;
 
         const clinic: IClinicMini = {
             id: src.id ? Number(src.id) : -1,
