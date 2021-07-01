@@ -113,15 +113,29 @@
     <div class="result">
       <div class="result__header">
         <div class="result__selector selector"><span class="selector__txt">Вид:</span>
-          <div class="selector__item"><input type="radio" name="cbx" class="selector__input" id="listShownBtn"
-                                             checked="checked"> <label class="selector__label" for="listShownBtn"><img
-            src="img/icons/burger.svg" class="selector__label-img" alt=""></label></div>
-          <div class="selector__item"><input type="radio" name="cbx" class="selector__input" id="mapShownBtn"> <label
-            class="selector__label" for="mapShownBtn"><img src="img/icons/map.svg" class="selector__label-img"
-                                                           alt=""></label></div>
+          <div class="selector__item">
+            <input
+              type="radio"
+              name="cbx"
+              class="selector__input"
+              id="listShownBtn"
+              checked="checked">
+            <label class="selector__label" for="listShownBtn">
+              <img src="img/icons/burger.svg" class="selector__label-img" alt="" (click)="modeList()">
+            </label>
+          </div>
+          <div class="selector__item">
+            <input
+              type="radio"
+              name="cbx"
+              class="selector__input"
+              id="mapShownBtn">
+            <label class="selector__label" for="mapShownBtn">
+              <img src="img/icons/map.svg" class="selector__label-img" alt="" (click)="modeMap()"></label>
+          </div>
         </div>
       </div>
-      <div class="result__body">
+      <div class="result__body map__mode" [ngClass]="{map__mode: mode === 'map'}">
         <div class="clinics__list" *ngIf="mainList$ | async as list">
             <app-clinic-card
                     *ngFor="let item of list"

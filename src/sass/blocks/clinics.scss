@@ -4,6 +4,19 @@
   padding: 0;
 }
 
+.map__mode .clinics__list{
+  padding: 0px 5px;
+  width: 50%;
+  height: 75vh;
+  overflow-y: scroll;
+  margin-bottom: 5px;
+}
+
+.map__mode .clinics__item{
+  padding: 8px 0;
+}
+
+
 .clinics__item {
   position: relative;
   margin: 0;
