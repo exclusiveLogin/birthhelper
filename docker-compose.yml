@@ -22,5 +22,5 @@ services:
     image: "exclusivelogin/hellgame24-front"
     ports:
     - "8094:80"
-  hellgame24_bot:
-    image: "exclusivelogin/hellgame24-bot"
+#  hellgame24_bot:
+#    image: "exclusivelogin/hellgame24-bot"
