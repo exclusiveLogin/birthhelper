@@ -5,12 +5,11 @@
 .img_clinic {
   width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 .txtUnWrap {
   height: 14px;
-  text-overflow: ellipsis;
   overflow: hidden;
-  white-space: nowrap;
 }
 
 .readmore {
