@@ -4,3 +4,9 @@
   margin: 0 auto;
   padding: 0 20px;
 }
+
+.muted {
+  opacity: 0.5;
+  filter: grayscale(1);
+  pointer-events: none;
+}
