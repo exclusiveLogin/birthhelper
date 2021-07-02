@@ -1,150 +1,172 @@
 <div class="container">
-  <div class="search muted">
-    <input class="search__input" type="text" placeholder="Где рожать">
-    <button class="search__btn">Роддома</button>
-  </div>
-  <div class="main-clinic__columns">
-    <aside class="main-clinic__filter filter muted">
-      <div class="filter__section"><p class="filter__ttl">Как рожать</p>
-        <div class="filter__select select">
-          <button class="select__btn"><img src="img/icons/arrow-down.svg" class="select__btn-icon" alt=""></button>
-          <div class="select__tag"><p class="select__tag-txt">Традиционные</p>
-            <button class="select__tag-btn"><img src="img/icons/close-white.svg" class="select__tag-btn-icon" alt="">
-            </button>
-          </div>
-          <div class="select__tag"><p class="select__tag-txt">Вертикальные</p>
-            <button class="select__tag-btn"><img src="img/icons/close-white.svg" class="select__tag-btn-icon" alt="">
-            </button>
-          </div>
-          <div class="select__tag-link">еще 2 вида</div>
-        </div>
-      </div>
-      <div class="filter__section"><p class="filter__ttl">С кем рожать</p>
-        <div class="filter__select select">
-          <button class="select__btn"><img src="img/icons/arrow-down.svg" class="select__btn-icon" alt=""></button>
-          <div class="select__tag"><p class="select__tag-txt">Дежурная бригада</p>
-            <button class="select__tag-btn"><img src="img/icons/close-white.svg" class="select__tag-btn-icon" alt="">
-            </button>
-          </div>
-          <div class="select__tag"><p class="select__tag-txt">Личный акушер</p>
-            <button class="select__tag-btn"><img src="img/icons/close-white.svg" class="select__tag-btn-icon" alt="">
-            </button>
-          </div>
-          <div class="select__tag"><p class="select__tag-txt">Доула</p>
-            <button class="select__tag-btn"><img src="img/icons/close-white.svg" class="select__tag-btn-icon" alt="">
-            </button>
-          </div>
-          <div class="select__tag-link">еще 1 врач</div>
-        </div>
-        <ul class="filter__list">
-          <li class="filter__item">
-            <div class="checkbox"><input type="checkbox" name="cbx" class="checkbox__input" id="cbx8" checked="checked">
-              <label class="checkbox__label" for="cbx8">Дмс для иностранных граждан</label></div>
-          </li>
-          <li class="filter__item">
-            <div class="checkbox"><input type="checkbox" name="cbx" class="checkbox__input" id="cbx9" checked="checked">
-              <label class="checkbox__label" for="cbx9">Туристическая страховка</label></div>
-          </li>
-        </ul>
-      </div>
-      <div class="filter__separator"></div>
-      <div class="filter__section"><p class="filter__ttl">Палата</p>
-        <div class="filter__select select"><span class="select__placeholder">Выберите вид палаты</span>
-          <button class="select__btn"><img src="img/icons/arrow-down.svg" class="select__btn-icon" alt=""></button>
-        </div>
-      </div>
-      <div class="filter__section"><p class="filter__ttl">Удобства</p>
-        <div class="filter__select select">
-          <button class="select__btn"><img src="img/icons/arrow-down.svg" class="select__btn-icon" alt=""></button>
-          <div class="select__tag"><p class="select__tag-txt">Туалет</p>
-            <button class="select__tag-btn"><img src="img/icons/close-white.svg" class="select__tag-btn-icon" alt="">
-            </button>
-          </div>
-          <div class="select__tag"><p class="select__tag-txt">Первый этаж</p>
-            <button class="select__tag-btn"><img src="img/icons/close-white.svg" class="select__tag-btn-icon" alt="">
-            </button>
-          </div>
-          <div class="select__tag"><p class="select__tag-txt">Холодильник</p>
-            <button class="select__tag-btn"><img src="img/icons/close-white.svg" class="select__tag-btn-icon" alt="">
-            </button>
-          </div>
-          <div class="select__tag"><p class="select__tag-txt">Душ</p>
-            <button class="select__tag-btn"><img src="img/icons/close-white.svg" class="select__tag-btn-icon" alt="">
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="filter__section">
-        <ul class="filter__list">
-          <li class="filter__item">
-            <div class="checkbox"><input type="checkbox" name="cbx" class="checkbox__input" id="cbx1" checked="checked">
-              <label class="checkbox__label" for="cbx1">Посещение мамы<br>и малыша в палате</label></div>
-          </li>
-          <li class="filter__item">
-            <div class="checkbox"><input type="checkbox" name="cbx" class="checkbox__input" id="cbx2" checked="checked">
-              <label class="checkbox__label" for="cbx2">Наличие детской<br>реанимации</label></div>
-          </li>
-          <li class="filter__item">
-            <div class="checkbox"><input type="checkbox" name="cbx" class="checkbox__input" id="cbx3" checked="checked">
-              <label class="checkbox__label" for="cbx3">Патронаж мамы<br>и малыша</label></div>
-          </li>
-          <li class="filter__item">
-            <div class="checkbox"><input type="checkbox" name="cbx" class="checkbox__input" id="cbx4"> <label
-              class="checkbox__label" for="cbx4">Женская консультация<br>при роддоме</label></div>
-          </li>
-          <li class="filter__item">
-            <div class="checkbox"><input type="checkbox" name="cbx" class="checkbox__input" id="cbx5"> <label
-              class="checkbox__label" for="cbx5">Биострахование<br>малыша</label></div>
-          </li>
-          <li class="filter__item">
-            <div class="checkbox"><input type="checkbox" name="cbx" class="checkbox__input" id="cbx6"> <label
-              class="checkbox__label" for="cbx6">Трансфер<br>в роддом</label></div>
-          </li>
-          <li class="filter__item">
-            <div class="checkbox"><input type="checkbox" name="cbx" class="checkbox__input" id="cbx7"> <label
-              class="checkbox__label" for="cbx7">Рядом с домом</label></div>
-          </li>
-        </ul>
-      </div>
-      <div class="filter__btn-group">
-        <button class="filter__btn filter__btn--green">Применить</button>
-        <button class="filter__link">Сбросить фильтр</button>
-      </div>
-    </aside>
-    <div class="result">
-      <div class="result__header">
-        <div class="result__selector selector"><span class="selector__txt">Вид:</span>
-          <div class="selector__item">
-            <input
-              type="radio"
-              name="cbx"
-              class="selector__input"
-              id="listShownBtn"
-              checked="checked">
-            <label class="selector__label" for="listShownBtn">
-              <img src="img/icons/burger.svg" class="selector__label-img" alt="" (click)="modeList()">
-            </label>
-          </div>
-          <div class="selector__item">
-            <input
-              type="radio"
-              name="cbx"
-              class="selector__input"
-              id="mapShownBtn">
-            <label class="selector__label" for="mapShownBtn">
-              <img src="img/icons/map.svg" class="selector__label-img" alt="" (click)="modeMap()"></label>
-          </div>
-        </div>
-      </div>
-      <div class="result__body map__mode" [ngClass]="{map__mode: mode === 'map'}">
-        <div class="clinics__list" *ngIf="mainList$ | async as list">
-            <app-clinic-card
-                    *ngFor="let item of list"
-                    [clinic]="item"
-            ></app-clinic-card>
-        </div>
-<!--        <div class="map"><img src="img/map.jpg" srcset="img/map@2x.jpg 2x, img/map@3x.jpg 3x" class="map__img" alt=""></div>-->
-      </div>
+    <div class="search muted">
+        <input class="search__input" type="text" placeholder="Где рожать">
+        <button class="search__btn">Роддома</button>
     </div>
-  </div>
+    <div class="main-clinic__columns">
+        <aside class="main-clinic__filter filter muted">
+            <div class="filter__section"><p class="filter__ttl">Как рожать</p>
+                <div class="filter__select select">
+                    <button class="select__btn"><img src="img/icons/arrow-down.svg" class="select__btn-icon" alt="">
+                    </button>
+                    <div class="select__tag"><p class="select__tag-txt">Традиционные</p>
+                        <button class="select__tag-btn"><img src="img/icons/close-white.svg"
+                                                             class="select__tag-btn-icon" alt="">
+                        </button>
+                    </div>
+                    <div class="select__tag"><p class="select__tag-txt">Вертикальные</p>
+                        <button class="select__tag-btn"><img src="img/icons/close-white.svg"
+                                                             class="select__tag-btn-icon" alt="">
+                        </button>
+                    </div>
+                    <div class="select__tag-link">еще 2 вида</div>
+                </div>
+            </div>
+            <div class="filter__section"><p class="filter__ttl">С кем рожать</p>
+                <div class="filter__select select">
+                    <button class="select__btn"><img src="img/icons/arrow-down.svg" class="select__btn-icon" alt="">
+                    </button>
+                    <div class="select__tag"><p class="select__tag-txt">Дежурная бригада</p>
+                        <button class="select__tag-btn"><img src="img/icons/close-white.svg"
+                                                             class="select__tag-btn-icon" alt="">
+                        </button>
+                    </div>
+                    <div class="select__tag"><p class="select__tag-txt">Личный акушер</p>
+                        <button class="select__tag-btn"><img src="img/icons/close-white.svg"
+                                                             class="select__tag-btn-icon" alt="">
+                        </button>
+                    </div>
+                    <div class="select__tag"><p class="select__tag-txt">Доула</p>
+                        <button class="select__tag-btn"><img src="img/icons/close-white.svg"
+                                                             class="select__tag-btn-icon" alt="">
+                        </button>
+                    </div>
+                    <div class="select__tag-link">еще 1 врач</div>
+                </div>
+                <ul class="filter__list">
+                    <li class="filter__item">
+                        <div class="checkbox"><input type="checkbox" name="cbx" class="checkbox__input" id="cbx8"
+                                                     checked="checked">
+                            <label class="checkbox__label" for="cbx8">Дмс для иностранных граждан</label></div>
+                    </li>
+                    <li class="filter__item">
+                        <div class="checkbox"><input type="checkbox" name="cbx" class="checkbox__input" id="cbx9"
+                                                     checked="checked">
+                            <label class="checkbox__label" for="cbx9">Туристическая страховка</label></div>
+                    </li>
+                </ul>
+            </div>
+            <div class="filter__separator"></div>
+            <div class="filter__section"><p class="filter__ttl">Палата</p>
+                <div class="filter__select select"><span class="select__placeholder">Выберите вид палаты</span>
+                    <button class="select__btn"><img src="img/icons/arrow-down.svg" class="select__btn-icon" alt="">
+                    </button>
+                </div>
+            </div>
+            <div class="filter__section"><p class="filter__ttl">Удобства</p>
+                <div class="filter__select select">
+                    <button class="select__btn"><img src="img/icons/arrow-down.svg" class="select__btn-icon" alt="">
+                    </button>
+                    <div class="select__tag"><p class="select__tag-txt">Туалет</p>
+                        <button class="select__tag-btn"><img src="img/icons/close-white.svg"
+                                                             class="select__tag-btn-icon" alt="">
+                        </button>
+                    </div>
+                    <div class="select__tag"><p class="select__tag-txt">Первый этаж</p>
+                        <button class="select__tag-btn"><img src="img/icons/close-white.svg"
+                                                             class="select__tag-btn-icon" alt="">
+                        </button>
+                    </div>
+                    <div class="select__tag"><p class="select__tag-txt">Холодильник</p>
+                        <button class="select__tag-btn"><img src="img/icons/close-white.svg"
+                                                             class="select__tag-btn-icon" alt="">
+                        </button>
+                    </div>
+                    <div class="select__tag"><p class="select__tag-txt">Душ</p>
+                        <button class="select__tag-btn"><img src="img/icons/close-white.svg"
+                                                             class="select__tag-btn-icon" alt="">
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="filter__section">
+                <ul class="filter__list">
+                    <li class="filter__item">
+                        <div class="checkbox"><input type="checkbox" name="cbx" class="checkbox__input" id="cbx1"
+                                                     checked="checked">
+                            <label class="checkbox__label" for="cbx1">Посещение мамы<br>и малыша в палате</label></div>
+                    </li>
+                    <li class="filter__item">
+                        <div class="checkbox"><input type="checkbox" name="cbx" class="checkbox__input" id="cbx2"
+                                                     checked="checked">
+                            <label class="checkbox__label" for="cbx2">Наличие детской<br>реанимации</label></div>
+                    </li>
+                    <li class="filter__item">
+                        <div class="checkbox"><input type="checkbox" name="cbx" class="checkbox__input" id="cbx3"
+                                                     checked="checked">
+                            <label class="checkbox__label" for="cbx3">Патронаж мамы<br>и малыша</label></div>
+                    </li>
+                    <li class="filter__item">
+                        <div class="checkbox"><input type="checkbox" name="cbx" class="checkbox__input" id="cbx4">
+                            <label
+                                    class="checkbox__label" for="cbx4">Женская консультация<br>при роддоме</label></div>
+                    </li>
+                    <li class="filter__item">
+                        <div class="checkbox"><input type="checkbox" name="cbx" class="checkbox__input" id="cbx5">
+                            <label
+                                    class="checkbox__label" for="cbx5">Биострахование<br>малыша</label></div>
+                    </li>
+                    <li class="filter__item">
+                        <div class="checkbox"><input type="checkbox" name="cbx" class="checkbox__input" id="cbx6">
+                            <label
+                                    class="checkbox__label" for="cbx6">Трансфер<br>в роддом</label></div>
+                    </li>
+                    <li class="filter__item">
+                        <div class="checkbox"><input type="checkbox" name="cbx" class="checkbox__input" id="cbx7">
+                            <label
+                                    class="checkbox__label" for="cbx7">Рядом с домом</label></div>
+                    </li>
+                </ul>
+            </div>
+            <div class="filter__btn-group">
+                <button class="filter__btn filter__btn--green">Применить</button>
+                <button class="filter__link">Сбросить фильтр</button>
+            </div>
+        </aside>
+        <div class="result">
+            <div class="result__header">
+                <div class="result__selector selector"><span class="selector__txt">Вид:</span>
+                    <div class="selector__item">
+                        <input
+                                type="radio"
+                                name="cbx"
+                                class="selector__input"
+                                id="listShownBtn"
+                                checked="checked">
+                        <label class="selector__label" for="listShownBtn">
+                            <img src="img/icons/burger.svg" class="selector__label-img" alt="" (click)="modeList()">
+                        </label>
+                    </div>
+                    <div class="selector__item">
+                        <input
+                                type="radio"
+                                name="cbx"
+                                class="selector__input"
+                                id="mapShownBtn">
+                        <label class="selector__label" for="mapShownBtn">
+                            <img src="img/icons/map.svg" class="selector__label-img" alt="" (click)="modeMap()"></label>
+                    </div>
+                </div>
+            </div>
+            <div class="result__body map__mode" [ngClass]="{map__mode: mode === 'map'}">
+                <div class="clinics__list" *ngIf="mainList$ | async as list">
+                    <app-clinic-card
+                            *ngFor="let item of list"
+                            [clinic]="item"
+                    ></app-clinic-card>
+                </div>
+                <div id="search_map" class="map"></div>
+            </div>
+        </div>
+    </div>
 </div>

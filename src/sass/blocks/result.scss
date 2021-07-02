@@ -3,6 +3,7 @@
   border-radius: 5px;
   background: $white;
   box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.06);
+  padding: 16px 5px;
 }
 
 .result__header {
@@ -39,6 +40,7 @@
 .result__body {
   padding: 0 20px 0 10px;
   border-top: 2px solid rgba(45, 51, 63, 0.1);
+  display: flex;
 
   &--map {
     display: flex;

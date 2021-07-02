@@ -1,7 +1,13 @@
 .map {
-  width: 468px;
-  height: 100%;
-  font-size: 0;
+  display: none;
+  flex-grow: 1;
+  overflow: hidden;
+  border-radius: 3px;
+  box-shadow: 5px 5px 10px 0 rgb(0 0 0 / 10%);
+}
+
+.map__mode .map{
+  display: block;
 }
 
 .map__img {
