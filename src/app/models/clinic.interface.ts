@@ -1,7 +1,8 @@
 import {AddressSrc, MapObject, MetaPhoto} from 'app/models/map-object.interface';
 import {MetaInterface} from 'app/models/meta.interface';
+import {Entity} from 'app/models/entity.interface';
 
-export interface IClinicMini extends MapObject {
+export interface IClinicMini extends MapObject, Entity {
     id: number;
     title: string;
     description: string;

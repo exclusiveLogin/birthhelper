@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {IClinicMini} from 'app/models/clinic.interface';
 import {environment} from '@environments/environment';
 
@@ -43,8 +43,7 @@ export class ClinicCardComponent implements OnInit {
         this.url = `${environment.static}/${data.photo_url || 'noimage'}`;
     }
 
-    constructor() {
-    }
+    @Output() private gotoMap = new EventEmitter<IClinicMini>();
 
     wrapped = false;
 
@@ -55,4 +54,7 @@ export class ClinicCardComponent implements OnInit {
     ngOnInit(): void {
     }
 
+    showClinicOnMap(): void {
+        this.gotoMap.next(this.viewClinic);
+    }
 }

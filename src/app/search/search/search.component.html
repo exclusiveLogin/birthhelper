@@ -163,6 +163,8 @@
                     <app-clinic-card
                             *ngFor="let item of list"
                             [clinic]="item"
+                            (gotoMap)="modeMapSingle($event)"
+                            [id]="'clinic_' + item.id"
                     ></app-clinic-card>
                 </div>
                 <div id="search_map" class="map"></div>

@@ -4,6 +4,14 @@
   justify-content: flex-start;
   padding: 5px 10px;
   flex-direction: row;
+  transition: all 650ms ease-in;
+
+}
+
+.card.selected {
+  border: 1px #487ff1 solid;
+  background-color: #e0f0fb;
+  box-shadow: 0 0 5px 0 rgb(0 0 0 / 25%);
 }
 
 .map__mode .card__photo {

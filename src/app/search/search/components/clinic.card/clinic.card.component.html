@@ -56,7 +56,7 @@
                 <span class="card__tags-txt readmore" *ngIf="!wrapped" (click)="wrap()">Читать далее</span>
             </div>
 
-            <div class="card__map">
+            <div class="card__map" (click)="showClinicOnMap()">
                 <div class="card__map-icon"><img src="img/icons/place.svg" alt=""></div>
                 <button class="card__map-btn">Показать на карте</button>
                 <p class="card__address">{{viewClinic.address}}</p>

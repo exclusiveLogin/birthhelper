@@ -80,6 +80,10 @@ export class LLMap {
         this.map = null;
     }
 
+    isExist(): boolean {
+        return !!this.map;
+    }
+
     /**
      * Измененение слоя тайлов
      */
