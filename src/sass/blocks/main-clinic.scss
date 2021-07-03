@@ -1,6 +1,5 @@
 .main-clinic {
-  width: calc(100% - 230px);
-  padding-left: 230px;
+  display: flex;
 }
 
 .main-clinic__messages {
