@@ -1,7 +1,7 @@
 import {Component, OnInit, Input, SimpleChanges, OnDestroy, AfterViewInit} from '@angular/core';
 import {IFieldSetting, FormService, ILinkFieldSetting} from '../../form.service';
 import {DictService, IDictItem} from '../../dict.service';
-import {ITableItem} from '../../table/table/table.component';
+import {IImageOptions, ITableItem} from '../../table/table/table.component';
 import {EMENUMODE, IMenuRepo} from '../Dashboard.component';
 import {IEntityItem} from '../../entity.model';
 import {FormGroup} from '@angular/forms';
@@ -61,6 +61,10 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
   private conditionsSubscribersSubscription: Subscription;
 
   private fileForUpload: File;
+  public mainImgOpt: IImageOptions = {
+      urlType: 'simple',
+      urlKey: 'filename',
+  };
 
   registerConditionStream() {
     // складываем эмиттеров событий(без повторений)

@@ -54,6 +54,7 @@
         *ngIf="!!menu && ( true || isEditMode || isDeleteMode)"
         [key]="menu.name"
         [type]="menu.type"
+        [imageOptions]="menu.mime === 'image' ? mainImgOpt : null"
         (select)="selectServiceFromTable( $event )"
         (refresh)="refreshAssign($event)"
 ></app-table>
