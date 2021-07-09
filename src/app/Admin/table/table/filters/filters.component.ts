@@ -80,6 +80,11 @@ export class FiltersComponent implements OnInit, OnDestroy {
   }
 
   private setFilters(name: string, value: any) {
+    const  targetField = this.fields.find(f => f.name === name);
+    if (targetField.type === 'flag') {
+      value = !!value ? '1' : null;
+    }
+
     this.filters[name] = value;
 
     Object.keys(this.filters).forEach(key => {

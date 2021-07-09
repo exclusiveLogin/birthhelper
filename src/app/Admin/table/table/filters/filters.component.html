@@ -30,6 +30,17 @@
         ></textarea>
       </ng-container>
 
+      <ng-container *ngSwitchCase="'flag'">
+        <input
+          [formControl]="field.control"
+          type="checkbox"
+          [name]="field.name"
+          [id]="field.name"
+          class="form-control"
+          [attr.aria-describedby]="field.name"
+        />
+      </ng-container>
+
       <ng-container *ngSwitchCase="'id'">
         <select
           [name]="field.name"
