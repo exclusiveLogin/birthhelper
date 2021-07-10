@@ -18,15 +18,20 @@ export class SearchComponent implements OnInit, AfterViewInit {
     onInit$ = new Subject<null>();
     onFilterChange$ = new Subject<null>();
     onPageChange$ = new Subject<null>();
+    mainSet$ = this.onInit$.pipe(
+        switchMap(() => this.setProvider$()),
+    );
     mainList$ = merge(this.onInit$, this.onFilterChange$, this.onPageChange$).pipe(
         tap(() => console.log('onInit$')),
-        switchMap(() => this.dataProvider$(1)),
+        switchMap(() => this.dataProvider$(this.currentPage)),
         shareReplay(1),
     );
     dataProvider$ = this.provider.getListProvider('clinics');
+    setProvider$ = this.provider.getSetProvider('clinics');
     mode: 'map' | 'list' = 'list';
     private map = new LLMap();
     private lfgClinics = L.featureGroup();
+    currentPage = 1;
 
     constructor(
         private provider: DataProviderService,
@@ -39,6 +44,11 @@ export class SearchComponent implements OnInit, AfterViewInit {
 
     ngAfterViewInit(): void {
         this.onInit$.next(null);
+    }
+
+    pageChange(page = 1): void {
+        this.currentPage = page;
+        this.onPageChange$.next(null);
     }
 
     modeMap(fitlock = false): void {

@@ -75,6 +75,16 @@ export class RestService {
         return this.getData<any[]>(entSetting, data);
     }
 
+    public getEntitySet(key: string, qp?: IRestParams): Observable<any[]> {
+        const entSetting: ISettingsParams = {
+            mode: 'api',
+            segment: key,
+            script: 'set'
+        };
+
+        return this.getData<any[]>(entSetting, qp);
+    }
+
     public getDict(name: string, page?: number): Observable<IDictItem[]> {
         const dictSetting: ISettingsParams = {
             mode: 'api',

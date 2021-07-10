@@ -169,6 +169,10 @@
                 </div>
                 <div id="search_map" class="map"></div>
             </div>
+            <ng-container *ngIf="mainSet$ | async as set">
+                <app-paginator (vc)="pageChange($event)" [pages]="set.total / 20"></app-paginator>
+            </ng-container>
+
         </div>
     </div>
 </div>
