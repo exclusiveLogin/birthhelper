@@ -63,8 +63,6 @@ export class SearchComponent implements OnInit, AfterViewInit {
         this.map.destroy();
     }
 
-    // scrollIntoView({behavior: 'smooth', block: 'center'})
-
     selectClinicMapHandler(event: MouseEvent): void {
         const selected = event.target['entity'];
         this.searchClinicFromList(selected);

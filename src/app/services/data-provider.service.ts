@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Entity} from 'app/models/entity.interface';
 import {Clinic, IClinicMini} from 'app/models/clinic.interface';
-import {RestService} from 'app/services/rest.service';
+import {IRestParams, RestService} from 'app/services/rest.service';
 import {filter, map} from 'rxjs/operators';
 
 export type EntityType = 'clinics';
@@ -22,7 +22,8 @@ export class DataProviderService {
     };
 
     clinicFetcherFactory(page = 1): Observable<IClinicMini[]> {
-        return this.rest.getEntityList('ent_clinics', page).pipe(
+        const qp: IRestParams = { active: '1' };
+        return this.rest.getEntityList('ent_clinics', page, qp).pipe(
             filter(data => !!data),
             map(list => list.map(ent => Clinic.createClinicMini(ent))),
         );
