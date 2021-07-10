@@ -122,7 +122,7 @@ export class TableComponent implements OnInit {
     this.rowSettings = set.fields && set.fields.filter(f => !f.hide && !!f.showOnTable);
   }
   private refreshSet() {
-    return this.provider.getItemsSet(this.key, this.type).pipe(
+    return this.provider.getItemsSet(this.key, this.type, this.qp).pipe(
       tap((set) => {
         this.setStats(set);
       }),

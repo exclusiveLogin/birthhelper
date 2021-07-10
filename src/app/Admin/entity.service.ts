@@ -28,8 +28,8 @@ export class EntityService {
     return this.rest.getEntity( 'ent_' + name, id);
   }
 
-  public getEntSet( key: string ): Observable<ISet> {
-    return this.rest.getEntitySet( 'ent_' + key );
+  public getEntSet( key: string, qp?: IRestParams ): Observable<ISet> {
+    return this.rest.getEntitySet( 'ent_' + key , qp);
   }
 
   public getFile(id: number, type= 'images', multi?: boolean): Observable<any> {

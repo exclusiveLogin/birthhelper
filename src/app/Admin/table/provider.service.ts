@@ -24,8 +24,8 @@ export class ProviderService {
     return type === 'dict' ? this.getDictFilters( key ) : this.getEntityFilters( key );
   }
 
-  public getItemsSet( key: string, type: string ) {
-    return ( type ) ? this.getEntSet( key ) : of(null);
+  public getItemsSet( key: string, type: string, queryParams: IRestParams = {} ) {
+    return ( type ) ? this.getEntSet( key, queryParams ) : of(null);
   }
 
   public getDictPage( key: string, page: number = 1) {
@@ -40,8 +40,8 @@ export class ProviderService {
     return this.entity.getEnt( key, page, qp );
   }
 
-  private getEntSet( key: string ): Observable<ISet> {
-    return this.entity.getEntSet( key );
+  private getEntSet( key: string, qp?: IRestParams): Observable<ISet> {
+    return this.entity.getEntSet( key, qp );
   }
 
   private getDictFilters( key: string ): Observable<ITableFilter[]> {

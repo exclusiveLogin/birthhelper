@@ -127,7 +127,7 @@ export class RestService {
     return this.getData<ITableFilter[]>( entFiltersSetting );
   }
 
-  public getEntitySet( key: string ): Observable<ISet> {
+  public getEntitySet( key: string, qp?: IRestParams ): Observable<ISet> {
     const entSetSetting: ISettingsParams = {
       mode: 'admin',
       segment: 'entity',
@@ -135,7 +135,7 @@ export class RestService {
       script: 'set'
     };
 
-    return this.getData<ISet>( entSetSetting );
+    return this.getData<ISet>( entSetSetting, qp );
   }
 
   public getEntities( key: string, page?: number, qp?: IRestParams ): Observable<IEntityItem[]> {
