@@ -227,7 +227,7 @@ export class TableComponent implements OnInit {
         console.log('refresh table:', filters);
         this.paginator = filters ? !Object.keys(filters).some(k => !!k) : true;
         this.currentItem = null;
-        this.qp = filters;
+        this.qp = filters ? filters : this.qp;
         this.pageChanged(1, filters as IRestParams);
     }
 
