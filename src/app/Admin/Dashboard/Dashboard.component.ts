@@ -145,7 +145,7 @@ export class DashboardComponent implements OnInit {
     },
     {
       name: 'doctor_slots',
-      slotKey: 'slot_service_natal',
+      slotKey: 'slot_doctors',
       title: 'Слоты услуг персонала',
       titleVoc: 'слот',
       titleVocs: 'слота',
