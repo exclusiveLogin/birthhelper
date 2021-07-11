@@ -4,6 +4,11 @@ tr:hover{
 :host{
   display: contents;
 }
+
+tr.selected {
+    background-color: #ffdfac;
+}
+
 td{
   border-right: #2d333f;
 }
