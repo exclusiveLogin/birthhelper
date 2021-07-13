@@ -1,63 +1,68 @@
 .steps__list {
-  display: flex;
-  justify-content: space-between;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    flex-wrap: wrap;
 }
 
 .steps__item {
-  position: relative;
-  display: inline-block;
-  vertical-align: middle;
-  padding: 35px 37px 35px 30px;
-  background-color: #fff;
-  border-radius: 5px;
-  box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.05);
-  background-repeat: no-repeat;
-
-  &-first {
-    background-image: url(../../img/notepad-bg.svg);
-    background-position: calc(100% - 7px) 45px;
-  }
-
-  &-second {
-    background-image: url(../../img/support-bg.svg);
-    background-position: calc(100% - 11px) 40px;
-  }
-  &-third {
-    background-image: url(../../img/contract-bg.svg);
-    background-position: calc(100% - 11px) 52px;
-  }
-
-  &::after {
-    position: absolute;
-    content: "";
-    display: block;
-    width: 53px;
-    height: 131px;
-    right: -57px;
-    top: 50%;
-    margin-top: -67px;
-    background-image: url("../../img/arrow.png");
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 35px 37px 35px 30px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.05);
     background-repeat: no-repeat;
-    background-position: 10px center;
-  }
+    margin: 32px;
+    flex: 1;
 
-  &:last-child::after {
-    display: none;
-  }
+
+    &-first {
+        background-image: url(../../img/notepad-bg.svg);
+        background-position: calc(100% - 7px) 45px;
+    }
+
+    &-second {
+        background-image: url(../../img/support-bg.svg);
+        background-position: calc(100% - 11px) 40px;
+    }
+
+    &-third {
+        background-image: url(../../img/contract-bg.svg);
+        background-position: calc(100% - 11px) 52px;
+    }
+
+    &::after {
+        position: absolute;
+        content: "";
+        display: block;
+        width: 53px;
+        height: 131px;
+        right: -57px;
+        top: 50%;
+        margin-top: -67px;
+        background-image: url("../../img/arrow.png");
+        background-repeat: no-repeat;
+        background-position: 10px center;
+    }
+
+    &:last-child::after {
+        display: none;
+    }
 }
 
 .steps__txt {
-  font-size: 16px;
-  line-height: 1.25;
-  color: #7d828a;
-  margin: 26px 0 0;
-  max-width: 220px;
+    font-size: 16px;
+    line-height: 1.25;
+    color: #7d828a;
+    margin: 26px 0 0;
+    max-width: 220px;
 }
 
 .steps__link {
-  font-weight: 500;
-  color: #7d828a;
+    font-weight: 500;
+    color: #7d828a;
 }
