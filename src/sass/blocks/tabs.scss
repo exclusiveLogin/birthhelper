@@ -1,59 +1,60 @@
 .tabs__bar {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  font-size: 0;
-  border-bottom: 1px solid rgba(125, 128, 137, 0.15);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    font-size: 0;
+    border-bottom: 1px solid rgba(125, 128, 137, 0.15);
 }
 
 .tabs__item {
-  display: inline-block;
-  width: 33.3%;
-  cursor: pointer;
-  padding: 24px 0;
+    display: inline-block;
+    width: 33.3%;
+    cursor: pointer;
+    padding: 24px 0;
 
-  &.active {
-    box-shadow: 0 3px 0 0 $blue;
+    &.active {
+        box-shadow: 0 3px 0 0 $blue;
 
-    .tabs__txt {
-      color: $blue;
+        .tabs__txt {
+            color: $blue;
+        }
     }
-  }
 }
 
 .tabs__txt {
-  font-size: 18px;
-  line-height: 1.17;
-  text-align: center;
-  color: #7d8089;
-  margin: 0;
+    font-size: 18px;
+    line-height: 1.17;
+    text-align: center;
+    color: #7d8089;
+    margin: 0;
 }
 
 .tabs__panel {
-  display: none;
-  padding: 81px 0 0;
+    display: none;
+    padding: 81px 0 0;
 
-  &.active {
-    display: block;
-  }
+    &.active {
+        display: block;
+    }
 }
 
 .tabs__img {
-  display: block;
-  width: 100%;
-  height: auto;
-  margin: 0 auto;
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
 
-  &-first {
-    max-width: 964px;
-  }
+    &-first {
+        width: 100%;
+        max-width: 964px;
+    }
 
-  &-second {
-    max-width: 100%;
-  }
+    &-second {
+        max-width: 100%;
+    }
 
-  &-third {
-    max-width: 690px;
-  }
+    &-third {
+        max-width: 690px;
+    }
 
 }
