@@ -1,115 +1,121 @@
-.directions__list{
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.directions__list {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.directions__item {
+    flex: 1;
+    margin: 8px 16px;
 }
 
 .directions__link {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 235px;
-  height: 110px;
-  border-radius: 5px;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 100%;
-  text-decoration: none;
-  overflow: hidden;
-  transition: 0.4s;
-  margin: 0 0 15px;
-
-  &::after {
-    position: absolute;
-    content: "";
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    opacity: 0.65;
-    z-index: 0;
-  }
-
-  &-planning {
-    background-image: url(../../img/dir-planning@3x.jpg);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 235px;
+    height: 110px;
+    border-radius: 5px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    text-decoration: none;
+    overflow: hidden;
+    transition: 0.4s;
+    margin: 0 0 15px;
+    flex: 1;
 
     &::after {
-      background-color: #fa6770;
+        position: absolute;
+        content: "";
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        opacity: 0.65;
+        z-index: 0;
     }
-  }
 
-  &-care {
-    background-image: url(../../img/dir-care@3x.jpg);
+    &-planning {
+        background-image: url(../../img/dir-planning@3x.jpg);
 
-    &::after {
-      background-color: #f87937;
-      opacity: 0.5;
+        &::after {
+            background-color: #fa6770;
+        }
     }
-  }
 
-  &-management {
-    background-image: url(../../img/dir-management@3x.jpg);
+    &-care {
+        background-image: url(../../img/dir-care@3x.jpg);
 
-    &::after {
-      background-color: #019af4;
+        &::after {
+            background-color: #f87937;
+            opacity: 0.5;
+        }
     }
-  }
 
-  &-recovery {
-    background-image: url(../../img/dir-recovery@3x.jpg);
+    &-management {
+        background-image: url(../../img/dir-management@3x.jpg);
 
-    &:after {
-      background-color: #17d0c3;
+        &::after {
+            background-color: #019af4;
+        }
     }
-  }
 
-  &-nutrition {
-    background-image: url(../../img/dir-nutrition.jpg);
+    &-recovery {
+        background-image: url(../../img/dir-recovery@3x.jpg);
 
-    &::after {
-      background-color: #dd71e3;
+        &:after {
+            background-color: #17d0c3;
+        }
     }
-  }
 
-  &-yoga {
-    background-image: url(../../img/dir-yoga.jpg);
+    &-nutrition {
+        background-image: url(../../img/dir-nutrition.jpg);
 
-    &::after {
-      background-color: #17d0c3;
+        &::after {
+            background-color: #dd71e3;
+        }
     }
-  }
 
-  &-fitness {
-    background-image: url(../../img/dir-fitness.jpg);
+    &-yoga {
+        background-image: url(../../img/dir-yoga.jpg);
 
-    &::after {
-      background-color: #f3256d;
+        &::after {
+            background-color: #17d0c3;
+        }
     }
-  }
 
-  &-swimming {
-    background-image: url(../../img/dir-swimming.jpg);
+    &-fitness {
+        background-image: url(../../img/dir-fitness.jpg);
 
-    &::after {
-      background-color: #f87937;
+        &::after {
+            background-color: #f3256d;
+        }
     }
-  }
 
-  &:hover {
-    background-size: 108%;
-  }
+    &-swimming {
+        background-image: url(../../img/dir-swimming.jpg);
+
+        &::after {
+            background-color: #f87937;
+        }
+    }
+
+    &:hover {
+        background-size: 108%;
+    }
 }
 
 .directions__txt {
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.19;
-  color: $white;
-  margin: 0;
-  z-index: 10;
-  text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.19;
+    color: $white;
+    margin: 0;
+    z-index: 10;
+    text-align: center;
 }
