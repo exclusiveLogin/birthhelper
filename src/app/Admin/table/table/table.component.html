@@ -40,7 +40,7 @@
   <app-cell
     *ngFor="let item of dummyItems; let i = index"
     [rs]="rowSettings"
-    [data]="item.data"
+    [data]="item"
     [image]="item.image"
     [modes]="['remove']"
     (remove)="deselectItem( item )"
