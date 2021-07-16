@@ -196,14 +196,14 @@
                     <ng-container *ngSwitchCase="'repo'">
                         <ng-container *ngIf="menu && menu.type === 'container' && !!currentService">
 
+                            REPO TABLE
                             <app-table
                                     *ngIf="!!menu && (isEditMode)"
+                                    [linker$]="containerLinker$"
                                     [title]="field.title"
                                     [key]="menu.name"
                                     [type]="field.type"
                                     [multiselect]="field.multiselect"
-                                    (select)="repoSelected( $event )"
-                                    (deselector$)="deselectAssign( $event )"
                                     [imageOptions]="field.image"
                                     [filters]="field.filters"
                             ></app-table>
@@ -211,14 +211,13 @@
                             <div class="full" *ngIf="!!menu && (isEditMode)"><i class="fas fa-chevron-down fa-3x"></i>
                             </div>
 
+                            DUMMY TABLE
                             <app-table
                                     *ngIf="!!menu && (isEditMode) && field.entKey"
+                                    [linker$]="containerLinker$"
                                     [title]="field.dummyTitle"
                                     [type]="'dummy'"
                                     [key]="field.entKey"
-                                    [dummyItems]="dummyItems"
-                                    [dummyFields]=""
-                                    (deselect)="deselectFromContainer( $event )"
                                     [imageOptions]="field.image"
                             ></app-table>
 
@@ -237,7 +236,6 @@
                                     [type]="field.entType"
                                     [key]="field.entKey"
                                     (select)="linkFromTableSelected( $event, field )"
-                                    (deselector$)="deselectSlotsServiceAssign( $event )"
                                     [imageOptions]="field.image"
                                     [filters]="field.filters"
                             ></app-table>
@@ -252,7 +250,6 @@
                                     [type]="field.entType"
                                     [key]="field.entKey"
                                     (select)="linkFromTableSelected( $event, field )"
-                                    (deselector$)="deselectSlotsServiceAssign( $event )"
                                     [imageOptions]="field.image"
                                     (refresh)="refreshAsignByField( field, $event )"
                                     [filters]="field.filters"

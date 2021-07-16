@@ -29,22 +29,13 @@
       *ngFor="let item of items; let i = index"
       [rs]="rowSettings"
       [data]="item"
-      (click)="selectItem( item )"
+      (click)="!isDummy() ? selectItem( item ) : null"
+      (remove)="isDummy() ? deselectItem( item ) : null"
+      [modes]="isDummy() ? ['remove']: []"
     ></app-cell>
   </tbody>
 
 
-</table>
-
-<table class="table" *ngIf="type === 'dummy'">
-  <app-cell
-    *ngFor="let item of dummyItems; let i = index"
-    [rs]="rowSettings"
-    [data]="item"
-    [image]="item.image"
-    [modes]="['remove']"
-    (remove)="deselectItem( item )"
-  ></app-cell>
 </table>
 
 <div class="bh_table_page">

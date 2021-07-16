@@ -6,10 +6,10 @@ import {IRowSetting} from './cell/cell.component';
 import {IFiltersParams} from './filters/filters.component';
 import {IRestParams} from '../../rest.service';
 import {environment} from '../../../../environments/environment';
-import {catchError, filter, finalize, map, switchMap, take, tap} from 'rxjs/operators';
+import {catchError, filter, map, publishReplay, refCount, switchMap, tap} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
-import {FormService, IFilterLink} from '../../form.service';
-import {Observable, of, Subject} from 'rxjs';
+import {BehaviorSubject, combineLatest, Observable, of, Subject} from 'rxjs';
+import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
 
 export interface ITableRows {
     title?: string;
@@ -45,6 +45,7 @@ export interface IImageOptions {
     urlKey: string;
 }
 
+@UntilDestroy()
 @Component({
     selector: 'app-table',
     templateUrl: './table.component.html',
@@ -57,18 +58,15 @@ export class TableComponent implements OnInit {
     ) {
     }
 
+    @Input() public linker$: BehaviorSubject<ITableItem[]>;
     @Input() public key: string;
     @Input() public type: string;
     @Input() public imageOptions: IImageOptions;
     @Input() private multiselect = false;
-    @Input() public dummyItems: ITableItem[];
-    @Input() public df: string[];
     @Input() public title: string;
     @Input() public filters: ITableFilter[];
 
     @Output() private select: EventEmitter<ITableItem | ITableItem[]> = new EventEmitter();
-    @Output() private deselect: EventEmitter<number> = new EventEmitter();
-    @Output() private deselector$: EventEmitter<Function> = new EventEmitter();
     @Output() private refresh: EventEmitter<Function> = new EventEmitter();
 
     public items: ITableItem[] = [];
@@ -84,7 +82,7 @@ export class TableComponent implements OnInit {
     private refreshTable$ = new Subject();
     private qp: IRestParams = {};
 
-    items$ = this.refreshTable$.pipe(
+    items$: Observable<ITableItem[]> = this.refreshTable$.pipe(
         switchMap(() => this.refreshSet()),
         map((set) => ({
             cont: set.container,
@@ -111,11 +109,13 @@ export class TableComponent implements OnInit {
         switchMap(() => this.provider.getItemPage(this.key, this.type, this.currentPage, this.qp)),
         filter(data => !!data),
         map(data => (data as IEntityItem[]).map(i => this.converter(i))),
+        publishReplay<ITableItem[]>(1), refCount<ITableItem[]>(),
         catchError(err => {
             this.currentError = err.message ? err.message : err;
             return of([]);
         }),
-    );
+        untilDestroyed(this),
+    ) as Observable<ITableItem[]>;
 
     private setStats(set: ISet) {
         this.total = set && set.total && Number(set.total);
@@ -133,6 +133,33 @@ export class TableComponent implements OnInit {
     }
 
     ngOnInit() {
+        const dummyMode = this.type === 'dummy';
+
+        if (this.linker$) {
+            let l$: Observable<any> = this.linker$;
+
+            if (dummyMode) {
+                l$ = l$.pipe(
+                    tap(list => this.items = list),
+                );
+            } else {
+                l$ = combineLatest([l$, this.items$]).pipe(
+                    tap(([selected, items]) => {
+                        console.log('CL', selected, items);
+                        items.forEach(i => i.selected = false);
+                        selected.forEach(it => {
+                            const target = items.find((i: ITableItem) => i.data.id === it.data.id);
+                            if (target) {
+                                target.selected = true;
+                            }
+                        });
+                    })
+                );
+            }
+
+            l$.pipe(untilDestroyed(this)).subscribe();
+        }
+
         this.items$.subscribe(d => {
             this.items = d;
             this.finishItemsPhase();
@@ -164,16 +191,11 @@ export class TableComponent implements OnInit {
                 }),
             );
 
-        this.deselector$.emit(this.deselector.bind(this));
-
         if (this.key && this.type) {
             if (this.type === 'dummy') {
                 this.provider.getItemsSet(this.key, 'entity').subscribe(dummySet => {
                     if (!!dummySet) {
                         this.setStats(dummySet);
-                        if (this.df) {
-                            this.rowSettings = this.rowSettings.filter(rs => this.df.some(f => f === rs.key));
-                        }
                     }
                 });
                 return;
@@ -234,11 +256,16 @@ export class TableComponent implements OnInit {
     public selectItem(item: ITableItem) {
         console.log('selected:', item);
         if (this.multiselect) {
-            item.selected = true;
+            item.selected = !item.selected;
             const newItem = JSON.parse(JSON.stringify(item));
             this.currentItems = [newItem];
+
             if (this.currentItems[0].selected) {
                 this.select.emit(this.currentItems);
+            }
+
+            if (this.linker$) {
+                this.linker$.next(this.items.filter(f => !!f.selected));
             }
 
             return;
@@ -259,8 +286,14 @@ export class TableComponent implements OnInit {
         this.currentItems = [];
     }
 
+    public isDummy(): boolean {
+        return this.type === 'dummy';
+    }
+
     public deselectItem(item: ITableItem) {
-        this.deselect.emit(item.data.id);
-        console.log('rem dummyExist:', this.dummyItems);
+        item.selected = false;
+        if (this.linker$) {
+            this.linker$.next(this.items.filter(f => !!f.selected));
+        }
     }
 }

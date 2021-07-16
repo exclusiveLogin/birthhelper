@@ -14,11 +14,6 @@ export interface IRowSetting {
   titleDictKey?: string;
 }
 
-export interface IColumn {
-  title: string;
-  key: string;
-}
-
 @Component({
   selector: 'app-cell',
   templateUrl: './cell.component.html',
