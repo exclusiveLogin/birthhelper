@@ -161,8 +161,8 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
                         field.dctItems = dict;
                         if (field.required && !field.canBeNull && !field.initData && dict[0]) {
                             field.control.setValue(dict[0]['id']);
-                            this.checkConditionFields();
                         }
+                        this.checkConditionFields();
                     });
             }
         });
