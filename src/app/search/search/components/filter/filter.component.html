@@ -1,0 +1,32 @@
+<ng-container *ngIf="filterConfig">
+    <ng-container *ngFor="let filter of filterConfig">
+        <div class="filter__section"><p class="filter__ttl">{{filter.title}}</p>
+
+            <ng-container [ngSwitch]="filter.type">
+
+                <ul class="filter__list" *ngSwitchCase="'flag'">
+                    <li class="filter__item" *ngFor="let item of filter.filters">
+                        <div class="checkbox"><input type="checkbox" name="cbx" class="checkbox__input" [id]="item.id">
+                            <label class="checkbox__label" [for]="item.id">{{item.title}}</label></div>
+                    </li>
+                </ul>
+
+                <ng-container *ngSwitchCase="'select'">
+
+                    <select class="form-select select_input">
+                        <option [value]="null">Не выбрано</option>
+                        <option [value]="item.id" *ngFor="let item of filter.filters">{{item.title}}</option>
+                    </select>
+
+                </ng-container>
+            </ng-container>
+
+        </div>
+        <div class="filter__separator"></div>
+    </ng-container>
+</ng-container>
+
+<div class="filter__btn-group">
+    <button class="filter__btn filter__btn--green">Применить</button>
+    <button class="filter__link">Сбросить фильтр</button>
+</div>

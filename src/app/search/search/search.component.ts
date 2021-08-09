@@ -3,7 +3,7 @@ import {icon, marker} from 'leaflet';
 import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {merge, Subject} from 'rxjs';
 import {shareReplay, switchMap, tap} from 'rxjs/operators';
-import {DataProviderService} from 'app/services/data-provider.service';
+import {DataProviderService, EntityType} from 'app/services/data-provider.service';
 import {LLMap} from 'app/modules/map.lib';
 import {LatLng} from 'leaflet';
 import {Clinic, IClinicMini} from 'app/models/clinic.interface';
@@ -15,22 +15,38 @@ import {Clinic, IClinicMini} from 'app/models/clinic.interface';
 })
 export class SearchComponent implements OnInit, AfterViewInit {
 
+    sectionKey: EntityType = 'clinic';
+
     onInit$ = new Subject<null>();
     onFilterChange$ = new Subject<null>();
     onPageChange$ = new Subject<null>();
+
     mainSet$ = this.onInit$.pipe(
         switchMap(() => this.setProvider$()),
     );
+
     mainList$ = merge(this.onInit$, this.onFilterChange$, this.onPageChange$).pipe(
         tap(() => console.log('onInit$')),
         switchMap(() => this.dataProvider$(this.currentPage)),
         shareReplay(1),
     );
-    dataProvider$ = this.provider.getListProvider('clinics');
-    setProvider$ = this.provider.getSetProvider('clinics');
+
+    filterList$ = merge(this.onInit$).pipe(
+        tap((list) => console.log('filterList$', list)),
+        switchMap(() => this.filterProvider$()),
+        shareReplay(1),
+    );
+
+    dataProvider$ = this.provider.getListProvider(this.sectionKey);
+    setProvider$ = this.provider.getSetProvider(this.sectionKey);
+    filterProvider$ = this.provider.getFilterProvider(this.sectionKey);
+
     mode: 'map' | 'list' = 'list';
+
     private map = new LLMap();
+
     private lfgClinics = L.featureGroup();
+
     currentPage = 1;
 
     constructor(

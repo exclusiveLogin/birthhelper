@@ -1,9 +1,11 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {ApiService} from './api.service';
-import {filter} from 'rxjs/operators';
+import {filter, map} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {IDictItem} from 'app/Admin/dict.service';
+import {EntityType} from './data-provider.service';
+import {SearchSection} from '../models/filter.interface';
 
 export interface ISettingsParams {
     mode: string;
@@ -40,6 +42,11 @@ export interface IFileAdditionalData {
     position?: any;
 }
 
+interface SearchSectionSrc {
+    index: string;
+    results: SearchSection[];
+}
+
 @Injectable({providedIn: 'root'})
 export class RestService {
 
@@ -58,6 +65,16 @@ export class RestService {
         };
 
         return this.getData(entSetting);
+    }
+
+    public getFilterConfig(key: EntityType): Observable<SearchSection[]> {
+        const entSetting: ISettingsParams = {
+            mode: 'search',
+            segment: key,
+        };
+
+        return this.getData<SearchSectionSrc>(entSetting)
+            .pipe(map(data => data.results));
     }
 
     public getEntityList(key: string, page?: number, qp?: IRestParams): Observable<any[]> {

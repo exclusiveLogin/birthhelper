@@ -5,8 +5,12 @@ import {Clinic, IClinicMini} from 'app/models/clinic.interface';
 import {IRestParams, RestService} from 'app/services/rest.service';
 import {filter, map} from 'rxjs/operators';
 import {ISet} from '../Admin/entity.model';
+import {SearchSection} from '../models/filter.interface';
 
-export type EntityType = 'clinics';
+export type EntityType = 'clinic';
+export type FetchersSection<T> = {
+    [key in EntityType]?: (args?: any) => Observable<T>
+};
 
 @Injectable({
     providedIn: 'root'
@@ -18,16 +22,26 @@ export class DataProviderService {
     ) {
     }
 
-    listFetchers = {
-        clinics: this.clinicFetcherFactory.bind(this) as (page: number) => Observable<IClinicMini[]>,
+    listFetchers: FetchersSection<IClinicMini[]> = {
+        clinic: this.clinicFetcherFactory.bind(this),
     };
 
-    setFetchers = {
-        clinics: this.clinicSetFetcherFactory.bind(this) as () => Observable<ISet>,
+    setFetchers: FetchersSection<ISet> = {
+        clinic: this.clinicSetFetcherFactory.bind(this),
     };
+
+    filterFetchers: FetchersSection<SearchSection[]> = {
+        clinic: this.clinicFilterFetcherFactory.bind(this),
+    };
+
+    clinicFilterFetcherFactory(): Observable<SearchSection[]> {
+        return this.rest.getFilterConfig('clinic').pipe(
+            filter(data => !!data),
+        );
+    }
 
     clinicFetcherFactory(page = 1): Observable<IClinicMini[]> {
-        const qp: IRestParams = { active: '1' };
+        const qp: IRestParams = {active: '1'};
         return this.rest.getEntityList('ent_clinics', page, qp).pipe(
             filter(data => !!data),
             map(list => list.map(ent => Clinic.createClinicMini(ent))),
@@ -35,7 +49,7 @@ export class DataProviderService {
     }
 
     clinicSetFetcherFactory(): Observable<IClinicMini[]> {
-        const qp: IRestParams = { active: '1' };
+        const qp: IRestParams = {active: '1'};
         return this.rest.getEntitySet('ent_clinics', qp).pipe(
             filter(data => !!data),
         );
@@ -47,5 +61,9 @@ export class DataProviderService {
 
     getSetProvider(type: EntityType): () => Observable<ISet> {
         return this.setFetchers[type];
+    }
+
+    getFilterProvider(type: EntityType): () => Observable<SearchSection[]> {
+        return this.filterFetchers[type];
     }
 }
