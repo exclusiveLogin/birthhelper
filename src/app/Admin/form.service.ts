@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {FormControl, Validators, FormGroup} from '@angular/forms';
 import {MenuService} from './Dashboard/menu.service';
 import {Observable, of} from 'rxjs';
-import {NeverObservable} from 'rxjs/observable/NeverObservable';
 import {distinctUntilChanged, filter, map, pluck, tap} from 'rxjs/operators';
 import {ITableFilter} from './table/table/table.component';
 
@@ -72,8 +71,8 @@ export class FormService {
   constructor(private menuService: MenuService) {
   }
 
-  public createFormControl(init?: any, requred?: boolean): FormControl {
-    return new FormControl(init, requred ? [Validators.required] : null);
+  public createFormControl(init?: any, required?: boolean): FormControl {
+    return new FormControl(init, required ? [Validators.required] : null);
   }
 
   public registerFields(fields: IFieldSetting[], form: FormGroup): void {

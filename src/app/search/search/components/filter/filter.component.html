@@ -4,21 +4,24 @@
 
             <ng-container [ngSwitch]="filter.type">
 
-                <ul class="filter__list" *ngSwitchCase="'flag'">
-                    <li class="filter__item" *ngFor="let item of filter.filters">
-                        <div class="checkbox"><input type="checkbox" name="cbx" class="checkbox__input" [id]="item.id">
-                            <label class="checkbox__label" [for]="item.id">{{item.title}}</label></div>
-                    </li>
-                </ul>
+                <form [id]="filter.key" *ngSwitchCase="'flag'">
+                    <ul class="filter__list">
+                        <li class="filter__item" *ngFor="let item of filter.filters">
+                            <div class="checkbox"><input type="checkbox" class="checkbox__input" [id]="filter.key + item.id" [formControl]="item.control">
+                                <label class="checkbox__label" [for]="filter.key + item.id">{{item.title}}</label></div>
+                        </li>
+                    </ul>
+                </form>
 
-                <ng-container *ngSwitchCase="'select'">
 
-                    <select class="form-select select_input">
+                <form [id]="filter.key" *ngSwitchCase="'select'">
+
+                    <select class="form-select select_input" [formControl]="filter.control">
                         <option [value]="null">Не выбрано</option>
                         <option [value]="item.id" *ngFor="let item of filter.filters">{{item.title}}</option>
                     </select>
 
-                </ng-container>
+                </form>
             </ng-container>
 
         </div>
@@ -27,6 +30,8 @@
 </ng-container>
 
 <div class="filter__btn-group">
-    <button class="filter__btn filter__btn--green">Применить</button>
+    <button class="filter__btn filter__btn--green" (click)="submitForm()">Применить</button>
     <button class="filter__link">Сбросить фильтр</button>
 </div>
+
+

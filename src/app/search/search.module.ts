@@ -5,7 +5,7 @@ import {ClinicCardComponent} from './search/components/clinic.card/clinic.card.c
 import {SearchComponent} from './search/search.component';
 import {PaginatorComponent} from './search/components/paginator/paginator.component';
 import {FilterComponent} from './search/components/filter/filter.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -17,7 +17,8 @@ import {FormsModule} from '@angular/forms';
     imports: [
         CommonModule,
         SearchModuleRouting,
-        FormsModule
+        FormsModule,
+        ReactiveFormsModule,
     ],
     exports: [
 
