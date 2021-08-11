@@ -60,7 +60,7 @@ export class DataProviderService {
         );
     }
 
-    getListProvider(type: EntityType): (page: number) => Observable<Entity[]> {
+    getListProvider(type: EntityType): (page: number, hash?: string) => Observable<Entity[]> {
         return this.listFetchers[type];
     }
 

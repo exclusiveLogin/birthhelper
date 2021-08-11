@@ -2,12 +2,13 @@ import * as L from 'leaflet';
 import {icon, marker} from 'leaflet';
 import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {merge, Subject} from 'rxjs';
-import {shareReplay, switchMap, tap} from 'rxjs/operators';
+import {mapTo, shareReplay, switchMap, tap} from 'rxjs/operators';
 import {DataProviderService, EntityType} from 'app/services/data-provider.service';
 import {LLMap} from 'app/modules/map.lib';
 import {LatLng} from 'leaflet';
 import {Clinic, IClinicMini} from 'app/models/clinic.interface';
 import {FilterResult} from './components/filter/filter.component';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 @Component({
     selector: 'app-search',
@@ -17,24 +18,27 @@ import {FilterResult} from './components/filter/filter.component';
 export class SearchComponent implements OnInit, AfterViewInit {
 
     sectionKey: EntityType = 'clinic';
+    hash: string;
 
     onInit$ = new Subject<null>();
-    onFilterChange$ = new Subject<null>();
     onPageChange$ = new Subject<null>();
+    onFilters$ = new Subject<FilterResult>();
 
-    hash: string;
+    onHash$ = this.onFilters$.pipe(
+        switchMap(filters => this.provider.getFilterHash(this.sectionKey, filters)),
+        tap(hash => this.hash = hash),
+    );
 
     mainSet$ = this.onInit$.pipe(
         switchMap(() => this.setProvider$()),
     );
 
-    mainList$ = merge(this.onInit$, this.onFilterChange$, this.onPageChange$).pipe(
-        tap(() => console.log('onInit$')),
-        switchMap(() => this.dataProvider$(this.currentPage)),
+    mainList$ = merge(this.onInit$, this.onHash$, this.onPageChange$).pipe(
+        switchMap(() => this.dataProvider$(this.currentPage, this.hash)),
         shareReplay(1),
     );
 
-    filterList$ = merge(this.onInit$).pipe(
+    filterList$ = this.onInit$.pipe(
         tap((list) => console.log('filterList$', list)),
         switchMap(() => this.filterProvider$()),
         shareReplay(1),
@@ -71,7 +75,7 @@ export class SearchComponent implements OnInit, AfterViewInit {
     }
 
     selectFilters(filters: FilterResult): void {
-
+        this.onFilters$.next(filters);
     }
 
     modeMap(fitlock = false): void {

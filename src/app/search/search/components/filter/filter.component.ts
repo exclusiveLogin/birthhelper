@@ -21,9 +21,7 @@ export class FilterComponent implements OnInit {
     submitForm(): void {
         console.log('Filter form:', this);
         const filters = this.serializer();
-        if (filters) {
-            this.filterChange.emit(filters);
-        }
+        this.filterChange.emit(filters);
     }
 
     serializer(): FilterResult {
