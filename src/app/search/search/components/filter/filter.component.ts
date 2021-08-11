@@ -1,9 +1,10 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {SearchSection} from '../../../../models/filter.interface';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormControl} from '@angular/forms';
+
 
 export interface FilterResult {
-    [key: string]: {[id: number]: any };
+    [key: string]: { [id: number]: any };
 }
 
 @Component({
@@ -15,10 +16,14 @@ export interface FilterResult {
 export class FilterComponent implements OnInit {
 
     @Input() filterConfig: SearchSection[];
+    @Output() filterChange = new EventEmitter();
 
     submitForm(): void {
         console.log('Filter form:', this);
-        this.serializer();
+        const filters = this.serializer();
+        if (filters) {
+            this.filterChange.emit(filters);
+        }
     }
 
     serializer(): FilterResult {
@@ -37,9 +42,12 @@ export class FilterComponent implements OnInit {
             return {sectionKey: section.key, selected: selected.filter(f => !!f)};
         });
 
-        const data = {};
+        let data;
         resultSection.forEach(rs => {
-            if (rs.selected.length){
+            if (rs.selected.length) {
+                if (!data) {
+                    data = {};
+                }
                 console.log('selected', rs.selected);
                 data[rs.sectionKey] = {};
                 rs.selected.forEach(s => data[rs.sectionKey] = {...data[rs.sectionKey], ...s});
@@ -47,12 +55,12 @@ export class FilterComponent implements OnInit {
         });
         console.log('serializer, resultSection', resultSection, data);
 
-        return ;
+        return data;
     }
 
     constructor(
         private cdr: ChangeDetectorRef,
-        ) {
+    ) {
     }
 
     createForm(): void {

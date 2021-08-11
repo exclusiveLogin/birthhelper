@@ -6,6 +6,7 @@ import {HttpClient} from '@angular/common/http';
 import {IDictItem} from 'app/Admin/dict.service';
 import {EntityType} from './data-provider.service';
 import {SearchSection} from '../models/filter.interface';
+import {FilterResult} from '../search/search/components/filter/filter.component';
 
 export interface ISettingsParams {
     mode: string;
@@ -47,6 +48,12 @@ interface SearchSectionSrc {
     results: SearchSection[];
 }
 
+export interface SearchVectorSrc {
+    hash: string;
+    input: FilterResult;
+    result: FilterResult;
+}
+
 @Injectable({providedIn: 'root'})
 export class RestService {
 
@@ -75,6 +82,15 @@ export class RestService {
 
         return this.getData<SearchSectionSrc>(entSetting)
             .pipe(map(data => data.results));
+    }
+
+    public getHashBySearchSection(key: EntityType, filters: FilterResult): Observable<string> {
+        const setting: ISettingsParams = {
+            mode: 'search',
+            segment: key,
+        };
+
+        return this.postData<SearchVectorSrc>(setting, filters).pipe(map(result => result.hash));
     }
 
     public getEntityList(key: string, page?: number, qp?: IRestParams): Observable<any[]> {

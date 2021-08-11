@@ -7,6 +7,7 @@ import {DataProviderService, EntityType} from 'app/services/data-provider.servic
 import {LLMap} from 'app/modules/map.lib';
 import {LatLng} from 'leaflet';
 import {Clinic, IClinicMini} from 'app/models/clinic.interface';
+import {FilterResult} from './components/filter/filter.component';
 
 @Component({
     selector: 'app-search',
@@ -20,6 +21,8 @@ export class SearchComponent implements OnInit, AfterViewInit {
     onInit$ = new Subject<null>();
     onFilterChange$ = new Subject<null>();
     onPageChange$ = new Subject<null>();
+
+    hash: string;
 
     mainSet$ = this.onInit$.pipe(
         switchMap(() => this.setProvider$()),
@@ -65,6 +68,10 @@ export class SearchComponent implements OnInit, AfterViewInit {
     pageChange(page = 1): void {
         this.currentPage = page;
         this.onPageChange$.next(null);
+    }
+
+    selectFilters(filters: FilterResult): void {
+
     }
 
     modeMap(fitlock = false): void {

@@ -6,6 +6,7 @@ import {IRestParams, RestService} from 'app/services/rest.service';
 import {filter, map} from 'rxjs/operators';
 import {ISet} from '../Admin/entity.model';
 import {SearchSection} from '../models/filter.interface';
+import {FilterResult} from '../search/search/components/filter/filter.component';
 
 export type EntityType = 'clinic';
 export type FetchersSection<T> = {
@@ -40,8 +41,12 @@ export class DataProviderService {
         );
     }
 
-    clinicFetcherFactory(page = 1): Observable<IClinicMini[]> {
+    clinicFetcherFactory(page = 1, hash?: string): Observable<IClinicMini[]> {
         const qp: IRestParams = {active: '1'};
+
+        if (hash) {
+            qp.hash = hash;
+        }
         return this.rest.getEntityList('ent_clinics', page, qp).pipe(
             filter(data => !!data),
             map(list => list.map(ent => Clinic.createClinicMini(ent))),
@@ -65,5 +70,9 @@ export class DataProviderService {
 
     getFilterProvider(type: EntityType): () => Observable<SearchSection[]> {
         return this.filterFetchers[type];
+    }
+
+    getFilterHash(type: EntityType, filters: FilterResult): Observable<string> {
+        return this.rest.getHashBySearchSection(type, filters);
     }
 }

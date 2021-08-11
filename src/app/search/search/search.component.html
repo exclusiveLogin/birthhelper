@@ -5,7 +5,11 @@
     </div>
     <div class="main-clinic__columns">
         <aside class="main-clinic__filter filter">
-            <app-filter *ngIf="filterList$ | async as list" [filterConfig]="list"></app-filter>
+            <app-filter
+                *ngIf="filterList$ | async as list"
+                [filterConfig]="list"
+                (filterChange)="selectFilters($event)"
+            ></app-filter>
         </aside>
         <div class="result">
             <div class="result__header">
