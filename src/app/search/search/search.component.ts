@@ -28,6 +28,7 @@ export class SearchComponent implements OnInit, AfterViewInit {
     onHash$ = this.onFilters$.pipe(
         switchMap(filters => filters ? this.provider.getFilterHash(this.sectionKey, filters) : of(null)),
         tap(hash => this.hash = hash),
+        shareReplay(1),
     );
 
     mainSet$ = merge(this.onInit$, this.onHash$).pipe(
