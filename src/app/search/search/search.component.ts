@@ -30,8 +30,8 @@ export class SearchComponent implements OnInit, AfterViewInit {
         tap(hash => this.hash = hash),
     );
 
-    mainSet$ = this.onInit$.pipe(
-        switchMap(() => this.setProvider$()),
+    mainSet$ = merge(this.onInit$, this.onHash$).pipe(
+        switchMap(() => this.setProvider$(this.hash)),
     );
 
     mainList$ = merge(this.onInit$, this.onHash$, this.onPageChange$).pipe(

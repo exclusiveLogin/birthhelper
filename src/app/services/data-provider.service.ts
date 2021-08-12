@@ -53,8 +53,11 @@ export class DataProviderService {
         );
     }
 
-    clinicSetFetcherFactory(): Observable<IClinicMini[]> {
+    clinicSetFetcherFactory(hash?: string): Observable<IClinicMini[]> {
         const qp: IRestParams = {active: '1'};
+        if (hash) {
+            qp.hash = hash;
+        }
         return this.rest.getEntitySet('ent_clinics', qp).pipe(
             filter(data => !!data),
         );
@@ -64,7 +67,7 @@ export class DataProviderService {
         return this.listFetchers[type];
     }
 
-    getSetProvider(type: EntityType): () => Observable<ISet> {
+    getSetProvider(type: EntityType): (hash?: string) => Observable<ISet> {
         return this.setFetchers[type];
     }
 
