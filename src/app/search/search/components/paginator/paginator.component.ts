@@ -11,7 +11,6 @@ export class PaginatorComponent implements OnInit {
 
     @Input('pages')
     private set _(value) {
-        if (!value) return;
         this.pages = Math.floor(value) + 1;
     }
 
