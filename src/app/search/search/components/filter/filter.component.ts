@@ -18,6 +18,19 @@ export class FilterComponent implements OnInit {
     @Input() filterConfig: SearchSection[];
     @Output() filterChange = new EventEmitter();
 
+    resetForm(): void {
+        this.filterConfig.forEach(section => {
+            if (section.type === 'flag') {
+                section.filters.forEach(f => f.control.reset());
+            }
+            if (section.type === 'select') {
+                section.control.reset();
+            }
+        });
+
+        this.submitForm();
+    }
+
     submitForm(): void {
         console.log('Filter form:', this);
         const filters = this.serializer();
@@ -34,7 +47,9 @@ export class FilterComponent implements OnInit {
                     break;
                 case 'select':
                     const selectedId = section.control.value;
-                    selected.push(selectedId ? ({[selectedId]: true}) : null);
+                    if (selectedId) {
+                        selected.push(({[selectedId]: true}));
+                    }
                     break;
             }
             return {sectionKey: section.key, selected: selected.filter(f => !!f)};

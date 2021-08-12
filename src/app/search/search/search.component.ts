@@ -9,6 +9,7 @@ import {LatLng} from 'leaflet';
 import {Clinic, IClinicMini} from 'app/models/clinic.interface';
 import {FilterResult} from './components/filter/filter.component';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {of} from 'rxjs/internal/observable/of';
 
 @Component({
     selector: 'app-search',
@@ -25,7 +26,7 @@ export class SearchComponent implements OnInit, AfterViewInit {
     onFilters$ = new Subject<FilterResult>();
 
     onHash$ = this.onFilters$.pipe(
-        switchMap(filters => this.provider.getFilterHash(this.sectionKey, filters)),
+        switchMap(filters => filters ? this.provider.getFilterHash(this.sectionKey, filters) : of(null)),
         tap(hash => this.hash = hash),
     );
 
