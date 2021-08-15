@@ -74,7 +74,6 @@ export class TableComponent implements OnInit {
     public currentPage = 1;
     public total = 0;
     public allPages = 1;
-    public paginator = true;
     public currentItem: ITableItem;
     public currentItems: ITableItem[];
     public rowSettings: IRowSetting[];
@@ -247,7 +246,6 @@ export class TableComponent implements OnInit {
 
     public refreshTable(filters: IFiltersParams) {
         console.log('refresh table:', filters);
-        this.paginator = filters ? !Object.keys(filters).some(k => !!k) : true;
         this.currentItem = null;
         this.qp = filters ? filters : this.qp;
         this.pageChanged(1, filters as IRestParams);
