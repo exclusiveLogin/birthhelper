@@ -12,6 +12,9 @@ export class PaginatorComponent implements OnInit {
     @Input('pages')
     private set _(value) {
         this.pages = Math.floor(value) + 1;
+        if (this.currentPage > this.pages) {
+            this.currentPage = this.pages;
+        }
     }
 
     @Output() public vc: EventEmitter<number> = new EventEmitter();

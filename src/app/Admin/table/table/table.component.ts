@@ -248,7 +248,7 @@ export class TableComponent implements OnInit {
         console.log('refresh table:', filters);
         this.currentItem = null;
         this.qp = filters ? filters : this.qp;
-        this.pageChanged(1, filters as IRestParams);
+        this.pageChanged(this.currentPage, filters as IRestParams);
     }
 
     public selectItem(item: ITableItem) {
