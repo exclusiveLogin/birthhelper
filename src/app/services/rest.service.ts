@@ -7,6 +7,7 @@ import {IDictItem} from 'app/Admin/dict.service';
 import {EntityType} from './data-provider.service';
 import {SearchSection} from '../models/filter.interface';
 import {FilterResult} from '../search/search/components/filter/filter.component';
+import {SessionResponse} from '../Admin/auth-module/auth.service';
 
 export interface ISettingsParams {
     mode: string;
@@ -116,6 +117,30 @@ export class RestService {
         };
 
         return this.getData<any[]>(entSetting, qp);
+    }
+
+    public createGuestToken(): Observable<string> {
+        return this.createSession().pipe(map(data => data?.token));
+    }
+
+    public createUserToken(login?: string, password?: string): Observable<string> {
+        return this.createSession().pipe(map(data => data?.token));
+    }
+
+    public createSession(login?: string, password?: string): Observable<SessionResponse> {
+        let data;
+        if (login || password) {
+            data = {};
+            data = login ? {...data, login} : {...data};
+            data = password ? {...data, password} : {...data};
+        }
+
+        const ep_config: ISettingsParams = {
+            mode: 'auth',
+            segment: null,
+        };
+
+        return this.postData<SessionResponse>(ep_config, data);
     }
 
     public getDict(name: string, page?: number): Observable<IDictItem[]> {
