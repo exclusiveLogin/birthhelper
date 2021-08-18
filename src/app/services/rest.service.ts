@@ -1,14 +1,18 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {ApiService} from './api.service';
-import {filter, map} from 'rxjs/operators';
-import {HttpClient} from '@angular/common/http';
+import {filter, map, switchMap, tap} from 'rxjs/operators';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {IDictItem} from 'app/Admin/dict.service';
 import {EntityType} from './data-provider.service';
 import {SearchSection} from '../models/filter.interface';
 import {FilterResult} from '../search/search/components/filter/filter.component';
-import {SessionResponse, UserRole} from '../Admin/auth-module/auth.service';
+import {SessionResponse, UserRole} from '../modules/auth-module/auth.service';
 import {User} from '../models/user.interface';
+import {Browser} from 'leaflet';
+import retina = Browser.retina;
+import {Subject} from 'rxjs/Subject';
+import {Interceptor403Service} from '../modules/auth-module/interceptor403.service';
 
 export interface ISettingsParams {
     mode: string;
@@ -72,6 +76,7 @@ export class RestService {
     constructor(
         private http: HttpClient,
         private api: ApiService,
+        private interceptor: Interceptor403Service,
     ) {
     }
 
@@ -135,7 +140,7 @@ export class RestService {
     }
 
     public createUserToken(login?: string, password?: string): Observable<string> {
-        return this.createSession().pipe(map(data => data?.token));
+        return this.createSession(login, password).pipe(map(data => data?.token));
     }
 
     public createSession(login?: string, password?: string): Observable<SessionResponse> {
@@ -185,7 +190,11 @@ export class RestService {
     }
 
     pathGen(path: ISettingsParams): void {
-        Object.keys(path).forEach(key => path[key] = '/' + path[key]);
+        Object.keys(path).filter(key => path[key]).forEach(key => path[key] = '/' + path[key]);
+    }
+
+    createUrl(path: ISettingsParams): string {
+        return `${this.api.getApiPath()}${path.mode ?? ''}${path.segment ?? ''}${path.resource ?? ''}${path.script ?? ''}`;
     }
 
     public getData<T>(path: ISettingsParams, data?: IRestParams): Observable<T> {
@@ -194,13 +203,18 @@ export class RestService {
             this.pathGen(path);
         }
 
-        const url = `${this.api.getApiPath()}${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
+        const url = this.createUrl(path);
 
-        const req = this.http.get(
-            url, {params: data})
+        const http = (token) => this.interceptor.interceptor403(this.http.get(
+            url, {params: data, headers: new HttpHeaders({token}), observe: 'response'}))
             .pipe(
                 filter(d => !!d),
             );
+
+        const req = this.interceptor.token$.pipe(
+            tap((token) => console.log('token REST: ', token)),
+            switchMap(http));
+
         return req as Observable<T>;
     }
 
@@ -210,12 +224,11 @@ export class RestService {
             this.pathGen(path);
         }
 
-        const url = `${this.api.getApiPath()}${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
+        const url = this.createUrl(path);
 
-        const req = this.http.post(url, data)
-            .pipe(
-                filter(d => !!d),
-            );
+        const req = this.interceptor.interceptor403(this.http.post(url, data, {observe: 'response'})).pipe(
+            filter(d => !!d),
+        );
         return req as Observable<T>;
     }
 
@@ -225,9 +238,9 @@ export class RestService {
             this.pathGen(path);
         }
 
-        const url = `${this.api.getApiPath()}${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
+        const url = this.createUrl(path);
 
-        const req = this.http.post(url, data).pipe(
+        const req = this.interceptor.interceptor403(this.http.post(url, data, {observe: 'response'})).pipe(
             filter(d => !!d),
         );
         return req as Observable<T>;
@@ -239,9 +252,9 @@ export class RestService {
             this.pathGen(path);
         }
 
-        const url = `${this.api.getApiPath()}${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
+        const url = this.createUrl(path);
 
-        const req = this.http.post(url, data.body).pipe(
+        const req = this.interceptor.interceptor403(this.http.post(url, data.body, {observe: 'response'})).pipe(
             filter(d => !!d),
         );
         return req as Observable<T>;
@@ -253,9 +266,9 @@ export class RestService {
             this.pathGen(path);
         }
 
-        const url = `${this.api.getApiPath()}${path.mode ? path.mode : ''}${path.segment ? path.segment : ''}${path.resource ? path.resource : ''}${path.script ? path.script : ''}`;
+        const url = this.createUrl(path);
 
-        const req = this.http.request('delete', url, {body: data}).pipe(
+        const req = this.interceptor.interceptor403(this.http.request('delete', url, {body: data, observe: 'response'})).pipe(
             filter(d => !!d),
         );
         return req as Observable<T>;
