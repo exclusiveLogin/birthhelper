@@ -7,7 +7,8 @@ import {IDictItem} from 'app/Admin/dict.service';
 import {EntityType} from './data-provider.service';
 import {SearchSection} from '../models/filter.interface';
 import {FilterResult} from '../search/search/components/filter/filter.component';
-import {SessionResponse} from '../Admin/auth-module/auth.service';
+import {SessionResponse, UserRole} from '../Admin/auth-module/auth.service';
+import {User} from '../models/user.interface';
 
 export interface ISettingsParams {
     mode: string;
@@ -53,6 +54,16 @@ export interface SearchVectorSrc {
     hash: string;
     input: FilterResult;
     result: FilterResult;
+}
+
+export interface UserRoleSrc {
+    id: number;
+    slug: UserRole;
+    title: string;
+    description: string;
+    rank: number;
+    datetime_create: string;
+    datetime_update: string;
 }
 
 @Injectable({providedIn: 'root'})
@@ -141,6 +152,24 @@ export class RestService {
         };
 
         return this.postData<SessionResponse>(ep_config, data);
+    }
+
+    public getUserRole(): Observable<UserRoleSrc> {
+        const ep_config: ISettingsParams = {
+            mode: 'auth',
+            segment: 'role',
+        };
+
+        return this.getData(ep_config);
+    }
+
+    public getUser(): Observable<User> {
+        const ep_config: ISettingsParams = {
+            mode: 'auth',
+            segment: 'user',
+        };
+
+        return this.getData(ep_config);
     }
 
     public getDict(name: string, page?: number): Observable<IDictItem[]> {
