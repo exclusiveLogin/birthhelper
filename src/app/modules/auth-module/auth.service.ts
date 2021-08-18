@@ -61,12 +61,14 @@ export class AuthService {
 
     role$: Observable<UserRoleSrc> = this.token$.pipe(
         switchMap(token => token ? this.getCurrentRole() : of(null)),
-        shareReplay(1),
         tap((token) => {
             if (this.urlToRedirect) {
-                this.router.navigate([`${this.urlToRedirect}`]).then(() => this.urlToRedirect = null);
+                console.log('redirect to ', this.urlToRedirect);
+                location.pathname = this.urlToRedirect;
+                this.urlToRedirect = null;
             }
         }),
+        shareReplay(1),
     );
 
     user$: Observable<User> = this.token$.pipe(
@@ -95,6 +97,7 @@ export class AuthService {
     }
 
     logout(): void {
+        this.urlToRedirect = location.pathname;
         this.clearLSToken();
         this.reset$.next();
     }
