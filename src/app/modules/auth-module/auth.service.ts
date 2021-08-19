@@ -2,12 +2,13 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import {of} from 'rxjs/internal/observable/of';
-import {catchError, filter, map, publishBehavior, refCount, shareReplay, switchMap, tap} from 'rxjs/operators';
+import {filter, map, shareReplay, switchMap, tap, throttleTime} from 'rxjs/operators';
 import {RestService, UserRoleSrc} from '../../services/rest.service';
 import {User} from '../../models/user.interface';
 import {merge} from 'rxjs/internal/observable/merge';
 import {Subject} from 'rxjs/Subject';
 import {Interceptor403Service} from './interceptor403.service';
+import {asyncScheduler} from 'rxjs/internal/scheduler/async';
 
 interface ISecure {
     user: string;
@@ -42,7 +43,14 @@ export class AuthService {
     user: User;
     role: UserRoleSrc;
     urlToRedirect: string;
+
     reset$ = this.interceptor.reseterToken$;
+
+    onResetToken$ = this.reset$.pipe(
+        throttleTime(2000, asyncScheduler, {leading: true, trailing: false}),
+        tap(() => this.clearLSToken())
+    );
+
     creds$ = new Subject<{ login: string, password: string }>();
     userToken$ = this.creds$.pipe(
         switchMap(creds => this.createUserToken(creds.login, creds.password)),
@@ -53,7 +61,7 @@ export class AuthService {
 
     private token: string = null;
 
-    token$: Observable<string> = merge(of(this.token), this.userToken$, this.reset$).pipe(
+    token$: Observable<string> = merge(of(this.token), this.userToken$, this.onResetToken$).pipe(
         tap((token) => console.log('token fire: ', token)),
         switchMap((token) => token ? of(token) : this.getTokenFromLS$()),
         tap((token) => console.log('getTokenFromLS$ fire: ', token)),

@@ -31,15 +31,13 @@ export class Interceptor403Service {
             catchError((err) => {
                 console.log('HTTP INTERCEPTOR ERROR', err);
                 this.notifier.setMessageTime(err?.error?.error || err.statusText, 'authStr');
-                return of(err);
-            }),
-            tap(r => console.log('HTTP INTERCEPTOR', r), r => console.log('HTTP INTERCEPTOR ERROR', r)),
-            tap(r => {
-                if (r.status === 403) {
-                    this.reseterToken$.next(null);
+                if (err.status === 403) {
+                    // this.reseterToken$.next(null);
+                    setTimeout(() => this.reseterToken$.next(null), 5000);
                 }
+                return of(null);
             }),
-            map(r => r.body),
+            map(r => r?.body || null),
         );
     }
 }
