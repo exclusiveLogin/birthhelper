@@ -249,7 +249,6 @@ iframe {
 }
 
 .rs2-wrap-input100 {
-    border-left: none;
 }
 
 
@@ -388,7 +387,7 @@ input.input100 {
     }
 
     .rs2-wrap-input100 {
-        border-left: 1px solid #e6e6e6;
+
     }
 }
 
