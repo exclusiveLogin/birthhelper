@@ -6,6 +6,7 @@ RUN echo "Node: " && node -v
 RUN echo "NPM: " && npm -v
 COPY . /usr/share/nginx/html
 WORKDIR /usr/share/nginx/html
-RUN npm i && npm run build
+RUN npm i -g yarn
+RUN yarn build
 COPY docker/default.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80

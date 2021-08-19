@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 import {ApiService} from './api.service';
 import {filter, map, switchMap, tap} from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
@@ -9,9 +9,6 @@ import {SearchSection} from '../models/filter.interface';
 import {FilterResult} from '../search/search/components/filter/filter.component';
 import {SessionResponse, UserRole} from '../modules/auth-module/auth.service';
 import {User} from '../models/user.interface';
-import {Browser} from 'leaflet';
-import retina = Browser.retina;
-import {Subject} from 'rxjs/Subject';
 import {Interceptor403Service} from '../modules/auth-module/interceptor403.service';
 
 export interface ISettingsParams {

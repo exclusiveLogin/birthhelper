@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs/Subject';
 import {shareReplay} from 'rxjs/operators';
-import {Observable} from 'rxjs/Observable';
+import {Observable, Subject} from 'rxjs';
 
 const repoSub = {
     authStr: new Subject<string>(),
