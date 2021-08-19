@@ -17,6 +17,7 @@ export class AuthAdminGuard implements CanActivate {
         next: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
+        console.log('guard tick');
         return this.auth.isAuthorizedAs$.pipe(
             map(role => role === 'admin' || role === 'master' || role === 'moderator'),
             tap(admin => {

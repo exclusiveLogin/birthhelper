@@ -9,8 +9,6 @@ import md5 from 'md5';
     styleUrls: ['./auth.component.css']
 })
 export class AuthComponent implements OnInit {
-    public token: string;
-
     constructor(
         private route: ActivatedRoute,
         private router: Router,
@@ -21,6 +19,7 @@ export class AuthComponent implements OnInit {
     login: string;
     _password: string;
     _pwd_md5: string;
+
     set password(value) {
         this._password = value;
         this._pwd_md5 = md5(value);
@@ -38,14 +37,7 @@ export class AuthComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.route.queryParams.subscribe(qp => {
-            this.token = qp['token'];
 
-            if (this.token) {
-                localStorage.setItem('bh_secure', JSON.stringify({user: 'demo', token: this.token}));
-                setTimeout(() => this.router.navigate(['admin']), 3000);
-            }
-        });
     }
 
 }

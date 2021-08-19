@@ -3,8 +3,8 @@ import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 import {HttpResponse} from '@angular/common/http';
 import {map, tap} from 'rxjs/operators';
-import {of} from 'rxjs/internal/observable/of';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {MonoTypeOperatorFunction} from 'rxjs/interfaces';
+import {pipe} from 'rxjs/internal-compatibility';
 
 @Injectable({
     providedIn: 'root'
@@ -23,8 +23,8 @@ export class Interceptor403Service {
         this.token$ = token$;
     }
 
-    interceptor403(pipe: Observable<HttpResponse<any>>): Observable<any> {
-        return pipe.pipe(
+    interceptor403(): MonoTypeOperatorFunction<HttpResponse<any>> {
+        return pipe(
             tap(r => console.log('HTTP INTERCEPTOR', r), r => console.log('HTTP INTERCEPTOR ERROR', r)),
             tap(r => {
                     if (r.status === 403) {

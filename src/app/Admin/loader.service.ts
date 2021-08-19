@@ -20,10 +20,10 @@ public hide() {
     this.unsetError();
     }
 
-public setError(text?: string) {
+public setError(err: { error: string, message: string  } | string = 'Unknown Error') {
     setTimeout(() => {
         this._error = true;
-        this._error_str = text ? text : null;
+        this._error_str = typeof err === 'string' ? err :  err?.error || err.message;
     } , 1500);
 
 }

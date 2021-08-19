@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import {of} from 'rxjs/internal/observable/of';
-import {filter, map, shareReplay, switchMap, tap} from 'rxjs/operators';
+import {filter, map, publishBehavior, refCount, shareReplay, switchMap, tap} from 'rxjs/operators';
 import {RestService, UserRoleSrc} from '../../services/rest.service';
 import {User} from '../../models/user.interface';
 import {merge} from 'rxjs/internal/observable/merge';
@@ -46,14 +46,18 @@ export class AuthService {
     creds$ = new Subject<{ login: string, password: string }>();
     userToken$ = this.creds$.pipe(
         switchMap(creds => this.createUserToken(creds.login, creds.password)),
-        tap(token => this.saveLSToken(token))
+        tap(token => this.saveLSToken(token)),
+        tap((tok) => console.log('userToken$ fire', tok)),
     );
 
     private token: string = null;
 
     token$: Observable<string> = merge(of(this.token), this.userToken$, this.reset$).pipe(
+        tap((token) => console.log('token fire: ', token)),
         switchMap((token) => token ? of(token) : this.getTokenFromLS$()),
+        tap((token) => console.log('getTokenFromLS$ fire: ', token)),
         switchMap((token) => token ? of(token) : this.createGuestToken$()),
+        tap((token) => console.log('createGuestToken$ fire: ', token)),
         tap(token => this.token = token),
         tap((token) => console.log('token: ', token)),
         shareReplay(1),

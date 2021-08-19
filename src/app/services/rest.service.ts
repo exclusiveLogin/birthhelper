@@ -156,7 +156,7 @@ export class RestService {
             segment: null,
         };
 
-        return this.postData<SessionResponse>(ep_config, data);
+        return this.postData<SessionResponse>(ep_config, data, true);
     }
 
     public getUserRole(): Observable<UserRoleSrc> {
@@ -205,20 +205,21 @@ export class RestService {
 
         const url = this.createUrl(path);
 
-        const http = (token) => this.interceptor.interceptor403(this.http.get(
-            url, {params: data, headers: new HttpHeaders({token}), observe: 'response'}))
+        const http = (token) => this.http.get(
+            url, {params: data, headers: token ?  new HttpHeaders({token}) : null, observe: 'response'})
             .pipe(
+                this.interceptor.interceptor403(),
                 filter(d => !!d),
             );
 
         const req = this.interceptor.token$.pipe(
-            tap((token) => console.log('token REST: ', token)),
+            tap((token) => console.log('getData token REST: ', token)),
             switchMap(http));
 
         return req as Observable<T>;
     }
 
-    public uploadData<T>(path: ISettingsParams, data?: FormData): Observable<T> {
+    public postData<T>(path: ISettingsParams, data?: any, insecure?: boolean): Observable<T> {
 
         if (path) {
             this.pathGen(path);
@@ -226,23 +227,17 @@ export class RestService {
 
         const url = this.createUrl(path);
 
-        const req = this.interceptor.interceptor403(this.http.post(url, data, {observe: 'response'})).pipe(
+        const http = (token?: string) => this.http.post(url, data,
+            {headers: token ? new HttpHeaders({token}) : null, observe: 'response'}
+        ).pipe(
+            this.interceptor.interceptor403(),
             filter(d => !!d),
         );
-        return req as Observable<T>;
-    }
 
-    public postData<T>(path: ISettingsParams, data?: any): Observable<T> {
+        const req = insecure ? http() : this.interceptor.token$.pipe(
+            tap((token) => console.log('postData token REST: ', token)),
+            switchMap(http));
 
-        if (path) {
-            this.pathGen(path);
-        }
-
-        const url = this.createUrl(path);
-
-        const req = this.interceptor.interceptor403(this.http.post(url, data, {observe: 'response'})).pipe(
-            filter(d => !!d),
-        );
         return req as Observable<T>;
     }
 
@@ -254,9 +249,17 @@ export class RestService {
 
         const url = this.createUrl(path);
 
-        const req = this.interceptor.interceptor403(this.http.post(url, data.body, {observe: 'response'})).pipe(
+        const http = (token) => this.http.post(url, data.body,
+            {headers: token ? new HttpHeaders({token}) : null, observe: 'response'}
+        ).pipe(
+            this.interceptor.interceptor403(),
             filter(d => !!d),
         );
+
+        const req = this.interceptor.token$.pipe(
+            tap((token) => console.log('postData token REST: ', token)),
+            switchMap(http));
+
         return req as Observable<T>;
     }
 
@@ -268,10 +271,17 @@ export class RestService {
 
         const url = this.createUrl(path);
 
-        const req = this.interceptor.interceptor403(this.http.request('delete', url, {body: data, observe: 'response'})).pipe(
-            filter(d => !!d),
-        );
+        const http = (token) => this.http.request('delete', url,
+            {body: data, headers: token ? new HttpHeaders({token}) : null, observe: 'response'}
+        ).pipe(
+                this.interceptor.interceptor403(),
+                filter(d => !!d),
+            );
+
+        const req = this.interceptor.token$.pipe(
+            tap((token) => console.log('remData token REST: ', token)),
+            switchMap(http));
+
         return req as Observable<T>;
     }
-
 }
