@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../auth.service';
 import md5 from 'md5';
+import {NotifierService} from '../../notifier/notifier.service';
 
 @Component({
     selector: 'app-auth',
@@ -13,6 +14,7 @@ export class AuthComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private authService: AuthService,
+        public notifier: NotifierService,
     ) {
     }
 
@@ -32,7 +34,7 @@ export class AuthComponent implements OnInit {
     signin(): void {
         console.log('signin', this);
         const url = this.route.snapshot.queryParamMap.get('url');
-        this.router.navigate([], {queryParams: {url: null}}).then();
+        // this.router.navigate([], {queryParams: {url: null}}).then();
         this.authService.login(this.login, this._pwd_md5, url);
     }
 

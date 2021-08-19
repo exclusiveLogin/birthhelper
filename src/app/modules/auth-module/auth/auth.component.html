@@ -25,6 +25,8 @@
                     </button>
                 </div>
 
+                <div class="msg_error" *ngIf="notifier.getMessageStream('authStr') | async as msg">{{msg}} </div>
+
                 <div class="w-full text-center p-t-27 p-b-239">
 						<span class="txt1">
 							Забыли

@@ -7,7 +7,7 @@
     <div class="header__contacts contacts">
       <p class="contacts__txt">Нужна помощь? Звоните!</p>
       <a href="tel:84951234567" class="contacts__phone">8 (495) 123 45 67</a>
-      <button class="contacts__btn">Авторизоваться</button>
+      <button class="contacts__btn" [routerLink]="['/auth']" [queryParams]="{url: path}">Авторизоваться</button>
     </div>
   </div>
 </header>

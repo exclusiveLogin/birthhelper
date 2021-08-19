@@ -92,6 +92,7 @@ export class RestService {
     }
 
     public getFilterConfig(key: EntityType): Observable<SearchSection[]> {
+        console.log('getFilterConfig');
         const entSetting: ISettingsParams = {
             mode: 'search',
             segment: key,
@@ -140,6 +141,7 @@ export class RestService {
     }
 
     public createUserToken(login?: string, password?: string): Observable<string> {
+        console.log('createUserToken', login, password);
         return this.createSession(login, password).pipe(map(data => data?.token));
     }
 
@@ -199,6 +201,8 @@ export class RestService {
 
     public getData<T>(path: ISettingsParams, data?: IRestParams): Observable<T> {
 
+        console.log('getData fire REST: ', path, data);
+
         if (path) {
             this.pathGen(path);
         }
@@ -211,6 +215,7 @@ export class RestService {
                 this.interceptor.interceptor403(),
                 filter(d => !!d),
             );
+        this.interceptor.token$.subscribe((r) => console.log('test', r));
 
         const req = this.interceptor.token$.pipe(
             tap((token) => console.log('getData token REST: ', token)),

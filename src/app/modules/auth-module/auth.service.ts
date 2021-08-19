@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import {of} from 'rxjs/internal/observable/of';
-import {filter, map, publishBehavior, refCount, shareReplay, switchMap, tap} from 'rxjs/operators';
+import {catchError, filter, map, publishBehavior, refCount, shareReplay, switchMap, tap} from 'rxjs/operators';
 import {RestService, UserRoleSrc} from '../../services/rest.service';
 import {User} from '../../models/user.interface';
 import {merge} from 'rxjs/internal/observable/merge';
@@ -46,6 +46,7 @@ export class AuthService {
     creds$ = new Subject<{ login: string, password: string }>();
     userToken$ = this.creds$.pipe(
         switchMap(creds => this.createUserToken(creds.login, creds.password)),
+        filter((token: string) => !!token),
         tap(token => this.saveLSToken(token)),
         tap((tok) => console.log('userToken$ fire', tok)),
     );
@@ -97,7 +98,7 @@ export class AuthService {
     login(login: string, password: string, url: string) {
         console.log('login ', login, password, url);
         this.creds$.next({login, password});
-        this.urlToRedirect = url || null;
+        this.urlToRedirect = url || '/';
     }
 
     logout(): void {
