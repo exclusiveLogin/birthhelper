@@ -1,8 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {Subject} from 'rxjs/Subject';
-import {HttpResponse} from '@angular/common/http';
-import {catchError, map, tap} from 'rxjs/operators';
+import {Observable, Subject} from 'rxjs';
+import {catchError, map} from 'rxjs/operators';
 import {MonoTypeOperatorFunction} from 'rxjs/interfaces';
 import {pipe} from 'rxjs/internal-compatibility';
 import {of} from 'rxjs/internal/observable/of';

@@ -1,12 +1,11 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {Observable} from 'rxjs/Observable';
+import {Observable, Subject} from 'rxjs';
 import {of} from 'rxjs/internal/observable/of';
 import {filter, map, shareReplay, switchMap, tap, throttleTime} from 'rxjs/operators';
 import {RestService, UserRoleSrc} from '../../services/rest.service';
 import {User} from '../../models/user.interface';
 import {merge} from 'rxjs/internal/observable/merge';
-import {Subject} from 'rxjs/Subject';
 import {Interceptor403Service} from './interceptor403.service';
 import {asyncScheduler} from 'rxjs/internal/scheduler/async';
 
