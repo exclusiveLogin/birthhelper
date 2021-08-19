@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DictService } from './dict.service';
 import { LoaderService } from './loader.service';
-import {AuthService} from './auth-module/auth.service';
+import {AuthService} from '../modules/auth-module/auth.service';
 
 @Component({
   selector: 'app-Admin',

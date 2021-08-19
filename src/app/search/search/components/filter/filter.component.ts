@@ -47,7 +47,7 @@ export class FilterComponent implements OnInit {
                     break;
                 case 'select':
                     const selectedId = section.control.value;
-                    if (selectedId) {
+                    if (!isNaN(Number(selectedId))) {
                         selected.push(({[selectedId]: true}));
                     }
                     break;
