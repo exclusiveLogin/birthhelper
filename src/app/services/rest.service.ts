@@ -103,6 +103,7 @@ export class RestService {
     }
 
     public getHashBySearchSection(key: EntityType, filters: FilterResult): Observable<string> {
+        console.log('getHashBySearchSection', key, filters);
         const setting: ISettingsParams = {
             mode: 'search',
             segment: key,
