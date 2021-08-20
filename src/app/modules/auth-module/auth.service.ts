@@ -90,6 +90,21 @@ export class AuthService {
 
     isAuthorizedAs$: Observable<UserRole> = this.role$.pipe(map(role => role?.slug || null));
 
+    onAdminAccess$: Observable<boolean> = this.isAuthorizedAs$.pipe(
+        map(slug => slug && (slug === 'admin' || slug === 'master' || slug === 'moderator')),
+        shareReplay(1),
+    );
+
+    onGuestAccess$: Observable<boolean> = this.isAuthorizedAs$.pipe(
+        map(slug => !slug || slug === 'guest'),
+        shareReplay(1),
+    );
+
+    onUserAccess$: Observable<boolean> = this.onGuestAccess$.pipe(
+        map(r => !r),
+        shareReplay(1),
+    );
+
     createGuestToken$(): Observable<string> {
         return this.rest.createGuestToken();
     }

@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {AuthService} from '../modules/auth-module/auth.service';
 
 @Component({
     selector: 'app-main',
@@ -9,7 +10,7 @@ export class MainComponent implements OnInit {
 
     path = location.pathname;
 
-    constructor() {
+    constructor( public auth: AuthService) {
     }
 
     ngOnInit(): void {

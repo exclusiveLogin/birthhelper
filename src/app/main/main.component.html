@@ -1,268 +1,287 @@
 <header class="header">
-  <div class="content header__content">
-    <a href="/" class="logo">
-      <img src="img/logo.png" srcset="img/logo@2x.png 2x, img/logo@3x.png 3x" class="logo__icon" alt="">
-    </a>
+    <div class="content header__content">
+        <a href="/" class="logo">
+            <img src="img/logo.png" srcset="img/logo@2x.png 2x, img/logo@3x.png 3x" class="logo__icon" alt="">
+        </a>
 
-    <div class="header__contacts contacts">
-      <p class="contacts__txt">Нужна помощь? Звоните!</p>
-      <a href="tel:84951234567" class="contacts__phone">8 (495) 123 45 67</a>
-      <button class="contacts__btn" [routerLink]="['/auth']" [queryParams]="{url: path}">Авторизоваться</button>
+        <div class="header__contacts contacts">
+            <p class="contacts__txt">Нужна помощь? Звоните!</p>
+            <a href="tel:84951234567" class="contacts__phone">8 (495) 123 45 67</a>
+            <button *ngIf="auth.onUserAccess$ | async" class="contacts__btn" (click)="auth.logout()">Выйти</button>
+            <button *ngIf="auth.onGuestAccess$ | async" class="contacts__btn" [routerLink]="['/auth']" [queryParams]="{url: path}">Авторизоваться</button>
+            <button *ngIf="auth.onAdminAccess$ | async" class="admin__btn" [routerLink]="['/admin']" [queryParams]="{url: path}">Войти в админку</button>
+        </div>
     </div>
-  </div>
 </header>
 
 <main class="page__main main main--index">
-  <h1 class="visually-hidden">Birth Helper</h1>
-  <div class="content">
-    <div class="slider">
-      <img src="img/main-img.jpg" srcset="img/main-img@2x.jpg 2x, img/main-img@3x.jpg 3x" class="slider__img" alt="">
+    <h1 class="visually-hidden">Birth Helper</h1>
+    <div class="content">
+        <div class="slider">
+            <img src="img/main-img.jpg" srcset="img/main-img@2x.jpg 2x, img/main-img@3x.jpg 3x" class="slider__img"
+                 alt="">
+        </div>
+
+        <section class="section">
+            <h2 class="title-h2">Запланируй идеальные роды, а мы поможем тебе</h2>
+
+            <div class="main__nav nav">
+                <ul class="nav__list">
+                    <li class="nav__item nav__item-planning muted">
+                        <img src="img/icons/planning.svg" class="nav__icon" alt="">
+                        <p class="nav__txt">Подготовиться<br>
+                            к беременности</p>
+                        <a href="javascript:void(0);" class="nav__link">Перейти</a>
+                    </li>
+                    <li class="nav__item nav__item-clinic muted">
+                        <img src="img/icons/zoom.svg" class="nav__icon" alt="">
+                        <p class="nav__txt">Подобрать отличную<br> клинику</p>
+                        <a href="javascript:void(0);" class="nav__link">Перейти</a>
+                    </li>
+                    <li class="nav__item nav__item-mhospital">
+                        <img src="img/icons/star.svg" class="nav__icon" alt="">
+                        <p class="nav__txt">Выбрать лучший<br>
+                            роддом</p>
+                        <a [routerLink]="['system', 'search']" href="javascript:void(0);" class="nav__link">Перейти</a>
+                    </li>
+                    <li class="nav__item nav__item-recovery muted">
+                        <img src="img/icons/people.svg" class="nav__icon" alt="">
+                        <p class="nav__txt">Восстановиться<br>
+                            после родов</p>
+                        <a href="javascript:void(0);" class="nav__link">Перейти</a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="title-h2">Наши направления</h2>
+
+            <div class="main__directions directions">
+                <ul class="directions__list">
+                    <li class="directions__item">
+                        <a href="javascript:void(0);" class="directions__link directions__link-planning">
+                            <span class="directions__txt">Планирование<br>беременности</span>
+                        </a>
+                    </li>
+                    <li class="directions__item">
+                        <a href="javascript:void(0);" class="directions__link directions__link-care">
+                            <span class="directions__txt">Родовспоможение</span>
+                        </a>
+                    </li>
+                    <li class="directions__item">
+                        <a href="javascript:void(0);" class="directions__link directions__link-management">
+                            <span class="directions__txt">Ведение<br>беременности</span>
+                        </a>
+                    </li>
+                    <li class="directions__item">
+                        <a href="javascript:void(0);" class="directions__link directions__link-recovery">
+                            <span class="directions__txt">Восстановление<br>после родов</span>
+                        </a>
+                    </li>
+                    <li class="directions__item">
+                        <a href="javascript:void(0);" class="directions__link directions__link-nutrition">
+                            <span class="directions__txt">Питание</span>
+                        </a>
+                    </li>
+                    <li class="directions__item">
+                        <a href="javascript:void(0);" class="directions__link directions__link-yoga">
+                            <span class="directions__txt">Йога</span>
+                        </a>
+                    </li>
+                    <li class="directions__item">
+                        <a href="javascript:void(0);" class="directions__link directions__link-fitness">
+                            <span class="directions__txt">Фитнес</span>
+                        </a>
+                    </li>
+                    <li class="directions__item">
+                        <a href="javascript:void(0);" class="directions__link directions__link-swimming">
+                            <span class="directions__txt">Плавание</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="title-h2">Что делает BirthHelper?</h2>
+
+            <div class="main__tabs tabs">
+                <div class="tabs__bar">
+                    <div id="tab1" class="tabs__item active">
+                        <p class="tabs__txt">Помогает подобрать<br>
+                            лучших специалистов</p>
+                    </div>
+                    <div id="tab2" class="tabs__item">
+                        <p class="tabs__txt">Ищет для Вас<br>
+                            лучшие предложения</p>
+                    </div>
+                    <div id="tab3" class="tabs__item">
+                        <p class="tabs__txt">Заботиться о Вас<br>
+                            и Вашем будущем</p>
+                    </div>
+                    <div class="tabs__line"></div>
+                </div>
+
+                <div class="tabs__panel active" id="tab1-panel">
+                    <img src="img/tab1-img.png" srcset="img/tab1-img@2x.png 2x, img/tab1-img@3x.png 3x"
+                         class="tabs__img-first" alt="">
+                </div>
+                <div class="tabs__panel" id="tab2-panel">
+                    <img src="img/tab2-img.png" srcset="img/tab2-img@2x.png 2x, img/tab2-img@3x.png 3x"
+                         class="tabs__img-second" alt="">
+                </div>
+                <div class="tabs__panel" id="tab3-panel">
+                    <img src="img/tab3-img.jpg" srcset="img/tab3-img@2x.jpg 2x, img/tab3-img@3x.jpg 3x"
+                         class="tabs__img tabs__img-third" alt="">
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="title-h2">Как мы работаем?</h2>
+
+            <div class="main__steps steps">
+                <ul class="steps__list">
+                    <li class="steps__item steps__item-first">
+                        <img src="img/icons/notepad.svg" class="steps__icon" alt="">
+                        <p class="steps__txt">Выбираете необходимые услуги в <a href="#" class="steps__link">конфигураторе</a>
+                            и отправляете нам заявку</p>
+                    </li>
+                    <li class="steps__item steps__item-second">
+                        <img src="img/icons/support.svg" class="steps__icon" alt="">
+                        <p class="steps__txt">Затем заявка обрабатывается, уточняются ваши пожелания</p>
+                    </li>
+                    <li class="steps__item steps__item-third">
+                        <img src="img/icons/contract.svg" class="steps__icon" alt="">
+                        <p class="steps__txt">Заключаем договор на оказание услуг</p>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="title-h2">Наши преимущества</h2>
+
+            <div class="main__accordion accordion">
+                <div class="accordion__item accordion__item--opened">
+                    <div class="accordion__header">
+                        <div class="accordion__icon">
+                            <img src="img/icons/businessman.svg" class="accordion__icon-img" alt="">
+                        </div>
+                        <p class="accordion__ttl">Индивидуальный подход</p>
+                    </div>
+                    <div class="accordion__body">
+                        <p class="accordion__txt">Бере́менность челове́ка (лат. graviditas) — особое состояние организма
+                            женщины, при котором в её репродуктивных органах находится развивающийся эмбрион или плод.
+                            Беременность возникает в результате слияния женской и мужской половых клеток в маточной
+                            трубе, после чего происходит образование зиготы, содержащей 46 хромосом. Пол будущего
+                            ребёнка зависит от набора половых</p>
+                    </div>
+                </div>
+                <div class="accordion__item">
+                    <div class="accordion__header">
+                        <div class="accordion__icon">
+                            <img src="img/icons/surface.svg" class="accordion__icon-img" alt="">
+                        </div>
+                        <p class="accordion__ttl">Надежные и проверенные партнеры</p>
+                    </div>
+                    <div class="accordion__body">
+                        <p class="accordion__txt">Бере́менность челове́ка (лат. graviditas) — особое состояние организма
+                            женщины, при котором в её репродуктивных органах находится развивающийся эмбрион или плод.
+                            Беременность возникает в результате слияния женской и мужской половых клеток в маточной
+                            трубе, после чего происходит образование зиготы, содержащей 46 хромосом. Пол будущего
+                            ребёнка зависит от набора половых</p>
+                    </div>
+                </div>
+                <div class="accordion__item">
+                    <div class="accordion__header">
+                        <div class="accordion__icon">
+                            <img src="img/icons/hearts.svg" class="accordion__icon-img" alt="">
+                        </div>
+                        <p class="accordion__ttl">Выгодные предложения</p>
+                    </div>
+                    <div class="accordion__body">
+                        <p class="accordion__txt">Бере́менность челове́ка (лат. graviditas) — особое состояние организма
+                            женщины, при котором в её репродуктивных органах находится развивающийся эмбрион или плод.
+                            Беременность возникает в результате слияния женской и мужской половых клеток в маточной
+                            трубе, после чего происходит образование зиготы, содержащей 46 хромосом. Пол будущего
+                            ребёнка зависит от набора половых</p>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
-
-    <section class="section">
-      <h2 class="title-h2">Запланируй идеальные роды, а мы поможем тебе</h2>
-
-      <div class="main__nav nav">
-        <ul class="nav__list">
-          <li class="nav__item nav__item-planning muted">
-            <img src="img/icons/planning.svg" class="nav__icon" alt="">
-            <p class="nav__txt">Подготовиться<br>
-              к беременности</p>
-            <a href="javascript:void(0);" class="nav__link">Перейти</a>
-          </li>
-          <li class="nav__item nav__item-clinic muted">
-            <img src="img/icons/zoom.svg" class="nav__icon" alt="">
-            <p class="nav__txt">Подобрать отличную<br> клинику</p>
-            <a href="javascript:void(0);" class="nav__link">Перейти</a>
-          </li>
-          <li class="nav__item nav__item-mhospital">
-            <img src="img/icons/star.svg" class="nav__icon" alt="">
-            <p class="nav__txt">Выбрать лучший<br>
-              роддом</p>
-            <a [routerLink]="['system', 'search']" href="javascript:void(0);" class="nav__link">Перейти</a>
-          </li>
-          <li class="nav__item nav__item-recovery muted">
-            <img src="img/icons/people.svg" class="nav__icon" alt="">
-            <p class="nav__txt">Восстановиться<br>
-              после родов</p>
-            <a href="javascript:void(0);" class="nav__link">Перейти</a>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2 class="title-h2">Наши направления</h2>
-
-      <div class="main__directions directions">
-        <ul class="directions__list">
-          <li class="directions__item">
-            <a href="javascript:void(0);" class="directions__link directions__link-planning">
-              <span class="directions__txt">Планирование<br>беременности</span>
-            </a>
-          </li>
-          <li class="directions__item">
-            <a href="javascript:void(0);" class="directions__link directions__link-care">
-              <span class="directions__txt">Родовспоможение</span>
-            </a>
-          </li>
-          <li class="directions__item">
-            <a href="javascript:void(0);" class="directions__link directions__link-management">
-              <span class="directions__txt">Ведение<br>беременности</span>
-            </a>
-          </li>
-          <li class="directions__item">
-            <a href="javascript:void(0);" class="directions__link directions__link-recovery">
-              <span class="directions__txt">Восстановление<br>после родов</span>
-            </a>
-          </li>
-          <li class="directions__item">
-            <a href="javascript:void(0);" class="directions__link directions__link-nutrition">
-              <span class="directions__txt">Питание</span>
-            </a>
-          </li>
-          <li class="directions__item">
-            <a href="javascript:void(0);" class="directions__link directions__link-yoga">
-              <span class="directions__txt">Йога</span>
-            </a>
-          </li>
-          <li class="directions__item">
-            <a href="javascript:void(0);" class="directions__link directions__link-fitness">
-              <span class="directions__txt">Фитнес</span>
-            </a>
-          </li>
-          <li class="directions__item">
-            <a href="javascript:void(0);" class="directions__link directions__link-swimming">
-              <span class="directions__txt">Плавание</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2 class="title-h2">Что делает BirthHelper?</h2>
-
-      <div class="main__tabs tabs">
-        <div class="tabs__bar">
-          <div id="tab1" class="tabs__item active">
-            <p class="tabs__txt">Помогает подобрать<br>
-              лучших специалистов</p>
-          </div>
-          <div id="tab2" class="tabs__item">
-            <p class="tabs__txt">Ищет для Вас<br>
-              лучшие предложения</p>
-          </div>
-          <div id="tab3" class="tabs__item">
-            <p class="tabs__txt">Заботиться о Вас<br>
-              и Вашем будущем</p>
-          </div>
-          <div class="tabs__line"></div>
-        </div>
-
-        <div class="tabs__panel active" id="tab1-panel">
-          <img src="img/tab1-img.png" srcset="img/tab1-img@2x.png 2x, img/tab1-img@3x.png 3x" class="tabs__img-first" alt="">
-        </div>
-        <div class="tabs__panel" id="tab2-panel">
-          <img src="img/tab2-img.png" srcset="img/tab2-img@2x.png 2x, img/tab2-img@3x.png 3x" class="tabs__img-second" alt="">
-        </div>
-        <div class="tabs__panel" id="tab3-panel">
-          <img src="img/tab3-img.jpg" srcset="img/tab3-img@2x.jpg 2x, img/tab3-img@3x.jpg 3x" class="tabs__img tabs__img-third" alt="">
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2 class="title-h2">Как мы работаем?</h2>
-
-      <div class="main__steps steps">
-        <ul class="steps__list">
-          <li class="steps__item steps__item-first">
-            <img src="img/icons/notepad.svg" class="steps__icon" alt="">
-            <p class="steps__txt">Выбираете необходимые услуги в <a href="#" class="steps__link">конфигураторе</a> и отправляете нам заявку</p>
-          </li>
-          <li class="steps__item steps__item-second">
-            <img src="img/icons/support.svg" class="steps__icon" alt="">
-            <p class="steps__txt">Затем заявка обрабатывается, уточняются ваши пожелания</p>
-          </li>
-          <li class="steps__item steps__item-third">
-            <img src="img/icons/contract.svg" class="steps__icon" alt="">
-            <p class="steps__txt">Заключаем договор на оказание услуг</p>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2 class="title-h2">Наши преимущества</h2>
-
-      <div class="main__accordion accordion">
-        <div class="accordion__item accordion__item--opened">
-          <div class="accordion__header">
-            <div class="accordion__icon">
-              <img src="img/icons/businessman.svg" class="accordion__icon-img" alt="">
-            </div>
-            <p class="accordion__ttl">Индивидуальный подход</p>
-          </div>
-          <div class="accordion__body">
-            <p class="accordion__txt">Бере́менность челове́ка (лат. graviditas) — особое состояние организма женщины, при котором в её репродуктивных органах находится развивающийся эмбрион или плод. Беременность возникает в результате слияния женской и мужской половых клеток в маточной трубе, после чего происходит образование зиготы, содержащей 46 хромосом. Пол будущего ребёнка зависит от набора половых</p>
-          </div>
-        </div>
-        <div class="accordion__item">
-          <div class="accordion__header">
-            <div class="accordion__icon">
-              <img src="img/icons/surface.svg" class="accordion__icon-img" alt="">
-            </div>
-            <p class="accordion__ttl">Надежные и проверенные партнеры</p>
-          </div>
-          <div class="accordion__body">
-            <p class="accordion__txt">Бере́менность челове́ка (лат. graviditas) — особое состояние организма женщины, при котором в её репродуктивных органах находится развивающийся эмбрион или плод. Беременность возникает в результате слияния женской и мужской половых клеток в маточной трубе, после чего происходит образование зиготы, содержащей 46 хромосом. Пол будущего ребёнка зависит от набора половых</p>
-          </div>
-        </div>
-        <div class="accordion__item">
-          <div class="accordion__header">
-            <div class="accordion__icon">
-              <img src="img/icons/hearts.svg" class="accordion__icon-img" alt="">
-            </div>
-            <p class="accordion__ttl">Выгодные предложения</p>
-          </div>
-          <div class="accordion__body">
-            <p class="accordion__txt">Бере́менность челове́ка (лат. graviditas) — особое состояние организма женщины, при котором в её репродуктивных органах находится развивающийся эмбрион или плод. Беременность возникает в результате слияния женской и мужской половых клеток в маточной трубе, после чего происходит образование зиготы, содержащей 46 хромосом. Пол будущего ребёнка зависит от набора половых</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
 </main>
 
 <footer class="footer page__footer">
-  <div class="content">
-    <div class="footer__top">
-      <div class="footer__legal">
-        <a href="/" class="logo">
-          <img src="img/logo.png" srcset="img/logo@2x.png 2x, img/logo@3x.png 3x" class="logo__icon" alt="">
-        </a>
-        <div class="footer__info">
-          <span class="footer__info-txt">ООО «РОДПРОЕКТ»</span>
-          <span class="footer__info-txt">ИНН 7734934854</span>
-          <span class="footer__info-txt">Юридический адрес:</span>
-          <span class="footer__info-txt">119-17 г. Москва, ул. Красная, дм 54</span>
+    <div class="content">
+        <div class="footer__top">
+            <div class="footer__legal">
+                <a href="/" class="logo">
+                    <img src="img/logo.png" srcset="img/logo@2x.png 2x, img/logo@3x.png 3x" class="logo__icon" alt="">
+                </a>
+                <div class="footer__info">
+                    <span class="footer__info-txt">ООО «РОДПРОЕКТ»</span>
+                    <span class="footer__info-txt">ИНН 7734934854</span>
+                    <span class="footer__info-txt">Юридический адрес:</span>
+                    <span class="footer__info-txt">119-17 г. Москва, ул. Красная, дм 54</span>
+                </div>
+            </div>
+            <div class="footer__nav">
+                <ul class="footer__list">
+                    <li class="footer__list-item">
+                        <a href="#" class="footer__link">О нас</a>
+                    </li>
+                    <li class="footer__list-item">
+                        <a href="#" class="footer__link">Партнерам</a>
+                    </li>
+                    <li class="footer__list-item">
+                        <a href="#" class="footer__link">Рекламодателям</a>
+                    </li>
+                    <li class="footer__list-item">
+                        <a href="#" class="footer__link">Юридическая информация</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="footer__contacts">
+                <ul class="footer__list">
+                    <li class="footer__list-item">
+                        <a href="tel:84955171334" class="footer__link">
+                            <img src="img/icons/phone.svg" class="footer__link-img" alt="">
+                            8 495 517 13 34</a>
+                    </li>
+                    <li class="footer__list-item">
+                        <a href="mailto:birthhelper@info.ru" class="footer__link">
+                            <img src="img/icons/envelop.svg" class="footer__link-img" alt="">
+                            birthhelper@info.ru</a>
+                    </li>
+                </ul>
+                <div class="footer__social social">
+                    <p class="footer__txt">Социальные сети</p>
+                    <div class="social__btn-group">
+                        <a href="#" class="social__btn">
+                            <img src="img/icons/ok.svg" class="social__icon" alt="">
+                        </a>
+                        <a href="#" class="social__btn">
+                            <img src="img/icons/vk.svg" class="social__icon" alt="">
+                        </a>
+                        <a href="#" class="social__btn">
+                            <img src="img/icons/facebook-logo.svg" class="social__icon" alt="">
+                        </a>
+                        <a href="#" class="social__btn">
+                            <img src="img/icons/google.svg" class="social__icon" alt="">
+                        </a>
+                        <a href="#" class="social__btn">
+                            <img src="img/icons/instagram.svg" class="social__icon" alt="">
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="footer__nav">
-        <ul class="footer__list">
-          <li class="footer__list-item">
-            <a href="#" class="footer__link">О нас</a>
-          </li>
-          <li class="footer__list-item">
-            <a href="#" class="footer__link">Партнерам</a>
-          </li>
-          <li class="footer__list-item">
-            <a href="#" class="footer__link">Рекламодателям</a>
-          </li>
-          <li class="footer__list-item">
-            <a href="#" class="footer__link">Юридическая информация</a>
-          </li>
-        </ul>
-      </div>
-      <div class="footer__contacts">
-        <ul class="footer__list">
-          <li class="footer__list-item">
-            <a href="tel:84955171334" class="footer__link">
-              <img src="img/icons/phone.svg" class="footer__link-img" alt="">
-              8 495 517 13 34</a>
-          </li>
-          <li class="footer__list-item">
-            <a href="mailto:birthhelper@info.ru" class="footer__link">
-              <img src="img/icons/envelop.svg" class="footer__link-img" alt="">
-              birthhelper@info.ru</a>
-          </li>
-        </ul>
-        <div class="footer__social social">
-          <p class="footer__txt">Социальные сети</p>
-          <div class="social__btn-group">
-            <a href="#" class="social__btn">
-              <img src="img/icons/ok.svg" class="social__icon" alt="">
-            </a>
-            <a href="#" class="social__btn">
-              <img src="img/icons/vk.svg" class="social__icon" alt="">
-            </a>
-            <a href="#" class="social__btn">
-              <img src="img/icons/facebook-logo.svg" class="social__icon" alt="">
-            </a>
-            <a href="#" class="social__btn">
-              <img src="img/icons/google.svg" class="social__icon" alt="">
-            </a>
-            <a href="#" class="social__btn">
-              <img src="img/icons/instagram.svg" class="social__icon" alt="">
-            </a>
-          </div>
+        <div class="footer__copyright">
+            <p class="footer__info-txt">@2020 - birthhelper.ru «Birth Helper»</p>
+            <a href="#" class="footer__info-txt footer__info-txt--underline">Политика конфиденциальности</a>
         </div>
-      </div>
     </div>
-    <div class="footer__copyright">
-      <p class="footer__info-txt">@2020 - birthhelper.ru «Birth Helper»</p>
-      <a href="#" class="footer__info-txt footer__info-txt--underline">Политика конфиденциальности</a>
-    </div>
-  </div>
 </footer>
