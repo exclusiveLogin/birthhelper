@@ -136,7 +136,7 @@ export class SearchComponent implements OnInit, AfterViewInit {
             this.lfgClinics.addLayer(clinic);
         });
 
-        if (!fitlock) {
+        if (!fitlock && this.map.isExist()) {
             this.map.fitByBounds(this.lfgClinics.getBounds());
         }
     }
