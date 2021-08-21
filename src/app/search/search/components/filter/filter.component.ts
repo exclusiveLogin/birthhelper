@@ -47,9 +47,8 @@ export class FilterComponent implements OnInit {
                     break;
                 case 'select':
                     const selectedId = section.control.value;
-                    if (!isNaN(Number(selectedId))) {
-                        selected.push(({[selectedId]: true}));
-                    }
+                    if (selectedId === null || selectedId === 'null') break;
+                    selected.push(({[selectedId]: true}));
                     break;
             }
             return {sectionKey: section.key, selected: selected.filter(f => !!f)};
@@ -81,7 +80,7 @@ export class FilterComponent implements OnInit {
             this.filterConfig.forEach(section => {
                 switch (section.type) {
                     case 'select':
-                        section.control = new FormControl();
+                        section.control = new FormControl('null');
                         break;
                     case 'flag':
                         section.filters.forEach(filter => filter.control = new FormControl());
