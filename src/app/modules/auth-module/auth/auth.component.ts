@@ -18,6 +18,8 @@ export class AuthComponent implements OnInit {
     ) {
     }
 
+    mode: 'auth' | 'registration' = 'auth';
+
     login: string;
     _password: string;
     _pwd_md5: string;
@@ -27,8 +29,18 @@ export class AuthComponent implements OnInit {
         this._pwd_md5 = md5(value);
     }
 
+    password2: string;
+
     get password(): string {
         return this._password;
+    }
+
+    toggleToRegistrationMode(): void {
+        this.mode = 'registration';
+    }
+
+    toggleToAuthMode(): void {
+        this.mode = 'auth';
     }
 
     signin(): void {
@@ -36,6 +48,13 @@ export class AuthComponent implements OnInit {
         const url = this.route.snapshot.queryParamMap.get('url');
         // this.router.navigate([], {queryParams: {url: null}}).then();
         this.authService.login(this.login, this._pwd_md5, url);
+    }
+
+    signup(): void {
+        console.log('sign up', this);
+        // const url = this.route.snapshot.queryParamMap.get('url');
+        // this.router.navigate([], {queryParams: {url: null}}).then();
+        // this.authService.login(this.login, this._pwd_md5, url);
     }
 
     ngOnInit() {
