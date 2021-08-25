@@ -9,7 +9,7 @@ import {NotifierService} from '../notifier/notifier.service';
 @Injectable({
     providedIn: 'root'
 })
-export class Interceptor403Service {
+export class InterceptorService {
 
     public reseterToken$: Subject<null>;
     public token$: Observable<string>;
@@ -24,16 +24,16 @@ export class Interceptor403Service {
         this.token$ = token$;
     }
 
-    interceptor403(): MonoTypeOperatorFunction<any> {
+    interceptor(): MonoTypeOperatorFunction<any> {
         return pipe(
             catchError((err) => {
                 console.log('HTTP INTERCEPTOR ERROR', err);
-                this.notifier.setMessageTime(err?.error?.error || err.statusText, 'authStr');
+                const error: string = err?.error?.error || err.statusText || 'Unknown error';
+                this.notifier.setMessageTime(error, 'authStr');
                 if (err.status === 403) {
-                    // this.reseterToken$.next(null);
                     setTimeout(() => this.reseterToken$.next(null), 5000);
                 }
-                return of(null);
+                return of({error});
             }),
             map(r => r?.body || null),
         );

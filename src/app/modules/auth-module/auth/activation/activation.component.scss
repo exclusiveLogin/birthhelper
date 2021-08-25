@@ -1,0 +1,59 @@
+:host {
+    display: contents;
+}
+.activation_container {
+    display: flex;
+    height: 300px;
+    background: #eeeeee;
+    flex: 1;
+    justify-content: center;
+    align-self: center;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    box-shadow: 0 0 50px 0 rgb(0 0 0 / 20%);
+    text-align: center;
+}
+
+.activation_ttl {
+    flex: 1;
+    font-size: 2rem;
+    margin: 20px;
+}
+
+.activation_body {
+    width: 100%;
+    flex-basis: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    flex-wrap: wrap;
+}
+
+.activation_body_ttl_txt {
+    flex: 1 0 auto;
+    width: 100%;
+    font-size: 1.4rem;
+}
+.activation_btn {
+    flex: 1 0 auto;
+    width: 100%;
+    padding: 20px;
+    font-size: 1.5rem;
+    margin: 20px;
+    background-color: var(--blue);
+    color: #eeeeFF;
+}
+
+.activation_err {
+    width: 100%;
+    font-size: 1.7rem;
+    color: red;
+}
+
+.activation_scs {
+    width: 100%;
+    font-size: 1.75rem;
+    color: blue;
+}
+
+

@@ -68,13 +68,16 @@
                                 Зарегистрироваться
                             </button>
                         </div>
+
+                        <div class="msg_error" *ngIf="isPassNotEquals()">Пароли не совпадают</div>
+
                     </form>
 
                     <div class="msg_error" *ngIf="notifier.getMessageStream('authStr') | async as msg">{{msg}} </div>
 
                 </ng-container>
 
-                <div class="w-full text-center">
+                <div class="w-full text-center toggle_btn">
                     <a class="txt3"  *ngIf="mode === 'auth'" (click)="toggleToRegistrationMode()">
                         Зарегистрироваться
                     </a>

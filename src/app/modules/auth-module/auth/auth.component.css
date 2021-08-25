@@ -4,6 +4,13 @@
     font-size: 110%;
 }
 
+.toggle_btn {
+    display: flex;
+    justify-content: center;
+    /* justify-items: self-end; */
+    align-self: flex-end;
+}
+
 /*//////////////////////////////////////////////////////////////////
 [ RESTYLE TAG ]*/
 .login100-form a {
@@ -15,6 +22,7 @@
     margin-bottom: 20px;
     object-fit: none;
     height: unset;
+    align-self: flex-start;
 }
 
 * {

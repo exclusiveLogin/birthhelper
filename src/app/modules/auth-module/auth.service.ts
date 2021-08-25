@@ -3,10 +3,10 @@ import {Router} from '@angular/router';
 import {Observable, Subject} from 'rxjs';
 import {of} from 'rxjs/internal/observable/of';
 import {filter, map, shareReplay, switchMap, tap, throttleTime} from 'rxjs/operators';
-import {RestService, UserRoleSrc} from '../../services/rest.service';
+import {RegistrationResponseSrc, RestService, UserRoleSrc} from '../../services/rest.service';
 import {User} from '../../models/user.interface';
 import {merge} from 'rxjs/internal/observable/merge';
-import {Interceptor403Service} from './interceptor403.service';
+import {InterceptorService} from './interceptor.service';
 import {asyncScheduler} from 'rxjs/internal/scheduler/async';
 
 interface ISecure {
@@ -30,7 +30,7 @@ export class AuthService {
     constructor(
         private router: Router,
         private rest: RestService,
-        private interceptor: Interceptor403Service,
+        private interceptor: InterceptorService,
     ) {
         this.interceptor.tokenInjector(this.token$);
         this.token$.subscribe();
@@ -127,6 +127,11 @@ export class AuthService {
         this.urlToRedirect = location.pathname;
         this.clearLSToken();
         this.reset$.next();
+    }
+
+    registration(login: string, password: string): Observable<RegistrationResponseSrc> {
+        console.log('registration ', login, password);
+        return this.rest.createNewUser(login, password);
     }
 
     createUserToken(login: string, password: string): Observable<string> {

@@ -9,7 +9,7 @@ import {SearchSection} from '../models/filter.interface';
 import {FilterResult} from '../search/search/components/filter/filter.component';
 import {SessionResponse, UserRole} from '../modules/auth-module/auth.service';
 import {User} from '../models/user.interface';
-import {Interceptor403Service} from '../modules/auth-module/interceptor403.service';
+import {InterceptorService} from '../modules/auth-module/interceptor.service';
 
 export interface ISettingsParams {
     mode: string;
@@ -67,13 +67,23 @@ export interface UserRoleSrc {
     datetime_update: string;
 }
 
+export interface RegistrationResponseSrc {
+    id: number;
+    signup: boolean;
+    login: string;
+    url: string;
+    activation: string;
+    error?: string;
+    password?: string;
+}
+
 @Injectable({providedIn: 'root'})
 export class RestService {
 
     constructor(
         private http: HttpClient,
         private api: ApiService,
-        private interceptor: Interceptor403Service,
+        private interceptor: InterceptorService,
     ) {
     }
 
@@ -86,6 +96,16 @@ export class RestService {
         };
 
         return this.getData(entSetting);
+    }
+
+    public activateUser(url: string): Observable<any> {
+        const config: ISettingsParams = {
+            mode: 'auth',
+            segment: 'activation',
+            resource: url,
+        };
+
+        return this.getData(config);
     }
 
     public getFilterConfig(key: EntityType): Observable<SearchSection[]> {
@@ -136,6 +156,17 @@ export class RestService {
 
     public createGuestToken(): Observable<string> {
         return this.createSession().pipe(map(data => data?.token));
+    }
+
+    public createNewUser(login?: string, password?: string): Observable<RegistrationResponseSrc> {
+        const config: ISettingsParams = {
+            mode: 'auth',
+            segment: null,
+        };
+
+        const data = {login, password};
+
+        return this.putData(config, data, true);
     }
 
     public createUserToken(login?: string, password?: string): Observable<string> {
@@ -210,7 +241,7 @@ export class RestService {
         const http = (token) => this.http.get(
             url, {params: data, headers: token ?  new HttpHeaders({token}) : null, observe: 'response'})
             .pipe(
-                this.interceptor.interceptor403(),
+                this.interceptor.interceptor(),
                 filter(d => !!d),
             );
         this.interceptor.token$.subscribe((r) => console.log('test', r));
@@ -233,7 +264,29 @@ export class RestService {
         const http = (token?: string) => this.http.post(url, data,
             {headers: token ? new HttpHeaders({token}) : null, observe: 'response'}
         ).pipe(
-            this.interceptor.interceptor403(),
+            this.interceptor.interceptor(),
+            filter(d => !!d),
+        );
+
+        const req = insecure ? http() : this.interceptor.token$.pipe(
+            tap((token) => console.log('postData token REST: ', token)),
+            switchMap(http));
+
+        return req as Observable<T>;
+    }
+
+    public putData<T>(path: ISettingsParams, data?: any, insecure?: boolean): Observable<T> {
+
+        if (path) {
+            this.pathGen(path);
+        }
+
+        const url = this.createUrl(path);
+
+        const http = (token?: string) => this.http.put(url, data,
+            {headers: token ? new HttpHeaders({token}) : null, observe: 'response'}
+        ).pipe(
+            this.interceptor.interceptor(),
             filter(d => !!d),
         );
 
@@ -255,7 +308,7 @@ export class RestService {
         const http = (token) => this.http.post(url, data.body,
             {headers: token ? new HttpHeaders({token}) : null, observe: 'response'}
         ).pipe(
-            this.interceptor.interceptor403(),
+            this.interceptor.interceptor(),
             filter(d => !!d),
         );
 
@@ -277,7 +330,7 @@ export class RestService {
         const http = (token) => this.http.request('delete', url,
             {body: data, headers: token ? new HttpHeaders({token}) : null, observe: 'response'}
         ).pipe(
-                this.interceptor.interceptor403(),
+                this.interceptor.interceptor(),
                 filter(d => !!d),
             );
 

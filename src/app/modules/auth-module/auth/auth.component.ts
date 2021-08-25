@@ -29,10 +29,14 @@ export class AuthComponent implements OnInit {
         this._pwd_md5 = md5(value);
     }
 
-    password2: string;
-
     get password(): string {
         return this._password;
+    }
+
+    password2: string;
+
+    isPassNotEquals(): boolean {
+        return (this._password && this.password2 && this._password !== this.password2);
     }
 
     toggleToRegistrationMode(): void {
@@ -52,9 +56,11 @@ export class AuthComponent implements OnInit {
 
     signup(): void {
         console.log('sign up', this);
-        // const url = this.route.snapshot.queryParamMap.get('url');
-        // this.router.navigate([], {queryParams: {url: null}}).then();
-        // this.authService.login(this.login, this._pwd_md5, url);
+        this.authService.registration(this.login, this._pwd_md5).subscribe(response => {
+            if (response.activation) {
+                this.router.navigate(['/activation'], { queryParams: { code: response.activation }}).then();
+            }
+        });
     }
 
     ngOnInit() {

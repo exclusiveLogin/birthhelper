@@ -6,9 +6,9 @@ import {IEntityItem, ISet} from './entity.model';
 import {ITableFilter} from './table/table/table.component';
 import {IContainer, IContainerData} from './container.model';
 import {LoaderService} from './loader.service';
-import {catchError, filter, switchMap, tap} from 'rxjs/operators';
+import {switchMap, tap} from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Interceptor403Service} from '../modules/auth-module/interceptor403.service';
+import {InterceptorService} from '../modules/auth-module/interceptor.service';
 
 export interface ISettingsParams {
     mode: string;
@@ -52,7 +52,7 @@ export class RestService {
         private http: HttpClient,
         private api: ApiService,
         private loader: LoaderService,
-        private interceptor: Interceptor403Service,
+        private interceptor: InterceptorService,
     ) {
         console.log('ADMIN REST SERVICE', this);
     }
@@ -249,7 +249,7 @@ export class RestService {
         const http = (token) => this.http.get(
             url, {params: data, headers: token ? new HttpHeaders({token}) : null, observe: 'response'})
             .pipe(
-                this.interceptor.interceptor403(),
+                this.interceptor.interceptor(),
             );
 
         const req = this.createTokenizeRequest(http);
@@ -274,7 +274,7 @@ export class RestService {
         const http = (token) => this.http.post(
             url, data, {headers: token ? new HttpHeaders({token}) : null, observe: 'response'})
             .pipe(
-                this.interceptor.interceptor403(),
+                this.interceptor.interceptor(),
             );
 
         const req = this.createTokenizeRequest(http);
@@ -295,7 +295,7 @@ export class RestService {
         const http = (token) => this.http.post(
             url, data.body, {headers: token ? new HttpHeaders({token}) : null, observe: 'response'})
             .pipe(
-                this.interceptor.interceptor403(),
+                this.interceptor.interceptor(),
             );
 
         const req = this.createTokenizeRequest(http);
@@ -316,7 +316,7 @@ export class RestService {
         const http = (token) => this.http.request('delete',
             url, {body: data, headers: token ? new HttpHeaders({token}) : null, observe: 'response'})
             .pipe(
-                this.interceptor.interceptor403(),
+                this.interceptor.interceptor(),
             );
 
         const req = this.createTokenizeRequest(http);

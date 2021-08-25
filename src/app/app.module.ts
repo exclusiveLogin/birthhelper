@@ -12,12 +12,14 @@ import {WrapperComponent} from './wrapper/wrapper.component';
 import {MenuComponent} from './menu/menu.component';
 import {NonAuthComponent} from './modules/auth-module/auth/non-auth/non-auth.component';
 import {AuthComponent} from './modules/auth-module/auth/auth.component';
+import { ActivationComponent } from './modules/auth-module/auth/activation/activation.component';
 
 const routes: Routes = [
     {path: '', component: MainComponent},
     {path: 'system', loadChildren: () => import('./wrapper/wrapper.module').then(m => m.WrapperModule)},
     {path: 'admin', loadChildren: () => import('./Admin/Admin.module').then(m => m.AdminModule)},
     {path: 'auth', pathMatch: 'full', component: AuthComponent},
+    {path: 'activation', pathMatch: 'full', component: ActivationComponent},
     {path: 'non', pathMatch: 'full', component: NonAuthComponent},
     {path: '**', component: NotFoundComponent},
 ];
@@ -28,7 +30,8 @@ const routes: Routes = [
         NotFoundComponent,
         MainComponent,
         WrapperComponent,
-        MenuComponent
+        MenuComponent,
+        ActivationComponent
     ],
     imports: [
         RouterModule.forRoot(routes, {relativeLinkResolution: 'legacy'}),
