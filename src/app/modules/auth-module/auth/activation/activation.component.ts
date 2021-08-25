@@ -2,11 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {RestService} from '../../../../services/rest.service';
 import {NotifierService} from '../../../notifier/notifier.service';
-import {of} from 'rxjs/internal/observable/of';
 import {ApiService} from '../../../../services/api.service';
 import {map, mergeAll, tap} from 'rxjs/operators';
-import {timer} from 'rxjs/internal/observable/timer';
-import {merge} from 'rxjs';
+import {merge, timer, of} from 'rxjs';
 
 @Component({
     selector: 'app-activation',

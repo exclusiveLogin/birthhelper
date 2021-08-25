@@ -67,6 +67,7 @@ export class AuthService {
         switchMap((token) => token ? of(token) : this.createGuestToken$()),
         tap((token) => console.log('createGuestToken$ fire: ', token)),
         tap(token => this.token = token),
+        tap(token => this.saveLSToken(token)),
         tap((token) => console.log('token: ', token)),
         shareReplay(1),
     );
