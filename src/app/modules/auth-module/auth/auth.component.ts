@@ -35,7 +35,7 @@ export class AuthComponent implements OnInit {
 
     password2: string;
 
-    isPassNotEquals(): boolean {
+    get isPassNotEquals(): boolean {
         return (this._password && this.password2 && this._password !== this.password2);
     }
 

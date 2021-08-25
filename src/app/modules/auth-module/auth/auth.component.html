@@ -63,13 +63,13 @@
                             <span class="focus-input100"></span>
                         </div>
 
-                        <div class="container-login100-form-btn" [ngClass]="{muted: regForm.invalid}">
+                        <div class="container-login100-form-btn" [ngClass]="{muted: regForm.invalid || isPassNotEquals}">
                             <button class="login100-form-btn" type="submit" >
                                 Зарегистрироваться
                             </button>
                         </div>
 
-                        <div class="msg_error" *ngIf="isPassNotEquals()">Пароли не совпадают</div>
+                        <div class="msg_error" *ngIf="isPassNotEquals">Пароли не совпадают</div>
 
                     </form>
 
