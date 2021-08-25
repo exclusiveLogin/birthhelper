@@ -33,9 +33,9 @@ export class InterceptorService {
                 if (err.status === 403) {
                     setTimeout(() => this.reseterToken$.next(null), 5000);
                 }
-                return of({error});
+                return of(err);
             }),
-            map(r => r?.body || null),
+            map(r => r?.body || r?.error || null),
         );
     }
 }

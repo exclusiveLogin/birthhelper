@@ -57,7 +57,8 @@ export class AuthComponent implements OnInit {
     signup(): void {
         console.log('sign up', this);
         this.authService.registration(this.login, this._pwd_md5).subscribe(response => {
-            if (response.activation) {
+            console.log('registration', response);
+            if (!response.activated && response.activation) {
                 this.router.navigate(['/activation'], { queryParams: { code: response.activation }}).then();
             }
         });

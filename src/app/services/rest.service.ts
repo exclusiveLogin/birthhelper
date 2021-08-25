@@ -70,6 +70,7 @@ export interface UserRoleSrc {
 export interface RegistrationResponseSrc {
     id: number;
     signup: boolean;
+    activated: boolean;
     login: string;
     url: string;
     activation: string;
