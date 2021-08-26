@@ -17,3 +17,13 @@
   height: 36px;
   width: auto;
 }
+@media screen and (max-width: 480px){
+    .logo {
+        flex: 1 0;
+        display: flex;
+    }
+
+    .logo__icon {
+        flex: 1;
+    }
+}

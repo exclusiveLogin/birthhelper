@@ -9,7 +9,7 @@
             <a href="tel:84951234567" class="contacts__phone">8 (495) 123 45 67</a>
             <button *ngIf="auth.onUserAccess$ | async" class="contacts__btn" (click)="auth.logout()">Выйти</button>
             <button *ngIf="auth.onGuestAccess$ | async" class="contacts__btn" [routerLink]="['/auth']" [queryParams]="{url: path}">Авторизоваться</button>
-            <button *ngIf="auth.onAdminAccess$ | async" class="admin__btn" [routerLink]="['/admin']" [queryParams]="{url: path}">Войти в админку</button>
+            <button *ngIf="auth.onAdminAccess$ | async" class="admin__btn" [routerLink]="['/admin']">Войти в админку</button>
         </div>
     </div>
 </header>

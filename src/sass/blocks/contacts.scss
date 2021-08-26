@@ -2,6 +2,30 @@
     text-align: right;
 }
 
+@media screen and (max-width: 480px){
+    .contacts {
+        text-align: right;
+        flex: 1 0 auto;
+        justify-content: center;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .contacts__txt {
+        font-size: 14px;
+        line-height: 1.57;
+        color: #2d333f;
+        margin: 0;
+        flex-basis: 100%;
+        text-align: center;
+    }
+    .contacts__phone {
+        flex-basis: 100%;
+        text-align: center;
+     }
+}
+
 .contacts__txt {
     font-size: 14px;
     line-height: 1.57;

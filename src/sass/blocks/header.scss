@@ -9,4 +9,11 @@
   align-items: center;
 }
 
+@media screen and (max-width: 480px){
+    .header__content {
+        align-items: center;
+        flex-wrap: wrap;
+    }
+}
+
 
