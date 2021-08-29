@@ -13,6 +13,7 @@ import {MenuComponent} from './menu/menu.component';
 import {NonAuthComponent} from './modules/auth-module/auth/non-auth/non-auth.component';
 import {AuthComponent} from './modules/auth-module/auth/auth.component';
 import { ActivationComponent } from './modules/auth-module/auth/activation/activation.component';
+import { BhDoingComponent } from './main/components/bh-doing/bh-doing.component';
 
 const routes: Routes = [
     {path: '', component: MainComponent},
@@ -31,7 +32,8 @@ const routes: Routes = [
         MainComponent,
         WrapperComponent,
         MenuComponent,
-        ActivationComponent
+        ActivationComponent,
+        BhDoingComponent
     ],
     imports: [
         RouterModule.forRoot(routes, {relativeLinkResolution: 'legacy'}),

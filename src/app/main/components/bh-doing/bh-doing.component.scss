@@ -1,0 +1,19 @@
+.tabs__item {
+    transition: 0.5s all ease-in;
+}
+
+.tabs__panel{
+    float: left;
+    margin-left: 20px;
+}
+
+.tab_container {
+    width: 100%;
+    overflow: hidden;
+}
+
+.tab_wrapper {
+    width: 10000px;
+    white-space: nowrap;
+    transition: 0.5s all ease-in;
+}

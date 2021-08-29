@@ -1,0 +1,39 @@
+<h2 class="title-h2">Что делает BirthHelper?</h2>
+
+<div class="main__tabs tabs">
+    <div class="tabs__bar">
+        <div id="tab1" class="tabs__item"  [ngClass]="{active: currentTab === 1}" (click)="setTab(1)">
+            <p class="tabs__txt">Помогает подобрать<br>
+                лучших специалистов</p>
+        </div>
+        <div id="tab2" class="tabs__item"  [ngClass]="{active: currentTab === 2}" (click)="setTab(2)">
+            <p class="tabs__txt">Ищет для Вас<br>
+                лучшие предложения</p>
+        </div>
+        <div id="tab3" class="tabs__item"  [ngClass]="{active: currentTab === 3}" (click)="setTab(3)">
+            <p class="tabs__txt">Заботиться о Вас<br>
+                и Вашем будущем</p>
+        </div>
+        <div class="tabs__line"></div>
+    </div>
+
+    <div class="tab_container">
+        <div class="tab_wrapper"
+             [ngStyle]="{transform: 'translateX(-' + (( width * (currentTab-1) ) + (20 * currentTab)) + 'px)' }"
+        >
+            <div class="tabs__panel" id="tab1-panel" [ngStyle]="{width: width + 'px'}">
+                <img src="img/tab1-img.png" srcset="img/tab1-img@2x.png 2x, img/tab1-img@3x.png 3x"
+                     class="tabs__img-first" alt="">
+            </div>
+            <div class="tabs__panel" id="tab2-panel" [ngStyle]="{width: width + 'px'}">
+                <img src="img/tab2-img.png" srcset="img/tab2-img@2x.png 2x, img/tab2-img@3x.png 3x"
+                     class="tabs__img-second" alt="">
+            </div>
+            <div class="tabs__panel" id="tab3-panel" [ngStyle]="{width: width + 'px'}">
+                <img src="img/tab3-img.jpg" srcset="img/tab3-img@2x.jpg 2x, img/tab3-img@3x.jpg 3x"
+                     class="tabs__img tabs__img-third" alt="">
+            </div>
+        </div>
+    </div>
+
+</div>
