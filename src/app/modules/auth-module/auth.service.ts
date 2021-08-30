@@ -125,9 +125,11 @@ export class AuthService {
     }
 
     logout(): void {
-        this.urlToRedirect = location.pathname;
-        this.clearLSToken();
-        this.reset$.next();
+        this.rest.logout().subscribe(() => this.reset$.next());
+    }
+
+    logoutEverywhere(): void {
+        this.rest.logout(true).subscribe(() => this.reset$.next());
     }
 
     registration(login: string, password: string): Observable<RegistrationResponseSrc> {

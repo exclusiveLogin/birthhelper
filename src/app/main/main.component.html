@@ -7,9 +7,29 @@
         <div class="header__contacts contacts">
             <p class="contacts__txt">Нужна помощь? Звоните!</p>
             <a href="tel:84951234567" class="contacts__phone">8 (495) 123 45 67</a>
-            <button *ngIf="auth.onUserAccess$ | async" class="contacts__btn" (click)="auth.logout()">Выйти</button>
-            <button *ngIf="auth.onGuestAccess$ | async" class="contacts__btn" [routerLink]="['/auth']" [queryParams]="{url: path}">Авторизоваться</button>
-            <button *ngIf="auth.onAdminAccess$ | async" class="admin__btn" [routerLink]="['/admin']">Войти в админку</button>
+
+            <div class="btn_container"></div>
+
+            <div class="btn-group" *ngIf="auth.onAdminAccess$ | async" >
+                <button class="btn admin__btn" [routerLink]="['/admin']">Войти в админку</button>
+            </div>
+
+            <div class="btn-group contacts__btn" *ngIf="auth.onUserAccess$ | async">
+                <button type="button" class="btn" (click)="auth.logout()">Выйти</button>
+                <button
+                    (click)="dd_btn['active'] = !dd_btn['active']"
+                    type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" #dd_btn>
+                    <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <div class="dropdown-menu" [ngClass]="{show: dd_btn['active']}">
+                    <a class="dropdown-item" (click)="auth.logoutEverywhere()">Выйти со всех устройств</a>
+                </div>
+            </div>
+
+            <div class="btn-group" *ngIf="auth.onGuestAccess$ | async" >
+                <button class="btn contacts__btn" [routerLink]="['/auth']" [queryParams]="{url: path}">Авторизоваться</button>
+            </div>
+
         </div>
     </div>
 </header>

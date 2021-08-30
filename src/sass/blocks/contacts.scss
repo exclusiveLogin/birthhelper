@@ -44,40 +44,20 @@
 }
 
 .contacts__btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    float: right;
-    width: 143px;
-    height: 31px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
     background-color: #edf2fe;
-    font-size: 14px;
     color: $blue;
-    margin: 12px 0 0 0;
 
+    margin-left: 10px;
     &:hover {
         background-color: transparentize($blue, 0.7);
     }
 }
 
 .admin__btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    float: right;
-    width: 143px;
-    height: 31px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
     background-color: #feeded;
-    font-size: 14px;
     color: $red;
-    margin: 12px 12px 0 0;
 
+    margin-left: 10px;
     &:hover {
         background-color: transparentize($red, 0.7);
     }

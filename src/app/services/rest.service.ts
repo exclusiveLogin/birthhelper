@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {ApiService} from './api.service';
-import {filter, map, switchMap, tap} from 'rxjs/operators';
+import {filter, map, switchMap, take, tap} from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {IDictItem} from 'app/Admin/dict.service';
 import {EntityType} from './data-provider.service';
@@ -209,6 +209,19 @@ export class RestService {
         return this.getData(ep_config);
     }
 
+    public logout(everywhere?: boolean): Observable<User> {
+        const ep_config: ISettingsParams = {
+            mode: 'auth',
+            segment: null,
+        };
+
+        if (everywhere) {
+            ep_config.segment = 'all';
+        }
+
+        return this.remData(ep_config);
+    }
+
     public getDict(name: string, page?: number): Observable<IDictItem[]> {
         const dictSetting: ISettingsParams = {
             mode: 'api',
@@ -240,7 +253,7 @@ export class RestService {
         const url = this.createUrl(path);
 
         const http = (token) => this.http.get(
-            url, {params: data, headers: token ?  new HttpHeaders({token}) : null, observe: 'response'})
+            url, {params: data, headers: token ? new HttpHeaders({token}) : null, observe: 'response'})
             .pipe(
                 this.interceptor.interceptor(),
                 filter(d => !!d),
@@ -249,7 +262,9 @@ export class RestService {
 
         const req = this.interceptor.token$.pipe(
             tap((token) => console.log('getData token REST: ', token)),
-            switchMap(http));
+            switchMap(http),
+            take(1),
+        );
 
         return req as Observable<T>;
     }
@@ -271,7 +286,7 @@ export class RestService {
 
         const req = insecure ? http() : this.interceptor.token$.pipe(
             tap((token) => console.log('postData token REST: ', token)),
-            switchMap(http));
+            switchMap(http), take(1),);
 
         return req as Observable<T>;
     }
@@ -293,7 +308,9 @@ export class RestService {
 
         const req = insecure ? http() : this.interceptor.token$.pipe(
             tap((token) => console.log('postData token REST: ', token)),
-            switchMap(http));
+            switchMap(http),
+            take(1),
+        );
 
         return req as Observable<T>;
     }
@@ -315,7 +332,9 @@ export class RestService {
 
         const req = this.interceptor.token$.pipe(
             tap((token) => console.log('postData token REST: ', token)),
-            switchMap(http));
+            switchMap(http),
+            take(1),
+        );
 
         return req as Observable<T>;
     }
@@ -331,13 +350,15 @@ export class RestService {
         const http = (token) => this.http.request('delete', url,
             {body: data, headers: token ? new HttpHeaders({token}) : null, observe: 'response'}
         ).pipe(
-                this.interceptor.interceptor(),
-                filter(d => !!d),
-            );
+            this.interceptor.interceptor(),
+            filter(d => !!d),
+        );
 
         const req = this.interceptor.token$.pipe(
             tap((token) => console.log('remData token REST: ', token)),
-            switchMap(http));
+            switchMap(http),
+            take(1),
+        );
 
         return req as Observable<T>;
     }
