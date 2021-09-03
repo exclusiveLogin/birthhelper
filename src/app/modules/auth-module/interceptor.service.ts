@@ -5,6 +5,7 @@ import {MonoTypeOperatorFunction} from 'rxjs/interfaces';
 import {pipe} from 'rxjs/internal-compatibility';
 import {of} from 'rxjs/internal/observable/of';
 import {NotifierService} from '../notifier/notifier.service';
+import {throwError} from 'rxjs/internal/observable/throwError';
 
 @Injectable({
     providedIn: 'root'
@@ -31,11 +32,14 @@ export class InterceptorService {
                 const error: string = err?.error?.error || err.statusText || 'Unknown error';
                 this.notifier.setMessageTime(error, 'authStr');
                 if (err.status === 403) {
-                    setTimeout(() => this.reseterToken$.next(null), 5000);
+                    setTimeout(() => this.reseterToken$.next(null), 100);
+                }
+                if (err.status === 500) {
+                    return throwError(err.error);
                 }
                 return of(err);
             }),
-            map(r => r?.body || r?.error || null),
+            map(r => r?.body ?? r?.error ?? null),
         );
     }
 }
