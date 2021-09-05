@@ -14,6 +14,7 @@ import {NonAuthComponent} from './modules/auth-module/auth/non-auth/non-auth.com
 import {AuthComponent} from './modules/auth-module/auth/auth.component';
 import { ActivationComponent } from './modules/auth-module/auth/activation/activation.component';
 import { BhDoingComponent } from './main/components/bh-doing/bh-doing.component';
+import {ConfiguratorComponent} from './modules/configurator/configurator.component';
 
 const routes: Routes = [
     {path: '', component: MainComponent},
@@ -21,6 +22,7 @@ const routes: Routes = [
     {path: 'admin', loadChildren: () => import('./Admin/Admin.module').then(m => m.AdminModule)},
     {path: 'auth', pathMatch: 'full', component: AuthComponent},
     {path: 'activation', pathMatch: 'full', component: ActivationComponent},
+    {path: 'static/configurator', pathMatch: 'full', component: ConfiguratorComponent},
     {path: 'non', pathMatch: 'full', component: NonAuthComponent},
     {path: '**', component: NotFoundComponent},
 ];
