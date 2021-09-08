@@ -5,8 +5,9 @@ import {Clinic, IClinicMini} from 'app/models/clinic.interface';
 import {IRestParams, RestService} from 'app/services/rest.service';
 import {filter, map} from 'rxjs/operators';
 import {ISet} from '../Admin/entity.model';
-import {SearchSection} from '../models/filter.interface';
+import {SearchFilterConfig, SearchSection} from '../models/filter.interface';
 import {FilterResult} from '../search/search/components/filter/filter.component';
+import {of} from 'rxjs/internal/observable/of';
 
 export type EntityType = 'clinic';
 export type FetchersSection<T> = {
@@ -34,6 +35,19 @@ export class DataProviderService {
     filterFetchers: FetchersSection<SearchSection[]> = {
         clinic: this.clinicFilterFetcherFactory.bind(this),
     };
+
+    filterConfigFetchers: FetchersSection<SearchFilterConfig> = {
+        clinic: this.clinicFilterConfigFetcherFactory.bind(this),
+    };
+
+    clinicFilterConfigFetcherFactory(hash: string): Observable<SearchFilterConfig> {
+        if (!hash) {
+            return of(null);
+        }
+        return this.rest.getFilterConfigByHash('clinic', hash).pipe(
+            filter(data => !!data),
+        );
+    }
 
     clinicFilterFetcherFactory(): Observable<SearchSection[]> {
         return this.rest.getFilterConfig('clinic').pipe(
@@ -73,6 +87,10 @@ export class DataProviderService {
 
     getFilterProvider(type: EntityType): () => Observable<SearchSection[]> {
         return this.filterFetchers[type];
+    }
+
+    getFilterConfigProvider(type: EntityType): (hash: string) => Observable<SearchFilterConfig> {
+        return this.filterConfigFetchers[type];
     }
 
     getFilterHash(type: EntityType, filters: FilterResult): Observable<string> {

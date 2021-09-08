@@ -1,15 +1,15 @@
 import * as L from 'leaflet';
 import {icon, marker} from 'leaflet';
 import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {merge, Subject} from 'rxjs';
-import {mapTo, shareReplay, switchMap, tap} from 'rxjs/operators';
+import {merge, Subject, combineLatest} from 'rxjs';
+import {shareReplay, switchMap, tap, map, distinctUntilChanged} from 'rxjs/operators';
 import {DataProviderService, EntityType} from 'app/services/data-provider.service';
 import {LLMap} from 'app/modules/map.lib';
 import {LatLng} from 'leaflet';
-import {Clinic, IClinicMini} from 'app/models/clinic.interface';
+import {IClinicMini} from 'app/models/clinic.interface';
 import {FilterResult} from './components/filter/filter.component';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {of} from 'rxjs/internal/observable/of';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
     selector: 'app-search',
@@ -19,36 +19,79 @@ import {of} from 'rxjs/internal/observable/of';
 export class SearchComponent implements OnInit, AfterViewInit {
 
     sectionKey: EntityType = 'clinic';
-    hash: string;
+    hash: string = null;
 
-    onInit$ = new Subject<null>();
     onPageChange$ = new Subject<null>();
     onFilters$ = new Subject<FilterResult>();
 
-    onHash$ = this.onFilters$.pipe(
+    onHashByFilters$ = this.onFilters$.pipe(
         switchMap(filters => filters ? this.provider.getFilterHash(this.sectionKey, filters) : of(null)),
+        tap((h) => {
+            console.log('onHashByFilters$', h);
+            this.router.navigate([], {queryParams: {hash: h}}).then();
+        })
+    );
+
+    onHashByRoute$ = this.ar.queryParamMap.pipe(
+        map(qp => qp.get('hash')));
+
+    onHash$ = merge(this.onHashByFilters$, this.onHashByRoute$).pipe(
+        distinctUntilChanged(),
+        tap(() => console.log('onHash$')),
         tap(hash => this.hash = hash),
         shareReplay(1),
     );
 
-    mainSet$ = merge(this.onInit$, this.onHash$).pipe(
+    mainSet$ = this.onHash$.pipe(
         switchMap(() => this.setProvider$(this.hash)),
     );
 
-    mainList$ = merge(this.onInit$, this.onHash$, this.onPageChange$).pipe(
+    mainList$ = merge(this.onHash$, this.onPageChange$).pipe(
         switchMap(() => this.dataProvider$(this.currentPage, this.hash)),
-        shareReplay(1),
-    );
-
-    filterList$ = this.onInit$.pipe(
-        tap((list) => console.log('filterList$', list)),
-        switchMap(() => this.filterProvider$()),
         shareReplay(1),
     );
 
     dataProvider$ = this.provider.getListProvider(this.sectionKey);
     setProvider$ = this.provider.getSetProvider(this.sectionKey);
     filterProvider$ = this.provider.getFilterProvider(this.sectionKey);
+    filterConfigProvider$ = this.provider.getFilterConfigProvider(this.sectionKey);
+    filterList$ = this.filterProvider$().pipe(
+        switchMap((filters) =>
+            combineLatest([
+                of(filters),
+                this.filterConfigProvider$(this.hash),
+            ]),
+        ),
+        map(([filters, config]) => {
+            filters.forEach(f => {
+                const targetConf = config[f.key];
+                if (!targetConf) {
+                    return;
+                }
+
+                debugger;
+                switch (f.type) {
+                    case 'flag':
+                        const checkedIds = Object.keys(targetConf).map(id => +id);
+                        checkedIds.forEach(id => {
+                            const t = f.filters.find(ff => ff.id === id);
+                            if (t) {
+                                t.preInitValue = true;
+                            }
+                        });
+                        break;
+                    case 'select':
+                        const selectedId = Object.keys(targetConf).map(id => +id)[0];
+                        if (selectedId) {
+                            f.preInitValue = selectedId;
+                        }
+                        break;
+                }
+            });
+
+            return filters;
+        }),
+    );
 
     mode: 'map' | 'list' = 'list';
 
@@ -61,6 +104,8 @@ export class SearchComponent implements OnInit, AfterViewInit {
     constructor(
         private provider: DataProviderService,
         private cdr: ChangeDetectorRef,
+        private ar: ActivatedRoute,
+        private router: Router,
     ) {
     }
 
@@ -68,7 +113,6 @@ export class SearchComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        this.onInit$.next(null);
     }
 
     pageChange(page = 1): void {

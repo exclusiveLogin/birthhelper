@@ -5,7 +5,7 @@ import {filter, map, switchMap, take, tap} from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {IDictItem} from 'app/Admin/dict.service';
 import {EntityType} from './data-provider.service';
-import {SearchSection} from '../models/filter.interface';
+import {SearchFilterConfig, SearchSection} from '../models/filter.interface';
 import {FilterResult} from '../search/search/components/filter/filter.component';
 import {SessionResponse, UserRole} from '../modules/auth-module/auth.service';
 import {User} from '../models/user.interface';
@@ -107,6 +107,18 @@ export class RestService {
         };
 
         return this.getData(config);
+    }
+
+    public getFilterConfigByHash(key: EntityType, hash: string): Observable<SearchFilterConfig> {
+        console.log('getFilterConfig');
+        const entSetting: ISettingsParams = {
+            mode: 'search',
+            segment: key,
+            resource: 'filters',
+            script: hash,
+        };
+
+        return this.getData<SearchFilterConfig>(entSetting);
     }
 
     public getFilterConfig(key: EntityType): Observable<SearchSection[]> {

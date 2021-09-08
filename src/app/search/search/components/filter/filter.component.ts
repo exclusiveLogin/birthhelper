@@ -80,10 +80,10 @@ export class FilterComponent implements OnInit {
             this.filterConfig.forEach(section => {
                 switch (section.type) {
                     case 'select':
-                        section.control = new FormControl('null');
+                        section.control = new FormControl(section.preInitValue ?? 'null');
                         break;
                     case 'flag':
-                        section.filters.forEach(filter => filter.control = new FormControl());
+                        section.filters.forEach(filter => filter.control = new FormControl(filter.preInitValue ?? false));
                         break;
                 }
             });
