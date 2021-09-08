@@ -69,7 +69,6 @@ export class SearchComponent implements OnInit, AfterViewInit {
                     return;
                 }
 
-                debugger;
                 switch (f.type) {
                     case 'flag':
                         const checkedIds = Object.keys(targetConf).map(id => +id);
