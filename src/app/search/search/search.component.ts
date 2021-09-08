@@ -63,6 +63,9 @@ export class SearchComponent implements OnInit, AfterViewInit {
             ]),
         ),
         map(([filters, config]) => {
+            if (!config) {
+                return filters;
+            }
             filters.forEach(f => {
                 const targetConf = config[f.key];
                 if (!targetConf) {
