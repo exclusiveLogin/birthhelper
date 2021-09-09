@@ -2,7 +2,17 @@ import * as L from 'leaflet';
 import {icon, marker} from 'leaflet';
 import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {merge, Subject, combineLatest} from 'rxjs';
-import {shareReplay, switchMap, tap, map, distinctUntilChanged} from 'rxjs/operators';
+import {
+    shareReplay,
+    switchMap,
+    tap,
+    map,
+    distinctUntilChanged,
+    catchError,
+    throttleTime,
+    retryWhen,
+    delayWhen,
+} from 'rxjs/operators';
 import {DataProviderService, EntityType} from 'app/services/data-provider.service';
 import {LLMap} from 'app/modules/map.lib';
 import {LatLng} from 'leaflet';
@@ -10,6 +20,8 @@ import {IClinicMini} from 'app/models/clinic.interface';
 import {FilterResult} from './components/filter/filter.component';
 import {of} from 'rxjs/internal/observable/of';
 import {ActivatedRoute, Router} from '@angular/router';
+import {asyncScheduler} from 'rxjs/internal/scheduler/async';
+import {timer} from 'rxjs/internal/observable/timer';
 
 @Component({
     selector: 'app-search',
@@ -33,21 +45,33 @@ export class SearchComponent implements OnInit, AfterViewInit {
     );
 
     onHashByRoute$ = this.ar.queryParamMap.pipe(
+        distinctUntilChanged(),
         map(qp => qp.get('hash')));
 
+    onHashError$ = new Subject<null>();
     onHash$ = merge(this.onHashByFilters$, this.onHashByRoute$).pipe(
-        distinctUntilChanged(),
-        tap(() => console.log('onHash$')),
+        tap((hash) => console.log('onHash$: ', hash)),
         tap(hash => this.hash = hash),
         shareReplay(1),
     );
 
     mainSet$ = this.onHash$.pipe(
         switchMap(() => this.setProvider$(this.hash)),
+        tap((result) => console.log('mainSet$', result)),
+        catchError((err) => {
+            console.error('mainSet$', err);
+            this.onHashError$.next(null);
+            return of(null);
+        }),
+        shareReplay(1),
     );
 
     mainList$ = merge(this.onHash$, this.onPageChange$).pipe(
         switchMap(() => this.dataProvider$(this.currentPage, this.hash)),
+        retryWhen(errors => errors.pipe(
+            tap(() => this.onHashError$.next(null)),
+            delayWhen(() => timer(1000)),
+        )),
         shareReplay(1),
     );
 
@@ -62,6 +86,10 @@ export class SearchComponent implements OnInit, AfterViewInit {
                 this.filterConfigProvider$(this.hash),
             ]),
         ),
+        retryWhen(errors => errors.pipe(
+            tap(() => this.onHashError$.next(null)),
+            delayWhen(() => timer(1000)),
+        )),
         map(([filters, config]) => {
             if (!config) {
                 return filters;
@@ -112,6 +140,10 @@ export class SearchComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit(): void {
+        this.onHashError$.pipe(
+            throttleTime(500, asyncScheduler, {leading: true, trailing: false}),
+            tap(() => this.router.navigate([], {queryParams: {hash: null}}).then())
+        ).subscribe();
     }
 
     ngAfterViewInit(): void {
