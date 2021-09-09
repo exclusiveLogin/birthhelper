@@ -1,0 +1,165 @@
+.clinic {
+    position: relative;
+}
+
+.clinic__close {
+    position: absolute;
+    top: -30px;
+    right: 0;
+    z-index: 10;
+}
+
+.clinic-close {
+    border: none;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    background: transparent;
+}
+
+.clinic-close__img {
+    width: 100%;
+    height: 100%;
+}
+
+.clinic-header {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 66px;
+    background: url("../../../img/icons/doctor.svg") no-repeat 0 6px;
+}
+
+.clinic-ttl {
+    display: flex;
+    align-items: center;
+}
+
+.clinic-header__ttl {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.2;
+    color: #2d333f;
+}
+
+.clinic-header__address {
+    margin-top: 25px;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.17;
+    color: #2d333f;
+    opacity: 0.5;
+}
+
+.clinic-header__license {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.17;
+    color: #2d333f;
+}
+
+.clinic-header-actions {
+    flex-shrink: 0;
+    margin-left: 164px;
+    text-align: right;
+}
+
+.clinic-header-actions__review {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.19;
+    color: #2d333f;
+}
+
+.clinic-header-actions__review-icon {
+    margin-right: 15px;
+}
+
+.clinic-header-actions-link {
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.14;
+    color: #487ff1;
+    text-decoration: underline;
+}
+
+.clinic-header-actions-btn {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 44px;
+    margin-top: 25px;
+    padding: 0 30px;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    background: #487ff1;
+
+    &:hover {
+        background: #6896f5;
+    }
+}
+
+.clinic__tabs {
+    display: flex;
+    margin-top: 27px;
+}
+
+.clinic-cart-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    width: 100%;
+    max-width: 260px;
+    margin: 0 0 0 auto;
+    padding: 0 0 0 52px;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.19;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    border: none;
+    border-radius: 5px;
+    background: #ef424c url("../../../img/icons/shopping-cart-24.svg") no-repeat 16px center;
+    box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.03);
+
+    &:hover {
+        background: #ef6069 url("../../../img/icons/shopping-cart-24.svg") no-repeat 16px center;
+    }
+
+    &:before {
+        position: absolute;
+        content: '';
+        left: 52px;
+        top: 50%;
+        display: block;
+        width: 1px;
+        height: 18px;
+        margin-top: -9px;
+        background: #fff;
+    }
+}
+
+.clinic-cart-btn__icon {
+    position: relative;
+    flex-shrink: 1;
+    margin: 0 16px;
+}
+
+.clinic-cart-btn__txt {
+    position: relative;
+    padding: 0 20px;
+}
+
+.clinic__cards {
+    margin-top: 45px;
+}
