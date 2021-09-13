@@ -3,6 +3,7 @@ RUN curl --silent --location https://deb.nodesource.com/setup_12.x | bash -
 RUN apt-get install -y \
   nodejs
 RUN echo "Node: " && node -v
+RUN npm i -g npm
 RUN echo "NPM: " && npm -v
 COPY . /usr/share/nginx/html
 WORKDIR /usr/share/nginx/html
