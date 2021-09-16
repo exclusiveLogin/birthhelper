@@ -1,6 +1,7 @@
 import {AddressSrc, MapObject, MetaPhoto} from 'app/models/map-object.interface';
 import {MetaInterface} from 'app/models/meta.interface';
 import {Entity} from 'app/models/entity.interface';
+import {Summarized} from './summary.interface';
 
 export interface IClinicMini extends MapObject, Entity {
     id: number;
@@ -29,7 +30,7 @@ export interface ClinicFeatures {
     free_meets: boolean;
 }
 
-export interface IClinicSrc extends MetaInterface {
+export interface IClinicSrc extends MetaInterface, Summarized {
     id: string;
     active: string;
     address_id: string;
@@ -75,8 +76,8 @@ export class Clinic {
             address: addr?.address_str || 'Адрес не найден',
             description: src.description,
             title: src.title,
-            price_from: null,
-            price_until: null,
+            price_from: src?.summary?.min_price,
+            price_until: src?.summary?.max_price,
             photo_url: ph?.filename,
             stat_count: 0,
             stat_value: 0,
