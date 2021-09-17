@@ -1,15 +1,27 @@
 import * as L from 'leaflet';
 import {icon, marker} from 'leaflet';
 import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {merge, Subject} from 'rxjs';
-import {mapTo, shareReplay, switchMap, tap} from 'rxjs/operators';
+import {merge, Subject, combineLatest} from 'rxjs';
+import {
+    shareReplay,
+    switchMap,
+    tap,
+    map,
+    distinctUntilChanged,
+    catchError,
+    throttleTime,
+    retryWhen,
+    delayWhen,
+} from 'rxjs/operators';
 import {DataProviderService, EntityType} from 'app/services/data-provider.service';
 import {LLMap} from 'app/modules/map.lib';
 import {LatLng} from 'leaflet';
-import {Clinic, IClinicMini} from 'app/models/clinic.interface';
+import {IClinicMini} from 'app/models/clinic.interface';
 import {FilterResult} from './components/filter/filter.component';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {of} from 'rxjs/internal/observable/of';
+import {ActivatedRoute, Router} from '@angular/router';
+import {asyncScheduler} from 'rxjs/internal/scheduler/async';
+import {timer} from 'rxjs/internal/observable/timer';
 
 @Component({
     selector: 'app-search',
@@ -19,36 +31,97 @@ import {of} from 'rxjs/internal/observable/of';
 export class SearchComponent implements OnInit, AfterViewInit {
 
     sectionKey: EntityType = 'clinic';
-    hash: string;
+    hash: string = null;
 
-    onInit$ = new Subject<null>();
     onPageChange$ = new Subject<null>();
     onFilters$ = new Subject<FilterResult>();
 
-    onHash$ = this.onFilters$.pipe(
+    onHashByFilters$ = this.onFilters$.pipe(
         switchMap(filters => filters ? this.provider.getFilterHash(this.sectionKey, filters) : of(null)),
+        tap((h) => {
+            console.log('onHashByFilters$', h);
+            this.router.navigate([], {queryParams: {hash: h}}).then();
+        })
+    );
+
+    onHashByRoute$ = this.ar.queryParamMap.pipe(
+        distinctUntilChanged(),
+        map(qp => qp.get('hash')));
+
+    onHashError$ = new Subject<null>();
+    onHash$ = merge(this.onHashByFilters$, this.onHashByRoute$).pipe(
+        tap((hash) => console.log('onHash$: ', hash)),
         tap(hash => this.hash = hash),
         shareReplay(1),
     );
 
-    mainSet$ = merge(this.onInit$, this.onHash$).pipe(
+    mainSet$ = this.onHash$.pipe(
         switchMap(() => this.setProvider$(this.hash)),
-    );
-
-    mainList$ = merge(this.onInit$, this.onHash$, this.onPageChange$).pipe(
-        switchMap(() => this.dataProvider$(this.currentPage, this.hash)),
+        tap((result) => console.log('mainSet$', result)),
+        catchError((err) => {
+            console.error('mainSet$', err);
+            this.onHashError$.next(null);
+            return of(null);
+        }),
         shareReplay(1),
     );
 
-    filterList$ = this.onInit$.pipe(
-        tap((list) => console.log('filterList$', list)),
-        switchMap(() => this.filterProvider$()),
+    mainList$ = merge(this.onHash$, this.onPageChange$).pipe(
+        switchMap(() => this.dataProvider$(this.currentPage, this.hash)),
+        retryWhen(errors => errors.pipe(
+            tap(() => this.onHashError$.next(null)),
+            delayWhen(() => timer(1000)),
+        )),
         shareReplay(1),
     );
 
     dataProvider$ = this.provider.getListProvider(this.sectionKey);
     setProvider$ = this.provider.getSetProvider(this.sectionKey);
     filterProvider$ = this.provider.getFilterProvider(this.sectionKey);
+    filterConfigProvider$ = this.provider.getFilterConfigProvider(this.sectionKey);
+    filterList$ = this.filterProvider$().pipe(
+        switchMap((filters) =>
+            combineLatest([
+                of(filters),
+                this.filterConfigProvider$(this.hash),
+            ]),
+        ),
+        retryWhen(errors => errors.pipe(
+            tap(() => this.onHashError$.next(null)),
+            delayWhen(() => timer(1000)),
+        )),
+        map(([filters, config]) => {
+            if (!config) {
+                return filters;
+            }
+            filters.forEach(f => {
+                const targetConf = config[f.key];
+                if (!targetConf) {
+                    return;
+                }
+
+                switch (f.type) {
+                    case 'flag':
+                        const checkedIds = Object.keys(targetConf).map(id => +id);
+                        checkedIds.forEach(id => {
+                            const t = f.filters.find(ff => ff.id === id);
+                            if (t) {
+                                t.preInitValue = true;
+                            }
+                        });
+                        break;
+                    case 'select':
+                        const selectedId = Object.keys(targetConf).map(id => +id)[0];
+                        if (selectedId) {
+                            f.preInitValue = selectedId;
+                        }
+                        break;
+                }
+            });
+
+            return filters;
+        }),
+    );
 
     mode: 'map' | 'list' = 'list';
 
@@ -61,14 +134,19 @@ export class SearchComponent implements OnInit, AfterViewInit {
     constructor(
         private provider: DataProviderService,
         private cdr: ChangeDetectorRef,
+        private ar: ActivatedRoute,
+        private router: Router,
     ) {
     }
 
     ngOnInit(): void {
+        this.onHashError$.pipe(
+            throttleTime(500, asyncScheduler, {leading: true, trailing: false}),
+            tap(() => this.router.navigate([], {queryParams: {hash: null}}).then())
+        ).subscribe();
     }
 
     ngAfterViewInit(): void {
-        this.onInit$.next(null);
     }
 
     pageChange(page = 1): void {
