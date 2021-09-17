@@ -1,6 +1,24 @@
 .checkbox {
-  position: relative;
-  display: block;
+    position: relative;
+    display: block;
+
+    &--end {
+        .checkbox__input {
+            & + .checkbox__label {
+                padding: 0 37px 0 0;
+
+                &::before {
+                    right: 0;
+                    left: initial;
+                }
+            }
+
+            &:checked + .checkbox__label::after {
+                right: 4px;
+                left: initial;
+            }
+        }
+    }
 }
 
 .checkbox__input {
@@ -16,6 +34,7 @@
     margin: 0;
     position: relative;
     padding: 0 0 0 37px;
+    cursor: pointer;
 
     &::before {
       content: "";
