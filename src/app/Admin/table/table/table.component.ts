@@ -34,6 +34,7 @@ export interface ITableFilter {
     items$: Observable<IDictItem[]>;
     control: FormControl;
     value?: any;
+    override?: boolean;
     formLink?: {
         formKey?: string,
         formFieldKey?: string,
@@ -165,7 +166,8 @@ export class TableComponent implements OnInit {
         });
 
         this.filters$ = this.filters ?
-            of(this.filters).pipe(
+            combineLatest([of(this.filters), this.provider.getFilters(this.key, this.type)]).pipe(
+                map(filters => ([...filters[0], ...filters[1]])),
                 tap(filters => {
                     filters.forEach(f => {
                         f.control = new FormControl({value: f.value || '', disabled: f.readonly});
