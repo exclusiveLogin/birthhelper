@@ -389,20 +389,12 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
                         this.toastr.success('Удаление сущности ', 'Сущность ' + this.menu.titleVoc + ' успешно удалена');
                     }, (err) => this.currentError = err.message ? err.message : err);
                     break;
-                case 'entity':
+                default:
                     this.ent.remEnt(this.menu.name, this.currentService.id).subscribe(result => {
                         this.refresh();
                         this.currentService = null;
                         this.toastr.success('Удаление сущности ', 'Сущность ' + this.menu.titleVoc + ' успешно удалена');
                     }, (err) => this.currentError = err.message ? err.message : err);
-                    break;
-                case 'slot':
-                    this.ent.removeSlotEntity(this.menu.slotKey, this.currentService.id).subscribe(result => {
-                        this.refresh();
-                        this.currentService = null;
-                        this.toastr.success('Удаление сущности ', 'Сущность ' + this.menu.titleVoc + ' успешно удалена');
-                    }, (err) => this.currentError = err.message ? err.message : err);
-                    break;
             }
         }
     }
