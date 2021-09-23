@@ -21,7 +21,7 @@ export interface IMenuRepo {
 }
 
 @Component({
-    selector: 'app-Dashboard',
+    selector: 'app-dashboard',
     templateUrl: './Dashboard.component.html',
     styleUrls: ['./Dashboard.component.css']
 })
@@ -32,7 +32,7 @@ export class DashboardComponent implements OnInit {
 
     public readonly menuRepo: IMenuRepo[] = [
         {
-            name: 'doctor',
+            name: 'ent_doctor',
             title: 'Специалисты',
             titleVoc: 'специалиста',
             titleVocs: 'специалисты',
@@ -44,7 +44,7 @@ export class DashboardComponent implements OnInit {
             ]
         },
         {
-            name: 'services',
+            name: 'ent_services',
             title: 'Услуги',
             titleVoc: 'услугу',
             titleVocs: 'услуги',
@@ -56,7 +56,7 @@ export class DashboardComponent implements OnInit {
             ]
         },
         {
-            name: 'service_containers',
+            name: 'ent_service_containers',
             containerKey: 'container_services',
             title: 'Контейнеры услуг',
             titleVoc: 'контейнер',
@@ -69,7 +69,7 @@ export class DashboardComponent implements OnInit {
             ]
         },
         {
-            name: 'clinics',
+            name: 'ent_clinics',
             title: 'Клиники',
             titleVoc: 'клинику',
             titleVocs: 'клиники',
@@ -81,7 +81,7 @@ export class DashboardComponent implements OnInit {
             ]
         },
         {
-            name: 'phones',
+            name: 'ent_phones',
             title: 'Телефоны системы',
             titleVoc: 'телефон',
             titleVocs: 'телефоны',
@@ -93,7 +93,7 @@ export class DashboardComponent implements OnInit {
             ]
         },
         {
-            name: 'phone_containers',
+            name: 'ent_phone_containers',
             containerKey: 'container_phones',
             title: 'Контейнеры телефонов',
             titleVoc: 'контейнер',
@@ -106,7 +106,7 @@ export class DashboardComponent implements OnInit {
             ]
         },
         {
-            name: 'facilities_containers',
+            name: 'ent_facilities_containers',
             containerKey: 'container_facilities',
             title: 'Контейнеры удобств в клиниках',
             titleVoc: 'контейнер',
@@ -119,7 +119,7 @@ export class DashboardComponent implements OnInit {
             ]
         },
         {
-            name: 'specialities_clinic_containers',
+            name: 'ent_specialities_clinic_containers',
             containerKey: 'container_specialities',
             title: 'Контейнеры специализаций клиник',
             titleVoc: 'контейнер',
@@ -132,7 +132,7 @@ export class DashboardComponent implements OnInit {
             ]
         },
         {
-            name: 'placement_slots',
+            name: 'ent_placement_slots',
             slotKey: 'slot_placement',
             title: 'Слоты услуг размещения',
             titleVoc: 'слот',
@@ -145,7 +145,7 @@ export class DashboardComponent implements OnInit {
             ]
         },
         {
-            name: 'doctor_slots',
+            name: 'ent_doctor_slots',
             slotKey: 'slot_doctors',
             title: 'Слоты услуг персонала',
             titleVoc: 'слот',
@@ -158,7 +158,7 @@ export class DashboardComponent implements OnInit {
             ]
         },
         {
-            name: 'birth_type_slots',
+            name: 'ent_birth_type_slots',
             slotKey: 'slot_doctors',
             title: 'Слоты видов родов',
             titleVoc: 'слот',
@@ -171,7 +171,7 @@ export class DashboardComponent implements OnInit {
             ]
         },
         {
-            name: 'images',
+            name: 'ent_images',
             title: 'Изображения системы',
             titleVoc: 'изображение',
             titleVocs: 'изображения',
@@ -184,7 +184,7 @@ export class DashboardComponent implements OnInit {
             ]
         },
         {
-            name: 'birthtype',
+            name: 'ent_birthtype',
             title: 'Виды родов(словарь)',
             titleVoc: 'вид родов',
             titleVocs: 'виды родов',
@@ -198,7 +198,7 @@ export class DashboardComponent implements OnInit {
             ]
         },
         {
-            name: 'doctor_position',
+            name: 'ent_doctor_position',
             title: 'Должности врачей(словарь)',
             titleVoc: 'должность',
             titleVocs: 'должности',
@@ -212,7 +212,7 @@ export class DashboardComponent implements OnInit {
             ]
         },
         {
-            name: 'doctor_category',
+            name: 'ent_doctor_category',
             title: 'Категории врачей(словарь)',
             titleVoc: 'категория',
             titleVocs: 'категории',
@@ -226,7 +226,7 @@ export class DashboardComponent implements OnInit {
             ]
         },
         {
-            name: 'specialities_clinic',
+            name: 'ent_specialities_clinic',
             title: 'Специализация клиник(словарь)',
             titleVoc: 'специализация',
             titleVocs: 'специализации',
@@ -240,7 +240,7 @@ export class DashboardComponent implements OnInit {
             ]
         },
         {
-            name: 'facilities',
+            name: 'ent_facilities',
             title: 'Удобства клиник(словарь)',
             titleVoc: 'удобство',
             titleVocs: 'удобства',
@@ -254,7 +254,7 @@ export class DashboardComponent implements OnInit {
             ]
         },
         {
-            name: 'slot_clinic_type',
+            name: 'ent_slot_clinic_type',
             title: 'Вид услуги клиник(словарь)',
             titleVoc: 'услуга',
             titleVocs: 'услуги',

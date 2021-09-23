@@ -1,15 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import {ISettingsParams, RestService, IRestParams, IFileAdditionalData} from './rest.service';
+import { RestService, IRestParams, IFileAdditionalData} from './rest.service';
 import { ITableFilter } from './table/table/table.component';
 import {IImage} from './Dashboard/Editor/components/image/image.component';
 import {map} from 'rxjs/operators';
 import {IEntityItem, ISet} from './entity.model';
-
-const settingsParams: ISettingsParams = {
-  mode: 'admin',
-  segment: 'entity'
-};
 
 @Injectable({providedIn: 'root'})
 export class EntityService {
@@ -21,15 +16,15 @@ export class EntityService {
   }
 
   public getEnt( name: string, page: number = 1, qp?: IRestParams ): Observable<IEntityItem[]> {
-    return this.rest.getEntities( 'ent_' + name, page, qp );
+    return this.rest.getEntities( name, page, qp );
   }
 
   public getEntity( name: string, id: number ): Observable<IEntityItem[]> {
-    return this.rest.getEntity( 'ent_' + name, id);
+    return this.rest.getEntity( name, id);
   }
 
   public getEntSet( key: string, qp?: IRestParams ): Observable<ISet> {
-    return this.rest.getEntitySet( 'ent_' + key , qp);
+    return this.rest.getEntitySet( key , qp);
   }
 
   public getFile(id: number, type= 'images', multi?: boolean): Observable<any> {
@@ -42,11 +37,11 @@ export class EntityService {
   }
 
   public getEntFilters( key: string ): Observable<ITableFilter[]> {
-    return this.rest.getEntityFilters( 'ent_' + key );
+    return this.rest.getEntityFilters( key );
   }
 
   public remEnt(name: string, id: number): Observable<string> {
-    return this.rest.deleteEntity('ent_' + name, id);
+    return this.rest.deleteEntity(name, id);
   }
 
   public removeSlotEntity(name: string, id: number): Observable<string> {
@@ -54,6 +49,6 @@ export class EntityService {
   }
 
   public createEnt(name: string, data: IEntityItem): Observable<any> {
-    return this.rest.createEntity('ent_' + name, data);
+    return this.rest.createEntity(name, data);
   }
 }

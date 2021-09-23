@@ -340,19 +340,16 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
             // получаем контейнер по типу и id
             this.cont.getContainer(this.menu.containerKey, service.data.id).subscribe(containerData => {
                 console.log('GET container DATA:', containerData);
-                containerData.forEach(cd => {
-                        if (!cd.items) {
-                            return;
-                        }
-                        const dummyItems = cd.items.map(itemsEnt => <ITableItem>({
-                            data: itemsEnt.entity,
-                            text: '' + itemsEnt.entity.id,
-                            selected: true,
-                        }));
+                if (!containerData.items) {
+                    return;
+                }
+                const dummyItems = containerData.items.map(itemsEnt => <ITableItem>({
+                    data: itemsEnt.entity,
+                    text: '' + itemsEnt.entity.id,
+                    selected: true,
+                }));
 
-                        this.containerLinker$.next(dummyItems);
-                    }
-                );
+                this.containerLinker$.next(dummyItems);
             }, (err) => this.currentError = err.message ? err.message : err);
         }
 
@@ -383,14 +380,14 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
 
             switch (this.menu.type) {
                 case 'container':
-                    this.cont.removeContainer(this.menu.containerKey, this.currentService.id).subscribe(result => {
+                    this.cont.removeContainer(this.menu.containerKey, this.currentService.id).subscribe(() => {
                         this.refresh();
                         this.currentService = null;
                         this.toastr.success('Удаление сущности ', 'Сущность ' + this.menu.titleVoc + ' успешно удалена');
                     }, (err) => this.currentError = err.message ? err.message : err);
                     break;
                 default:
-                    this.ent.remEnt(this.menu.name, this.currentService.id).subscribe(result => {
+                    this.ent.remEnt(this.menu.name, this.currentService.id).subscribe(() => {
                         this.refresh();
                         this.currentService = null;
                         this.toastr.success('Удаление сущности ', 'Сущность ' + this.menu.titleVoc + ' успешно удалена');
@@ -409,7 +406,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         }
         // отправить post с сущностью
         if (confirm('Уверен что хочешь создать ' + this.menu.titleVoc + ' ?')) {
-            this.ent.createEnt(this.menu.name, data).subscribe(result => {
+            this.ent.createEnt(this.menu.name, data).subscribe(() => {
                 // alert('Сущность успешно создана');
                 this.toastr.success('Создание сущности', 'Сущность ' + this.menu.titleVoc + ' успешно создана');
                 this.form.reset();
@@ -432,7 +429,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
 
         if (this.currentService) {
             data.id = this.currentService.id;
-            this.ent.createEnt(this.menu.name, data).subscribe(result => {
+            this.ent.createEnt(this.menu.name, data).subscribe(() => {
 
                 // alert('Сущность успешно изменена');
                 this.refresh();
@@ -459,7 +456,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         const ids4save = this.containerLinker$.value.map(di => di.data.id);
         const body: IRestBody = {body: {ids: ids4save}};
         this.cont.saveContainer(this.menu.containerKey, this.currentService.id, body)
-            .subscribe(result => {
+            .subscribe(() => {
                 // alert('Данные сохранены');
                 this.refresh();
                 // this.close();
