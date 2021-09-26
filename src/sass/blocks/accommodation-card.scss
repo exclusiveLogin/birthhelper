@@ -1,138 +1,142 @@
 .accommodation-cards {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 25px 30px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px 30px;
 }
 
 .accommodation-card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 407px;
-    padding: 0px;
-    border-radius: 5px;
-    box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.03);
-    overflow: hidden;
-    background: #fff;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 407px;
+  padding: 0px;
+  border-radius: 5px;
+  box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+  background: #fff;
+
+  &:hover {
+    box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.2);
+  }
 }
 
 .accommodation-card__top {
-    display: flex;
-    align-items: flex-start;
-    padding: 15px;
-    background: #fff url("../../img/accommodation-cards/accommodation-cards-bg.png") no-repeat 100% 100% /contain;
+  display: flex;
+  align-items: flex-start;
+  padding: 15px 30px;
+  background: #fff url("../../img/accommodation-cards/accommodation-cards-bg.png") no-repeat 100% 100% /contain;
 }
 
 .accommodation-card__img-wrap {
-    width: 140px;
-    height: 140px;
-    margin-right: 20px;
-    padding: 3px;
-    border: solid 2px rgba(45, 51, 63, 0.1);
-    border-radius: 5px;
-    background: #fff;
-    flex-shrink: 0;
+  width: 140px;
+  height: 140px;
+  margin-right: 20px;
+  padding: 3px;
+  border: solid 2px rgba(45, 51, 63, 0.1);
+  border-radius: 5px;
+  background: #fff;
+  flex-shrink: 0;
 }
 
 .accommodation-card__img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .accommodation-card__txt {
-    margin: 0 0 10px;
-    font-size: 12px;
-    line-height: 1.17;
-    color: rgba(45,51,63, 0.7);
-    max-height: 112px;
-    overflow: hidden;
+  margin: 0 0 10px;
+  font-size: 12px;
+  line-height: 1.17;
+  color: rgba(45, 51, 63, 0.7);
+  max-height: 112px;
+  overflow: hidden;
 
-    & + & {
-        position: relative;
-        padding-top: 10px;
+  & + & {
+    position: relative;
+    padding-top: 10px;
 
-        &:before {
-            position: absolute;
-            content: "";
-            display: block;
-            right: 0;
-            left: 0;
-            top: 0;
-            height: 1px;
-            background: rgba(45,51,63, 0.2);
-        }
+    &:before {
+      position: absolute;
+      content: "";
+      display: block;
+      right: 0;
+      left: 0;
+      top: 0;
+      height: 1px;
+      background: rgba(45, 51, 63, 0.2);
     }
+  }
 }
 
 .accommodation-card__price {
-    margin: 0;
-    font-size: 15px;
-    font-weight: bold;
-    line-height: 1.2;
-    color: #2d333f;
+  margin: 0;
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 1.2;
+  color: #2d333f;
 }
 
 .accommodation-card__btn {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 34px;
-    width: 100%;
-    margin: 10px 0 0;
-    padding: 0 20px;
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 1.17;
-    color: #fff;
-    text-align: center;
-    white-space: nowrap;
-    border: none;
-    background: #487ff1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  width: 100%;
+  margin: 10px 0 0;
+  padding: 0 20px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.17;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  border: none;
+  background: #487ff1;
 
-    &:hover {
-        background: #6896f5;
-    }
+  &:hover {
+    background: #6896f5;
+  }
 }
 
 .accommodation-card__actions {
-    display: grid;
-    align-items: center;
-    grid-template-columns: repeat(2, 1fr);
-    width: 100%;
-    text-align: center;
+  display: grid;
+  align-items: center;
+  grid-template-columns: repeat(2, 1fr);
+  width: 100%;
+  text-align: center;
 }
 
 .accommodation-card__btn-del {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 39px;
-    width: 100%;
-    margin: 0;
-    padding: 0 20px;
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 1.17;
-    color: #ef424c;
-    text-align: center;
-    white-space: nowrap;
-    border: none;
-    background: #fff;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 39px;
+  width: 100%;
+  margin: 0;
+  padding: 0 20px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.17;
+  color: #ef424c;
+  text-align: center;
+  white-space: nowrap;
+  border: none;
+  background: #fff;
 
-    &:hover {
-        color: #ef6069;
-    }
+  &:hover {
+    color: #ef6069;
+  }
 }
 
 .accommodation-card__actions-checkbox {
-    margin-bottom: 2px;
+  margin-bottom: 2px;
 
-    .checkbox__input + .checkbox__label {
-        font-size: 12px;
-    }
+  .checkbox__input + .checkbox__label {
+    font-size: 12px;
+  }
 }
 
