@@ -1,5 +1,5 @@
 <ng-template #other_card_tpl>
-    <div class="clinic-cards__card clinic-card">
+    <div class="clinic-cards__card clinic-card" [class.active]="active">
         <div class="clinic-card__controls clinic-card-controls">
             <button class="clinic-card-controls__btn clinic-card-controls__btn-check"></button>
             <button class="clinic-card-controls__btn clinic-card-controls__btn-favorites"></button>
@@ -15,7 +15,7 @@
 </ng-template>
 
 <ng-template #placement_card_tpl>
-    <div class="accommodation-card">
+    <div class="accommodation-card" [class.active]="active">
         <div class="clinic-card__controls clinic-card-controls">
             <button class="clinic-card-controls__btn clinic-card-controls__btn-check"></button>
             <button class="clinic-card-controls__btn clinic-card-controls__btn-favorites"></button>
@@ -42,7 +42,7 @@
 </ng-template>
 
 <ng-template #person_card_tpl>
-    <div class="specialists-card">
+    <div class="specialists-card" [class.active]="active">
         <div class="clinic-card__controls clinic-card-controls">
             <button class="clinic-card-controls__btn clinic-card-controls__btn-check"></button>
             <button class="clinic-card-controls__btn clinic-card-controls__btn-favorites"></button>

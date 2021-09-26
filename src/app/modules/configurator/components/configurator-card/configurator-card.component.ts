@@ -9,6 +9,7 @@ import {TabFloorSetting} from 'app/modules/configurator/configurator.model';
 export class ConfiguratorCardComponent implements OnInit {
 
     @Input() public cardType: TabFloorSetting['entityType'];
+    @Input() public active: boolean;
 
     constructor() {
     }

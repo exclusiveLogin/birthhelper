@@ -14,7 +14,32 @@
   border-radius: 5px;
   box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.03);
   overflow: hidden;
-  background: #fff;
+  background: #fff url("../../img/accommodation-cards/accommodation-cards-bg.png") no-repeat 100% 100% /contain;
+
+  &.active {
+    background: #487ff1 url("../../img/clinic-cards/clinic-card-active-bg.png") no-repeat 0 0 / 100%;
+    color: #fff;
+
+    .accommodation-card__txt {
+      color: #ddd;
+    }
+
+    .accommodation-card__price {
+      color: #eee;
+    }
+
+    .clinic-card-controls__btn {
+      background: #487ff1;
+
+      &-check {
+        background: #487ff1 url("../../img/icons/close-solid-white.svg") no-repeat;
+      }
+
+      &-favorites {
+        background: #487ff1 url("../../img/icons/heart-solid-white.svg") no-repeat;
+      }
+    }
+  }
 
   &:hover {
     box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.2);
@@ -25,7 +50,6 @@
   display: flex;
   align-items: flex-start;
   padding: 15px 30px;
-  background: #fff url("../../img/accommodation-cards/accommodation-cards-bg.png") no-repeat 100% 100% /contain;
 }
 
 .accommodation-card__img-wrap {

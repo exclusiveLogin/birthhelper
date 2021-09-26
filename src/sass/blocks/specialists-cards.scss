@@ -17,6 +17,44 @@
   box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.03);
   overflow: hidden;
 
+  &.active {
+    background: #487ff1 url("../../img/clinic-cards/clinic-card-active-bg.png") no-repeat 0 0 / 100%;
+    color: #fff;
+
+    .specialists-card__category {
+      color: #fff;
+      border-color: #fff;
+    }
+
+    .specialists-card__name {
+      color: #ddd;
+    }
+
+    .specialists-card__exp {
+      color: #eee;
+    }
+
+    .specialists-card__price {
+      color: #eee;
+    }
+
+    .specialists-card__position {
+      color: #ddd;
+    }
+
+    .clinic-card-controls__btn {
+      background: #487ff1;
+
+      &-check {
+        background: #487ff1 url("../../img/icons/close-solid-white.svg") no-repeat;
+      }
+
+      &-favorites {
+        background: #487ff1 url("../../img/icons/heart-solid-white.svg") no-repeat;
+      }
+    }
+  }
+
   &:hover {
     box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.2);
   }
