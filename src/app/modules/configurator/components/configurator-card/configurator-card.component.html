@@ -1,0 +1,79 @@
+<ng-template #other_card_tpl>
+    <div class="clinic-cards__card clinic-card">
+        <div class="clinic-card__controls clinic-card-controls">
+            <button class="clinic-card-controls__btn clinic-card-controls__btn-check"></button>
+            <button class="clinic-card-controls__btn clinic-card-controls__btn-favorites"></button>
+        </div>
+
+        <div class="clinic-card__img-wrap">
+            <img src="img/clinic-cards/1.png" width="150" height="120" alt="" class="clinic-card__img">
+        </div>
+        <a href="#" class="clinic-card__ttl">Естественные</a>
+        <p class="clinic-card__desc">Естественные роды проходят в три последовательных …</p>
+        <p class="clinic-card__price">51 805 руб.</p>
+    </div>
+</ng-template>
+
+<ng-template #placement_card_tpl>
+    <div class="accommodation-card">
+        <div class="clinic-card__controls clinic-card-controls">
+            <button class="clinic-card-controls__btn clinic-card-controls__btn-check"></button>
+            <button class="clinic-card-controls__btn clinic-card-controls__btn-favorites"></button>
+        </div>
+        <div class="accommodation-card__top">
+            <div class="accommodation-card__img-wrap">
+                <img src="img/accommodation-cards/accommodation-cards1.jpg" class="accommodation-card__img">
+            </div>
+            <div class="accommodation-card__info">
+                <p class="accommodation-card__txt">Комфортабельная палата отвечает высочайшими требованиям комфорта и безопасности и идеальна для совместного пребывания мамы и ребенка. Светлый, наполненный воздухом интерьер располагает к спокойному отдыху и заботе о малыше.</p>
+                <p class="accommodation-card__txt">Площадь палаты: 17-24 кв.м.</p>
+                <p class="accommodation-card__price">487 500 руб.</p>
+            </div>
+        </div>
+        <!--            <button class="accommodation-card__btn">Редактировать карточку</button>-->
+        <!--            <div class="accommodation-card__actions">-->
+        <!--                <div class="checkbox checkbox&#45;&#45;end accommodation-card__actions-checkbox">-->
+        <!--                    <input type="checkbox" class="checkbox__input" id="checkbox">-->
+        <!--                    <label class="checkbox__label" for="checkbox">Доступность</label>-->
+        <!--                </div>-->
+        <!--                <button class="accommodation-card__btn-del">Удалить карточку</button>-->
+        <!--            </div>-->
+    </div>
+</ng-template>
+
+<ng-template #person_card_tpl>
+    <div class="specialists-card">
+        <div class="clinic-card__controls clinic-card-controls">
+            <button class="clinic-card-controls__btn clinic-card-controls__btn-check"></button>
+            <button class="clinic-card-controls__btn clinic-card-controls__btn-favorites"></button>
+        </div>
+        <div class="specialists-card__category">B</div>
+        <div class="specialists-card__avatar">
+            <img src="img/specialists-cards/specialist1.png" class="specialists-card__avatar-img">
+        </div>
+
+        <div class="specialists-card__info">
+            <p class="specialists-card__name">Маркелова</p>
+            <p class="specialists-card__name">Анастасия</p>
+            <p class="specialists-card__exp">Стаж: 23 года</p>
+            <p class="specialists-card__exp">Количество родов: 56</p>
+            <p class="specialists-card__position">Акушер-гинеколог, врач ультразвуковой диагностики</p>
+        </div>
+
+        <div class="specialists-card__actions">
+            <p class="specialists-card__price">75 000 руб.</p>
+<!--            <button class="specialists-card__btn">Редактировать карточку</button>-->
+<!--            <div class="checkbox checkbox&#45;&#45;end specialists-card__actions-checkbox">-->
+<!--                <input type="checkbox" class="checkbox__input" id="checkbox4">-->
+<!--                <label class="checkbox__label" for="checkbox4">Доступность врача</label>-->
+<!--            </div>-->
+<!--            <button class="accommodation-card__btn-del">Удалить карточку</button>-->
+        </div>
+    </div>
+</ng-template>
+
+<ng-container [ngSwitch]="cardType">
+    <ng-container *ngSwitchCase="'person'" [ngTemplateOutlet]="person_card_tpl"></ng-container>
+    <ng-container *ngSwitchCase="'placement'" [ngTemplateOutlet]="placement_card_tpl"></ng-container>
+    <ng-container *ngSwitchDefault [ngTemplateOutlet]="other_card_tpl"></ng-container>
+</ng-container>
