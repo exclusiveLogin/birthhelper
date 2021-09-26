@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {Entity} from 'app/models/entity.interface';
 import {Clinic, IClinicMini} from 'app/models/clinic.interface';
 import {IRestParams, RestService} from 'app/services/rest.service';
@@ -7,7 +7,6 @@ import {filter, map} from 'rxjs/operators';
 import {ISet} from '../Admin/entity.model';
 import {SearchFilterConfig, SearchSection} from '../models/filter.interface';
 import {FilterResult} from '../search/search/components/filter/filter.component';
-import {of} from 'rxjs/internal/observable/of';
 
 export type EntityType = 'clinic';
 export type FetchersSection<T> = {

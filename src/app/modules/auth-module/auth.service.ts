@@ -1,18 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {Observable, Subject} from 'rxjs';
-import {of} from 'rxjs/internal/observable/of';
+import {Observable, Subject, asyncScheduler, merge, of} from 'rxjs';
 import {filter, map, shareReplay, switchMap, tap, throttleTime} from 'rxjs/operators';
 import {RegistrationResponseSrc, RestService, UserRoleSrc} from '../../services/rest.service';
 import {User} from '../../models/user.interface';
-import {merge} from 'rxjs/internal/observable/merge';
 import {InterceptorService} from './interceptor.service';
-import {asyncScheduler} from 'rxjs/internal/scheduler/async';
-
-interface ISecure {
-    user: string;
-    token: string;
-}
 
 export interface SessionResponse {
     // user id

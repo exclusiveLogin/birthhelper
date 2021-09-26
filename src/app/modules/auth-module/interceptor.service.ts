@@ -1,11 +1,8 @@
 import {Injectable} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
+import {Observable, of, pipe, Subject, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import {MonoTypeOperatorFunction} from 'rxjs/interfaces';
-import {pipe} from 'rxjs/internal-compatibility';
-import {of} from 'rxjs/internal/observable/of';
 import {NotifierService} from '../notifier/notifier.service';
-import {throwError} from 'rxjs/internal/observable/throwError';
 
 @Injectable({
     providedIn: 'root'

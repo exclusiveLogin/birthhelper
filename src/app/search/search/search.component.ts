@@ -1,7 +1,7 @@
 import * as L from 'leaflet';
 import {icon, marker} from 'leaflet';
 import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {merge, Subject, combineLatest} from 'rxjs';
+import {merge, Subject, combineLatest, of, timer, asyncScheduler} from 'rxjs';
 import {
     shareReplay,
     switchMap,
@@ -18,10 +18,7 @@ import {LLMap} from 'app/modules/map.lib';
 import {LatLng} from 'leaflet';
 import {IClinicMini} from 'app/models/clinic.interface';
 import {FilterResult} from './components/filter/filter.component';
-import {of} from 'rxjs/internal/observable/of';
 import {ActivatedRoute, Router} from '@angular/router';
-import {asyncScheduler} from 'rxjs/internal/scheduler/async';
-import {timer} from 'rxjs/internal/observable/timer';
 
 @Component({
     selector: 'app-search',
