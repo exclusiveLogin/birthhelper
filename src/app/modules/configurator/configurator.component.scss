@@ -24,9 +24,32 @@
 
 .clinic__cards {
     margin-top: 45px;
+    margin-bottom: 55px;
 }
 
-.clinic__accommodation,
-.clinic__specialists {
+.clinic__accommodation {
     margin-top: 40px;
+}
+
+.clinic__specialists-cards {
+    margin-top: 25px;
+}
+.clinic__specialists-category {
+    display: inline-block;
+    width: 242px;
+    margin: 25px 24px 0 0;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.21;
+    color: #2d333f;
+
+    &-type {
+        font-weight: bold;
+        color: #487ff1;
+        text-transform: uppercase;
+    }
+}
+
+.title-h3 {
+    margin-top: 55px;
 }

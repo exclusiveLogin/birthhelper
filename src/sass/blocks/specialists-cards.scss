@@ -1,7 +1,7 @@
 .specialists-cards {
   display: flex;
   flex-wrap: wrap;
-  gap: 25px 60px
+  gap: 60px 25px
 }
 
 .specialists-card {
@@ -26,8 +26,17 @@
       border-color: #fff;
     }
 
+      .specialists-card__avatar {
+          border-color: #fff;
+          background: #487ff1;
+      }
+
     .specialists-card__name {
-      color: #ddd;
+      color: #fff;
+
+        &:before {
+            background: #fff;
+        }
     }
 
     .specialists-card__exp {
@@ -35,11 +44,15 @@
     }
 
     .specialists-card__price {
-      color: #eee;
+      color: #fff;
     }
 
     .specialists-card__position {
-      color: #ddd;
+      color: rgba(255,255,255,0.8);
+
+        &:before {
+            background: #fff;
+        }
     }
 
     .clinic-card-controls__btn {
@@ -53,7 +66,31 @@
         background: #487ff1 url("../../img/icons/heart-solid-white.svg") no-repeat;
       }
     }
+
+      .specialists-card__link-review {
+          background: #487ff1;
+          color: #ffffff;
+
+          .specialists-card__link-review-badge {
+              background-color: rgba(255, 255, 255, 0.15);
+              color: #fff;
+          }
+      }
+
+      .specialists-card__btn-question {
+          background: #ffffff;
+          color: #487ff1;
+      }
   }
+
+    &.admin {
+        .specialists-card__actions-admin {
+            display: block;
+        }
+        .specialists-card__actions-user {
+            display: none;
+        }
+    }
 
   &:hover {
     box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.2);
@@ -231,4 +268,75 @@
     height: 1px;
     background: rgba(0, 0, 0, 0.1);
   }
+}
+
+.specialists-card__actions-user {
+    display: grid;
+    align-items: center;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.specialists-card__link-review {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 37px;
+    width: auto;
+    margin: 0;
+    padding: 0 24px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.17;
+    color: #487ff1;
+    text-align: center;
+    border: none;
+    background: #fff;
+
+    .specialists-card__link-review-badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 10px;
+        padding: 5px 4px;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 1.17;
+        color: #487ff1;
+        border-radius: 5px;
+        background-color: rgba(72, 127, 241, 0.15)
+    }
+
+    &:hover {
+        text-decoration: none;
+        color: #487ff1;
+    }
+}
+
+.specialists-card__btn-question {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 37px;
+    width: auto;
+    margin: 0;
+    padding: 0 14px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.17;
+    color: #fff;
+    text-align: center;
+    border: none;
+    background: #487ff1;
+    white-space: nowrap;
+
+    &:hover {
+        background: #6896f5;
+    }
+}
+
+.specialists-card__actions-admin {
+    display: none;
 }

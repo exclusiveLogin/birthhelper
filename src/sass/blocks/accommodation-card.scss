@@ -9,7 +9,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 407px;
+  max-width: 508px;
   padding: 0px;
   border-radius: 5px;
   box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.03);
@@ -17,11 +17,15 @@
   background: #fff url("../../img/accommodation-cards/accommodation-cards-bg.png") no-repeat 100% 100% /contain;
 
   &.active {
-    background: #487ff1 url("../../img/clinic-cards/clinic-card-active-bg.png") no-repeat 0 0 / 100%;
+    background: #487ff1 url("../../img/accommodation-cards/accommodation-cards-active-bg.png") no-repeat 100% 100% /contain;
     color: #fff;
 
     .accommodation-card__txt {
-      color: #ddd;
+      color: rgba(255,255,255,0.8);
+
+        & + .accommodation-card__txt:before {
+            background: rgba(255,255,255,0.5);
+        }
     }
 
     .accommodation-card__price {
@@ -39,7 +43,31 @@
         background: #487ff1 url("../../img/icons/heart-solid-white.svg") no-repeat;
       }
     }
+      .accommodation-card__btn-more {
+          background: #fff;
+          color: #487ff1;
+      }
   }
+
+    &.admin {
+        max-width: 407px;
+
+        .accommodation-card__img-wrap {
+            width: 140px;
+            height: 140px;
+        }
+
+        .accommodation-card__actions-admin {
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .accommodation-card__btn-more,
+        .clinic-card__controls {
+            display: none;
+        }
+    }
 
   &:hover {
     box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.2);
@@ -49,12 +77,12 @@
 .accommodation-card__top {
   display: flex;
   align-items: flex-start;
-  padding: 15px 30px;
+  padding: 15px 48px 15px 15px;
 }
 
 .accommodation-card__img-wrap {
-  width: 140px;
-  height: 140px;
+  width: 190px;
+  height: 190px;
   margin-right: 20px;
   padding: 3px;
   border: solid 2px rgba(45, 51, 63, 0.1);
@@ -109,7 +137,7 @@
   justify-content: center;
   height: 34px;
   width: 100%;
-  margin: 10px 0 0;
+  margin: 0;
   padding: 0 20px;
   font-size: 12px;
   font-weight: 500;
@@ -125,7 +153,35 @@
   }
 }
 
-.accommodation-card__actions {
+.accommodation-card__btn-more {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 37px;
+    width: auto;
+    margin: 0;
+    padding: 0 35px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.17;
+    color: #fff;
+    text-align: center;
+    border: none;
+    background: #487ff1;
+
+    &:hover {
+        background: #6896f5;
+    }
+}
+
+.accommodation-card__actions-admin {
+    display: none;
+}
+
+.accommodation-card__actions-row {
   display: grid;
   align-items: center;
   grid-template-columns: repeat(2, 1fr);

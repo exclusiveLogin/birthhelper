@@ -30,14 +30,18 @@
                 <p class="accommodation-card__price">487 500 руб.</p>
             </div>
         </div>
-        <!--            <button class="accommodation-card__btn">Редактировать карточку</button>-->
-        <!--            <div class="accommodation-card__actions">-->
-        <!--                <div class="checkbox checkbox&#45;&#45;end accommodation-card__actions-checkbox">-->
-        <!--                    <input type="checkbox" class="checkbox__input" id="checkbox">-->
-        <!--                    <label class="checkbox__label" for="checkbox">Доступность</label>-->
-        <!--                </div>-->
-        <!--                <button class="accommodation-card__btn-del">Удалить карточку</button>-->
-        <!--            </div>-->
+        <div class="accommodation-card__actions-admin">
+            <button class="accommodation-card__btn">Редактировать карточку</button>
+            <div class="accommodation-card__actions-row">
+                <div class="checkbox checkbox--end accommodation-card__actions-checkbox">
+                    <input type="checkbox" class="checkbox__input" id="checkbox">
+                    <label class="checkbox__label" for="checkbox">Доступность</label>
+                </div>
+                <button class="accommodation-card__btn-del">Удалить карточку</button>
+            </div>
+        </div>
+
+        <button class="accommodation-card__btn-more">Подробнее</button>
     </div>
 </ng-template>
 
@@ -62,12 +66,21 @@
 
         <div class="specialists-card__actions">
             <p class="specialists-card__price">75 000 руб.</p>
-<!--            <button class="specialists-card__btn">Редактировать карточку</button>-->
-<!--            <div class="checkbox checkbox&#45;&#45;end specialists-card__actions-checkbox">-->
-<!--                <input type="checkbox" class="checkbox__input" id="checkbox4">-->
-<!--                <label class="checkbox__label" for="checkbox4">Доступность врача</label>-->
-<!--            </div>-->
-<!--            <button class="accommodation-card__btn-del">Удалить карточку</button>-->
+            <div class="specialists-card__actions-admin">
+                <button class="specialists-card__btn">Редактировать карточку</button>
+                <div class="checkbox checkbox--end specialists-card__actions-checkbox">
+                    <input type="checkbox" class="checkbox__input" id="checkbox4">
+                    <label class="checkbox__label" for="checkbox4">Доступность врача</label>
+                </div>
+                <button class="accommodation-card__btn-del">Удалить карточку</button>
+            </div>
+            <div class="specialists-card__actions-user">
+                <a href="#" class="specialists-card__link-review">
+                    Отзывы
+                    <span class="specialists-card__link-review-badge">8,6</span>
+                </a>
+                <button class="specialists-card__btn-question">Задать вопрос</button>
+            </div>
         </div>
     </div>
 </ng-template>

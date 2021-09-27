@@ -19,9 +19,19 @@
         <app-configurator-card [cardType]="'placement'"></app-configurator-card>
     </div>
 
-    <div class="clinic__specialists specialists-cards">
-        <app-configurator-card [cardType]="'person'" [active]="true"></app-configurator-card>
-        <app-configurator-card [cardType]="'person'"></app-configurator-card>
-        <app-configurator-card [cardType]="'person'"></app-configurator-card>
+
+    <div class="clinic__specialists">
+        <h3 class="title-h3">Личный акушер</h3>
+        <p class="clinic__specialists-category">Высшая категория -
+            <span class="clinic__specialists-category-type">А</span>
+        </p>
+        <p class="clinic__specialists-category">Первая категория -
+            <span class="clinic__specialists-category-type">В</span>
+        </p>
+        <div class="clinic__specialists-cards specialists-cards">
+            <app-configurator-card [cardType]="'person'" [active]="true"></app-configurator-card>
+            <app-configurator-card [cardType]="'person'"></app-configurator-card>
+            <app-configurator-card [cardType]="'person'"></app-configurator-card>
+        </div>
     </div>
 </div>
