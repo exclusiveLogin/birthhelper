@@ -16,6 +16,7 @@ const routes: Routes = [{
     path: 'clinic',
     loadChildren: () => import('../modules/configurator/configurator.module').then(m => m.ConfiguratorModule),
     component: WrapperComponent,
+    data: { section: 'clinic' },
 }, {
   path: '**', component: NotFoundComponent,
 }];

@@ -4,12 +4,13 @@ import {ApiService} from './api.service';
 import {filter, map, switchMap, take, tap} from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {IDictItem} from 'app/Admin/dict.service';
-import {EntityType} from './data-provider.service';
+import {SectionType} from './data-provider.service';
 import {SearchFilterConfig, SearchSection} from '../models/filter.interface';
 import {FilterResult} from '../search/search/components/filter/filter.component';
 import {SessionResponse, UserRole} from '../modules/auth-module/auth.service';
 import {User} from '../models/user.interface';
 import {InterceptorService} from '../modules/auth-module/interceptor.service';
+import {ConfiguratorConfigSrc, Restrictor} from 'app/modules/configurator/configurator.model';
 
 export interface ISettingsParams {
     mode: string;
@@ -88,6 +89,16 @@ export class RestService {
     ) {
     }
 
+    public getConfiguratorSettings(section: SectionType): Observable<ConfiguratorConfigSrc> {
+        const entSetting: ISettingsParams = {
+            mode: 'api',
+            segment: 'configurator',
+            resource: section,
+        };
+
+        return this.getData(entSetting);
+    }
+
     public getEntity(key: string, id: number): Observable<any> {
         const entSetting: ISettingsParams = {
             mode: 'api',
@@ -109,7 +120,7 @@ export class RestService {
         return this.getData(config);
     }
 
-    public getFilterConfigByHash(key: EntityType, hash: string): Observable<SearchFilterConfig> {
+    public getFilterConfigByHash(key: SectionType, hash: string): Observable<SearchFilterConfig> {
         console.log('getFilterConfig');
         const entSetting: ISettingsParams = {
             mode: 'search',
@@ -121,7 +132,7 @@ export class RestService {
         return this.getData<SearchFilterConfig>(entSetting);
     }
 
-    public getFilterConfig(key: EntityType): Observable<SearchSection[]> {
+    public getFilterConfig(key: SectionType): Observable<SearchSection[]> {
         console.log('getFilterConfig');
         const entSetting: ISettingsParams = {
             mode: 'search',
@@ -132,7 +143,7 @@ export class RestService {
             .pipe(map(data => data.results));
     }
 
-    public getHashBySearchSection(key: EntityType, filters: FilterResult): Observable<string> {
+    public getHashBySearchSection(key: SectionType, filters: FilterResult): Observable<string> {
         console.log('getHashBySearchSection', key, filters);
         const setting: ISettingsParams = {
             mode: 'search',
@@ -140,6 +151,14 @@ export class RestService {
         };
 
         return this.postData<SearchVectorSrc>(setting, filters).pipe(map(result => result.hash));
+    }
+
+    public getSlotsByContragent<T = any>(key: string, contragentID: number, restrictors: Restrictor[]): Observable<T[]> {
+        const filters: IRestParams = {
+            contragent_id: contragentID.toString(),
+        };
+        restrictors.forEach(r => filters[r.key] = r.value.toString());
+        return this.getEntityList(key, null, filters);
     }
 
     public getEntityList(key: string, page?: number, qp?: IRestParams): Observable<any[]> {

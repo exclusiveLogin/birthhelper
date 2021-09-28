@@ -8,9 +8,9 @@ import {ISet} from '../Admin/entity.model';
 import {SearchFilterConfig, SearchSection} from '../models/filter.interface';
 import {FilterResult} from '../search/search/components/filter/filter.component';
 
-export type EntityType = 'clinic';
+export type SectionType = 'clinic';
 export type FetchersSection<T> = {
-    [key in EntityType]?: (args?: any) => Observable<T>
+    [key in SectionType]?: (args?: any) => Observable<T>
 };
 
 @Injectable({
@@ -76,23 +76,23 @@ export class DataProviderService {
         );
     }
 
-    getListProvider(type: EntityType): (page: number, hash?: string) => Observable<Entity[]> {
+    getListProvider(type: SectionType): (page: number, hash?: string) => Observable<Entity[]> {
         return this.listFetchers[type];
     }
 
-    getSetProvider(type: EntityType): (hash?: string) => Observable<ISet> {
+    getSetProvider(type: SectionType): (hash?: string) => Observable<ISet> {
         return this.setFetchers[type];
     }
 
-    getFilterProvider(type: EntityType): () => Observable<SearchSection[]> {
+    getFilterProvider(type: SectionType): () => Observable<SearchSection[]> {
         return this.filterFetchers[type];
     }
 
-    getFilterConfigProvider(type: EntityType): (hash: string) => Observable<SearchFilterConfig> {
+    getFilterConfigProvider(type: SectionType): (hash: string) => Observable<SearchFilterConfig> {
         return this.filterConfigFetchers[type];
     }
 
-    getFilterHash(type: EntityType, filters: FilterResult): Observable<string> {
+    getFilterHash(type: SectionType, filters: FilterResult): Observable<string> {
         return this.rest.getHashBySearchSection(type, filters);
     }
 }

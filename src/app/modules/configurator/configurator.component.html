@@ -7,28 +7,35 @@
     <app-clinic-header></app-clinic-header>
     <app-configurator-tabs></app-configurator-tabs>
 
+    <h3 class="title-h3">Виды родов</h3>
     <div class="clinic__cards clinic-cards">
         <app-configurator-card [cardType]="'other'" [active]="true"></app-configurator-card>
         <app-configurator-card [cardType]="'other'"></app-configurator-card>
         <app-configurator-card [cardType]="'other'"></app-configurator-card>
     </div>
 
+    <h3 class="title-h3">Палаты</h3>
     <div class="clinic__accommodation accommodation-cards">
         <app-configurator-card [cardType]="'placement'" [active]="true"></app-configurator-card>
         <app-configurator-card [cardType]="'placement'"></app-configurator-card>
         <app-configurator-card [cardType]="'placement'"></app-configurator-card>
     </div>
 
-
+    <h3 class="title-h3">Личный акушер</h3>
     <div class="clinic__specialists">
-        <h3 class="title-h3">Личный акушер</h3>
-        <p class="clinic__specialists-category">Высшая категория -
-            <span class="clinic__specialists-category-type">А</span>
-        </p>
-        <p class="clinic__specialists-category">Первая категория -
-            <span class="clinic__specialists-category-type">В</span>
-        </p>
+
+<!--        <p class="clinic__specialists-category">Высшая категория - -->
+<!--            <span class="clinic__specialists-category-type">А</span>-->
+<!--        </p>-->
+
+<!--        <p class="clinic__specialists-category"></p>-->
+
+<!--        <p class="clinic__specialists-category">Первая категория - -->
+<!--            <span class="clinic__specialists-category-type">В</span>-->
+<!--        </p>-->
+
         <div class="clinic__specialists-cards specialists-cards">
+
             <app-configurator-card [cardType]="'person'" [active]="true"></app-configurator-card>
             <app-configurator-card [cardType]="'person'"></app-configurator-card>
             <app-configurator-card [cardType]="'person'"></app-configurator-card>

@@ -1,3 +1,5 @@
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {Entity} from 'app/models/entity.interface';
 
 export type PriorityFloor = 'high' | 'mid' | 'low';
 
@@ -34,8 +36,49 @@ export interface TabFloorSetting {
     consumerKeys: string[];
 }
 
-export interface Config {
+export interface ConfiguratorConfigSrc {
     providers: Provider[];
     consumers: Consumer[];
     tabs: TabConfig[];
+}
+
+export interface TabRxInput {
+    key: string;
+    inTitle$: Subject<string>;
+    inEnabled$: BehaviorSubject<boolean>;
+    inCount$: BehaviorSubject<number>;
+    inSelected$: BehaviorSubject<number>;
+}
+
+export interface ConfiguratorView {
+    tabKey: string;
+    floors: {
+        key: string;
+        title: string;
+        flows: {
+            key: string;
+            title: string;
+            consumers: string[];
+        }[]
+    }[];
+}
+
+export interface DataStore {
+    // sectionKey_tabKey_floorKey_entId: Entity
+    [key: string]: Observable<any>;
+}
+
+export interface SelectionStore {
+    // sectionKey_tabKey_floorKey_entId: Entity
+    [key: string]: Entity;
+}
+
+export interface TabsStore {
+    // sectionKey_tabKey_floorKey_entId: Entity
+    [key: string]: TabRxInput;
+}
+
+export interface ViewStore {
+    // sectionKey_tabKey_floorKey_entId: Entity
+    [key: string]: ConfiguratorView;
 }

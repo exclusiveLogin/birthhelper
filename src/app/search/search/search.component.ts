@@ -13,7 +13,7 @@ import {
     retryWhen,
     delayWhen,
 } from 'rxjs/operators';
-import {DataProviderService, EntityType} from 'app/services/data-provider.service';
+import {DataProviderService, SectionType} from 'app/services/data-provider.service';
 import {LLMap} from 'app/modules/map.lib';
 import {LatLng} from 'leaflet';
 import {IClinicMini} from 'app/models/clinic.interface';
@@ -27,7 +27,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class SearchComponent implements OnInit, AfterViewInit {
 
-    sectionKey: EntityType = 'clinic';
+    sectionKey: SectionType = 'clinic';
     hash: string = null;
 
     onPageChange$ = new Subject<null>();

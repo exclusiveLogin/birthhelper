@@ -3,7 +3,7 @@ import {NotFoundComponent} from '../../NotFound/NotFound.component';
 import {ConfiguratorComponent} from './configurator.component';
 
 const routes: Routes = [{
-    path: '',
+    path: ':id',
     component: ConfiguratorComponent
 }, {
     path: '**', component: NotFoundComponent,
