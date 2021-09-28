@@ -3,8 +3,7 @@ import {ConfiguratorService} from 'app/modules/configurator/configurator.service
 import {ActivatedRoute} from '@angular/router';
 import {SectionType} from 'app/services/data-provider.service';
 import {combineLatest, Observable} from 'rxjs';
-import {map, switchMap} from 'rxjs/operators';
-import {ConfiguratorConfigSrc} from 'app/modules/configurator/configurator.model';
+import {map} from 'rxjs/operators';
 
 @Component({
     selector: 'app-configurator',
