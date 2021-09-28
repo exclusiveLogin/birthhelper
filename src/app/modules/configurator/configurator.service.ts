@@ -2,8 +2,9 @@ import {Injectable} from '@angular/core';
 import {SectionType} from 'app/services/data-provider.service';
 import {
     BehaviorSubject,
-    Observable, of,
-    Subject
+    Observable,
+    Subject,
+    combineLatest
 } from 'rxjs';
 import {
     ConfiguratorConfigSrc,
@@ -53,6 +54,7 @@ export class ConfiguratorService {
     loadConfig(sectionKey: SectionType): void {
         this.rest.getConfiguratorSettings(sectionKey).subscribe(d => {
             this._config$.next(d);
+            this.dataLayerFactory(d);
         });
     }
 
@@ -61,12 +63,15 @@ export class ConfiguratorService {
 
     dataLayerFactory(config: ConfiguratorConfigSrc): void {
         const providerConfigs = config?.providers ?? [];
-        const providers$ = providerConfigs
-            .map(_ => this.rest.getSlotsByContragent<Entity>(_.entityKey, this.currentContragentID, _.restrictors ?? []));
+        providerConfigs.forEach(_ => {
+            this.providers[_.key] = this.rest.getSlotsByContragent<Entity>(_.entityKey, this.currentContragentID, _.restrictors ?? []);
+        });
 
-        const uniqBusKeys = providerConfigs
-            .map((providerConfig) => providerConfig.busKey)
-            .filter((value, index, _arr) => _arr.indexOf(value) === index);
+        combineLatest(...Object.values(this.providers)).subscribe(d => console.log('dataLayerFactory init providers', d));
+
+        // const uniqBusKeys = providerConfigs
+        //     .map((providerConfig) => providerConfig.busKey)
+        //     .filter((value, index, _arr) => _arr.indexOf(value) === index);
 
         // const busFetchers$ = uniqBusKeys.map(key =>);
     }

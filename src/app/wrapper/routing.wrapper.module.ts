@@ -13,10 +13,9 @@ const routes: Routes = [{
   loadChildren: () => import('../search/search.module').then(m => m.SearchModule),
   component: WrapperComponent,
 }, {
-    path: 'clinic',
+    path: 'configurator',
     loadChildren: () => import('../modules/configurator/configurator.module').then(m => m.ConfiguratorModule),
     component: WrapperComponent,
-    data: { section: 'clinic' },
 }, {
   path: '**', component: NotFoundComponent,
 }];
