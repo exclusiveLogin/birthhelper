@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {ApiService} from './api.service';
 import {filter, map, switchMap, take, tap} from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
@@ -11,6 +11,8 @@ import {SessionResponse, UserRole} from '../modules/auth-module/auth.service';
 import {User} from '../models/user.interface';
 import {InterceptorService} from '../modules/auth-module/interceptor.service';
 import {ConfiguratorConfigSrc, Restrictor} from 'app/modules/configurator/configurator.model';
+import {Entity} from 'app/models/entity.interface';
+import md5 from 'md5';
 
 export interface ISettingsParams {
     mode: string;
@@ -89,6 +91,8 @@ export class RestService {
     ) {
     }
 
+    cacheStore = {};
+
     public getConfiguratorSettings(section: SectionType): Observable<ConfiguratorConfigSrc> {
         const entSetting: ISettingsParams = {
             mode: 'api',
@@ -99,15 +103,14 @@ export class RestService {
         return this.getData(entSetting);
     }
 
-    public getEntity(key: string, id: number): Observable<any> {
+    public getEntity<T = Entity>(key: string, id: number): Observable<T> {
         const entSetting: ISettingsParams = {
             mode: 'api',
-            segment: 'entity',
-            resource: key,
-            script: id.toString()
+            segment: key,
+            resource: id.toString(),
         };
 
-        return this.getData(entSetting);
+        return this.getData<T>(entSetting).pipe();
     }
 
     public activateUser(url: string): Observable<any> {
@@ -161,7 +164,7 @@ export class RestService {
         return this.getEntityList(key, null, filters);
     }
 
-    public getEntityList(key: string, page?: number, qp?: IRestParams): Observable<any[]> {
+    public getEntityList<T = Entity>(key: string, page?: number, qp?: IRestParams): Observable<T[]> {
         const entSetting: ISettingsParams = {
             mode: 'api',
             segment: key,
@@ -173,7 +176,7 @@ export class RestService {
             Object.assign(data, qp);
         }
 
-        return this.getData<any[]>(entSetting, data);
+        return this.getData<T[]>(entSetting, data);
     }
 
     public getEntitySet(key: string, qp?: IRestParams): Observable<any[]> {
@@ -274,11 +277,12 @@ export class RestService {
     }
 
     public getData<T>(path: ISettingsParams, data?: IRestParams): Observable<T> {
-
-        console.log('getData fire REST: ', path, data);
-
         if (path) {
             this.pathGen(path);
+        }
+        const cacheKey = md5(`${JSON.stringify(path)}_${JSON.stringify(data)}`);
+        if (this.cacheStore[cacheKey]) {
+            return of(this.cacheStore[cacheKey]) as Observable<T>;
         }
 
         const url = this.createUrl(path);
@@ -289,12 +293,11 @@ export class RestService {
                 this.interceptor.interceptor(),
                 filter(d => !!d),
             );
-        this.interceptor.token$.subscribe((r) => console.log('test', r));
 
         const req = this.interceptor.token$.pipe(
-            tap((token) => console.log('getData token REST: ', token)),
             switchMap(http),
             take(1),
+            tap(_ => this.cacheStore[cacheKey] = _),
         );
 
         return req as Observable<T>;

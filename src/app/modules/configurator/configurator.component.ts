@@ -18,7 +18,13 @@ export class ConfiguratorComponent implements OnInit {
     onInitSectionType$: Observable<SectionType> = this.ar.data
         .pipe(map(data => data.section as SectionType));
 
-    onInitData$: Observable<[id: number, type: SectionType]> = combineLatest([this.onInitContragentID$, this.onInitSectionType$]);
+    onInitContragentEntityKey$: Observable<SectionType> = this.ar.data
+        .pipe(map(data => data.entity_key as SectionType));
+
+    onInitData$: Observable<[id: number, type: SectionType, key: string]> =
+        combineLatest([this.onInitContragentID$, this.onInitSectionType$, this.onInitContragentEntityKey$]);
+
+    onContragentLoad$ = this.configuratorService.onContragent$;
 
     constructor(
         private configuratorService: ConfiguratorService,
@@ -28,9 +34,10 @@ export class ConfiguratorComponent implements OnInit {
 
     ngOnInit(): void {
         // this.configuratorService.getSectionConfig(null)
-        this.onInitData$.subscribe(([id, key]) => {
-            this.configuratorService.setContragentID(id);
-            this.configuratorService.loadConfig(key);
+        this.onInitData$.subscribe(([id, type, key]) => {
+            this.configuratorService.currentContragentID$.next(id);
+            this.configuratorService.currentContragentEntityKey$.next(key);
+            this.configuratorService.currentSectionKey$.next(type);
         });
     }
 

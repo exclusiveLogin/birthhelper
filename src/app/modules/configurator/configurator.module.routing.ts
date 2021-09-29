@@ -5,7 +5,10 @@ import {ConfiguratorGuard} from './configurator.guard';
 
 const routes: Routes = [{
     path: 'clinic',
-    data: { section: 'clinic' },
+    data: {
+        section: 'clinic',
+        entity_key: 'ent_clinics'
+    },
     children: [
         { path: '', redirectTo: '/system/search/clinics', pathMatch: 'full'},
         { path: ':id', component: ConfiguratorComponent, canActivate: [ConfiguratorGuard]},

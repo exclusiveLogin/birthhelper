@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {Entity} from 'app/models/entity.interface';
-import {Clinic, IClinicMini} from 'app/models/clinic.interface';
+import {Clinic, IClinicMini, IClinicSrc} from 'app/models/clinic.interface';
 import {IRestParams, RestService} from 'app/services/rest.service';
 import {filter, map} from 'rxjs/operators';
 import {ISet} from '../Admin/entity.model';
@@ -60,7 +60,7 @@ export class DataProviderService {
         if (hash) {
             qp.hash = hash;
         }
-        return this.rest.getEntityList('ent_clinics', page, qp).pipe(
+        return this.rest.getEntityList<IClinicSrc>('ent_clinics', page, qp).pipe(
             filter(data => !!data),
             map(list => list.map(ent => Clinic.createClinicMini(ent))),
         );

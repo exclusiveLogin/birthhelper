@@ -1,27 +1,46 @@
-import { Injectable } from '@angular/core';
-import {ActivatedRoute, ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree} from '@angular/router';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+
+import {
+    ActivatedRouteSnapshot,
+    CanActivate,
+    RouterStateSnapshot,
+    UrlTree
+} from '@angular/router';
+
+import {Observable} from 'rxjs';
 import {RestService} from '../../services/rest.service';
+import {SectionType} from 'app/services/data-provider.service';
+import {map} from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class ConfiguratorGuard implements CanActivate {
 
-    constructor(private ar: ActivatedRoute, private rest: RestService) {}
+    constructor(private rest: RestService) {
+    }
 
     canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-      const id = route.paramMap.get('id');
-      const sectionKey = route.data?.section;
+        const id = !!route.paramMap.get('id') ?
+            !isNaN(Number(route.paramMap.get('id'))) ?
+                Number(route.paramMap.get('id')) :
+                null :
+            null;
 
-      console.log('ConfiguratorGuard', route, id, sectionKey);
+        const sectionKey: SectionType = route.data?.entity_key;
+        console.log('ConfiguratorGuard', route, id, sectionKey);
 
-      return true;
+        if (sectionKey && id) {
+            return this.rest.getEntity(sectionKey, id).pipe(map(ent => !!ent));
+        }
+        return false;
+    }
 
-
-  }
+    isSectionKeyValid(key: string): key is SectionType {
+        return key === 'clinic';
+    }
 
 }

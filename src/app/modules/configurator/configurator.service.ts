@@ -4,17 +4,20 @@ import {
     BehaviorSubject,
     Observable,
     Subject,
-    combineLatest
+    combineLatest, merge
 } from 'rxjs';
 import {
     ConfiguratorConfigSrc,
-    ConfiguratorView, DataStore,
-    SelectionStore, TabsStore,
+    ConfiguratorView,
+    DataStore,
+    SelectionStore,
+    TabsStore,
     ViewStore
 } from 'app/modules/configurator/configurator.model';
+
 import {RestService} from 'app/services/rest.service';
 import {Entity} from 'app/models/entity.interface';
-import {map} from 'rxjs/operators';
+import {filter, map, reduce, switchMap, tap} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -24,9 +27,15 @@ export class ConfiguratorService {
     constructor(
         private rest: RestService,
     ) {
+        this.onConsumersReady.subscribe(d => {});
     }
 
-    private currentContragentID: number;
+    private _config: ConfiguratorConfigSrc;
+
+    currentContragentID$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
+    currentContragentEntityKey$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+    currentSectionKey$: BehaviorSubject<SectionType> = new BehaviorSubject<SectionType>(null);
+
     private providers: DataStore = {};
     private buses: DataStore = {};
     private consumers: DataStore = {};
@@ -35,40 +44,60 @@ export class ConfiguratorService {
     private selectionStore: SelectionStore = {};
     private viewsStore: ViewStore = {};
 
-    private _config$ = new Subject<ConfiguratorConfigSrc>();
     private _currentTab$ = new Subject<string>();
     private _selection$ = new BehaviorSubject<SelectionStore>(this.selectionStore);
 
-    onConfigLoad$: Observable<ConfiguratorConfigSrc> = this._config$.pipe();
-    onView$: Observable<ConfiguratorView> = this._currentTab$.pipe(
-        map(tabKey =>
-            this.viewsStore[tabKey] ?
-                this.viewsStore[tabKey] :
-                null));
+    onContragent$ = combineLatest([this.currentContragentID$, this.currentContragentEntityKey$]).pipe(
+        filter(([id, key]) => !!id && !!key),
+        switchMap(([id, key]) => this.rest.getEntity(key, id)));
+
+    onConfigLoad$: Observable<ConfiguratorConfigSrc> =
+        combineLatest([this.currentContragentID$, this.currentContragentEntityKey$, this.currentSectionKey$]).pipe(
+            filter(([id, entKey, section]) => !!id && !!entKey && !!section),
+            switchMap(([id, entKey, section]) => this.rest.getConfiguratorSettings(section)),
+            tap(config => this._config = config),
+        );
+
+    onProvidersReady = this.onConfigLoad$.pipe(tap(() => this.providerLayerFactory()));
+    onBusesReady = this.onProvidersReady.pipe(tap(() => this.busLayerFactory()));
+    onConsumersReady = this.onBusesReady.pipe(tap(() => this.consumerLayerFactory()));
+
     onSelection$: Observable<SelectionStore> = this._selection$.pipe();
-
-    setContragentID(id: number): void {
-        this.currentContragentID = id;
-    }
-
-    loadConfig(sectionKey: SectionType): void {
-        this.rest.getConfiguratorSettings(sectionKey).subscribe(d => {
-            this._config$.next(d);
-            this.dataLayerFactory(d);
-        });
-    }
 
     viewLayerFactory(config: ConfiguratorConfigSrc): void {
     }
 
-    dataLayerFactory(config: ConfiguratorConfigSrc): void {
+    providerLayerFactory(): void {
+        const config = this._config;
         const providerConfigs = config?.providers ?? [];
         providerConfigs.forEach(_ => {
-            this.providers[_.key] = this.rest.getSlotsByContragent<Entity>(_.entityKey, this.currentContragentID, _.restrictors ?? []);
+            this.providers[_.key] = this.rest.getSlotsByContragent<Entity>(
+                _.entityKey,
+                this.currentContragentID$.value,
+                _.restrictors ?? []
+            );
         });
+        // console.log('dataLayerFactory providerConfigs', providerConfigs, this.providers);
+        merge(...Object.values(this.providers)).subscribe(d => console.log('dataLayerFactory init providers', d));
+    }
 
-        combineLatest(...Object.values(this.providers)).subscribe(d => console.log('dataLayerFactory init providers', d));
+    busLayerFactory(): void {
+        const config = this._config;
+        const uniqBusKeys = config.providers
+            .map((providerConfig) => providerConfig.busKey)
+            .filter((value, index, _arr) => _arr.indexOf(value) === index);
 
+        // console.log('busLayerFactory uniqBusKeys', uniqBusKeys);
+        uniqBusKeys.forEach(key => {
+            const t_configs = config.providers.filter(c => c.busKey === key);
+            const t_providers = t_configs.map(cfg => this.providers[cfg.key]);
+            this.buses[key] = combineLatest(...[t_providers]).pipe(map(data => data.reduce((e, acc) => ([...acc, e]), [])));
+        });
+        merge(...Object.values(this.providers)).subscribe(d => console.log('busLayerFactory init providers', d));
+    }
+
+    consumerLayerFactory(): void {
+        const config = this._config;
         // const uniqBusKeys = providerConfigs
         //     .map((providerConfig) => providerConfig.busKey)
         //     .filter((value, index, _arr) => _arr.indexOf(value) === index);
