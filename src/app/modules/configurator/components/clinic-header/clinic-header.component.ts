@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
 import {Contragent} from '../../../../models/contragent.interface';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-clinic-header',
