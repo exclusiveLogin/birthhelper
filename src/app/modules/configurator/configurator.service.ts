@@ -9,7 +9,7 @@ import {
 import {
     ConfiguratorConfigSrc,
     DataStore,
-    SelectionStore,
+    SelectionStore, TabConfig,
     TabsStore,
     ViewStore
 } from 'app/modules/configurator/configurator.model';
@@ -66,6 +66,10 @@ export class ConfiguratorService {
     onBusesReady$ = this.onProvidersReady$.pipe(tap(() => this.busLayerFactory()));
     onConsumersReady$ = this.onBusesReady$.pipe(tap(() => this.consumerLayerFactory()));
     onViewReady$ = this.onConsumersReady$.pipe(tap(() => this.viewLayerFactory()));
+
+    onViewChanged$: Observable<TabConfig> = this._currentTab$.pipe(
+        filter(key => !!this.viewsStore[key]),
+        map(key => this.viewsStore[key]));
 
     onSelection$: Observable<SelectionStore> = this._selection$.pipe(
         tap((item: Entity) => {
