@@ -13,6 +13,7 @@ import {
     TabsStore,
     ViewStore
 } from 'app/modules/configurator/configurator.model';
+import md5 from 'md5';
 
 import {RestService} from 'app/services/rest.service';
 import {Entity} from 'app/models/entity.interface';
@@ -27,7 +28,8 @@ export class ConfiguratorService {
         private rest: RestService,
     ) {
         // todo: удалить этот хук
-        this.onViewReady$.subscribe(d => {});
+        this.onViewReady$.subscribe(d => {
+        });
     }
 
     private _config: ConfiguratorConfigSrc;
@@ -49,7 +51,9 @@ export class ConfiguratorService {
 
     onContragent$ = combineLatest([this.currentContragentID$, this.currentContragentEntityKey$]).pipe(
         filter(([id, key]) => !!id && !!key),
-        switchMap(([id, key]) => this.rest.getEntity(key, id)));
+        switchMap(([id, key]) => this.rest.getEntity(key, id)),
+        tap(d => console.log('onContragent$', d)),
+    );
 
     onConfigLoad$: Observable<ConfiguratorConfigSrc> =
         combineLatest([this.currentContragentID$, this.currentContragentEntityKey$, this.currentSectionKey$]).pipe(
@@ -63,7 +67,19 @@ export class ConfiguratorService {
     onConsumersReady$ = this.onBusesReady$.pipe(tap(() => this.consumerLayerFactory()));
     onViewReady$ = this.onConsumersReady$.pipe(tap(() => this.viewLayerFactory()));
 
-    onSelection$: Observable<SelectionStore> = this._selection$.pipe();
+    onSelection$: Observable<SelectionStore> = this._selection$.pipe(
+        tap((item: Entity) => {
+            const hash = this.hasher(item);
+            this.selectionStore[hash] = this.selectionStore[hash] ? null : item; }),
+        tap( () => Object.keys(this.selectionStore)
+            .filter(k => !!this.selectionStore[k])
+            .forEach(k => delete this.selectionStore[k])),
+        map(() => this.selectionStore),
+    );
+
+    hasher(item: any): string {
+        return md5(JSON.stringify(item));
+    }
 
     viewLayerFactory(): void {
         this._config.tabs.forEach(tcfg => this.viewsStore[tcfg.key] = tcfg);

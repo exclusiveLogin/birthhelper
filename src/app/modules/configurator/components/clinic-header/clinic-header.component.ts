@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {Observable} from 'rxjs/Observable';
+import {Contragent} from '../../../../models/contragent.interface';
 
 @Component({
   selector: 'app-clinic-header',
@@ -7,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ClinicHeaderComponent implements OnInit {
 
+    @Input() contragent$: Observable<Contragent>;
   constructor() { }
 
   ngOnInit(): void {

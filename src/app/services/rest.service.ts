@@ -110,7 +110,7 @@ export class RestService {
             resource: id.toString(),
         };
 
-        return this.getData<T>(entSetting).pipe();
+        return this.getData<T>(entSetting).pipe(map(d => d?.[0]));
     }
 
     public activateUser(url: string): Observable<any> {
