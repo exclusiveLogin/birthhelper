@@ -17,6 +17,10 @@ const routes: Routes = [{
     loadChildren: () => import('../modules/configurator/configurator.module').then(m => m.ConfiguratorModule),
     component: WrapperComponent,
 }, {
+    path: 'cart',
+    loadChildren: () => import('../modules/cart/cart.module').then(m => m.CartModule),
+    component: WrapperComponent,
+}, {
   path: '**', component: NotFoundComponent,
 }];
 
