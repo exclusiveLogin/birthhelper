@@ -6,7 +6,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {IDictItem} from 'app/Admin/dict.service';
 import {SectionType} from './data-provider.service';
 import {SearchFilterConfig, SearchSection} from '../models/filter.interface';
-import {FilterResult} from '../search/search/components/filter/filter.component';
+import {FilterResult} from '../modules/search/search/components/filter/filter.component';
 import {SessionResponse, UserRole} from '../modules/auth-module/auth.service';
 import {User} from '../models/user.interface';
 import {InterceptorService} from '../modules/auth-module/interceptor.service';

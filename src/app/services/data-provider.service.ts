@@ -6,7 +6,7 @@ import {IRestParams, RestService} from 'app/services/rest.service';
 import {filter, map} from 'rxjs/operators';
 import {ISet} from '../Admin/entity.model';
 import {SearchFilterConfig, SearchSection} from '../models/filter.interface';
-import {FilterResult} from '../search/search/components/filter/filter.component';
+import {FilterResult} from '../modules/search/search/components/filter/filter.component';
 
 export type SectionType = 'clinic';
 export type FetchersSection<T> = {

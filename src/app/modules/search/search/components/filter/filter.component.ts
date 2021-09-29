@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
-import {SearchSection} from '../../../../models/filter.interface';
+import {SearchSection} from '../../../../../models/filter.interface';
 import {FormControl} from '@angular/forms';
 
 

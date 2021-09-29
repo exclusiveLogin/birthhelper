@@ -1,5 +1,5 @@
 import {RouterModule, Routes} from '@angular/router';
-import {NotFoundComponent} from '../NotFound/NotFound.component';
+import {NotFoundComponent} from '../../NotFound/NotFound.component';
 import {SearchComponent} from './search/search.component';
 
 const routes: Routes = [{

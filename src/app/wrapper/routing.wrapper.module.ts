@@ -10,7 +10,7 @@ const routes: Routes = [{
   pathMatch: 'full',
 }, {
   path: 'search',
-  loadChildren: () => import('../search/search.module').then(m => m.SearchModule),
+  loadChildren: () => import('../modules/search/search.module').then(m => m.SearchModule),
   component: WrapperComponent,
 }, {
     path: 'configurator',
