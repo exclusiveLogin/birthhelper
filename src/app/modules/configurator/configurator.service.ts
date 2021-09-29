@@ -8,7 +8,6 @@ import {
 } from 'rxjs';
 import {
     ConfiguratorConfigSrc,
-    ConfiguratorView,
     DataStore,
     SelectionStore,
     TabsStore,
@@ -17,7 +16,7 @@ import {
 
 import {RestService} from 'app/services/rest.service';
 import {Entity} from 'app/models/entity.interface';
-import {filter, map, reduce, switchMap, tap} from 'rxjs/operators';
+import {filter, map, switchMap, tap} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -28,7 +27,7 @@ export class ConfiguratorService {
         private rest: RestService,
     ) {
         // todo: удалить этот хук
-        this.onConsumersReady.subscribe(d => {});
+        this.onViewReady$.subscribe(d => {});
     }
 
     private _config: ConfiguratorConfigSrc;
@@ -59,13 +58,15 @@ export class ConfiguratorService {
             tap(config => this._config = config),
         );
 
-    onProvidersReady = this.onConfigLoad$.pipe(tap(() => this.providerLayerFactory()));
-    onBusesReady = this.onProvidersReady.pipe(tap(() => this.busLayerFactory()));
-    onConsumersReady = this.onBusesReady.pipe(tap(() => this.consumerLayerFactory()));
+    onProvidersReady$ = this.onConfigLoad$.pipe(tap(() => this.providerLayerFactory()));
+    onBusesReady$ = this.onProvidersReady$.pipe(tap(() => this.busLayerFactory()));
+    onConsumersReady$ = this.onBusesReady$.pipe(tap(() => this.consumerLayerFactory()));
+    onViewReady$ = this.onConsumersReady$.pipe(tap(() => this.viewLayerFactory()));
 
     onSelection$: Observable<SelectionStore> = this._selection$.pipe();
 
-    viewLayerFactory(config: ConfiguratorConfigSrc): void {
+    viewLayerFactory(): void {
+        this._config.tabs.forEach(tcfg => this.viewsStore[tcfg.key] = tcfg);
     }
 
     providerLayerFactory(): void {

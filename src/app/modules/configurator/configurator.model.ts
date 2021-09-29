@@ -50,19 +50,6 @@ export interface TabRxInput {
     inSelected$: BehaviorSubject<number>;
 }
 
-export interface ConfiguratorView {
-    tabKey: string;
-    floors: {
-        key: string;
-        title: string;
-        flows: {
-            key: string;
-            title: string;
-            consumers: string[];
-        }[]
-    }[];
-}
-
 export interface DataStore {
     // sectionKey_tabKey_floorKey_entId: Entity
     [key: string]: Observable<any>;
@@ -80,5 +67,5 @@ export interface TabsStore {
 
 export interface ViewStore {
     // sectionKey_tabKey_floorKey_entId: Entity
-    [key: string]: ConfiguratorView;
+    [key: string]: TabConfig;
 }
