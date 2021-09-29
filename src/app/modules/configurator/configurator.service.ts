@@ -27,6 +27,7 @@ export class ConfiguratorService {
     constructor(
         private rest: RestService,
     ) {
+        // todo: удалить этот хук
         this.onConsumersReady.subscribe(d => {});
     }
 
@@ -91,18 +92,20 @@ export class ConfiguratorService {
         uniqBusKeys.forEach(key => {
             const t_configs = config.providers.filter(c => c.busKey === key);
             const t_providers = t_configs.map(cfg => this.providers[cfg.key]);
-            this.buses[key] = combineLatest(...[t_providers]).pipe(map(data => data.reduce((e, acc) => ([...acc, e]), [])));
+            this.buses[key] = combineLatest(...[t_providers]).pipe(map(data => data.reduce((e, acc) => ([...acc, ...e]), [])));
         });
-        merge(...Object.values(this.providers)).subscribe(d => console.log('busLayerFactory init providers', d));
+        merge(...Object.values(this.buses)).subscribe(d => console.log('busLayerFactory init providers', d));
     }
 
     consumerLayerFactory(): void {
         const config = this._config;
-        // const uniqBusKeys = providerConfigs
-        //     .map((providerConfig) => providerConfig.busKey)
-        //     .filter((value, index, _arr) => _arr.indexOf(value) === index);
 
-        // const busFetchers$ = uniqBusKeys.map(key =>);
+        config.consumers.forEach(cfg => {
+            const t_bus = this.buses[cfg.busKey];
+            this.consumers[cfg.key] = t_bus.pipe();
+        });
+
+        merge(...Object.values(this.consumers)).subscribe(d => console.log('consumerLayerFactory init providers', d));
     }
 
     selectTab(tabKey: string): void {
