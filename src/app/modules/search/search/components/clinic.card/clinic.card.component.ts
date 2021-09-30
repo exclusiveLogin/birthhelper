@@ -1,6 +1,7 @@
 import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {IClinicMini} from 'app/models/clinic.interface';
 import {environment} from '@environments/environment';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-clinic-card',
@@ -47,6 +48,8 @@ export class ClinicCardComponent implements OnInit {
 
     wrapped = false;
 
+    constructor(private router: Router){}
+
     wrap(): void {
         this.wrapped = true;
     }
@@ -56,5 +59,9 @@ export class ClinicCardComponent implements OnInit {
 
     showClinicOnMap(): void {
         this.gotoMap.next(this.viewClinic);
+    }
+
+    gotoConfigurator(): void {
+        this.router.navigate(['/system/configurator/clinic', this.viewClinic.id]).then();
     }
 }

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ConfiguratorService} from 'app/modules/configurator/configurator.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {SectionType} from 'app/services/data-provider.service';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -41,6 +41,7 @@ export class ConfiguratorComponent implements OnInit {
     constructor(
         private configuratorService: ConfiguratorService,
         private ar: ActivatedRoute,
+        private router: Router,
     ) {
     }
 
@@ -53,5 +54,8 @@ export class ConfiguratorComponent implements OnInit {
         });
     }
 
+    gotoSearch(): void {
+        this.onInitSectionType$.subscribe(section => this.router.navigate(['/system/search', section + 's']).then());
+    }
 
 }
