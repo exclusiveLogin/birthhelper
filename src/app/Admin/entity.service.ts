@@ -27,7 +27,7 @@ export class EntityService {
     return this.rest.getEntitySet( key , qp);
   }
 
-  public getFile(id: number, type= 'images', multi?: boolean): Observable<any> {
+  public getFile(id: number, type= 'ent_images', multi?: boolean): Observable<any> {
     return this.getEntity(type, id)
       .pipe( map(ImageSet => !multi ? ImageSet.length ? ImageSet[0] : null : ImageSet )) as any as Observable<IImage>;
   }
