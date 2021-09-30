@@ -19,6 +19,7 @@ export interface Provider {
 export interface Consumer {
     title: string;
     key: string;
+    entityKey: string;
     busKey: string;
     restrictors?: Restrictor[];
     priority?: PriorityFloor;
