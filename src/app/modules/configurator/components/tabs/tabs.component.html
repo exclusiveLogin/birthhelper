@@ -1,38 +1,15 @@
 <div class="clinic__tabs">
-    <div class="clinic-tabs">
-        <div class="clinic-tabs__item">
+    <div class="clinic-tabs" *ngIf="tabs$ | async as t">
+
+        <div class="clinic-tabs__item" *ngFor="let tab of t">
             <div class="clinic-tabs__rbt clinic-tabs-rbt">
                 <input type="radio" name="rbt" class="clinic-tabs-rbt__input" id="rbt1">
-                <label class="clinic-tabs-rbt__label" for="rbt1">
-                    Специалисты
-                    <span class="clinic-tabs-rbt__badge">+1</span>
-                </label>
-            </div>
-        </div>
-        <div class="clinic-tabs__item">
-            <div class="clinic-tabs__rbt clinic-tabs-rbt">
-                <input type="radio" name="rbt" class="clinic-tabs-rbt__input" id="rbt2" checked>
-                <label class="clinic-tabs-rbt__label" for="rbt2">
-                    Размещение
-                    <span class="clinic-tabs-rbt__badge">+1</span>
-                </label>
-            </div>
-        </div>
-        <div class="clinic-tabs__item">
-            <div class="clinic-tabs__rbt clinic-tabs-rbt">
-                <input type="radio" name="rbt" class="clinic-tabs-rbt__input" id="rbt3">
-                <label class="clinic-tabs-rbt__label" for="rbt3">
-                    Виды родов
-                    <span class="clinic-tabs-rbt__badge">+1</span>
-                </label>
-            </div>
-        </div>
-        <div class="clinic-tabs__item">
-            <div class="clinic-tabs__rbt clinic-tabs-rbt">
-                <input type="radio" name="rbt" class="clinic-tabs-rbt__input" id="rbt4">
-                <label class="clinic-tabs-rbt__label" for="rbt4">
-                    Дополнительные услуги
-                    <span class="clinic-tabs-rbt__badge">+1</span>
+                <label class="clinic-tabs-rbt__label" for="rbt1"
+                       *ngIf="{
+                       selected: tab.inSelected$ | async,
+                       count: tab.inCount$ | async } as stats">
+                    {{tab.title}}
+                    <span class="clinic-tabs-rbt__badge">{{stats.selected || 0}} / {{stats.count || 0}}</span>
                 </label>
             </div>
         </div>

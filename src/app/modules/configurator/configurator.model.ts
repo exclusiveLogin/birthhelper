@@ -44,10 +44,11 @@ export interface ConfiguratorConfigSrc {
 
 export interface TabRxInput {
     key: string;
-    inTitle$: Subject<string>;
-    inEnabled$: BehaviorSubject<boolean>;
-    inCount$: BehaviorSubject<number>;
-    inSelected$: BehaviorSubject<number>;
+    title: string;
+    inEnabled$: Observable<boolean>;
+    inCount$: Observable<number>;
+    inSelected$: Observable<number>;
+    selectedHashes: string[];
 }
 
 export interface DataStore {

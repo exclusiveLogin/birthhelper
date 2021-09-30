@@ -25,6 +25,7 @@ export class ConfiguratorComponent implements OnInit {
         combineLatest([this.onInitContragentID$, this.onInitSectionType$, this.onInitContragentEntityKey$]);
 
     onContragentLoad$ = this.configuratorService.onContragent$;
+    onTabsLoad$ = this.configuratorService.onTabsReady$;
 
     constructor(
         private configuratorService: ConfiguratorService,
