@@ -12,6 +12,7 @@ export interface Contragent extends Entity {
 }
 
 export interface ExtraMetaContragent {
+    [key: string]: any;
     image_id: {
         id: number,
         file_id: number,

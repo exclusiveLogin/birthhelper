@@ -18,8 +18,9 @@ import {
 import md5 from 'md5';
 
 import {RestService} from 'app/services/rest.service';
-import {Entity} from 'app/models/entity.interface';
+import {Entity, SlotEntity} from 'app/models/entity.interface';
 import {filter, map, shareReplay, switchMap, tap} from 'rxjs/operators';
+import {MetaPhoto} from 'app/models/map-object.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -91,7 +92,7 @@ export class ConfiguratorService {
         map(() => this.selectionStore),
     );
 
-    getConsumerByID(key: string): Observable<Entity[]> {
+    getConsumerByID(key: string): Observable<SlotEntity[]> {
         return this.consumers[key] ?? NEVER;
     }
 
@@ -102,7 +103,7 @@ export class ConfiguratorService {
     tabLayerFactory(): void {
         this._config.tabs.forEach(tc => {
             const tabConsumersKeys = tc.floors.map(f => f.consumerKeys).reduce((keys, cur) => [...keys, ...cur], []);
-            const consumers: Observable<Entity[]>[] = tabConsumersKeys.map(k => this.consumers[k]);
+            const consumers: Observable<SlotEntity[]>[] = tabConsumersKeys.map(k => this.consumers[k]);
 
             console.log('tabLayerFactory ', tabConsumersKeys);
             this.tabsStore[tc.key] = {
@@ -133,7 +134,7 @@ export class ConfiguratorService {
         const config = this._config;
         const providerConfigs = config?.providers ?? [];
         providerConfigs.forEach(_ => {
-            this.providers[_.key] = this.rest.getSlotsByContragent<Entity>(
+            this.providers[_.key] = this.rest.getSlotsByContragent<SlotEntity>(
                 _.entityKey,
                 this.currentContragentID$.value,
                 _.restrictors ?? []
@@ -163,7 +164,8 @@ export class ConfiguratorService {
         config.consumers.forEach(cfg => {
             const t_bus = this.buses[cfg.busKey];
             this.consumers[cfg.key] = t_bus.pipe(
-                map(list => list.map(ent => ({...ent, _entity_key: cfg.entityKey}))),
+                map(list => list.map(ent => ({...ent, _entity_key: cfg.entityKey} as SlotEntity))),
+                map(list => list.map(ent => ({...ent, photo_url: ent?._entity?.meta?.image_id?.filename ?? 'nophoto'}))),
                 tap((data) => console.log('consumers fire: ', data)),
             );
         });

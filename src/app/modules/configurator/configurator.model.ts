@@ -1,5 +1,5 @@
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import {Entity} from 'app/models/entity.interface';
+import {Entity, SlotEntity} from 'app/models/entity.interface';
 
 export type PriorityFloor = 'high' | 'mid' | 'low';
 
@@ -54,12 +54,12 @@ export interface TabRxInput {
 
 export interface DataStore {
     // sectionKey_tabKey_floorKey_entId: Entity
-    [key: string]: Observable<Entity[]>;
+    [key: string]: Observable<SlotEntity[]>;
 }
 
 export interface SelectionStore {
     // sectionKey_tabKey_floorKey_entId: Entity
-    [key: string]: Entity;
+    [key: string]: SlotEntity;
 }
 
 export interface TabsStore {
