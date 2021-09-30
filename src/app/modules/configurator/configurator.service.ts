@@ -5,7 +5,7 @@ import {
     Observable,
     Subject,
     combineLatest,
-    zip
+    zip, never, NEVER
 } from 'rxjs';
 import {
     ConfiguratorConfigSrc,
@@ -90,6 +90,10 @@ export class ConfiguratorService {
             .forEach(k => delete this.selectionStore[k])),
         map(() => this.selectionStore),
     );
+
+    getConsumerByID(key: string): Observable<Entity[]> {
+        return this.consumers[key] ?? NEVER;
+    }
 
     hasher(item: any): string {
         return md5(JSON.stringify(item));

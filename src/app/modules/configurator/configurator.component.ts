@@ -4,6 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 import {SectionType} from 'app/services/data-provider.service';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {Entity} from 'app/models/entity.interface';
 
 @Component({
     selector: 'app-configurator',
@@ -26,6 +27,16 @@ export class ConfiguratorComponent implements OnInit {
 
     onContragentLoad$ = this.configuratorService.onContragent$;
     onTabsLoad$ = this.configuratorService.onTabsReady$;
+    onView$ = this.configuratorService.onViewChanged$;
+
+    getConsumerByID(key: string): Observable<Entity[]> {
+        return this.configuratorService.getConsumerByID(key);
+    }
+
+    selectTab(key: string): void {
+        console.log('selectTab', key);
+        this.configuratorService.selectTab(key);
+    }
 
     constructor(
         private configuratorService: ConfiguratorService,

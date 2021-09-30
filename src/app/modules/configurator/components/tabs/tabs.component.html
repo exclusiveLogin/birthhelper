@@ -3,8 +3,8 @@
 
         <div class="clinic-tabs__item" *ngFor="let tab of t">
             <div class="clinic-tabs__rbt clinic-tabs-rbt">
-                <input type="radio" name="rbt" class="clinic-tabs-rbt__input" id="rbt1">
-                <label class="clinic-tabs-rbt__label" for="rbt1"
+                <input type="radio" name="rbt" class="clinic-tabs-rbt__input" [id]="tab.key" (change)="selectTab(tab.key)">
+                <label class="clinic-tabs-rbt__label" [for]="tab.key"
                        *ngIf="{
                        selected: tab.inSelected$ | async,
                        count: tab.inCount$ | async } as stats">

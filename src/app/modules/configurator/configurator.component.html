@@ -5,40 +5,56 @@
     </button>
 
     <app-clinic-header [contragent$]="onContragentLoad$"></app-clinic-header>
-    <app-configurator-tabs [tabs$]="onTabsLoad$"></app-configurator-tabs>
+    <app-configurator-tabs [tabs$]="onTabsLoad$" (currentTab)="selectTab($event)"></app-configurator-tabs>
 
-    <h3 class="title-h3">Виды родов</h3>
-    <div class="clinic__cards">
-        <app-configurator-card [cardType]="'other'" [active]="true"></app-configurator-card>
-        <app-configurator-card [cardType]="'other'"></app-configurator-card>
-        <app-configurator-card [cardType]="'other'"></app-configurator-card>
-    </div>
+    <ng-container *ngIf="onView$ | async as view">
+        <ng-container *ngFor="let floor of view.floors">
+            <h3 class="title-h3" *ngIf="floor.title">{{floor.title}}</h3>
 
-    <h3 class="title-h3">Палаты</h3>
-    <div class="clinic__cards">
-        <app-configurator-card [cardType]="'placement'" [active]="true"></app-configurator-card>
-        <app-configurator-card [cardType]="'placement'"></app-configurator-card>
-        <app-configurator-card [cardType]="'placement'"></app-configurator-card>
-    </div>
+            <div class="clinic__cards">
+                <ng-container *ngFor="let consumerKEY of floor.consumerKeys">
+                    <ng-container *ngIf="{list: getConsumerByID(consumerKEY) | async} as data">
+                        <app-configurator-card
+                                *ngFor="let entity of data.list"
+                                [cardType]="floor.entityType"
+                                [active]="false"
+                                [entity]="entity"
+                        ></app-configurator-card>
+                    </ng-container>
+                </ng-container>
 
-    <h3 class="title-h3">Личный акушер</h3>
-    <div class="clinic__specialists">
+            </div>
+        </ng-container>
 
-<!--        <p class="clinic__specialists-category">Высшая категория - -->
-<!--            <span class="clinic__specialists-category-type">А</span>-->
-<!--        </p>-->
+    </ng-container>
 
-<!--        <p class="clinic__specialists-category"></p>-->
 
-<!--        <p class="clinic__specialists-category">Первая категория - -->
-<!--            <span class="clinic__specialists-category-type">В</span>-->
-<!--        </p>-->
 
-        <div class="clinic__cards">
+<!--    <h3 class="title-h3">Палаты</h3>-->
+<!--    <div class="clinic__cards">-->
+<!--        <app-configurator-card [cardType]="'placement'" [active]="true"></app-configurator-card>-->
+<!--        <app-configurator-card [cardType]="'placement'"></app-configurator-card>-->
+<!--        <app-configurator-card [cardType]="'placement'"></app-configurator-card>-->
+<!--    </div>-->
 
-            <app-configurator-card [cardType]="'person'" [active]="true"></app-configurator-card>
-            <app-configurator-card [cardType]="'person'"></app-configurator-card>
-            <app-configurator-card [cardType]="'person'"></app-configurator-card>
-        </div>
-    </div>
+<!--    <h3 class="title-h3">Личный акушер</h3>-->
+<!--    <div class="clinic__specialists">-->
+
+<!--&lt;!&ndash;        <p class="clinic__specialists-category">Высшая категория - &ndash;&gt;-->
+<!--&lt;!&ndash;            <span class="clinic__specialists-category-type">А</span>&ndash;&gt;-->
+<!--&lt;!&ndash;        </p>&ndash;&gt;-->
+
+<!--&lt;!&ndash;        <p class="clinic__specialists-category"></p>&ndash;&gt;-->
+
+<!--&lt;!&ndash;        <p class="clinic__specialists-category">Первая категория - &ndash;&gt;-->
+<!--&lt;!&ndash;            <span class="clinic__specialists-category-type">В</span>&ndash;&gt;-->
+<!--&lt;!&ndash;        </p>&ndash;&gt;-->
+
+<!--        <div class="clinic__cards">-->
+
+<!--            <app-configurator-card [cardType]="'person'" [active]="true"></app-configurator-card>-->
+<!--            <app-configurator-card [cardType]="'person'"></app-configurator-card>-->
+<!--            <app-configurator-card [cardType]="'person'"></app-configurator-card>-->
+<!--        </div>-->
+<!--    </div>-->
 </div>

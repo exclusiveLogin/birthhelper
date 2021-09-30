@@ -1,6 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {TabRxInput} from 'app/modules/configurator/configurator.model';
 import {Observable} from 'rxjs';
+import {tap} from 'rxjs/operators';
 
 @Component({
     selector: 'app-configurator-tabs',
@@ -10,11 +11,16 @@ import {Observable} from 'rxjs';
 export class TabsComponent implements OnInit {
 
     @Input() tabs$: Observable<TabRxInput[]>;
+    @Output() currentTab = new EventEmitter<string>();
 
     constructor() {
     }
 
+    selectTab(key: string): void {
+        this.currentTab.emit(key);
+    }
     ngOnInit(): void {
+        this.tabs$ = this.tabs$ ? this.tabs$.pipe(tap(tabs => tabs[0]?.key ? this.selectTab(tabs[0]?.key) : null)) : null;
     }
 
 }
