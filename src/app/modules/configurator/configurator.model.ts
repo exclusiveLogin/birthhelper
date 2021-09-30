@@ -54,7 +54,7 @@ export interface TabRxInput {
 
 export interface DataStore {
     // sectionKey_tabKey_floorKey_entId: Entity
-    [key: string]: Observable<any>;
+    [key: string]: Observable<Entity[]>;
 }
 
 export interface SelectionStore {

@@ -4,7 +4,8 @@ import {
     BehaviorSubject,
     Observable,
     Subject,
-    combineLatest, merge, zip
+    combineLatest,
+    zip
 } from 'rxjs';
 import {
     ConfiguratorConfigSrc,
@@ -157,7 +158,10 @@ export class ConfiguratorService {
 
         config.consumers.forEach(cfg => {
             const t_bus = this.buses[cfg.busKey];
-            this.consumers[cfg.key] = t_bus.pipe();
+            this.consumers[cfg.key] = t_bus.pipe(
+                map(list => list.map(ent => ({...ent, _entity_key: cfg.entityKey}))),
+                tap((data) => console.log('consumers fire: ', data)),
+            );
         });
 
     }
