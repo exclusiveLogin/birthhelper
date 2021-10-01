@@ -16,7 +16,7 @@ export class ConfiguratorCardComponent implements OnInit {
     url = `${environment.static}/'noimage'`;
     viewEnt: SlotEntity | PersonDoctorSlot | PlacementSlot;
 
-    @Input() public cardType: TabFloorSetting['entityType'];
+    @Input() public cardType: TabFloorSetting['entityType'] = 'other';
     @Input() public active: boolean;
 
     @Input() set entity(data: SlotEntity) {
