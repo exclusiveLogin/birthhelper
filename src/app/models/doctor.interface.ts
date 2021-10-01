@@ -3,7 +3,7 @@ import {MetaInterface} from 'app/models/meta.interface';
 import {SlotEntity} from 'app/models/entity.interface';
 import {ServiceSlot} from 'app/models/slot';
 
-export interface PersonSlot extends ServiceSlot, SlotEntity<DoctorSrc> {
+export interface PersonDoctorSlot extends ServiceSlot, SlotEntity<DoctorSrc> {
     photo_url: string;
     first_name: string;
     last_name: string;
@@ -30,8 +30,8 @@ export interface DoctorSrc extends MetaInterface {
     def: boolean;
 }
 
-export class Person {
-    static serialize(src: PersonSlot): PersonSlot {
+export class PersonBuilder {
+    static serialize(src: PersonDoctorSlot): PersonDoctorSlot {
         // photo
         let ph: MetaPhoto = src?.meta?.image_id as MetaPhoto;
         ph = ph ?? src?._entity?.meta?.image_id as MetaPhoto;

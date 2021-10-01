@@ -8,9 +8,9 @@
         <div class="clinic-card__img-wrap">
             <img [src]="url" width="150" height="120" alt="" class="clinic-card__img">
         </div>
-        <a href="#" class="clinic-card__ttl">Естественные</a>
-        <p class="clinic-card__desc">Естественные роды проходят в три последовательных …</p>
-        <p class="clinic-card__price">51 805 руб.</p>
+        <a href="#" class="clinic-card__ttl">{{viewEnt.title}}</a>
+        <p class="clinic-card__desc">{{viewEnt.description}}</p>
+        <p class="clinic-card__price">{{viewEnt.price}} руб.</p>
     </div>
 </ng-template>
 
@@ -27,7 +27,7 @@
             <div class="accommodation-card__info">
                 <p class="accommodation-card__txt">{{viewEnt.description}}</p>
                 <p class="accommodation-card__txt">Площадь палаты: {{viewEnt.area}} кв.м.</p>
-                <p class="accommodation-card__price">487 500 руб.</p>
+                <p class="accommodation-card__price">{{viewEnt.price}} руб.</p>
             </div>
         </div>
         <div class="accommodation-card__actions-admin">
