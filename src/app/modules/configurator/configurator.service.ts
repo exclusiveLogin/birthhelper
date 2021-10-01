@@ -165,7 +165,7 @@ export class ConfiguratorService {
             const t_bus = this.buses[cfg.busKey];
             this.consumers[cfg.key] = t_bus.pipe(
                 map(list => list.map(ent => ({...ent, _entity_key: cfg.entityKey} as SlotEntity))),
-                map(list => list.map(ent => ({...ent, photo_url: ent?._entity?.meta?.image_id?.filename ?? 'nophoto'}))),
+                // map(list => list.map(ent => ({...ent, photo_url: ent?._entity?.meta?.image_id?.filename ?? 'nophoto'}))),
                 tap((data) => console.log('consumers fire: ', data)),
             );
         });

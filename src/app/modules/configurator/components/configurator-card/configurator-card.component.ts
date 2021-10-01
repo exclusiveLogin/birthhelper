@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {TabFloorSetting} from 'app/modules/configurator/configurator.model';
-import {Entity, SlotEntity} from 'app/models/entity.interface';
+import {SlotEntity} from 'app/models/entity.interface';
 import {environment} from '@environments/environment';
-import {IClinicMini} from 'app/models/clinic.interface';
+import {Person, PersonSlot} from 'app/models/doctor.interface';
 
 @Component({
     selector: 'app-configurator-card',
@@ -12,20 +12,23 @@ import {IClinicMini} from 'app/models/clinic.interface';
 export class ConfiguratorCardComponent implements OnInit {
 
     url = `${environment.static}/'noimage'`;
-    viewEnt: SlotEntity;
+    viewEnt: SlotEntity | PersonSlot;
 
     @Input() public cardType: TabFloorSetting['entityType'];
     @Input() public active: boolean;
 
     @Input() set entity(data: SlotEntity) {
-        this.viewEnt = data;
-        this.url = `${environment.static}/${data.photo_url || 'noimage'}`;
+        this.viewEnt = this.cardType === 'person' ? Person.serializeDoctorSlot(data as PersonSlot) : null;
+        this.viewEnt = this.viewEnt ? this.viewEnt : data;
+
+        this.url = `${environment.static}/${this.viewEnt.photo_url || 'noimage'}`;
     }
 
     constructor() {
     }
 
     ngOnInit(): void {
+        console.log('ConfiguratorCardComponent', this);
     }
 
 }
