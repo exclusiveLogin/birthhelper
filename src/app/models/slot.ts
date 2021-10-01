@@ -12,4 +12,5 @@ export interface ServiceSlot extends Slot {
     benefit_percent: string;
     entity_type: number;
     slot_category_type: number;
+    facilities_type: number;
 }

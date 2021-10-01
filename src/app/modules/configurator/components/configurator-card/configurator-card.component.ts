@@ -3,6 +3,7 @@ import {TabFloorSetting} from 'app/modules/configurator/configurator.model';
 import {SlotEntity} from 'app/models/entity.interface';
 import {environment} from '@environments/environment';
 import {Person, PersonSlot} from 'app/models/doctor.interface';
+import {Placement, PlacementSlot} from 'app/models/placement.interface';
 
 @Component({
     selector: 'app-configurator-card',
@@ -12,13 +13,14 @@ import {Person, PersonSlot} from 'app/models/doctor.interface';
 export class ConfiguratorCardComponent implements OnInit {
 
     url = `${environment.static}/'noimage'`;
-    viewEnt: SlotEntity | PersonSlot;
+    viewEnt: SlotEntity | PersonSlot | PlacementSlot;
 
     @Input() public cardType: TabFloorSetting['entityType'];
     @Input() public active: boolean;
 
     @Input() set entity(data: SlotEntity) {
-        this.viewEnt = this.cardType === 'person' ? Person.serializeDoctorSlot(data as PersonSlot) : null;
+        this.viewEnt = this.cardType === 'person' ? Person.serialize(data as PersonSlot) : null;
+        this.viewEnt = this.cardType === 'placement' ? Placement.serialize(data as PlacementSlot) : null;
         this.viewEnt = this.viewEnt ? this.viewEnt : data;
 
         this.url = `${environment.static}/${this.viewEnt.photo_url || 'noimage'}`;

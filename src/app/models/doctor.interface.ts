@@ -31,7 +31,7 @@ export interface DoctorSrc extends MetaInterface {
 }
 
 export class Person {
-    static serializeDoctorSlot(src: PersonSlot): PersonSlot {
+    static serialize(src: PersonSlot): PersonSlot {
         // photo
         let ph: MetaPhoto = src?.meta?.image_id as MetaPhoto;
         ph = ph ?? src?._entity?.meta?.image_id as MetaPhoto;
