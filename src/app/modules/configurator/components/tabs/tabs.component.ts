@@ -13,14 +13,22 @@ export class TabsComponent implements OnInit {
     @Input() tabs$: Observable<TabRxInput[]>;
     @Output() currentTab = new EventEmitter<string>();
 
+    activeTab: string;
+
     constructor() {
     }
 
     selectTab(key: string): void {
+        this.activeTab = key;
         this.currentTab.emit(key);
     }
+
     ngOnInit(): void {
         this.tabs$ = this.tabs$ ? this.tabs$.pipe(tap(tabs => tabs[0]?.key ? this.selectTab(tabs[0]?.key) : null)) : null;
+    }
+
+    isActiveTab(key: string): boolean {
+        return this.activeTab === key;
     }
 
 }

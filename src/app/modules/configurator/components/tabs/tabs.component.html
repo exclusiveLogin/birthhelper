@@ -3,7 +3,12 @@
 
         <div class="clinic-tabs__item" *ngFor="let tab of t">
             <div class="clinic-tabs__rbt clinic-tabs-rbt">
-                <input type="radio" name="rbt" class="clinic-tabs-rbt__input" [id]="tab.key" (change)="selectTab(tab.key)">
+                <input type="radio"
+                       name="rbt"
+                       class="clinic-tabs-rbt__input"
+                       [id]="tab.key"
+                       [checked]="isActiveTab(tab.key)"
+                       (change)="selectTab(tab.key)">
                 <label class="clinic-tabs-rbt__label" [for]="tab.key"
                        *ngIf="{
                        selected: tab.inSelected$ | async,
