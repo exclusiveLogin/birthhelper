@@ -266,6 +266,20 @@ export class DashboardComponent implements OnInit {
                 EMENUMODE.DELETE,
                 EMENUMODE.EDIT,
             ]
+        },
+        {
+            name: 'ent_order_status_type',
+            title: 'Статус заказа(словарь)',
+            titleVoc: 'заказ',
+            titleVocs: 'заказы',
+            type: 'entity',
+            isDict: true,
+            // mime: 'image',
+            modes: [
+                EMENUMODE.CREATE,
+                EMENUMODE.DELETE,
+                EMENUMODE.EDIT,
+            ]
         }
     ];
 
