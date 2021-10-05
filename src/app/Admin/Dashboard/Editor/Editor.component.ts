@@ -1,5 +1,5 @@
-import {Component, OnInit, Input, SimpleChanges, OnDestroy, AfterViewInit, OnChanges} from '@angular/core';
-import {IFieldSetting, FormService, ILinkFieldSetting} from '../../form.service';
+import {AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {FormService, IFieldSetting, ILinkFieldSetting} from '../../form.service';
 import {DictService, IDictItem} from '../../dict.service';
 import {IImageOptions, ITableItem} from '../../table/table/table.component';
 import {EMENUMODE, IMenuRepo} from '../Dashboard.component';
@@ -40,6 +40,10 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
 
     public get isDeleteMode(): boolean {
         return this.mode === EMENUMODE.DELETE;
+    }
+
+    public get isViewMode(): boolean {
+        return this.mode === EMENUMODE.VIEW;
     }
 
     @Input() mode: EMENUMODE;
@@ -146,7 +150,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
                 field.descriptionControl = this.forms.createFormControl(null);
             }
 
-            if (field.readonly) {
+            if (field.readonly && this.mode === EMENUMODE.VIEW) {
                 field.control.disable();
             }
             // готовим словари

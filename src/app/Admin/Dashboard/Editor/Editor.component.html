@@ -1,9 +1,10 @@
 <div class="bh_error_block" *ngIf="currentError">{{currentError}} <i class="far fa-times-circle"
                                                                      (click)="closeCurrentError()"></i></div>
 <div class="service_head row" *ngIf="stable">
-    <h3 class="bh_service_title col-md-6 col-12" *ngIf="isCreateMode">Добавление {{menu.titleVocs}}</h3>
-    <h3 class="bh_service_title col-md-6 col-12" *ngIf="isEditMode">Редактирование {{menu.titleVocs}}</h3>
-    <h3 class="bh_service_title col-md-6 col-12" *ngIf="isDeleteMode">Удаление {{menu.titleVocs}}</h3>
+    <h3 class="bh_service_title" *ngIf="isCreateMode">Добавление {{menu.titleVocs}}</h3>
+    <h3 class="bh_service_title" *ngIf="isEditMode">Редактирование {{menu.titleVocs}}</h3>
+    <h3 class="bh_service_title" *ngIf="isDeleteMode">Удаление {{menu.titleVocs}}</h3>
+    <h3 class="bh_service_title" *ngIf="isViewMode">Просмотр {{menu.titleVocs}}</h3>
 
     <button
             *ngIf="isEditMode && menu && menu.type === 'container'"
@@ -51,7 +52,7 @@
 </div>
 
 <app-table
-        *ngIf="!!menu && ( true || isEditMode || isDeleteMode)"
+        *ngIf="!!menu"
         [key]="menu.name"
         [type]="menu.type"
         [imageOptions]="menu.mime === 'image' ? mainImgOpt : null"
@@ -61,7 +62,7 @@
 
 <div class="bh_block">
 
-    <ng-container *ngIf="(isEditMode && !!currentService) || isCreateMode">
+    <ng-container *ngIf="(isEditMode && !!currentService) || isCreateMode || isViewMode">
         <form [formGroup]="form">
             <div class="bh_control" *ngFor="let field of fields">
                 <ng-container *ngIf="!field.hide">

@@ -5,6 +5,7 @@ export enum EMENUMODE {
     'CREATE',
     'EDIT',
     'DELETE',
+    'VIEW',
 }
 
 export interface IMenuRepo {
@@ -279,6 +280,7 @@ export class DashboardComponent implements OnInit {
                 EMENUMODE.CREATE,
                 EMENUMODE.DELETE,
                 EMENUMODE.EDIT,
+                EMENUMODE.VIEW,
             ]
         }
     ];
