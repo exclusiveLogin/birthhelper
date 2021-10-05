@@ -128,7 +128,10 @@ export class TableComponent implements OnInit {
             tap((set) => {
                 this.setStats(set);
             }),
-            catchError(err => this.currentError = err.message ? err.message : err)
+            catchError(err => {
+                this.currentError = err.message ? err.message : err;
+                return of(null);
+            }),
         );
     }
 

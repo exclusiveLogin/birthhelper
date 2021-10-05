@@ -254,7 +254,7 @@ export class DashboardComponent implements OnInit {
             ]
         },
         {
-            name: 'ent_slot_clinic_type',
+            name: 'ent_slot_category_type',
             title: 'Вид услуги клиник(словарь)',
             titleVoc: 'услуга',
             titleVocs: 'услуги',
