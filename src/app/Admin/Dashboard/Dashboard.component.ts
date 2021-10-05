@@ -39,6 +39,7 @@ export class DashboardComponent implements OnInit {
             titleVocs: 'специалисты',
             type: 'entity',
             modes: [
+                EMENUMODE.VIEW,
                 EMENUMODE.CREATE,
                 EMENUMODE.EDIT,
                 EMENUMODE.DELETE,
@@ -51,6 +52,7 @@ export class DashboardComponent implements OnInit {
             titleVocs: 'услуги',
             type: 'entity',
             modes: [
+                EMENUMODE.VIEW,
                 EMENUMODE.CREATE,
                 EMENUMODE.EDIT,
                 EMENUMODE.DELETE,
@@ -64,6 +66,7 @@ export class DashboardComponent implements OnInit {
             titleVocs: 'контейнера',
             type: 'container',
             modes: [
+                EMENUMODE.VIEW,
                 EMENUMODE.CREATE,
                 EMENUMODE.DELETE,
                 EMENUMODE.EDIT,
@@ -76,6 +79,7 @@ export class DashboardComponent implements OnInit {
             titleVocs: 'клиники',
             type: 'entity',
             modes: [
+                EMENUMODE.VIEW,
                 EMENUMODE.CREATE,
                 EMENUMODE.EDIT,
                 EMENUMODE.DELETE,
@@ -88,6 +92,7 @@ export class DashboardComponent implements OnInit {
             titleVocs: 'телефоны',
             type: 'entity',
             modes: [
+                EMENUMODE.VIEW,
                 EMENUMODE.CREATE,
                 EMENUMODE.EDIT,
                 EMENUMODE.DELETE,
@@ -101,6 +106,7 @@ export class DashboardComponent implements OnInit {
             titleVocs: 'контейнера',
             type: 'container',
             modes: [
+                EMENUMODE.VIEW,
                 EMENUMODE.CREATE,
                 EMENUMODE.DELETE,
                 EMENUMODE.EDIT,
@@ -114,6 +120,7 @@ export class DashboardComponent implements OnInit {
             titleVocs: 'контейнера',
             type: 'container',
             modes: [
+                EMENUMODE.VIEW,
                 EMENUMODE.CREATE,
                 EMENUMODE.DELETE,
                 EMENUMODE.EDIT,
@@ -127,6 +134,7 @@ export class DashboardComponent implements OnInit {
             titleVocs: 'контейнера',
             type: 'container',
             modes: [
+                EMENUMODE.VIEW,
                 EMENUMODE.CREATE,
                 EMENUMODE.DELETE,
                 EMENUMODE.EDIT,
@@ -140,6 +148,7 @@ export class DashboardComponent implements OnInit {
             titleVocs: 'слота',
             type: 'slot',
             modes: [
+                EMENUMODE.VIEW,
                 EMENUMODE.CREATE,
                 EMENUMODE.DELETE,
                 EMENUMODE.EDIT,
@@ -153,6 +162,7 @@ export class DashboardComponent implements OnInit {
             titleVocs: 'слота',
             type: 'slot',
             modes: [
+                EMENUMODE.VIEW,
                 EMENUMODE.CREATE,
                 EMENUMODE.DELETE,
                 EMENUMODE.EDIT,
@@ -166,6 +176,7 @@ export class DashboardComponent implements OnInit {
             titleVocs: 'слота',
             type: 'slot',
             modes: [
+                EMENUMODE.VIEW,
                 EMENUMODE.CREATE,
                 EMENUMODE.DELETE,
                 EMENUMODE.EDIT,
@@ -179,6 +190,7 @@ export class DashboardComponent implements OnInit {
             type: 'entity',
             mime: 'image',
             modes: [
+                EMENUMODE.VIEW,
                 EMENUMODE.CREATE,
                 EMENUMODE.DELETE,
                 EMENUMODE.EDIT,
@@ -193,6 +205,7 @@ export class DashboardComponent implements OnInit {
             isDict: true,
             // mime: 'image',
             modes: [
+                EMENUMODE.VIEW,
                 EMENUMODE.CREATE,
                 EMENUMODE.DELETE,
                 EMENUMODE.EDIT,
@@ -207,6 +220,7 @@ export class DashboardComponent implements OnInit {
             isDict: true,
             // mime: 'image',
             modes: [
+                EMENUMODE.VIEW,
                 EMENUMODE.CREATE,
                 EMENUMODE.DELETE,
                 EMENUMODE.EDIT,
@@ -221,6 +235,7 @@ export class DashboardComponent implements OnInit {
             isDict: true,
             // mime: 'image',
             modes: [
+                EMENUMODE.VIEW,
                 EMENUMODE.CREATE,
                 EMENUMODE.DELETE,
                 EMENUMODE.EDIT,
@@ -235,6 +250,7 @@ export class DashboardComponent implements OnInit {
             isDict: true,
             // mime: 'image',
             modes: [
+                EMENUMODE.VIEW,
                 EMENUMODE.CREATE,
                 EMENUMODE.DELETE,
                 EMENUMODE.EDIT,
@@ -249,6 +265,7 @@ export class DashboardComponent implements OnInit {
             isDict: true,
             // mime: 'image',
             modes: [
+                EMENUMODE.VIEW,
                 EMENUMODE.CREATE,
                 EMENUMODE.DELETE,
                 EMENUMODE.EDIT,
@@ -263,6 +280,7 @@ export class DashboardComponent implements OnInit {
             isDict: true,
             // mime: 'image',
             modes: [
+                EMENUMODE.VIEW,
                 EMENUMODE.CREATE,
                 EMENUMODE.DELETE,
                 EMENUMODE.EDIT,
@@ -277,9 +295,6 @@ export class DashboardComponent implements OnInit {
             isDict: true,
             // mime: 'image',
             modes: [
-                EMENUMODE.CREATE,
-                EMENUMODE.DELETE,
-                EMENUMODE.EDIT,
                 EMENUMODE.VIEW,
             ]
         }
