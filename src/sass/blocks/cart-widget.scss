@@ -1,0 +1,28 @@
+.cart-widget {
+    padding: 25px 132px 25px 25px;
+    background: $white url("/img/widget-bg.png") no-repeat 100% 100% / 375px auto;
+    box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.06);
+}
+
+.cart-widget__title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.13;
+    color: $black;
+
+    span {
+        font-weight: bold;
+    }
+}
+
+.cart-widget__desc {
+    margin: 10px 0 0;
+    font-size: 14px;
+    line-height: 1.29;
+    color: $black;
+
+    span {
+        color: $blue;
+    }
+}

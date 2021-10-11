@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+    <defs>
+        <style>
+            .cls-2{fill:#487ff1}
+        </style>
+    </defs>
+    <g id="Group_1122" transform="translate(-35 -671)">
+        <path id="Rectangle_435" fill="#f5f6fa" d="M0 0H36V36H0z" transform="translate(35 671)"/>
+        <g id="shopping-cart" transform="translate(38.273 675.909)">
+            <g id="Group_1101" transform="translate(17.609 19.767)">
+                <g id="Group_1100">
+                    <path id="Path_1167" d="M295.559 338.862a3.207 3.207 0 1 0 3.207 3.207 3.245 3.245 0 0 0-3.207-3.207z" class="cls-2" transform="translate(-292.352 -338.862)"/>
+                </g>
+            </g>
+            <g id="Group_1103" transform="translate(0 0)">
+                <g id="Group_1102" transform="translate(0 0)">
+                    <path id="Path_1168" d="M26.459 15.142c-.062 0-.154-.031-.247-.031H6.784l-.308-2.066a2.762 2.762 0 0 0-2.745-2.375h-2.5a1.234 1.234 0 0 0 0 2.467h2.5a.328.328 0 0 1 .308.278l1.913 13.013a3.381 3.381 0 0 0 3.33 2.872h12.829a3.427 3.427 0 0 0 3.331-2.714l2-10.022a1.219 1.219 0 0 0-.983-1.422z" class="cls-2" transform="translate(0 -10.67)"/>
+                </g>
+            </g>
+            <g id="Group_1105" transform="translate(6.69 19.767)">
+                <g id="Group_1104">
+                    <path id="Path_1169" d="M117.333 341.915a3.188 3.188 0 0 0-3.176-3.053 3.226 3.226 0 0 0-3.084 3.331 3.161 3.161 0 0 0 3.146 3.053h.062a3.2 3.2 0 0 0 3.052-3.331z" class="cls-2" transform="translate(-111.07 -338.862)"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
