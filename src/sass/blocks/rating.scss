@@ -1,0 +1,39 @@
+.rating-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.rating {
+    width: 50%;
+    min-width: 130px;
+    margin-bottom: 15px;
+}
+.rating__title {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.14;
+    color: $black;
+}
+
+.rating__value {
+    margin-top: 10px;
+
+    .rating__input {
+        display: none;
+
+        & + .rating__label {
+            display: inline-block;
+            vertical-align: middle;
+            position: relative;
+            margin: 0;
+            width: 24px;
+            height: 24px;
+            background: url("/img/icons/ic-star-24px.svg") no-repeat center;
+
+        }
+
+        &:checked + .rating__label ~ .rating__label {
+            background: url("/img/icons/ic-star-border-24px.svg") no-repeat center;
+        }
+    }
+}
