@@ -1,0 +1,44 @@
+.checkbox-action {
+    position: relative;
+    display: block;
+    font-size: 0;
+}
+
+.checkbox-action__input {
+    display: none;
+
+    & + .checkbox-action__label {
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 14px;
+        line-height: 1.2;
+        text-align: left;
+        color: $black;
+        margin: 0;
+        position: relative;
+        padding: 0 0 0 37px;
+        cursor: pointer;
+
+        &::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            width: 40px;
+            height: 40px;
+            background: $blue url("/img/icons/heart-white.svg") no-repeat center / 18px auto;
+            border-radius: 0 0 0 5px;
+
+        }
+    }
+
+    &:checked + .checkbox-action__label::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        width: 40px;
+        height: 40px;
+        background: $blue url("/img/icons/heart-red.svg") no-repeat center / 18px auto;
+        border-radius: 0 0 0 5px;
+    }
+}
+

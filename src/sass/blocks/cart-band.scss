@@ -1,0 +1,42 @@
+.cart-band {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 25px 15px 76px;
+    background: url("/img/band-bg.png") no-repeat 100% 0,
+                url("/img/bag.svg") no-repeat 26px center,
+                linear-gradient($white, $white);
+    box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.06);
+}
+
+.cart-band__txt {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.19;
+    color: $black;
+
+    span {
+        font-weight: bold;
+        color: $orange;
+    }
+}
+
+.cart-band__btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    width: 242px;
+    height: 54px;
+    background: $orange;
+    font-size: 16px;
+    font-weight: 500;
+    color: $white;
+    border-radius: 3px;
+    border: none;
+    margin-left: 56px;
+
+    &:hover {
+        background: rgba($orange, 0.8);
+    }
+}
