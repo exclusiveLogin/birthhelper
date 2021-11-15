@@ -5,6 +5,8 @@ import {environment} from '@environments/environment';
 import {PersonBuilder, PersonDoctorSlot} from 'app/models/doctor.interface';
 import {PlacementBuilder, PlacementSlot} from 'app/models/placement.interface';
 import {CardSlot, ConfiguratorCardBuilder} from 'app/models/cardbuilder.interface';
+import {ConfiguratorService} from '../../configurator.service';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
     selector: 'app-configurator-card',
@@ -15,9 +17,11 @@ export class ConfiguratorCardComponent implements OnInit {
 
     url = `${environment.static}/'noimage'`;
     viewEnt: SlotEntity | PersonDoctorSlot | PlacementSlot;
+    selectionState$: Observable<boolean>;
 
     @Input() public cardType: TabFloorSetting['entityType'] = 'other';
     @Input() public active: boolean;
+    @Input() public tabKey: string;
 
     @Input() set entity(data: SlotEntity) {
         this.viewEnt = this.viewEnt ? this.viewEnt :
@@ -29,9 +33,14 @@ export class ConfiguratorCardComponent implements OnInit {
         this.viewEnt = this.viewEnt ? this.viewEnt : data;
 
         this.url = `${environment.static}/${this.viewEnt.photo_url || 'noimage'}`;
+        this.selectionState$ = this.configuratorService.getSelectedStateByEntity(this.viewEnt);
     }
-
-    constructor() {
+    constructor(
+        private configuratorService: ConfiguratorService,
+    ) {
+    }
+    selectCard(): void {
+        this.configuratorService.selectItem(this.viewEnt, this.tabKey);
     }
 
     ngOnInit(): void {

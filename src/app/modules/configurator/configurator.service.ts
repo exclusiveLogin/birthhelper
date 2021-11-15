@@ -5,7 +5,7 @@ import {
     Observable,
     Subject,
     combineLatest,
-    zip, never, NEVER
+    zip, NEVER
 } from 'rxjs';
 import {
     ConfiguratorConfigSrc,
@@ -19,8 +19,7 @@ import md5 from 'md5';
 
 import {RestService} from 'app/services/rest.service';
 import {Entity, SlotEntity} from 'app/models/entity.interface';
-import {filter, map, shareReplay, switchMap, tap} from 'rxjs/operators';
-import {MetaPhoto} from 'app/models/map-object.interface';
+import {delay, filter, map, shareReplay, startWith, switchMap, tap, throttleTime} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -75,13 +74,15 @@ export class ConfiguratorService {
 
     onSelection$: Observable<SelectionStore> = this._selection$.pipe(
         tap(([item, tab]) => {
+            // store
             const hash = this.hasher(item);
             this.selectionStore[hash] = this.selectionStore[hash] ? null : item;
 
+            // tabs
             const idxOfHash = this.tabsStore[tab].selectedHashes.indexOf(hash);
             if (idxOfHash >= 0) {
                 // if exist hash in tab
-                delete this.tabsStore[tab].selectedHashes[idxOfHash];
+                this.tabsStore[tab].selectedHashes.splice(idxOfHash, 1);
             } else {
                 this.tabsStore[tab].selectedHashes.push(hash);
             }
@@ -90,6 +91,7 @@ export class ConfiguratorService {
             .filter(k => !this.selectionStore[k])
             .forEach(k => delete this.selectionStore[k])),
         map(() => this.selectionStore),
+        shareReplay(1)
     );
 
     getConsumerByID(key: string): Observable<SlotEntity[]> {
@@ -104,8 +106,6 @@ export class ConfiguratorService {
         this._config.tabs.forEach(tc => {
             const tabConsumersKeys = tc.floors.map(f => f.consumerKeys).reduce((keys, cur) => [...keys, ...cur], []);
             const consumers: Observable<SlotEntity[]>[] = tabConsumersKeys.map(k => this.consumers[k]);
-
-            console.log('tabLayerFactory ', tabConsumersKeys);
             this.tabsStore[tc.key] = {
                 key: tc.key,
                 title: tc.title,
@@ -123,7 +123,6 @@ export class ConfiguratorService {
                 selectedHashes: [],
             };
         });
-        console.log('tabLayerFactory after ', this.tabsStore);
     }
 
     viewLayerFactory(): void {
@@ -166,7 +165,6 @@ export class ConfiguratorService {
             this.consumers[cfg.key] = t_bus.pipe(
                 map(list => list.map(ent => ({...ent, _entity_key: cfg.entityKey} as SlotEntity))),
                 // map(list => list.map(ent => ({...ent, photo_url: ent?._entity?.meta?.image_id?.filename ?? 'nophoto'}))),
-                tap((data) => console.log('consumers fire: ', data)),
             );
         });
 
@@ -177,6 +175,16 @@ export class ConfiguratorService {
     }
 
     selectItem(entity: Entity, tabKey: string): void {
-        this._selection$.next([entity, tabKey]);
+        const data: { id: number, entKey: string } = { id: entity.id, entKey: entity._entity_key};
+        this._selection$.next([data, tabKey]);
+    }
+
+    getSelectedStateByEntity(entity: Entity): Observable<boolean> {
+        const data: { id: number, entKey: string } = { id: entity.id, entKey: entity._entity_key };
+        const hash = this.hasher(data);
+        return this.onSelection$.pipe(
+            delay(25),
+            map((store) => !!this.selectionStore[hash]),
+        );
     }
 }

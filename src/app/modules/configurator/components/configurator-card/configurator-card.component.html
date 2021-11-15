@@ -1,7 +1,7 @@
 <ng-template #other_card_tpl>
-    <div class="clinic-cards__card clinic-card" [class.active]="active">
+    <div class="clinic-cards__card clinic-card" [class.active]="selectionState$ | async">
         <div class="clinic-card__controls clinic-card-controls">
-            <button class="clinic-card-controls__btn clinic-card-controls__btn-check"></button>
+            <button class="clinic-card-controls__btn clinic-card-controls__btn-check" (click)="selectCard()"></button>
             <button class="clinic-card-controls__btn clinic-card-controls__btn-favorites"></button>
         </div>
 
@@ -15,9 +15,9 @@
 </ng-template>
 
 <ng-template #placement_card_tpl>
-    <div class="accommodation-card" [class.active]="active">
+    <div class="accommodation-card" [class.active]="selectionState$ | async">
         <div class="clinic-card__controls clinic-card-controls">
-            <button class="clinic-card-controls__btn clinic-card-controls__btn-check"></button>
+            <button class="clinic-card-controls__btn clinic-card-controls__btn-check" (click)="selectCard()"></button>
             <button class="clinic-card-controls__btn clinic-card-controls__btn-favorites"></button>
         </div>
         <div class="accommodation-card__top">
@@ -46,9 +46,9 @@
 </ng-template>
 
 <ng-template #person_card_tpl>
-    <div class="specialists-card" [class.active]="active">
+    <div class="specialists-card" [class.active]="selectionState$ | async">
         <div class="clinic-card__controls clinic-card-controls">
-            <button class="clinic-card-controls__btn clinic-card-controls__btn-check"></button>
+            <button class="clinic-card-controls__btn clinic-card-controls__btn-check" (click)="selectCard()"></button>
             <button class="clinic-card-controls__btn clinic-card-controls__btn-favorites"></button>
         </div>
         <div class="specialists-card__category card__btn-tooltip__anchor" *ngIf="viewEnt.category_lettera">{{viewEnt.category_lettera}}
