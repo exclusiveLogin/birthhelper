@@ -87,9 +87,6 @@ export class ConfiguratorService {
                 this.tabsStore[tab].selectedHashes.push(hash);
             }
         }),
-        tap(() => Object.keys(this.selectionStore)
-            .filter(k => !this.selectionStore[k])
-            .forEach(k => delete this.selectionStore[k])),
         map(() => this.selectionStore),
         shareReplay(1)
     );
@@ -183,7 +180,6 @@ export class ConfiguratorService {
         const data: { id: number, entKey: string } = { id: entity.id, entKey: entity._entity_key };
         const hash = this.hasher(data);
         return this.onSelection$.pipe(
-            delay(25),
             map((store) => !!this.selectionStore[hash]),
         );
     }
