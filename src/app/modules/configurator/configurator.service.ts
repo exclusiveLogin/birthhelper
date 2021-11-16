@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {SectionType} from 'app/services/data-provider.service';
+import {SectionType} from 'app/services/search.service';
 import {
     BehaviorSubject,
     Observable,
@@ -15,11 +15,11 @@ import {
     TabsStore,
     ViewStore
 } from 'app/modules/configurator/configurator.model';
-import md5 from 'md5';
 
 import {RestService} from 'app/services/rest.service';
 import {Entity, SlotEntity} from 'app/models/entity.interface';
 import {delay, filter, map, shareReplay, startWith, switchMap, tap, throttleTime} from 'rxjs/operators';
+import {hasher} from '../utils/hasher';
 
 @Injectable({
     providedIn: 'root'
@@ -75,7 +75,7 @@ export class ConfiguratorService {
     onSelection$: Observable<SelectionStore> = this._selection$.pipe(
         tap(([item, tab]) => {
             // store
-            const hash = this.hasher(item);
+            const hash = hasher(item);
             this.selectionStore[hash] = this.selectionStore[hash] ? null : item;
 
             // tabs
@@ -93,10 +93,6 @@ export class ConfiguratorService {
 
     getConsumerByID(key: string): Observable<SlotEntity[]> {
         return this.consumers[key] ?? NEVER;
-    }
-
-    hasher(item: any): string {
-        return md5(JSON.stringify(item));
     }
 
     tabLayerFactory(): void {
@@ -178,7 +174,7 @@ export class ConfiguratorService {
 
     getSelectedStateByEntity(entity: Entity): Observable<boolean> {
         const data: { id: number, entKey: string } = { id: entity.id, entKey: entity._entity_key };
-        const hash = this.hasher(data);
+        const hash = hasher(data);
         return this.onSelection$.pipe(
             map((store) => !!this.selectionStore[hash]),
         );

@@ -9,7 +9,7 @@ import {
 
 import {Observable} from 'rxjs';
 import {RestService} from '../../services/rest.service';
-import {SectionType} from 'app/services/data-provider.service';
+import {SectionType} from 'app/services/search.service';
 import {map} from 'rxjs/operators';
 
 @Injectable({

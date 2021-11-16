@@ -13,7 +13,7 @@ import {
     retryWhen,
     delayWhen,
 } from 'rxjs/operators';
-import {DataProviderService, SectionType} from 'app/services/data-provider.service';
+import {SearchService, SectionType} from 'app/services/search.service';
 import {LLMap} from 'app/modules/map.lib';
 import {LatLng} from 'leaflet';
 import {IClinicMini} from 'app/models/clinic.interface';
@@ -129,7 +129,7 @@ export class SearchComponent implements OnInit, AfterViewInit {
     currentPage = 1;
 
     constructor(
-        private provider: DataProviderService,
+        private provider: SearchService,
         private cdr: ChangeDetectorRef,
         private ar: ActivatedRoute,
         private router: Router,

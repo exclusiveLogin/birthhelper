@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ConfiguratorService} from 'app/modules/configurator/configurator.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {SectionType} from 'app/services/data-provider.service';
+import {SectionType} from 'app/services/search.service';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Entity} from 'app/models/entity.interface';

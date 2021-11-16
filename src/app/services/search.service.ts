@@ -16,7 +16,7 @@ export type FetchersSection<T> = {
 @Injectable({
     providedIn: 'root'
 })
-export class DataProviderService {
+export class SearchService {
 
     constructor(
         private rest: RestService,
