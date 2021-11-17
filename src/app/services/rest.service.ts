@@ -235,8 +235,18 @@ export class RestService {
         return this.postData<SessionResponse>(ep_config, data, true);
     }
 
-    public changeOrder(action: ODRER_ACTIONS, entityKey?: string, entityId?: number): Observable<OrderSrc> {
-        const data = { ent_key: entityKey, ent_id: entityId, action };
+    public createOrder(entityKey: string, entityId: number): Observable<OrderSrc> {
+        const data = { ent_key: entityKey, ent_id: entityId, action: ODRER_ACTIONS.ADD };
+        const ep_config: ISettingsParams = {
+            mode: 'order',
+            segment: null,
+        };
+
+        return this.postData<OrderSrc>(ep_config, data);
+    }
+
+    public changeOrder(action: ODRER_ACTIONS, order?: Order): Observable<OrderSrc> {
+        const data = { id: order.id, action };
         const ep_config: ISettingsParams = {
             mode: 'order',
             segment: null,
@@ -340,7 +350,8 @@ export class RestService {
 
         const req = insecure ? http() : this.interceptor.token$.pipe(
             tap((token) => console.log('postData token REST: ', token)),
-            switchMap(http), take(1),);
+            switchMap(http), take(1),
+        );
 
         return req as Observable<T>;
     }
