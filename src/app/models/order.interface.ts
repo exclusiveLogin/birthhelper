@@ -9,15 +9,45 @@ export interface OrderSrc {
     slot_entity_key: string;
     slot_entity_id: number;
     refferer: number;
-    status: string;
+    status: StatusType;
     group_token: string;
     datetime_update: string;
     datetime_create: string;
+}
+
+export interface OrderResponse {
+    context: 'orders';
+    result: OrderSrc[];
 }
 export interface IOrder extends OrderSrc {
     raw: OrderSrc;
     hash: string;
 }
+
+export enum ODRER_ACTIONS {
+    ADD = 'ADD',
+    REMOVE = 'REMOVE',
+    SUBMIT = 'SUBMIT',
+    RESOLVE = 'RESOLVE',
+    REJECT = 'REJECT',
+    CANCEL = 'CANCEL',
+    COMPLETE = 'COMPLETE',
+    SENDBYORG = 'SENDBYORG',
+
+}
+
+export enum ORDER_STATUSES {
+    pending = 'pending',
+    deleted = 'deleted',
+    waiting = 'waiting',
+    resolved = 'resolved',
+    rejected = 'rejected',
+    completed = 'completed',
+    canceled = 'canceled',
+    inprogress = 'inprogress',
+}
+
+export type StatusType = keyof typeof ORDER_STATUSES;
 
 export class Order implements IOrder {
     id: number;
@@ -26,7 +56,7 @@ export class Order implements IOrder {
     slot_entity_key: string;
     slot_entity_id: number;
     refferer: number;
-    status: string;
+    status: StatusType;
     group_token: string;
     datetime_update: string;
     datetime_create: string;
@@ -34,6 +64,7 @@ export class Order implements IOrder {
     hash: string;
     slot: SlotEntity;
     doSlotUpdate$ = new Subject<null>();
+    _status: 'pending' | 'updated' | 'error' | 'refreshing' = 'pending';
 
     constructor(src: OrderSrc) {
         this.raw = src;

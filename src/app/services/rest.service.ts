@@ -13,6 +13,7 @@ import {InterceptorService} from '../modules/auth-module/interceptor.service';
 import {ConfiguratorConfigSrc, Restrictor} from 'app/modules/configurator/configurator.model';
 import {Entity} from 'app/models/entity.interface';
 import md5 from 'md5';
+import {ODRER_ACTIONS, Order, OrderResponse, OrderSrc} from '../models/order.interface';
 
 export interface ISettingsParams {
     mode: string;
@@ -111,6 +112,15 @@ export class RestService {
         };
 
         return this.getData<T>(entSetting).pipe(map(d => d?.[0]));
+    }
+
+    public getOrdersByCurrentSession(): Observable<OrderSrc[]> {
+        const entSetting: ISettingsParams = {
+            mode: 'order',
+            segment: null,
+        };
+
+        return this.getData<OrderResponse>(entSetting).pipe(map(response => response?.result ?? []));
     }
 
     public activateUser(url: string): Observable<any> {
@@ -223,6 +233,16 @@ export class RestService {
         };
 
         return this.postData<SessionResponse>(ep_config, data, true);
+    }
+
+    public changeOrder(action: ODRER_ACTIONS, entityKey?: string, entityId?: number): Observable<OrderSrc> {
+        const data = { ent_key: entityKey, ent_id: entityId, action };
+        const ep_config: ISettingsParams = {
+            mode: 'order',
+            segment: null,
+        };
+
+        return this.postData<OrderSrc>(ep_config, data);
     }
 
     public getUserRole(): Observable<UserRoleSrc> {

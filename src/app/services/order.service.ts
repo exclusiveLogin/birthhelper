@@ -3,6 +3,8 @@ import {RestService} from './rest.service';
 import {Subject} from 'rxjs/Subject';
 import {Observable} from 'rxjs/Observable';
 import {SectionType} from './search.service';
+import {ODRER_ACTIONS, OrderSrc} from '../models/order.interface';
+import {SlotEntity} from '../models/entity.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -31,11 +33,27 @@ export class OrderService {
 
     }
 
+    fetcherFactory(order: OrderSrc): Observable<any> {
+        return ;
+    }
+
     getPriceByContragent(section: SectionType, id: number): Observable<any> {
         return ;
     }
 
     addIntoCart(slotKey: string, slotId: number): void {
 
+    }
+
+    fetchCurrentOrders(): Observable<OrderSrc[]> {
+        return this.restService.getOrdersByCurrentSession();
+    }
+
+    orderApiAction(action: ODRER_ACTIONS, order?: OrderSrc): Observable<any> {
+        return ;
+    }
+
+    productFetcher(key: string, id: number): Observable<SlotEntity> {
+        return this.restService.getEntity(key, id);
     }
 }
