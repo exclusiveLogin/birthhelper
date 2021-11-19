@@ -1,12 +1,11 @@
 import {Injectable} from '@angular/core';
 import {RestService} from './rest.service';
-import {Subject} from 'rxjs/Subject';
-import {Observable} from 'rxjs/Observable';
 import {SectionType} from './search.service';
 import {ODRER_ACTIONS, Order, OrderSrc} from '../models/order.interface';
 import {Entity, SlotEntity} from '../models/entity.interface';
 import {map, shareReplay, switchMap, tap} from 'rxjs/operators';
 import {hasher} from '../modules/utils/hasher';
+import {Subject, Observable} from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
