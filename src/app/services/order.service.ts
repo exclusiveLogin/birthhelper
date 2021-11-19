@@ -5,21 +5,13 @@ import {Observable} from 'rxjs/Observable';
 import {SectionType} from './search.service';
 import {ODRER_ACTIONS, Order, OrderSrc} from '../models/order.interface';
 import {SlotEntity} from '../models/entity.interface';
-import {map, switchMap, tap} from 'rxjs/operators';
+import {map, shareReplay, switchMap, tap} from 'rxjs/operators';
 import {hasher} from '../modules/utils/hasher';
 
 @Injectable({
     providedIn: 'root'
 })
 export class OrderService {
-
-    constructor(
-        private restService: RestService,
-    ) {
-        this.userOrdersStore = [];
-        this.onOrderListChanged$.subscribe(list => console.log('ORDER LIST updated: ', list));
-        this.doListRefresh$.next();
-    }
 
     userOrdersStore: Order[];
     storeHash: string;
@@ -30,11 +22,22 @@ export class OrderService {
         switchMap(() => this.fetchCurrentOrders()),
         tap(list => this.smartRefresher(list)),
         map(() => this.userOrdersStore),
+        shareReplay(1),
     );
 
     onPriceChanged$ = this.doPriceRecalculate$.pipe();
 
     onOrdersProductRefreshed$ = this.doPriceRecalculate$.pipe();
+
+    constructor(
+        private restService: RestService,
+    ) {
+        // @todo убрать подписку после отладки сервиса
+        this.onOrderListChanged$.subscribe();
+        this.userOrdersStore = [];
+        this.doListRefresh$.next();
+    }
+
     async smartRefresher(ordersList: OrderSrc[]): Promise<void> {
         let listChanged = false;
         const hash = hasher(ordersList);
@@ -42,7 +45,7 @@ export class OrderService {
         this.userOrdersStore.forEach(order => order._status = 'refreshing');
         for (const order of ordersList) {
             const targetOrder = this.userOrdersStore.find(o => o.id === order.id);
-            if( targetOrder ) {
+            if ( targetOrder ) {
                 targetOrder.update(order);
             } else {
                 this.userOrdersStore.push(new Order(order));
@@ -77,7 +80,8 @@ export class OrderService {
     }
 
     addIntoCart(slotKey: string, slotId: number): Observable<any> {
-        return this.orderApiAction(ODRER_ACTIONS.ADD, null, slotKey, slotId);
+        return this.orderApiAction(ODRER_ACTIONS.ADD, null, slotKey, slotId)
+            .pipe(tap(() => this.doListRefresh$.next()));
     }
 
     removeOrderFromCart(order: Order): Observable<any> {
