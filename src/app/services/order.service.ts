@@ -4,7 +4,7 @@ import {Subject} from 'rxjs/Subject';
 import {Observable} from 'rxjs/Observable';
 import {SectionType} from './search.service';
 import {ODRER_ACTIONS, Order, OrderSrc} from '../models/order.interface';
-import {SlotEntity} from '../models/entity.interface';
+import {Entity, SlotEntity} from '../models/entity.interface';
 import {map, shareReplay, switchMap, tap} from 'rxjs/operators';
 import {hasher} from '../modules/utils/hasher';
 
@@ -19,6 +19,7 @@ export class OrderService {
     doPriceRecalculate$ = new Subject<null>();
 
     onOrderListChanged$ = this.doListRefresh$.pipe(
+        tap(() => console.log('doListRefresh$')),
         switchMap(() => this.fetchCurrentOrders()),
         tap(list => this.smartRefresher(list)),
         map(() => this.userOrdersStore),
@@ -32,13 +33,16 @@ export class OrderService {
     constructor(
         private restService: RestService,
     ) {
-        // @todo убрать подписку после отладки сервиса
-        this.onOrderListChanged$.subscribe();
         this.userOrdersStore = [];
+        console.log('OrderService', this);
+    }
+
+    updateOrderList(): void {
         this.doListRefresh$.next();
     }
 
     async smartRefresher(ordersList: OrderSrc[]): Promise<void> {
+        console.log('smartRefresher', ordersList);
         let listChanged = false;
         const hash = hasher(ordersList);
         if (hash === this.storeHash) { return; }
@@ -79,25 +83,33 @@ export class OrderService {
         return ;
     }
 
-    addIntoCart(slotKey: string, slotId: number): Observable<any> {
-        return this.orderApiAction(ODRER_ACTIONS.ADD, null, slotKey, slotId)
-            .pipe(tap(() => this.doListRefresh$.next()));
+    addIntoCart(slotKey: string, slotId: number): void {
+        this.orderApiAction(ODRER_ACTIONS.ADD, null, slotKey, slotId)
+            .subscribe(() => this.doListRefresh$.next());
     }
 
-    removeOrderFromCart(order: Order): Observable<any> {
-        return this.orderApiAction(ODRER_ACTIONS.REMOVE, order);
+    removeOrderFromCartByID(order: Entity): void {
+        this.orderApiAction(ODRER_ACTIONS.REMOVE, order)
+            .subscribe(() => this.doListRefresh$.next());
+    }
+
+    removeOrderFromCartByEntity(order: Entity): void {
+        this.orderApiAction(ODRER_ACTIONS.REMOVE, null, order.entKey, order.id)
+            .subscribe(() => this.doListRefresh$.next());
     }
 
     fetchCurrentOrders(): Observable<OrderSrc[]> {
-        return this.restService.getOrdersByCurrentSession();
+        return this.restService.getOrdersByCurrentSession()
+            .pipe(map(list => list.filter(order => order.status !== 'deleted')));
     }
 
-    orderApiAction(action: ODRER_ACTIONS, order?: Order, entityKey?: string, entityId?: number): Observable<any> {
+    orderApiAction(action: ODRER_ACTIONS, order?: Entity, entityKey?: string, entityId?: number): Observable<any> {
+        const _ = order ? order : { id: null, ent_key: entityKey, ent_id: entityId, action} as Entity;
         switch (action) {
             case ODRER_ACTIONS.ADD:
                 return this.restService.createOrder(entityKey, entityId);
             default:
-                return this.restService.changeOrder(action, order);
+                return this.restService.changeOrder(action, _);
 
         }
     }

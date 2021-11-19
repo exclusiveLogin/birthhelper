@@ -48,18 +48,20 @@ export interface TabRxInput {
     title: string;
     inEnabled$: Observable<boolean>;
     inCount$: Observable<number>;
-    inSelected$: Observable<number>;
-    selectedHashes: string[];
+    // inSelected$: Observable<number>;
+    // selectedHashes: string[];
 }
 
 export interface DataStore {
     // sectionKey_tabKey_floorKey_entId: Entity
     [key: string]: Observable<SlotEntity[]>;
 }
+export type SelectedState = 'selected' | 'confirmed' | 'unselected';
+export type SelectionOrderSlot = Entity & { _status: SelectedState};
 
 export interface SelectionStore {
     // sectionKey_tabKey_floorKey_entId: Entity
-    [key: string]: SlotEntity;
+    [key: string]: SelectionOrderSlot;
 }
 
 export interface TabsStore {

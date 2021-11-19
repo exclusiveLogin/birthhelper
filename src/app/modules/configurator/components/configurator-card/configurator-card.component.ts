@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {TabFloorSetting} from 'app/modules/configurator/configurator.model';
+import {SelectedState, TabFloorSetting} from 'app/modules/configurator/configurator.model';
 import {SlotEntity} from 'app/models/entity.interface';
 import {environment} from '@environments/environment';
 import {PersonBuilder, PersonDoctorSlot} from 'app/models/doctor.interface';
@@ -17,7 +17,7 @@ export class ConfiguratorCardComponent implements OnInit {
 
     url = `${environment.static}/'noimage'`;
     viewEnt: SlotEntity | PersonDoctorSlot | PlacementSlot;
-    selectionState$: Observable<boolean>;
+    selectionState$: Observable<SelectedState>;
 
     @Input() public cardType: TabFloorSetting['entityType'] = 'other';
     @Input() public active: boolean;
@@ -44,7 +44,7 @@ export class ConfiguratorCardComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log('ConfiguratorCardComponent', this);
+        // console.log('ConfiguratorCardComponent', this);
     }
 
 }

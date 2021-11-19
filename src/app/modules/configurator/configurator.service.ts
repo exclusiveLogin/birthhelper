@@ -5,11 +5,13 @@ import {
     Observable,
     Subject,
     combineLatest,
-    zip, NEVER
+    zip,
+    NEVER,
+    merge
 } from 'rxjs';
 import {
     ConfiguratorConfigSrc,
-    DataStore,
+    DataStore, SelectedState, SelectionOrderSlot,
     SelectionStore,
     TabConfig, TabRxInput,
     TabsStore,
@@ -18,8 +20,10 @@ import {
 
 import {RestService} from 'app/services/rest.service';
 import {Entity, SlotEntity} from 'app/models/entity.interface';
-import {delay, filter, map, shareReplay, startWith, switchMap, tap, throttleTime} from 'rxjs/operators';
+import {filter, map, mapTo, shareReplay, switchMap, tap} from 'rxjs/operators';
 import {hasher} from '../utils/hasher';
+import {OrderService} from '../../services/order.service';
+import {Order} from '../../models/order.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -27,15 +31,19 @@ import {hasher} from '../utils/hasher';
 export class ConfiguratorService {
 
     constructor(
-        private rest: RestService,
+        private restService: RestService,
+        private orderService: OrderService,
     ) {
+        console.log('ConfiguratorService', this);
+        this.orderService.onOrderListChanged$.subscribe(list => this.syncOrders(list));
+        this.orderService.updateOrderList();
     }
 
     private _config: ConfiguratorConfigSrc;
 
-    currentContragentID$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
-    currentContragentEntityKey$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
-    currentSectionKey$: BehaviorSubject<SectionType> = new BehaviorSubject<SectionType>(null);
+    currentContragentID$ = new BehaviorSubject<number>(null);
+    currentContragentEntityKey$ = new BehaviorSubject<string>(null);
+    currentSectionKey$ = new BehaviorSubject<SectionType>(null);
 
     private providers: DataStore = {};
     private buses: DataStore = {};
@@ -47,49 +55,99 @@ export class ConfiguratorService {
 
     private _currentTab$ = new Subject<string>();
     private _selection$ = new Subject<[e: Entity, tab: string]>();
+    private _syncOrders$ = new Subject<null>();
 
     onContragent$ = combineLatest([this.currentContragentID$, this.currentContragentEntityKey$]).pipe(
         filter(([id, key]) => !!id && !!key),
-        switchMap(([id, key]) => this.rest.getEntity(key, id)),
-        tap(d => console.log('onContragent$', d)),
+        switchMap(([id, key]) => this.restService.getEntity(key, id)),
     );
 
     onConfigLoad$: Observable<ConfiguratorConfigSrc> =
         combineLatest([this.currentContragentID$, this.currentContragentEntityKey$, this.currentSectionKey$]).pipe(
             filter(([id, entKey, section]) => !!id && !!entKey && !!section),
-            switchMap(([id, entKey, section]) => this.rest.getConfiguratorSettings(section)),
+            switchMap(([id, entKey, section]) => this.restService.getConfiguratorSettings(section)),
             tap(config => this._config = config),
         );
+
+    onSynced$: Observable<null> = this._syncOrders$.pipe();
 
     onProvidersReady$ = this.onConfigLoad$.pipe(tap(() => this.providerLayerFactory()));
     onBusesReady$ = this.onProvidersReady$.pipe(tap(() => this.busLayerFactory()));
     onConsumersReady$ = this.onBusesReady$.pipe(tap(() => this.consumerLayerFactory()));
     onViewReady$ = this.onConsumersReady$.pipe(tap(() => this.viewLayerFactory()));
     onTabsReady$: Observable<TabRxInput[]> =
-        this.onViewReady$.pipe(tap(() => this.tabLayerFactory()), map(() => Object.values(this.tabsStore)));
+        this.onViewReady$.pipe(
+            tap(() => this.tabLayerFactory()),
+            map(() => Object.values(this.tabsStore)),
+        );
 
     onViewChanged$: Observable<TabConfig> = this._currentTab$.pipe(
         filter(key => !!this.viewsStore[key]),
         map(key => this.viewsStore[key]));
 
-    onSelection$: Observable<SelectionStore> = this._selection$.pipe(
+    onSelectionByUser$: Observable<null> = this._selection$.pipe(
         tap(([item, tab]) => {
             // store
             const hash = hasher(item);
-            this.selectionStore[hash] = this.selectionStore[hash] ? null : item;
+            const selection: SelectionOrderSlot = { ...item, _status: 'selected'};
+
+            const operation: 'add' | 'remove' = this.selectionStore[hash] ? 'remove' : 'add';
+            this.selectionStore[hash] = operation === 'remove' ? null : selection;
 
             // tabs
-            const idxOfHash = this.tabsStore[tab].selectedHashes.indexOf(hash);
-            if (idxOfHash >= 0) {
-                // if exist hash in tab
-                this.tabsStore[tab].selectedHashes.splice(idxOfHash, 1);
-            } else {
-                this.tabsStore[tab].selectedHashes.push(hash);
-            }
+            // const idxOfHash = this.tabsStore[tab].selectedHashes.indexOf(hash);
+            // if (idxOfHash >= 0) {
+            //     // if exist hash in tab
+            //     this.tabsStore[tab].selectedHashes.splice(idxOfHash, 1);
+            // } else {
+            //     this.tabsStore[tab].selectedHashes.push(hash);
+            // }
+            operation === 'add'
+                ? this.orderService.addIntoCart(item.entKey, item.id)
+                : this.orderService.removeOrderFromCartByEntity(item);
         }),
+        mapTo(null),
+    );
+
+    onSelection$: Observable<SelectionStore> = merge(this.onSynced$, this.onSelectionByUser$).pipe(
         map(() => this.selectionStore),
         shareReplay(1)
     );
+
+    syncOrders(list: Order[]): void {
+        let needRefresh = false;
+        for (const order of list) {
+            const hash = hasher({id: order.slot_entity_id, entKey: order.slot_entity_key});
+            const selection = this.selectionStore[hash];
+            if (selection) {
+                // если товар есть в корзине и в выбранном
+                if (selection._status === 'selected') {
+                    needRefresh = true;
+                    selection._status = 'confirmed';
+                }
+            } else {
+                // если товар не выбран но есть в корзине
+                needRefresh = true;
+                this.selectionStore[hash] = {
+                    ...{
+                        id: order.slot_entity_id,
+                        entKey: order.slot_entity_key
+                    },
+                    _status: 'confirmed'
+                };
+            }
+            // проверяем если товара нет в корзине но он почему то выбран
+            Object.entries(this.selectionStore).forEach(([__hash, __selection]) => {
+                if (__selection?._status === 'selected') {
+                    needRefresh = true;
+                    this.selectionStore[__hash] = null;
+                }
+            });
+        }
+        if (needRefresh) {
+            this._syncOrders$.next();
+        }
+    }
 
     getConsumerByID(key: string): Observable<SlotEntity[]> {
         return this.consumers[key] ?? NEVER;
@@ -112,8 +170,8 @@ export class ConfiguratorService {
                     map(ents => ents.length),
                     tap((d) => console.log(`[tabkey: ${tc.key}] inCount$ `, d)),
                 ),
-                inSelected$: this.onSelection$.pipe(map(() => this.tabsStore[tc.key].selectedHashes.length)),
-                selectedHashes: [],
+                // inSelected$: this.onSelection$.pipe(map(() => this.tabsStore[tc.key].selectedHashes.length)),
+                // selectedHashes: [],
             };
         });
     }
@@ -126,7 +184,7 @@ export class ConfiguratorService {
         const config = this._config;
         const providerConfigs = config?.providers ?? [];
         providerConfigs.forEach(_ => {
-            this.providers[_.key] = this.rest.getSlotsByContragent<SlotEntity>(
+            this.providers[_.key] = this.restService.getSlotsByContragent<SlotEntity>(
                 _.entityKey,
                 this.currentContragentID$.value,
                 _.restrictors ?? []
@@ -172,11 +230,14 @@ export class ConfiguratorService {
         this._selection$.next([data, tabKey]);
     }
 
-    getSelectedStateByEntity(entity: Entity): Observable<boolean> {
+    getSelectedStateByEntity(entity: Entity): Observable<SelectedState> {
         const data: { id: number, entKey: string } = { id: entity.id, entKey: entity._entity_key };
         const hash = hasher(data);
         return this.onSelection$.pipe(
-            map((store) => !!this.selectionStore[hash]),
+            map((store) => {
+                const target = this.selectionStore[hash];
+                return target?._status ?? 'unselected';
+            }),
         );
     }
 }

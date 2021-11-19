@@ -1,5 +1,8 @@
-<ng-template #other_card_tpl>
-    <div class="clinic-cards__card clinic-card" [class.active]="selectionState$ | async">
+<ng-template #other_card_tpl let-state = "$implicit">
+    <div class="clinic-cards__card clinic-card"
+         [class.active]="state === 'confirmed'"
+         [class.muted]="state === 'selected'"
+    >
         <div class="clinic-card__controls clinic-card-controls">
             <button class="clinic-card-controls__btn clinic-card-controls__btn-check" (click)="selectCard()"></button>
             <button class="clinic-card-controls__btn clinic-card-controls__btn-favorites"></button>
@@ -14,8 +17,10 @@
     </div>
 </ng-template>
 
-<ng-template #placement_card_tpl>
-    <div class="accommodation-card" [class.active]="selectionState$ | async">
+<ng-template #placement_card_tpl let-state = "$implicit">
+    <div class="accommodation-card"
+         [class.active]="state === 'confirmed'"
+         [class.muted]="state === 'selected'">
         <div class="clinic-card__controls clinic-card-controls">
             <button class="clinic-card-controls__btn clinic-card-controls__btn-check" (click)="selectCard()"></button>
             <button class="clinic-card-controls__btn clinic-card-controls__btn-favorites"></button>
@@ -45,8 +50,11 @@
     </div>
 </ng-template>
 
-<ng-template #person_card_tpl>
-    <div class="specialists-card" [class.active]="selectionState$ | async">
+<ng-template #person_card_tpl let-state = "$implicit">
+    <div class="specialists-card"
+         [class.active]="state === 'confirmed'"
+         [class.muted]="state === 'selected'"
+    >
         <div class="clinic-card__controls clinic-card-controls">
             <button class="clinic-card-controls__btn clinic-card-controls__btn-check" (click)="selectCard()"></button>
             <button class="clinic-card-controls__btn clinic-card-controls__btn-favorites"></button>
@@ -87,8 +95,8 @@
     </div>
 </ng-template>
 
-<ng-container [ngSwitch]="cardType">
-    <ng-container *ngSwitchCase="'person'" [ngTemplateOutlet]="person_card_tpl"></ng-container>
-    <ng-container *ngSwitchCase="'placement'" [ngTemplateOutlet]="placement_card_tpl"></ng-container>
-    <ng-container *ngSwitchDefault [ngTemplateOutlet]="other_card_tpl"></ng-container>
+<ng-container [ngSwitch]="cardType" *ngIf="{ state: selectionState$ | async }  as data">
+    <ng-container *ngSwitchCase="'person'" [ngTemplateOutlet]="person_card_tpl" [ngTemplateOutletContext]="{ $implicit: data.state }"></ng-container>
+    <ng-container *ngSwitchCase="'placement'" [ngTemplateOutlet]="placement_card_tpl" [ngTemplateOutletContext]="{ $implicit: data.state }"></ng-container>
+    <ng-container *ngSwitchDefault [ngTemplateOutlet]="other_card_tpl" [ngTemplateOutletContext]="{ $implicit: data.state }"></ng-container>
 </ng-container>

@@ -10,11 +10,9 @@
                        [checked]="isActiveTab(tab.key)"
                        (change)="selectTab(tab.key)">
                 <label class="clinic-tabs-rbt__label" [for]="tab.key"
-                       *ngIf="{
-                       selected: tab.inSelected$ | async,
-                       count: tab.inCount$ | async } as stats">
+                       *ngIf="{ count: tab.inCount$ | async } as stats">
                     {{tab.title}}
-                    <span class="clinic-tabs-rbt__badge">{{stats.selected || 0}} / {{stats.count || 0}}</span>
+                    <span class="clinic-tabs-rbt__badge">{{stats.count || 0}}</span>
                 </label>
             </div>
         </div>
@@ -24,3 +22,11 @@
         <span class="clinic-cart-btn__txt">В корзину</span>
     </button>
 </div>
+
+<!--<label class="clinic-tabs-rbt__label" [for]="tab.key"-->
+<!--       *ngIf="{-->
+<!--       selected: tab.inSelected$ | async,-->
+<!--       count: tab.inCount$ | async } as stats">-->
+<!--    {{tab.title}}-->
+<!--    <span class="clinic-tabs-rbt__badge">{{stats.selected || 0}} / {{stats.count || 0}}</span>-->
+<!--</label>-->

@@ -120,7 +120,9 @@ export class RestService {
             segment: null,
         };
 
-        return this.getData<OrderResponse>(entSetting).pipe(map(response => response?.result ?? []));
+        return this.getData<OrderResponse>(entSetting, null, true).pipe(
+            tap((response) => console.log('getData OrderResponse: ', response)),
+            map(response => response?.result ?? []));
     }
 
     public activateUser(url: string): Observable<any> {
@@ -245,14 +247,16 @@ export class RestService {
         return this.postData<OrderSrc>(ep_config, data);
     }
 
-    public changeOrder(action: ODRER_ACTIONS, order?: Order): Observable<OrderSrc> {
-        const data = { id: order.id, action };
+    public changeOrder(
+        action: ODRER_ACTIONS,
+        order?: Entity,
+    ): Observable<OrderSrc> {
         const ep_config: ISettingsParams = {
             mode: 'order',
             segment: null,
         };
 
-        return this.postData<OrderSrc>(ep_config, data);
+        return this.postData<OrderSrc>(ep_config, order);
     }
 
     public getUserRole(): Observable<UserRoleSrc> {
@@ -306,12 +310,13 @@ export class RestService {
         return `${this.api.getApiPath()}${path.mode ?? ''}${path.segment ?? ''}${path.resource ?? ''}${path.script ?? ''}`;
     }
 
-    public getData<T>(path: ISettingsParams, data?: IRestParams): Observable<T> {
+    public getData<T>(path: ISettingsParams, data?: IRestParams, nocache = false): Observable<T> {
         if (path) {
             this.pathGen(path);
         }
         const cacheKey = md5(`${JSON.stringify(path)}_${JSON.stringify(data)}`);
-        if (this.cacheStore[cacheKey]) {
+
+        if (this.cacheStore[cacheKey] && !nocache) {
             return of(this.cacheStore[cacheKey]) as Observable<T>;
         }
 
@@ -327,7 +332,11 @@ export class RestService {
         const req = this.interceptor.token$.pipe(
             switchMap(http),
             take(1),
-            tap(_ => this.cacheStore[cacheKey] = _),
+            tap(_ => {
+                if (!nocache) {
+                    this.cacheStore[cacheKey] = _;
+                }
+            }),
         );
 
         return req as Observable<T>;
