@@ -5,6 +5,8 @@ import {Observable} from 'rxjs/Observable';
 import {SectionType} from './search.service';
 import {ODRER_ACTIONS, Order, OrderSrc} from '../models/order.interface';
 import {SlotEntity} from '../models/entity.interface';
+import {map, switchMap, tap} from 'rxjs/operators';
+import {hasher} from '../modules/utils/hasher';
 
 @Injectable({
     providedIn: 'root'
@@ -15,19 +17,55 @@ export class OrderService {
         private restService: RestService,
     ) {
         this.userOrdersStore = [];
+        this.onOrderListChanged$.subscribe(list => console.log('ORDER LIST updated: ', list));
+        this.doListRefresh$.next();
     }
 
     userOrdersStore: Order[];
-    doOrdersRefresh$ = new Subject<null>();
+    storeHash: string;
     doListRefresh$ = new Subject<null>();
-    doCheckProducts$ = new Subject<null>();
     doPriceRecalculate$ = new Subject<null>();
 
-    onPriceChanged$ = this.doPriceRecalculate$.pipe();
-    onOrderListChanged$ = this.doPriceRecalculate$.pipe();
-    onOrdersProductRefreshed$ = this.doPriceRecalculate$.pipe();
-    smartRefresher(): void {
+    onOrderListChanged$ = this.doListRefresh$.pipe(
+        switchMap(() => this.fetchCurrentOrders()),
+        tap(list => this.smartRefresher(list)),
+        map(() => this.userOrdersStore),
+    );
 
+    onPriceChanged$ = this.doPriceRecalculate$.pipe();
+
+    onOrdersProductRefreshed$ = this.doPriceRecalculate$.pipe();
+    async smartRefresher(ordersList: OrderSrc[]): Promise<void> {
+        let listChanged = false;
+        const hash = hasher(ordersList);
+        if (hash === this.storeHash) { return; }
+        this.userOrdersStore.forEach(order => order._status = 'refreshing');
+        for (const order of ordersList) {
+            const targetOrder = this.userOrdersStore.find(o => o.id === order.id);
+            if( targetOrder ) {
+                targetOrder.update(order);
+            } else {
+                this.userOrdersStore.push(new Order(order));
+            }
+        }
+        // clear repository
+        if (this.userOrdersStore.filter(o => o._status === 'refreshing').length) {
+            listChanged = true;
+        }
+
+        this.userOrdersStore = this.userOrdersStore.filter(o => o._status !== 'refreshing');
+        const forUpdateOrders = this.userOrdersStore.filter(o => o._status === 'loading');
+        if ( forUpdateOrders.length ) {
+            for (const o of forUpdateOrders) {
+                try {
+                    o.slot = await this.productFetcher(o.slot_entity_key, o.slot_entity_id).toPromise();
+                } catch (e) {
+                    o._status = 'error';
+                    console.error('fetch slot ERROR: ', e);
+                }
+            }
+        }
+        this.storeHash = hasher( this.userOrdersStore.map(o => o.raw) );
     }
 
     fetcherFactory(order: OrderSrc): Observable<any> {

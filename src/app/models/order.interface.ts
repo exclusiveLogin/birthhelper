@@ -63,8 +63,7 @@ export class Order implements IOrder {
     raw: OrderSrc;
     hash: string;
     slot: SlotEntity;
-    doSlotUpdate$ = new Subject<null>();
-    _status: 'pending' | 'updated' | 'error' | 'refreshing' = 'pending';
+    _status: 'pending' | 'error' | 'refreshing' | 'loading' | 'stable' = 'pending';
 
     constructor(src: OrderSrc) {
         this.raw = src;
@@ -72,10 +71,18 @@ export class Order implements IOrder {
             Object.keys(src).forEach(k => this[k] = src[k]);
         }
         this.hash = hasher(src);
+        this._status = 'loading';
     }
 
     update(src: OrderSrc): void {
+        const hash = hasher(src);
         if (!!src && src.id !== this.id) {
+            return;
+        }
+
+        this._status = 'stable';
+
+        if (this.hash === hash) {
             return;
         }
 
@@ -83,9 +90,7 @@ export class Order implements IOrder {
             src.slot_entity_key !== this.slot_entity_key ||
             src.slot_entity_id !== this.slot_entity_id
         ) {
-            this.slot_entity_key = src.slot_entity_key;
-            this.slot_entity_id = src.slot_entity_id;
-            this.doSlotUpdate$.next();
+            this._status = 'loading';
         }
         Object.keys(src).forEach(k => this[k] = src[k]);
     }

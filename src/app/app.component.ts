@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {AuthService} from './modules/auth-module/auth.service';
+import {OrderService} from './services/order.service';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +8,10 @@ import {AuthService} from './modules/auth-module/auth.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-    constructor(private auth: AuthService) {
+    constructor(
+        private auth: AuthService,
+        private orders: OrderService,
+        ) {
     }
 
 }
