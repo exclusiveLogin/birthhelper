@@ -95,7 +95,7 @@
     </div>
 </ng-template>
 
-<ng-container [ngSwitch]="cardType" *ngIf="{ state: selectionState$ | async }  as data">
+<ng-container [ngSwitch]="cardType" *ngIf="{ state: selectionState, trigger: onSelectionChanges$ | async }  as data">
     <ng-container *ngSwitchCase="'person'" [ngTemplateOutlet]="person_card_tpl" [ngTemplateOutletContext]="{ $implicit: data.state }"></ng-container>
     <ng-container *ngSwitchCase="'placement'" [ngTemplateOutlet]="placement_card_tpl" [ngTemplateOutletContext]="{ $implicit: data.state }"></ng-container>
     <ng-container *ngSwitchDefault [ngTemplateOutlet]="other_card_tpl" [ngTemplateOutletContext]="{ $implicit: data.state }"></ng-container>

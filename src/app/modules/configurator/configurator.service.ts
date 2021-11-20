@@ -35,7 +35,7 @@ export class ConfiguratorService {
         private orderService: OrderService,
     ) {
         console.log('ConfiguratorService', this);
-        this.orderService.onOrderListChanged$.subscribe(list => this.syncOrders(list));
+        this.orderService.onOrderListChanged_Pending$.subscribe(list => this.syncOrders(list));
         this.orderService.updateOrderList();
     }
 
@@ -230,14 +230,10 @@ export class ConfiguratorService {
         this._selection$.next([data, tabKey]);
     }
 
-    getSelectedStateByEntity(entity: Entity): Observable<SelectedState> {
+    getSelectedStateByEntity(entity: Entity): SelectedState {
         const data: { id: number, entKey: string } = { id: entity.id, entKey: entity._entity_key };
         const hash = hasher(data);
-        return this.onSelection$.pipe(
-            map((store) => {
-                const target = this.selectionStore[hash];
-                return target?._status ?? 'unselected';
-            }),
-        );
+        const target = this.selectionStore[hash];
+        return target?._status ?? 'unselected';
     }
 }
