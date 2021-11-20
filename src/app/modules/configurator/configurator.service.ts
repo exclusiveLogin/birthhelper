@@ -67,6 +67,7 @@ export class ConfiguratorService {
             filter(([id, entKey, section]) => !!id && !!entKey && !!section),
             switchMap(([id, entKey, section]) => this.restService.getConfiguratorSettings(section)),
             tap(config => this._config = config),
+            tap(() => this.selectionStore = {}),
         );
 
     onSynced$: Observable<null> = this._syncOrders$.pipe();

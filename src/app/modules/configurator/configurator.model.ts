@@ -25,16 +25,21 @@ export interface Consumer {
     priority?: PriorityFloor;
 }
 
+export type SelectMode = 'multi' | 'single';
+
 export interface TabConfig {
     key: string;
     title: string;
     floors: TabFloorSetting[];
+    selectMode?: SelectMode;
 }
 
 export interface TabFloorSetting {
     title: string;
     entityType?: 'person' | 'placement' | 'other';
     consumerKeys: string[];
+    required?: boolean;
+    selectMode?: SelectMode;
 }
 
 export interface ConfiguratorConfigSrc {
