@@ -30,14 +30,16 @@ export type SelectMode = 'multi' | 'single';
 export interface TabConfig {
     key: string;
     title: string;
+    invalid: boolean;
     floors: TabFloorSetting[];
     selectMode?: SelectMode;
 }
 
 export interface TabFloorSetting {
     title: string;
-    entityType?: 'person' | 'placement' | 'other';
     consumerKeys: string[];
+    invalid: boolean;
+    entityType?: 'person' | 'placement' | 'other';
     required?: boolean;
     selectMode?: SelectMode;
 }

@@ -55,7 +55,10 @@ export class ConfiguratorComponent implements OnInit {
     }
 
     gotoSearch(): void {
-        this.onInitSectionType$.subscribe(section => this.router.navigate(['/system/search', section + 's']).then());
+        this.onInitSectionType$
+            .subscribe(section =>
+                this.router.navigate(['/system/search', section + 's'])
+                    .then());
     }
 
 }

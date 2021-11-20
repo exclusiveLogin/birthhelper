@@ -1,6 +1,5 @@
 import {hasher} from '../modules/utils/hasher';
-import {SlotEntity} from './entity.interface';
-import {Subject} from 'rxjs/Subject';
+import {PriceEntitySlot} from './entity.interface';
 
 export interface OrderSrc {
     id: number;
@@ -22,6 +21,7 @@ export interface OrderResponse {
 export interface IOrder extends OrderSrc {
     raw: OrderSrc;
     hash: string;
+    slot: PriceEntitySlot;
 }
 
 export enum ODRER_ACTIONS {
@@ -62,7 +62,7 @@ export class Order implements IOrder {
     datetime_create: string;
     raw: OrderSrc;
     hash: string;
-    slot: SlotEntity;
+    slot: PriceEntitySlot;
     _status: 'pending' | 'error' | 'refreshing' | 'loading' | 'stable' = 'pending';
 
     constructor(src: OrderSrc) {

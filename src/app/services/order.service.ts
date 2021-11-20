@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 import {RestService} from './rest.service';
-import {SectionType} from './search.service';
 import {ODRER_ACTIONS, Order, OrderSrc} from '../models/order.interface';
-import {Entity, SlotEntity} from '../models/entity.interface';
+import {Entity, PriceEntitySlot} from '../models/entity.interface';
 import {map, shareReplay, switchMap, tap} from 'rxjs/operators';
 import {hasher} from '../modules/utils/hasher';
 import {Subject, Observable} from 'rxjs';
+import {summatorPipe} from '../modules/utils/price-summator';
 
 @Injectable({
     providedIn: 'root'
@@ -29,9 +29,17 @@ export class OrderService {
         map(list => list.filter((o) => o.status === 'pending')),
     );
 
-    onPriceChanged$ = this.doPriceRecalculate$.pipe();
+    onSlots$ = this.doPriceRecalculate$.pipe(
+        map(() => this.userOrdersStore
+                .map(order => order?.slot)
+                .filter( _ => !!_ ),
+        ),
+    );
 
-    onOrdersProductRefreshed$ = this.doPriceRecalculate$.pipe();
+    onSummaryPriceChanged$ = this.onSlots$.pipe(
+        map((slots: PriceEntitySlot[]) => slots.map(slot => slot?.price ?? 0)),
+        summatorPipe,
+    );
 
     constructor(
         private restService: RestService,
@@ -46,26 +54,22 @@ export class OrderService {
 
     async smartRefresher(ordersList: OrderSrc[]): Promise<void> {
         console.log('smartRefresher', ordersList);
-        let listChanged = false;
         const hash = hasher(ordersList);
-        if (hash === this.storeHash) { return; }
+        if (hash === this.storeHash) {
+            return;
+        }
         this.userOrdersStore.forEach(order => order._status = 'refreshing');
         for (const order of ordersList) {
             const targetOrder = this.userOrdersStore.find(o => o.id === order.id);
-            if ( targetOrder ) {
+            if (targetOrder) {
                 targetOrder.update(order);
             } else {
                 this.userOrdersStore.push(new Order(order));
             }
         }
-        // clear repository
-        if (this.userOrdersStore.filter(o => o._status === 'refreshing').length) {
-            listChanged = true;
-        }
-
         this.userOrdersStore = this.userOrdersStore.filter(o => o._status !== 'refreshing');
         const forUpdateOrders = this.userOrdersStore.filter(o => o._status === 'loading');
-        if ( forUpdateOrders.length ) {
+        if (forUpdateOrders.length) {
             for (const o of forUpdateOrders) {
                 try {
                     o.slot = await this.productFetcher(o.slot_entity_key, o.slot_entity_id).toPromise();
@@ -75,15 +79,9 @@ export class OrderService {
                 }
             }
         }
-        this.storeHash = hasher( this.userOrdersStore.map(o => o.raw) );
-    }
+        this.storeHash = hasher(this.userOrdersStore.map(o => o.raw));
 
-    fetcherFactory(order: OrderSrc): Observable<any> {
-        return ;
-    }
-
-    getPriceByContragent(section: SectionType, id: number): Observable<any> {
-        return ;
+        this.doPriceRecalculate$.next();
     }
 
     addIntoCart(slotKey: string, slotId: number): void {
@@ -117,7 +115,17 @@ export class OrderService {
         }
     }
 
-    productFetcher(key: string, id: number): Observable<SlotEntity> {
+    productFetcher(key: string, id: number): Observable<PriceEntitySlot> {
         return this.restService.getEntity(key, id);
+    }
+
+    getPriceBuContragent(contragentId: number): Observable<number> {
+        return this.onSlots$.pipe(
+            map(slots => slots.filter(slot => slot._contragent.id === contragentId)),
+            map((slots: PriceEntitySlot[]) => slots.map(slot => slot?.price ?? 0)),
+            map((prices: number[]) => prices.map(price => +price)),
+            map((prices: number[]) => prices.filter(price => !!price && !isNaN(price))),
+            summatorPipe,
+        );
     }
 }

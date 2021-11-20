@@ -58,6 +58,7 @@ export class ConfiguratorService {
     private _syncOrders$ = new Subject<null>();
 
     onContragent$ = combineLatest([this.currentContragentID$, this.currentContragentEntityKey$]).pipe(
+        tap(() => this.selectionStore = {}),
         filter(([id, key]) => !!id && !!key),
         switchMap(([id, key]) => this.restService.getEntity(key, id)),
     );
@@ -67,7 +68,6 @@ export class ConfiguratorService {
             filter(([id, entKey, section]) => !!id && !!entKey && !!section),
             switchMap(([id, entKey, section]) => this.restService.getConfiguratorSettings(section)),
             tap(config => this._config = config),
-            tap(() => this.selectionStore = {}),
         );
 
     onSynced$: Observable<null> = this._syncOrders$.pipe();
