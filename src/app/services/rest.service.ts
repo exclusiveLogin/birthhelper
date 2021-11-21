@@ -10,7 +10,7 @@ import {FilterResult} from '../modules/search/search/components/filter/filter.co
 import {SessionResponse, UserRole} from '../modules/auth-module/auth.service';
 import {User} from '../models/user.interface';
 import {InterceptorService} from '../modules/auth-module/interceptor.service';
-import {ConfiguratorConfigSrc, Restrictor} from 'app/modules/configurator/configurator.model';
+import {ConfiguratorConfigSrc, Restrictor, SelectionOrderSlot} from 'app/modules/configurator/configurator.model';
 import {Entity} from 'app/models/entity.interface';
 import md5 from 'md5';
 import {ODRER_ACTIONS, Order, OrderResponse, OrderSrc} from '../models/order.interface';
@@ -237,8 +237,14 @@ export class RestService {
         return this.postData<SessionResponse>(ep_config, data, true);
     }
 
-    public createOrder(entityKey: string, entityId: number): Observable<OrderSrc> {
-        const data = { ent_key: entityKey, ent_id: entityId, action: ODRER_ACTIONS.ADD };
+    public createOrder(selection): Observable<any> {
+        const data = {
+            ent_key: selection.entKey,
+            ent_id: selection.entId,
+            tab_key: selection.tabKey,
+            floor_key: selection.floorKey,
+            action: ODRER_ACTIONS.ADD
+        };
         const ep_config: ISettingsParams = {
             mode: 'order',
             segment: null,
@@ -249,14 +255,21 @@ export class RestService {
 
     public changeOrder(
         action: ODRER_ACTIONS,
-        order?: Entity,
+        selection?: SelectionOrderSlot,
     ): Observable<OrderSrc> {
+        const data = {
+            ent_key: selection.entKey,
+            ent_id: selection.entId,
+            tab_key: selection.tabKey,
+            floor_key: selection.floorKey,
+            action,
+        };
         const ep_config: ISettingsParams = {
             mode: 'order',
             segment: null,
         };
 
-        return this.postData<OrderSrc>(ep_config, order);
+        return this.postData<OrderSrc>(ep_config, data);
     }
 
     public getUserRole(): Observable<UserRoleSrc> {

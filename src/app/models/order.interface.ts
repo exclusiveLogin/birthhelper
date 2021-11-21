@@ -7,6 +7,8 @@ export interface OrderSrc {
     session_id: number;
     slot_entity_key: string;
     slot_entity_id: number;
+    tab_key: string;
+    floor_key: string;
     refferer: number;
     status: StatusType;
     group_token: string;
@@ -55,6 +57,8 @@ export class Order implements IOrder {
     session_id: number;
     slot_entity_key: string;
     slot_entity_id: number;
+    tab_key: string;
+    floor_key: string;
     refferer: number;
     status: StatusType;
     group_token: string;

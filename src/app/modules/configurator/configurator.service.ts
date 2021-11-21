@@ -54,7 +54,7 @@ export class ConfiguratorService {
     private viewsStore: ViewStore = {};
 
     private _currentTab$ = new Subject<string>();
-    private _selection$ = new Subject<[e: Entity, tab: string]>();
+    private _selection$ = new Subject<SelectionOrderSlot>();
     private _syncOrders$ = new Subject<null>();
 
     onContragent$ = combineLatest([this.currentContragentID$, this.currentContragentEntityKey$]).pipe(
@@ -87,25 +87,15 @@ export class ConfiguratorService {
         map(key => this.viewsStore[key]));
 
     onSelectionByUser$: Observable<null> = this._selection$.pipe(
-        tap(([item, tab]) => {
+        tap((selection) => {
             // store
-            const hash = hasher(item);
-            const selection: SelectionOrderSlot = { ...item, _status: 'selected'};
-
+            const hash = hasher({entId: selection.entId, entKey: selection.entKey});
             const operation: 'add' | 'remove' = this.selectionStore[hash] ? 'remove' : 'add';
             this.selectionStore[hash] = operation === 'remove' ? null : selection;
 
-            // tabs
-            // const idxOfHash = this.tabsStore[tab].selectedHashes.indexOf(hash);
-            // if (idxOfHash >= 0) {
-            //     // if exist hash in tab
-            //     this.tabsStore[tab].selectedHashes.splice(idxOfHash, 1);
-            // } else {
-            //     this.tabsStore[tab].selectedHashes.push(hash);
-            // }
             operation === 'add'
-                ? this.orderService.addIntoCart(item.entKey, item.id)
-                : this.orderService.removeOrderFromCartByEntity(item);
+                ? this.orderService.addIntoCart(selection)
+                : this.orderService.removeOrderFromCart(selection);
         }),
         mapTo(null),
     );
@@ -118,7 +108,7 @@ export class ConfiguratorService {
     syncOrders(list: Order[]): void {
         let needRefresh = false;
         for (const order of list) {
-            const hash = hasher({id: order.slot_entity_id, entKey: order.slot_entity_key});
+            const hash = hasher({entId: order.slot_entity_id, entKey: order.slot_entity_key});
             const selection = this.selectionStore[hash];
             if (selection) {
                 // если товар есть в корзине и в выбранном
@@ -130,11 +120,11 @@ export class ConfiguratorService {
                 // если товар не выбран но есть в корзине
                 needRefresh = true;
                 this.selectionStore[hash] = {
-                    ...{
-                        id: order.slot_entity_id,
-                        entKey: order.slot_entity_key
-                    },
-                    _status: 'confirmed'
+                    entId: order.slot_entity_id,
+                    entKey: order.slot_entity_key,
+                    _status: 'confirmed',
+                    tabKey: order.tab_key,
+                    floorKey: order.floor_key,
                 };
             }
             // проверяем если товара нет в корзине но он почему то выбран
@@ -226,14 +216,19 @@ export class ConfiguratorService {
         this._currentTab$.next(tabKey);
     }
 
-    selectItem(entity: Entity, tabKey: string): void {
-        const data: { id: number, entKey: string } = { id: entity.id, entKey: entity._entity_key};
-        this._selection$.next([data, tabKey]);
+    selectItem(entity: Entity, tabKey: string, floorKey: string): void {
+        const data: SelectionOrderSlot = {
+            _status: 'selected',
+            entKey: entity._entity_key,
+            entId: entity.id,
+            tabKey,
+            floorKey,
+        };
+        this._selection$.next(data);
     }
 
     getSelectedStateByEntity(entity: Entity): SelectedState {
-        const data: { id: number, entKey: string } = { id: entity.id, entKey: entity._entity_key };
-        const hash = hasher(data);
+        const hash = hasher({ entId: entity.id, entKey: entity._entity_key });
         const target = this.selectionStore[hash];
         return target?._status ?? 'unselected';
     }

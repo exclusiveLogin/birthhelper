@@ -6,6 +6,7 @@ import {map, shareReplay, switchMap, tap} from 'rxjs/operators';
 import {hasher} from '../modules/utils/hasher';
 import {Subject, Observable} from 'rxjs';
 import {summatorPipe} from '../modules/utils/price-summator';
+import {SelectionOrderSlot} from '../modules/configurator/configurator.model';
 
 @Injectable({
     providedIn: 'root'
@@ -84,18 +85,13 @@ export class OrderService {
         this.doPriceRecalculate$.next();
     }
 
-    addIntoCart(slotKey: string, slotId: number): void {
-        this.orderApiAction(ODRER_ACTIONS.ADD, null, slotKey, slotId)
+    addIntoCart(selection: SelectionOrderSlot): void {
+        this.orderApiAction(ODRER_ACTIONS.ADD, selection)
             .subscribe(() => this.doListRefresh$.next());
     }
 
-    removeOrderFromCartByID(order: Entity): void {
-        this.orderApiAction(ODRER_ACTIONS.REMOVE, order)
-            .subscribe(() => this.doListRefresh$.next());
-    }
-
-    removeOrderFromCartByEntity(order: Entity): void {
-        this.orderApiAction(ODRER_ACTIONS.REMOVE, null, order.entKey, order.id)
+    removeOrderFromCart(selection: SelectionOrderSlot): void {
+        this.orderApiAction(ODRER_ACTIONS.REMOVE, selection)
             .subscribe(() => this.doListRefresh$.next());
     }
 
@@ -104,13 +100,12 @@ export class OrderService {
             .pipe(map(list => list.filter(order => order.status !== 'deleted')));
     }
 
-    orderApiAction(action: ODRER_ACTIONS, order?: Entity, entityKey?: string, entityId?: number): Observable<any> {
-        const _ = order ? order : { id: null, ent_key: entityKey, ent_id: entityId, action} as Entity;
+    orderApiAction(action: ODRER_ACTIONS, selection: SelectionOrderSlot): Observable<any> {
         switch (action) {
             case ODRER_ACTIONS.ADD:
-                return this.restService.createOrder(entityKey, entityId);
+                return this.restService.createOrder(selection);
             default:
-                return this.restService.changeOrder(action, _);
+                return this.restService.changeOrder(action, selection);
 
         }
     }

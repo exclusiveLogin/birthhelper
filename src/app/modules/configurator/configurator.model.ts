@@ -36,6 +36,7 @@ export interface TabConfig {
 }
 
 export interface TabFloorSetting {
+    key: string;
     title: string;
     consumerKeys: string[];
     invalid: boolean;
@@ -64,7 +65,14 @@ export interface DataStore {
     [key: string]: Observable<SlotEntity[]>;
 }
 export type SelectedState = 'selected' | 'confirmed' | 'unselected';
-export type SelectionOrderSlot = Entity & { _status: SelectedState};
+export interface SelectionOrderSlot {
+    _status: SelectedState;
+    entKey: string;
+    entId: number;
+    tabKey: string;
+    floorKey: string;
+    id?: number;
+}
 
 export interface SelectionStore {
     // sectionKey_tabKey_floorKey_entId: Entity
