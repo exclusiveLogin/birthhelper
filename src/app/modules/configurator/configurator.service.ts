@@ -90,8 +90,11 @@ export class ConfiguratorService {
         tap((selection) => {
             // store
             const hash = hasher({entId: selection.entId, entKey: selection.entKey});
-            const operation: 'add' | 'remove' = this.selectionStore[hash] ? 'remove' : 'add';
-            this.selectionStore[hash] = operation === 'remove' ? null : selection;
+            const targetSelection = this.selectionStore[hash];
+            const operation = targetSelection ? 'remove' : 'add';
+            operation === 'remove'
+                ? targetSelection._status = 'selected'
+                : this.selectionStore[hash] = selection;
 
             operation === 'add'
                 ? this.orderService.addIntoCart(selection)
@@ -125,16 +128,17 @@ export class ConfiguratorService {
                     _status: 'confirmed',
                     tabKey: order.tab_key,
                     floorKey: order.floor_key,
+                    sectionKey: order.section_key,
                 };
             }
-            // проверяем если товара нет в корзине но он почему то выбран
-            Object.entries(this.selectionStore).forEach(([__hash, __selection]) => {
-                if (__selection?._status === 'selected') {
-                    needRefresh = true;
-                    this.selectionStore[__hash] = null;
-                }
-            });
         }
+        // проверяем если товара нет в корзине но он почему то выбран
+        Object.entries(this.selectionStore).forEach(([__hash, __selection]) => {
+            if (__selection?._status === 'selected') {
+                needRefresh = true;
+                this.selectionStore[__hash] = null;
+            }
+        });
         if (needRefresh) {
             this._syncOrders$.next();
         }
@@ -216,13 +220,19 @@ export class ConfiguratorService {
         this._currentTab$.next(tabKey);
     }
 
-    selectItem(entity: Entity, tabKey: string, floorKey: string): void {
+    selectItem(
+        entity: Entity,
+        tabKey: string,
+        floorKey: string,
+        sectionKey: string,
+    ): void {
         const data: SelectionOrderSlot = {
             _status: 'selected',
             entKey: entity._entity_key,
             entId: entity.id,
             tabKey,
             floorKey,
+            sectionKey,
         };
         this._selection$.next(data);
     }

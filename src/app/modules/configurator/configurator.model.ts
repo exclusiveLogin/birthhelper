@@ -71,6 +71,7 @@ export interface SelectionOrderSlot {
     entId: number;
     tabKey: string;
     floorKey: string;
+    sectionKey: string;
     id?: number;
 }
 

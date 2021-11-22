@@ -8,26 +8,28 @@
     <app-configurator-tabs [tabs$]="onTabsLoad$" (currentTab)="selectTab($event)"></app-configurator-tabs>
 
     <ng-container *ngIf="onView$ | async as view">
-        <ng-container *ngFor="let floor of view.floors">
-            <h3 class="title-h3" *ngIf="floor.title">{{floor.title}}</h3>
+        <ng-container *ngIf="onInitSectionType$ | async as section">
+            <ng-container *ngFor="let floor of view.floors">
+                <h3 class="title-h3" *ngIf="floor.title">{{floor.title}}</h3>
 
-            <div class="clinic__cards">
-                <ng-container *ngFor="let consumerKEY of floor.consumerKeys">
-                    <ng-container *ngIf="{list: getConsumerByID(consumerKEY) | async} as data">
-                        <app-configurator-card
+                <div class="clinic__cards">
+                    <ng-container *ngFor="let consumerKEY of floor.consumerKeys">
+                        <ng-container *ngIf="{list: getConsumerByID(consumerKEY) | async} as data">
+                            <app-configurator-card
                                 *ngFor="let entity of data.list"
                                 [cardType]="floor.entityType"
                                 [active]="false"
                                 [entity]="entity"
                                 [tabKey]="view.key"
                                 [floorKey]="floor.key"
-                        ></app-configurator-card>
+                                [sectionKey]="section"
+                            ></app-configurator-card>
+                        </ng-container>
                     </ng-container>
-                </ng-container>
 
-            </div>
+                </div>
+            </ng-container>
         </ng-container>
-
     </ng-container>
 
 

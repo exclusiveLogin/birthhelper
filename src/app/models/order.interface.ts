@@ -1,5 +1,6 @@
 import {hasher} from '../modules/utils/hasher';
 import {PriceEntitySlot} from './entity.interface';
+import {SelectionOrderSlot} from '../modules/configurator/configurator.model';
 
 export interface OrderSrc {
     id: number;
@@ -9,6 +10,7 @@ export interface OrderSrc {
     slot_entity_id: number;
     tab_key: string;
     floor_key: string;
+    section_key: string;
     refferer: number;
     status: StatusType;
     group_token: string;
@@ -59,6 +61,7 @@ export class Order implements IOrder {
     slot_entity_id: number;
     tab_key: string;
     floor_key: string;
+    section_key: string;
     refferer: number;
     status: StatusType;
     group_token: string;
@@ -99,4 +102,23 @@ export class Order implements IOrder {
         Object.keys(src).forEach(k => this[k] = src[k]);
     }
 
+}
+
+export interface OrderRequest {
+    ent_key: string;
+    ent_id: number;
+    tab_key: string;
+    floor_key: string;
+    section_key: string;
+    action: ODRER_ACTIONS;
+}
+export function orderRestMapper(selection: SelectionOrderSlot, action: ODRER_ACTIONS): OrderRequest {
+    return {
+        ent_key: selection.entKey,
+        ent_id: selection.entId,
+        tab_key: selection.tabKey,
+        floor_key: selection.floorKey,
+        section_key: selection.sectionKey,
+        action,
+    };
 }

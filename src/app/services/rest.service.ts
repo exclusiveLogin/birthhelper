@@ -13,7 +13,7 @@ import {InterceptorService} from '../modules/auth-module/interceptor.service';
 import {ConfiguratorConfigSrc, Restrictor, SelectionOrderSlot} from 'app/modules/configurator/configurator.model';
 import {Entity} from 'app/models/entity.interface';
 import md5 from 'md5';
-import {ODRER_ACTIONS, Order, OrderResponse, OrderSrc} from '../models/order.interface';
+import {ODRER_ACTIONS, OrderResponse, orderRestMapper, OrderSrc} from '../models/order.interface';
 
 export interface ISettingsParams {
     mode: string;
@@ -238,13 +238,7 @@ export class RestService {
     }
 
     public createOrder(selection): Observable<any> {
-        const data = {
-            ent_key: selection.entKey,
-            ent_id: selection.entId,
-            tab_key: selection.tabKey,
-            floor_key: selection.floorKey,
-            action: ODRER_ACTIONS.ADD
-        };
+        const data = orderRestMapper(selection, ODRER_ACTIONS.ADD);
         const ep_config: ISettingsParams = {
             mode: 'order',
             segment: null,
@@ -257,13 +251,7 @@ export class RestService {
         action: ODRER_ACTIONS,
         selection?: SelectionOrderSlot,
     ): Observable<OrderSrc> {
-        const data = {
-            ent_key: selection.entKey,
-            ent_id: selection.entId,
-            tab_key: selection.tabKey,
-            floor_key: selection.floorKey,
-            action,
-        };
+        const data = orderRestMapper(selection, action);
         const ep_config: ISettingsParams = {
             mode: 'order',
             segment: null,

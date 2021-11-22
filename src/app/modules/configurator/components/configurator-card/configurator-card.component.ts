@@ -26,6 +26,7 @@ export class ConfiguratorCardComponent implements OnInit {
     @Input() public active: boolean;
     @Input() public tabKey: string;
     @Input() public floorKey: string;
+    @Input() public sectionKey: string;
 
     @Input() set entity(data: SlotEntity) {
         this.viewEnt = this.viewEnt ? this.viewEnt :
@@ -48,7 +49,12 @@ export class ConfiguratorCardComponent implements OnInit {
         this.selectionState = this.configuratorService.getSelectedStateByEntity(this.viewEnt);
     }
     selectCard(): void {
-        this.configuratorService.selectItem(this.viewEnt, this.tabKey, this.floorKey);
+        this.configuratorService.selectItem(
+            this.viewEnt,
+            this.tabKey,
+            this.floorKey,
+            this.sectionKey,
+        );
     }
 
     ngOnInit(): void {
