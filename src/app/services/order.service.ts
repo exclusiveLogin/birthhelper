@@ -4,13 +4,11 @@ import {ODRER_ACTIONS, Order, OrderSrc} from '../models/order.interface';
 import {PriceEntitySlot} from '../models/entity.interface';
 import {map, mapTo, shareReplay, switchMap, tap} from 'rxjs/operators';
 import {hasher} from '../modules/utils/hasher';
-import {Subject, Observable} from 'rxjs';
+import {Subject, Observable, of, forkJoin} from 'rxjs';
 import {summatorPipe} from '../modules/utils/price-summator';
 import {ConfiguratorConfigSrc, SelectionOrderSlot} from '../modules/configurator/configurator.model';
 import {uniq} from '../modules/utils/uniq';
 import {SectionType} from './search.service';
-import {forkJoin} from 'rxjs/internal/observable/forkJoin';
-import {of} from 'rxjs/internal/observable/of';
 
 export type StatusValidation = 'pending' | 'poor' | 'rich' | 'valid';
 export type SelectMode = 'multi' | 'single';
