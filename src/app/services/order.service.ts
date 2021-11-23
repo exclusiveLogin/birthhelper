@@ -1,18 +1,46 @@
 import {Injectable} from '@angular/core';
 import {RestService} from './rest.service';
 import {ODRER_ACTIONS, Order, OrderSrc} from '../models/order.interface';
-import {Entity, PriceEntitySlot} from '../models/entity.interface';
-import {map, shareReplay, switchMap, tap} from 'rxjs/operators';
+import {PriceEntitySlot} from '../models/entity.interface';
+import {map, mapTo, shareReplay, switchMap, tap} from 'rxjs/operators';
 import {hasher} from '../modules/utils/hasher';
 import {Subject, Observable} from 'rxjs';
 import {summatorPipe} from '../modules/utils/price-summator';
-import {SelectionOrderSlot} from '../modules/configurator/configurator.model';
+import {ConfiguratorConfigSrc, SelectionOrderSlot} from '../modules/configurator/configurator.model';
+import {uniq} from '../modules/utils/uniq';
+import {SectionType} from './search.service';
+import {forkJoin} from 'rxjs/internal/observable/forkJoin';
+import {of} from 'rxjs/internal/observable/of';
+
+export type StatusValidation = 'pending' | 'poor' | 'rich' | 'valid';
+export type SelectMode = 'multi' | 'single';
+
+export interface ValidationTreeItem {
+    key: string;
+    selected: number;
+    status: StatusValidation;
+    required: boolean;
+    selectionMode: SelectMode;
+    locked: boolean;
+}
+export interface ValidationTreeContragent {
+    contragentHash: string;
+    _tabs: ValidationTreeItem[];
+    _floors: ValidationTreeItem[];
+    _orders: Order[];
+    isInvalid: boolean;
+}
+
 
 @Injectable({
     providedIn: 'root'
 })
 export class OrderService {
 
+    validationTree: ValidationTreeContragent[] = [];
+    uniqContragentHashes: string[] = [];
+    uniqSectionKeys: SectionType[] = [];
+    sectionConfigs: { [id in SectionType]?: ConfiguratorConfigSrc} = {};
     userOrdersStore: Order[];
     storeHash: string;
     doListRefresh$ = new Subject<null>();
@@ -21,7 +49,7 @@ export class OrderService {
     onOrderListChanged$ = this.doListRefresh$.pipe(
         tap(() => console.log('doListRefresh$')),
         switchMap(() => this.fetchCurrentOrders()),
-        tap(list => this.smartRefresher(list)),
+        switchMap(list => this.smartRefresher(list)),
         map(() => this.userOrdersStore),
         shareReplay(1),
     );
@@ -42,11 +70,137 @@ export class OrderService {
         summatorPipe,
     );
 
+    onValidationTreeCompleted$ = this.onOrderListChanged$.pipe(
+        tap((orders => this.refreshValidationConfigsHashes(orders))),
+        switchMap((orders) => this.updateConfigsBySections().pipe(mapTo(orders))),
+        tap(orders => this.updateValidationTreeStructure(orders)),
+        tap( () => this.calculateTreeSelections()),
+        tap( () => this.calculateTreeStatuses()),
+        map(() => this.validationTree),
+    );
+
     constructor(
         private restService: RestService,
     ) {
         this.userOrdersStore = [];
         console.log('OrderService', this);
+        this.onValidationTreeCompleted$
+            .subscribe((tree) => console.log('onValidationTreeCompleted$ data:', tree) );
+    }
+
+    refreshValidationConfigsHashes(orders: Order[]): void {
+        // собираем уникальные констрагенты по которым будем группировать заказы (позиции)
+        const c_hashes = orders.filter(o => !!o?.slot).map(o => {
+            const {_entity_id_key: e_id, _contragent_id_key: c_id} = o.slot;
+            return hasher({id: o[c_id], entKey: o[e_id]});
+        });
+        this.uniqContragentHashes = uniq(c_hashes);
+
+        // собираем уникальные секции в которых учавствуют позиции (нужно для подгрузки конфгов)
+        this.uniqSectionKeys = uniq(orders
+            .filter(o => o.section_key)
+            .map(o => o.section_key)
+        ) as SectionType[];
+    }
+
+    updateConfigsBySections(): Observable<ConfiguratorConfigSrc[]> {
+        if (!this.uniqSectionKeys.length) {
+            return of(null);
+        }
+        return forkJoin([
+            ...this.uniqSectionKeys.map(section => this.restService.getConfiguratorSettings(section))
+        ]).pipe(
+            tap((cfgs) => {
+                this.sectionConfigs = {};
+                cfgs.forEach((cfg, idx) => this.sectionConfigs[this.uniqSectionKeys[idx]] = cfg);
+            })
+        );
+    }
+
+    updateValidationTreeStructure(orders: Order[]): void {
+        this.validationTree = this.uniqContragentHashes.map(hash => {
+            const currentContragentOrders = orders.filter(o => o?.slot?.[o.slot._contragent_id_key]);
+            if (!currentContragentOrders.length) { return ; }
+            const targetCfgKey = currentContragentOrders[0].section_key;
+            const targetCfg = this.sectionConfigs[targetCfgKey];
+            if (!targetCfg) { return ; }
+            const contragentTabs = targetCfg?.tabs ?? [];
+            const contragentFloors = targetCfg?.tabs?.reduce(
+                (floors, tab) => ([...floors, ...tab.floors]), []) ?? [];
+            return {
+                contragentHash: hash,
+                _tabs: contragentTabs.map(tab => {
+                    return {
+                        key: tab.key,
+                        required: tab?.required ?? false,
+                        selected: 0,
+                        selectionMode: tab?.selectMode ?? 'multi',
+                        status: 'pending',
+                        locked: false,
+                    } as ValidationTreeItem;
+                }) ?? [],
+                _floors: contragentFloors.map(floor => {
+                    return {
+                        key: floor.key,
+                        required: floor?.required ?? false,
+                        selected: 0,
+                        selectionMode: floor?.selectMode ?? 'multi',
+                        status: 'pending',
+                        locked: false,
+                    } as ValidationTreeItem;
+                }) ?? [],
+                _orders: currentContragentOrders,
+                isInvalid: false,
+            };
+        }).filter(_ => !!_);
+    }
+
+    calculateTreeSelections(): void {
+        for (const contragentTree of this.validationTree) {
+            contragentTree._orders.forEach(order => {
+                contragentTree._tabs.forEach(tab => tab.selected = order.tab_key === tab.key
+                    ? tab.selected + 1
+                    : tab.selected);
+                contragentTree._floors.forEach(floor => floor.selected = order.floor_key === floor.key
+                    ? floor.selected + 1
+                    : floor.selected);
+            });
+        }
+    }
+
+    calculateTreeStatuses(): void {
+        for (const contragentTree of this.validationTree) {
+            contragentTree._tabs.forEach(tab => {
+                tab.status = 'valid';
+                if (tab.selected === 0) {
+                    tab.status =  tab.required ? 'poor' : 'valid';
+                }
+                if (tab.selected >= 1) {
+                    tab.locked = tab.selectionMode === 'single';
+                }
+                if (tab.selected > 1) {
+                    tab.status = tab.selectionMode === 'single' ? 'rich' : 'valid';
+                }
+                if (tab.status !== 'valid') {
+                    contragentTree.isInvalid = true;
+                }
+            });
+            contragentTree._floors.forEach(floor => {
+                floor.status = 'valid';
+                if (floor.selected === 0) {
+                    floor.status =  floor.required ? 'poor' : 'valid';
+                }
+                if (floor.selected >= 1) {
+                    floor.locked = floor.selectionMode === 'single';
+                }
+                if (floor.selected > 1) {
+                    floor.status = floor.selectionMode === 'single' ? 'rich' : 'valid';
+                }
+                if (floor.status !== 'valid') {
+                    contragentTree.isInvalid = true;
+                }
+            });
+        }
     }
 
     updateOrderList(): void {

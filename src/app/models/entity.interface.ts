@@ -21,6 +21,10 @@ export interface Benefits {
 export interface SlotEntity<T = Entity, K = Contragent> extends Entity {
     _contragent?: K;
     _entity?: T;
+    _contragent_entity_key: string;
+    _entity_key: string;
+    _contragent_id_key: string;
+    _entity_id_key: string;
 }
 
 export type PriceEntitySlot = SlotEntity & Price & Benefits;

@@ -1,6 +1,7 @@
 import {hasher} from '../modules/utils/hasher';
 import {PriceEntitySlot} from './entity.interface';
 import {SelectionOrderSlot} from '../modules/configurator/configurator.model';
+import {SectionType} from '../services/search.service';
 
 export interface OrderSrc {
     id: number;
@@ -61,7 +62,7 @@ export class Order implements IOrder {
     slot_entity_id: number;
     tab_key: string;
     floor_key: string;
-    section_key: string;
+    section_key: SectionType;
     refferer: number;
     status: StatusType;
     group_token: string;

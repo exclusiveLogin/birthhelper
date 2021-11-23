@@ -32,6 +32,7 @@ export interface TabConfig {
     title: string;
     invalid: boolean;
     floors: TabFloorSetting[];
+    required?: boolean;
     selectMode?: SelectMode;
 }
 
