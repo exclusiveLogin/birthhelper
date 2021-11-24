@@ -10,9 +10,16 @@
                        [checked]="isActiveTab(tab.key)"
                        (change)="selectTab(tab.key)">
                 <label class="clinic-tabs-rbt__label" [for]="tab.key"
-                       *ngIf="{ count: tab.inCount$ | async } as stats">
+                       *ngIf="{ count: tab.inCount$ | async,
+                                selected: getTabSelectedCounts(tab.key) | async,
+                                status: getValidationByTabKey(tab.key) | async
+                        } as stats"
+                >
                     {{tab.title}}
-                    <span class="clinic-tabs-rbt__badge">{{stats.count || 0}}</span>
+                    <span class="clinic-tabs-rbt__badge"
+                          [class.valid]="stats.status === 'valid' && stats.selected"
+                          [class.invalid]="stats.selected && (stats.status === 'poor' || stats.status === 'rich')"
+                    >{{stats.selected}} / {{stats.count || 0}}</span>
                 </label>
             </div>
         </div>
@@ -22,11 +29,3 @@
         <span class="clinic-cart-btn__txt" title="В корзину">{{ price$ | async}}&nbsp;&#x20bd;</span>
     </button>
 </div>
-
-<!--<label class="clinic-tabs-rbt__label" [for]="tab.key"-->
-<!--       *ngIf="{-->
-<!--       selected: tab.inSelected$ | async,-->
-<!--       count: tab.inCount$ | async } as stats">-->
-<!--    {{tab.title}}-->
-<!--    <span class="clinic-tabs-rbt__badge">{{stats.selected || 0}} / {{stats.count || 0}}</span>-->
-<!--</label>-->

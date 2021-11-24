@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {TabRxInput} from 'app/modules/configurator/configurator.model';
 import {Observable} from 'rxjs';
-import {tap} from 'rxjs/operators';
-import {OrderService} from '../../../../services/order.service';
+import {map, tap} from 'rxjs/operators';
+import {OrderService, StatusValidation} from 'app/services/order.service';
 import {ConfiguratorService} from '../../configurator.service';
 
 @Component({
@@ -39,11 +39,19 @@ export class TabsComponent implements OnInit {
             : null;
 
         this.configuratorService.currentContragentID$
-            .subscribe(id => this.price$ = this.orderService.getPriceBuContragent(id));
+            .subscribe(id => this.price$ = this.orderService.getPriceByContragent(id));
     }
 
     isActiveTab(key: string): boolean {
         return this.activeTab === key;
+    }
+
+    getValidationByTabKey(tabKey: string): Observable<StatusValidation> {
+        return this.configuratorService.getValidationStateTabByKey(tabKey).pipe(map(item => item?.status));
+    }
+
+    getTabSelectedCounts(tabKey: string): Observable<number> {
+        return this.configuratorService.getValidationStateTabByKey(tabKey).pipe(map(item => item?.selected ?? 0));
     }
 
 }

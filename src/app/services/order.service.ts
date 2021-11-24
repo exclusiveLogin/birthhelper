@@ -89,8 +89,9 @@ export class OrderService {
     refreshValidationConfigsHashes(orders: Order[]): void {
         // собираем уникальные констрагенты по которым будем группировать заказы (позиции)
         const c_hashes = orders.filter(o => !!o?.slot).map(o => {
-            const {_entity_id_key: e_id, _contragent_id_key: c_id} = o.slot;
-            return hasher({id: o[c_id], entKey: o[e_id]});
+            const {_contragent_entity_key: contragentEntityKey, _contragent_id_key: contragentId} = o.slot;
+            const body = {id: o.slot[contragentId], entKey: contragentEntityKey};
+            return hasher(body);
         });
         this.uniqContragentHashes = uniq(c_hashes);
 
@@ -272,7 +273,7 @@ export class OrderService {
         return this.restService.getEntity(key, id);
     }
 
-    getPriceBuContragent(contragentId: number): Observable<number> {
+    getPriceByContragent(contragentId: number): Observable<number> {
         return this.onSlots$.pipe(
             map(slots => slots.filter(slot => slot._contragent.id === contragentId)),
             map((slots: PriceEntitySlot[]) => slots.map(slot => slot?.price ?? 0)),
