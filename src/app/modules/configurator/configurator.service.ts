@@ -22,8 +22,17 @@ import {RestService} from 'app/services/rest.service';
 import {Entity, SlotEntity} from 'app/models/entity.interface';
 import {filter, map, mapTo, shareReplay, switchMap, tap} from 'rxjs/operators';
 import {hasher} from '../utils/hasher';
-import {OrderService} from '../../services/order.service';
+import {OrderService, ValidationTreeItem} from '../../services/order.service';
 import {Order} from '../../models/order.interface';
+
+const blankValidationItem: ValidationTreeItem = {
+    key: null,
+    locked: false,
+    status: 'valid',
+    selected: 0,
+    required: false,
+    selectionMode: 'multi',
+};
 
 @Injectable({
     providedIn: 'root'
@@ -63,14 +72,32 @@ export class ConfiguratorService {
         switchMap(([id, key]) => this.restService.getEntity(key, id)),
     );
 
-    onConfigLoad$: Observable<ConfiguratorConfigSrc> =
-        combineLatest([this.currentContragentID$, this.currentContragentEntityKey$, this.currentSectionKey$]).pipe(
-            filter(([id, entKey, section]) => !!id && !!entKey && !!section),
-            switchMap(([id, entKey, section]) => this.restService.getConfiguratorSettings(section)),
+    onContragentDataLoad$ = combineLatest([this.currentContragentID$, this.currentContragentEntityKey$, this.currentSectionKey$])
+        .pipe(map(([id, cid, sid]) => ({contragentId: id, contragentEntityKey: cid, contragentSectionKey: sid})));
+
+    onConfigLoad$: Observable<ConfiguratorConfigSrc> = this.onContragentDataLoad$.pipe(
+            filter((
+                {
+                    contragentId: id,
+                    contragentEntityKey: entKey,
+                    contragentSectionKey: section
+                }) => !!id && !!entKey && !!section),
+            switchMap((
+                {
+                    contragentId: id,
+                    contragentEntityKey: entKey,
+                    contragentSectionKey: section
+                }) => this.restService.getConfiguratorSettings(section)),
             tap(config => this._config = config),
         );
 
     onSynced$: Observable<null> = this._syncOrders$.pipe();
+
+    onValidationTreeChanged$ = this.onConfigLoad$.pipe(switchMap(() =>
+        this.orderService.getValidationTreeByContragent(this.currentContragentID$.value, this.currentContragentEntityKey$.value)));
+
+    onValidationTabsChanged$ = this.onValidationTreeChanged$.pipe(map(tree => tree?._tabs ?? []));
+    onValidationFloorsChanged$ = this.onValidationTreeChanged$.pipe(map(tree => tree?._floors ?? []));
 
     onProvidersReady$ = this.onConfigLoad$.pipe(tap(() => this.providerLayerFactory()));
     onBusesReady$ = this.onProvidersReady$.pipe(tap(() => this.busLayerFactory()));
@@ -241,5 +268,13 @@ export class ConfiguratorService {
         const hash = hasher({ entId: entity.id, entKey: entity._entity_key });
         const target = this.selectionStore[hash];
         return target?._status ?? 'unselected';
+    }
+
+    getValidationStateTabByKey(tabKey: string): Observable<ValidationTreeItem> {
+        return this.onValidationTabsChanged$.pipe(map(tabs => tabs.find(t => t.key === tabKey)));
+    }
+
+    getValidationStateFloorByKey(floorKey: string): Observable<ValidationTreeItem> {
+        return this.onValidationFloorsChanged$.pipe(map(floors => floors.find(f => f.key === floorKey)));
     }
 }

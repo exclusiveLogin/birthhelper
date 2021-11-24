@@ -205,6 +205,12 @@ export class OrderService {
         this.doListRefresh$.next();
     }
 
+    getValidationTreeByContragent(contragentId: number, contragentEntityKey: string): Observable<ValidationTreeContragent> {
+        const hash =  hasher({id: contragentId, entKey: contragentEntityKey});
+        return this.onValidationTreeCompleted$.pipe(
+            map(tree => tree.find(t => t.contragentHash === hash)));
+    }
+
     async smartRefresher(ordersList: OrderSrc[]): Promise<void> {
         console.log('smartRefresher', ordersList);
         const hash = hasher(ordersList);
