@@ -22,6 +22,25 @@
         background: #487ff1 url("../../img/clinic-cards/clinic-card-active-bg.png") no-repeat 0 0 / 100%;
         color: #fff;
 
+        &.invalid {
+            background-color: #862a3f;
+
+            .clinic-card-controls__btn {
+                background: #487ff1;
+
+                &-check {
+                    background: #862a3f url("../../img/icons/close-solid-white.svg") no-repeat center center;
+                    border-radius: 0 5px 0 0;
+                    background-size: 44.5px;
+                    margin-top: -1px;
+                }
+
+                &-favorites {
+                    background: #862a3f url("../../img/icons/heart-solid-white.svg") no-repeat;
+                }
+            }
+        }
+
         .specialists-card__category {
             color: #fff;
             border-color: #fff;
@@ -60,7 +79,10 @@
             background: #487ff1;
 
             &-check {
-                background: #487ff1 url("../../img/icons/close-solid-white.svg") no-repeat;
+                background: #487ff1 url("../../img/icons/close-solid-white.svg") no-repeat center center;
+                border-radius: 0 5px 0 0;
+                background-size: 44.5px;
+                margin-top: -1px;
             }
 
             &-favorites {

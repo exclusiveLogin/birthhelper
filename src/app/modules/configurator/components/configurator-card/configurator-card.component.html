@@ -1,11 +1,19 @@
-<ng-template #other_card_tpl let-state = "$implicit">
+<ng-template #other_card_tpl let-data = "$implicit">
     <div class="clinic-cards__card clinic-card"
-         [class.active]="state === 'confirmed'"
-         [class.muted]="state === 'selected'"
+         *ngIf="{
+         locked: data.locked | async,
+         invalid: data.invalid | async
+         } as state"
+         [class.active]="data.state === 'confirmed'"
+         [class.muted]="data.state === 'selected'"
+         [class.invalid]="state.invalid"
     >
         <div class="clinic-card__controls clinic-card-controls">
-            <button class="clinic-card-controls__btn clinic-card-controls__btn-check" (click)="selectCard()"></button>
-            <button class="clinic-card-controls__btn clinic-card-controls__btn-favorites"></button>
+            <button class="clinic-card-controls__btn clinic-card-controls__btn-check"
+                    (click)="selectCard()"
+                    [class.muted]="state.locked && data.state !== 'confirmed'"
+        ></button>
+            <button class="clinic-card-controls__btn clinic-card-controls__btn-favorites muted"></button>
         </div>
 
         <div class="clinic-card__img-wrap">
@@ -17,13 +25,22 @@
     </div>
 </ng-template>
 
-<ng-template #placement_card_tpl let-state = "$implicit">
+<ng-template #placement_card_tpl let-data = "$implicit">
     <div class="accommodation-card"
-         [class.active]="state === 'confirmed'"
-         [class.muted]="state === 'selected'">
+         *ngIf="{
+         locked: data.locked | async,
+         invalid: data.invalid | async
+         } as state"
+         [class.active]="data.state === 'confirmed'"
+         [class.muted]="data.state === 'selected'"
+         [class.invalid]="state.invalid"
+    >
         <div class="clinic-card__controls clinic-card-controls">
-            <button class="clinic-card-controls__btn clinic-card-controls__btn-check" (click)="selectCard()"></button>
-            <button class="clinic-card-controls__btn clinic-card-controls__btn-favorites"></button>
+            <button class="clinic-card-controls__btn clinic-card-controls__btn-check"
+                    (click)="selectCard()"
+                    [class.muted]="state.locked && data.state !== 'confirmed'"
+            ></button>
+            <button class="clinic-card-controls__btn clinic-card-controls__btn-favorites muted"></button>
         </div>
         <div class="accommodation-card__top">
             <div class="accommodation-card__img-wrap">
@@ -50,14 +67,22 @@
     </div>
 </ng-template>
 
-<ng-template #person_card_tpl let-state = "$implicit">
+<ng-template #person_card_tpl let-data = "$implicit">
     <div class="specialists-card"
-         [class.active]="state === 'confirmed'"
-         [class.muted]="state === 'selected'"
+         *ngIf="{
+         locked: data.locked | async,
+         invalid: data.invalid | async
+         } as state"
+         [class.active]="data.state === 'confirmed'"
+         [class.muted]="data.state === 'selected'"
+         [class.invalid]="state.invalid"
     >
         <div class="clinic-card__controls clinic-card-controls">
-            <button class="clinic-card-controls__btn clinic-card-controls__btn-check" (click)="selectCard()"></button>
-            <button class="clinic-card-controls__btn clinic-card-controls__btn-favorites"></button>
+            <button class="clinic-card-controls__btn clinic-card-controls__btn-check"
+                    (click)="selectCard()"
+                    [class.muted]="state.locked && data.state !== 'confirmed'"
+            ></button>
+            <button class="clinic-card-controls__btn clinic-card-controls__btn-favorites muted"></button>
         </div>
         <div class="specialists-card__category card__btn-tooltip__anchor" *ngIf="viewEnt.category_lettera">{{viewEnt.category_lettera}}
             <span class="card__btn-tooltip">{{viewEnt.category_title}}</span>
@@ -95,8 +120,13 @@
     </div>
 </ng-template>
 
-<ng-container [ngSwitch]="cardType" *ngIf="{ state: selectionState, trigger: onSelectionChanges$ | async }  as data">
-    <ng-container *ngSwitchCase="'person'" [ngTemplateOutlet]="person_card_tpl" [ngTemplateOutletContext]="{ $implicit: data.state }"></ng-container>
-    <ng-container *ngSwitchCase="'placement'" [ngTemplateOutlet]="placement_card_tpl" [ngTemplateOutletContext]="{ $implicit: data.state }"></ng-container>
-    <ng-container *ngSwitchDefault [ngTemplateOutlet]="other_card_tpl" [ngTemplateOutletContext]="{ $implicit: data.state }"></ng-container>
+<ng-container [ngSwitch]="cardType" *ngIf="{
+state: selectionState,
+trigger: onSelectionChanges$ | async,
+locked: isLocked$,
+invalid: isInvalid$
+}  as data">
+    <ng-container *ngSwitchCase="'person'" [ngTemplateOutlet]="person_card_tpl" [ngTemplateOutletContext]="{ $implicit: data }"></ng-container>
+    <ng-container *ngSwitchCase="'placement'" [ngTemplateOutlet]="placement_card_tpl" [ngTemplateOutletContext]="{ $implicit: data }"></ng-container>
+    <ng-container *ngSwitchDefault [ngTemplateOutlet]="other_card_tpl" [ngTemplateOutletContext]="{ $implicit: data }"></ng-container>
 </ng-container>
