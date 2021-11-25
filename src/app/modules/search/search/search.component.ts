@@ -36,7 +36,6 @@ export class SearchComponent implements OnInit, AfterViewInit {
     onHashByFilters$ = this.onFilters$.pipe(
         switchMap(filters => filters ? this.provider.getFilterHash(this.sectionKey, filters) : of(null)),
         tap((h) => {
-            console.log('onHashByFilters$', h);
             this.router.navigate([], {queryParams: {hash: h}}).then();
         })
     );
@@ -47,14 +46,12 @@ export class SearchComponent implements OnInit, AfterViewInit {
 
     onHashError$ = new Subject<null>();
     onHash$ = merge(this.onHashByFilters$, this.onHashByRoute$).pipe(
-        tap((hash) => console.log('onHash$: ', hash)),
         tap(hash => this.hash = hash),
         shareReplay(1),
     );
 
     mainSet$ = this.onHash$.pipe(
         switchMap(() => this.setProvider$(this.hash)),
-        tap((result) => console.log('mainSet$', result)),
         catchError((err) => {
             console.error('mainSet$', err);
             this.onHashError$.next(null);

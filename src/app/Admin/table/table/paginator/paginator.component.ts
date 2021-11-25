@@ -7,7 +7,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class PaginatorComponent implements OnInit {
 
-  @Input('pages') private pages = 1;
+  @Input() private pages = 1;
   @Output() public vc: EventEmitter<number> = new EventEmitter();
 
   public currentPage = 1;
@@ -20,7 +20,6 @@ export class PaginatorComponent implements OnInit {
 
   private emitPage() {
     this.vc.emit(this.currentPage);
-    console.log('ping');
   }
 
   public getPages(): string[] {

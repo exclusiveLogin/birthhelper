@@ -53,9 +53,7 @@ export class RestService {
         private api: ApiService,
         private loader: LoaderService,
         private interceptor: InterceptorService,
-    ) {
-        console.log('ADMIN REST SERVICE', this);
-    }
+    ) {}
 
     public createEntity(key: string, data: IEntityItem): Observable<any> {
         const entSetting: ISettingsParams = {

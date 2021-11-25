@@ -12,8 +12,6 @@ export class WrapperComponent implements OnInit {
       private ar: ActivatedRoute,
   ) { }
 
-  ngOnInit(): void {
-      this.ar.data.subscribe(d => console.log('app-wrapper data', d));
-  }
+  ngOnInit(): void {}
 
 }

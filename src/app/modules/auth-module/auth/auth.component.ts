@@ -48,16 +48,13 @@ export class AuthComponent implements OnInit {
     }
 
     signin(): void {
-        console.log('signin', this);
         const url = this.route.snapshot.queryParamMap.get('url');
         // this.router.navigate([], {queryParams: {url: null}}).then();
         this.authService.login(this.login, this._pwd_md5, url);
     }
 
     signup(): void {
-        console.log('sign up', this);
         this.authService.registration(this.login, this._pwd_md5).subscribe(response => {
-            console.log('registration', response);
             if (!response.activated && response.activation) {
                 this.router.navigate(['/activation'], { queryParams: { code: response.activation }}).then();
             }

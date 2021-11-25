@@ -31,7 +31,6 @@ export class ConfiguratorGuard implements CanActivate {
             null;
 
         const sectionKey: SectionType = route.data?.entity_key;
-        console.log('ConfiguratorGuard', route, id, sectionKey);
 
         if (sectionKey && id) {
             return this.rest.getEntity(sectionKey, id).pipe(map(ent => !!ent));

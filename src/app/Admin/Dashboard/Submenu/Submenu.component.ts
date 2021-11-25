@@ -17,8 +17,6 @@ export class SubmenuComponent implements OnInit {
 
     ngOnInit() {
         this.menuService.menuStream$.subscribe(mi => {
-            console.log('menu selected:', mi);
-
             this.menuSelected = mi;
         });
     }

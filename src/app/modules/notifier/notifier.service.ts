@@ -21,7 +21,6 @@ export class NotifierService {
     }
 
     setMessageTime(msg: string, key: NotyRepoType, delay = 5000): void {
-        console.log('setMessageTime : ', msg );
         const target = repoSub[key];
         target.next(msg);
         setTimeout(() => target.next(null), delay);

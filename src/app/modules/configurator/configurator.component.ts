@@ -5,6 +5,7 @@ import {SectionType} from 'app/services/search.service';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Entity} from 'app/models/entity.interface';
+import {ValidationTreeItem} from '../../services/order.service';
 
 @Component({
     selector: 'app-configurator',
@@ -34,7 +35,6 @@ export class ConfiguratorComponent implements OnInit {
     }
 
     selectTab(key: string): void {
-        console.log('selectTab', key);
         this.configuratorService.selectTab(key);
     }
 
@@ -59,6 +59,10 @@ export class ConfiguratorComponent implements OnInit {
             .subscribe(section =>
                 this.router.navigate(['/system/search', section + 's'])
                     .then());
+    }
+
+    getFloorState(floorKey): Observable<ValidationTreeItem> {
+        return this.configuratorService.getValidationStateFloorByKey(floorKey);
     }
 
 }

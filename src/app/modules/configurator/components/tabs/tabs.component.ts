@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {TabRxInput} from 'app/modules/configurator/configurator.model';
 import {Observable} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
+import {map, switchMap, tap} from 'rxjs/operators';
 import {OrderService, StatusValidation} from 'app/services/order.service';
 import {ConfiguratorService} from '../../configurator.service';
 
@@ -17,7 +17,13 @@ export class TabsComponent implements OnInit {
 
     activeTab: string;
 
-    price$: Observable<number>;
+    price$: Observable<number> = this.configuratorService.currentContragentID$.pipe(
+        switchMap(id => {
+            return this.orderService.getPriceByContragent(id);
+        }),
+    );
+
+    onValidationState$ = this.configuratorService.onValidationStateByContragentChanged$;
 
     constructor(
         private orderService: OrderService,
@@ -37,9 +43,6 @@ export class TabsComponent implements OnInit {
                     : null
                 ))
             : null;
-
-        this.configuratorService.currentContragentID$
-            .subscribe(id => this.price$ = this.orderService.getPriceByContragent(id));
     }
 
     isActiveTab(key: string): boolean {

@@ -20,4 +20,12 @@
     line-height: 1.2;
     color: $blue;
     margin: 0 auto;
+
+    & .invalid {
+        color: $red;
+    }
+
+    & .muted {
+        color: $dark-grey;
+    }
 }

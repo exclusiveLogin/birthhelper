@@ -32,7 +32,6 @@ export class FilterComponent implements OnInit {
     }
 
     submitForm(): void {
-        console.log('Filter form:', this);
         const filters = this.serializer();
         this.filterChange.emit(filters);
     }
@@ -47,7 +46,7 @@ export class FilterComponent implements OnInit {
                     break;
                 case 'select':
                     const selectedId = section.control.value;
-                    if (selectedId === null || selectedId === 'null') break;
+                    if (selectedId === null || selectedId === 'null') { break; }
                     selected.push(({[selectedId]: true}));
                     break;
             }
@@ -60,13 +59,10 @@ export class FilterComponent implements OnInit {
                 if (!data) {
                     data = {};
                 }
-                console.log('selected', rs.selected);
                 data[rs.sectionKey] = {};
                 rs.selected.forEach(s => data[rs.sectionKey] = {...data[rs.sectionKey], ...s});
             }
         });
-        console.log('serializer, resultSection', resultSection, data);
-
         return data;
     }
 

@@ -21,7 +21,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
     ) {
     }
 
-    @Input('filters') public fields$: Observable<ITableFilter[]>;
+    @Input() public fields$: Observable<ITableFilter[]>;
     @Output() public update: EventEmitter<IFiltersParams> = new EventEmitter(null);
 
     private filters: IFiltersParams = {};
@@ -43,30 +43,23 @@ export class FiltersComponent implements OnInit, OnDestroy {
                         this.setFilters(ff.name, ff.value);
                     }
                 })),
-                tap(f => console.log('tap', f, this.filters)),
                 switchMap(fields => {
                     const flp = this.fields.filter(f => !!f.formLink).map(f => ({...f.formLink, key: f.name}));
-                    console.log('D flp', flp);
                     return merge(...fields.map(f => f.type === 'string' ?
                         f.control.valueChanges.pipe(debounceTime(1000), map(val => [f.name, val])) :
                         f.control.valueChanges.pipe(map(val => [f.name, val]))
                     ),
                         ...flp.map(_ => this.forms.getFormFieldVC$(_.formKey, _.formFieldKey)
                             .pipe(
-                                tap(data => console.log('D flp', data)),
                                 map(value => [_.key, value]))),
                     );
                 }),
             ).subscribe((data) => {
-                console.log('D data', data);
                 const d = data as any as [string, string];
-                console.log('D', d);
                 const [name, value] = d;
                 this.setFilters(name, value);
             });
         }
-
-        console.log('filters:', this.fields);
     }
 
     private setFilters(name: string, value: any) {
@@ -81,8 +74,6 @@ export class FiltersComponent implements OnInit, OnDestroy {
                 delete this.filters[key];
             }
         });
-
-        console.log('cleared filters: ', this.filters);
         this.updateTable();
     }
 

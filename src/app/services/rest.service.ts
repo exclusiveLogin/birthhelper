@@ -121,7 +121,6 @@ export class RestService {
         };
 
         return this.getData<OrderResponse>(entSetting, null, true).pipe(
-            tap((response) => console.log('getData OrderResponse: ', response)),
             map(response => response?.result ?? []));
     }
 
@@ -136,7 +135,6 @@ export class RestService {
     }
 
     public getFilterConfigByHash(key: SectionType, hash: string): Observable<SearchFilterConfig> {
-        console.log('getFilterConfig');
         const entSetting: ISettingsParams = {
             mode: 'search',
             segment: key,
@@ -148,7 +146,6 @@ export class RestService {
     }
 
     public getFilterConfig(key: SectionType): Observable<SearchSection[]> {
-        console.log('getFilterConfig');
         const entSetting: ISettingsParams = {
             mode: 'search',
             segment: key,
@@ -159,7 +156,6 @@ export class RestService {
     }
 
     public getHashBySearchSection(key: SectionType, filters: FilterResult): Observable<string> {
-        console.log('getHashBySearchSection', key, filters);
         const setting: ISettingsParams = {
             mode: 'search',
             segment: key,
@@ -217,7 +213,6 @@ export class RestService {
     }
 
     public createUserToken(login?: string, password?: string): Observable<string> {
-        console.log('createUserToken', login, password);
         return this.createSession(login, password).pipe(map(data => data?.token));
     }
 
@@ -359,7 +354,6 @@ export class RestService {
         );
 
         const req = insecure ? http() : this.interceptor.token$.pipe(
-            tap((token) => console.log('postData token REST: ', token)),
             switchMap(http), take(1),
         );
 
@@ -382,7 +376,6 @@ export class RestService {
         );
 
         const req = insecure ? http() : this.interceptor.token$.pipe(
-            tap((token) => console.log('postData token REST: ', token)),
             switchMap(http),
             take(1),
         );
@@ -406,7 +399,6 @@ export class RestService {
         );
 
         const req = this.interceptor.token$.pipe(
-            tap((token) => console.log('postData token REST: ', token)),
             switchMap(http),
             take(1),
         );
@@ -430,7 +422,6 @@ export class RestService {
         );
 
         const req = this.interceptor.token$.pipe(
-            tap((token) => console.log('remData token REST: ', token)),
             switchMap(http),
             take(1),
         );

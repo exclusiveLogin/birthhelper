@@ -64,13 +64,11 @@ export class ConfiguratorCardComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        // console.log('ConfiguratorCardComponent', this);
         this.isLocked$ = combineLatest([
             this.configuratorService.getValidationStateTabByKey(this.tabKey),
             this.configuratorService.getValidationStateFloorByKey(this.floorKey),
         ]).pipe(
             map(data => data.reduce((locked, cur) => locked || (cur?.locked ?? false), false)),
-            tap(state => console.log('isLocked state:', state, this.viewEnt.id))
         );
         this.isInvalid$ = combineLatest([
             this.configuratorService.getValidationStateTabByKey(this.tabKey),

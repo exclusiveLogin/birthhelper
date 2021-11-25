@@ -26,9 +26,7 @@ export class DictService {
 
     constructor(
         private rest: RestService,
-    ) {
-        console.log('DEVSS DICT', this);
-    }
+    ) {}
 
     private dictRepo: { [key: string]: IDictItem[] } = {};
     private dictStreams$: { [key: string]: Observable<IDictItem[]> } = {};

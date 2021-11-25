@@ -148,7 +148,6 @@ export class TableComponent implements OnInit {
             } else {
                 l$ = combineLatest([l$, this.items$]).pipe(
                     tap(([selected, items]) => {
-                        console.log('CL', selected, items);
                         items.forEach(i => i.selected = false);
                         selected.forEach(it => {
                             const target = items.find((i: ITableItem) => i.data.id === it.data.id);
@@ -229,7 +228,6 @@ export class TableComponent implements OnInit {
                 i.selected = false;
             }
         });
-        console.log('YEP ', id, this.items);
     }
 
     private converter(data: IEntityItem | IDictItem): ITableItem {
@@ -244,20 +242,17 @@ export class TableComponent implements OnInit {
     }
 
     public pageChanged(page: number, qp?: IRestParams) {
-        console.log('page changed: ', page);
         this.currentPage = page;
         this.refreshTable$.next();
     }
 
     public refreshTable(filters: IFiltersParams) {
-        console.log('refresh table:', filters);
         this.currentItem = null;
         this.qp = filters ? filters : this.qp;
         this.pageChanged(this.currentPage, filters as IRestParams);
     }
 
     public selectItem(item: ITableItem) {
-        console.log('selected:', item);
         if (this.multiselect) {
             item.selected = !item.selected;
             const newItem = JSON.parse(JSON.stringify(item));

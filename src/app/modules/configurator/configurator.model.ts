@@ -34,6 +34,10 @@ export interface TabConfig {
     floors: TabFloorSetting[];
     required?: boolean;
     selectMode?: SelectMode;
+    poorErrorMessage?: string;
+    richErrorMessage?: string;
+    lockMessage?: string;
+    defaultMessage?: string;
 }
 
 export interface TabFloorSetting {
@@ -44,6 +48,10 @@ export interface TabFloorSetting {
     entityType?: 'person' | 'placement' | 'other';
     required?: boolean;
     selectMode?: SelectMode;
+    poorErrorMessage?: string;
+    richErrorMessage?: string;
+    lockMessage?: string;
+    defaultMessage?: string;
 }
 
 export interface ConfiguratorConfigSrc {

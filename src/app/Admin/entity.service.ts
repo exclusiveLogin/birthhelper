@@ -11,9 +11,7 @@ export class EntityService {
 
   constructor(
     private rest: RestService,
-  ) {
-    console.log('DEVSS ENT', this);
-  }
+  ) {}
 
   public getEnt( name: string, page: number = 1, qp?: IRestParams ): Observable<IEntityItem[]> {
     return this.rest.getEntities( name, page, qp );

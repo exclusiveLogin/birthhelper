@@ -25,15 +25,6 @@ import {hasher} from '../utils/hasher';
 import {OrderService, ValidationTreeItem} from '../../services/order.service';
 import {Order} from '../../models/order.interface';
 
-const blankValidationItem: ValidationTreeItem = {
-    key: null,
-    locked: false,
-    status: 'valid',
-    selected: 0,
-    required: false,
-    selectionMode: 'multi',
-};
-
 @Injectable({
     providedIn: 'root'
 })
@@ -43,7 +34,6 @@ export class ConfiguratorService {
         private restService: RestService,
         private orderService: OrderService,
     ) {
-        console.log('ConfiguratorService', this);
         this.orderService.onOrderListChanged_Pending$.subscribe(list => this.syncOrders(list));
         this.orderService.updateOrderList();
     }
@@ -95,6 +85,10 @@ export class ConfiguratorService {
 
     onValidationTreeChanged$ = this.onConfigLoad$.pipe(switchMap(() =>
         this.orderService.getValidationTreeByContragent(this.currentContragentID$.value, this.currentContragentEntityKey$.value)));
+
+    onValidationStateByContragentChanged$ = this.onValidationTreeChanged$.pipe(
+        tap(s => console.log('s: ', s)),
+        map(tree => tree?.isInvalid ?? true));
 
     onValidationTabsChanged$ = this.onValidationTreeChanged$.pipe(map(tree => tree?._tabs ?? []));
     onValidationFloorsChanged$ = this.onValidationTreeChanged$.pipe(map(tree => tree?._floors ?? []));
@@ -185,12 +179,10 @@ export class ConfiguratorService {
                 inEnabled$: zip(...consumers).pipe(
                     map(data => data.reduce((keys, cur) => [...keys, ...cur], [])),
                     map(ents => !!ents.length),
-                    tap((d) => console.log(`[tabkey: ${tc.key}] inEnabled$ `, d)),
                 ),
                 inCount$: zip(...consumers).pipe(
                     map(data => data.reduce((keys, cur) => [...keys, ...cur], [])),
                     map(ents => ents.length),
-                    tap((d) => console.log(`[tabkey: ${tc.key}] inCount$ `, d)),
                 ),
                 // inSelected$: this.onSelection$.pipe(map(() => this.tabsStore[tc.key].selectedHashes.length)),
                 // selectedHashes: [],

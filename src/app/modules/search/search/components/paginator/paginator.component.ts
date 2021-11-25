@@ -30,7 +30,6 @@ export class PaginatorComponent implements OnInit {
 
     private emitPage() {
         this.vc.emit(this.currentPage);
-        console.log('ping');
     }
 
     public getPages(): string[] {

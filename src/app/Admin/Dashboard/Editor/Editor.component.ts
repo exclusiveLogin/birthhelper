@@ -134,7 +134,6 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
     }
 
     private rerenderFields() {
-        console.log('render: ', this.fields);
         if (!(this.fields && this.fields.length)) {
             return;
         }
@@ -180,7 +179,6 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         });
 
         this.forms.registerFields(this.fields, this.form);
-        console.log('dev form:', this.form);
     }
 
     public setImageForUpload(ev) {
@@ -236,7 +234,6 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
     }
 
     private rerenderValueOfFields() {
-        console.log('rerender: ', this.fields);
         this.fields.forEach(field => {
             field.initData && field.control ?
                 field.control.setValue(field.initData) :
@@ -269,7 +266,6 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
             this.rerenderValueOfFields();
         }
         if (!!changes.menu && !!changes.menu.currentValue) {
-            console.log('test menu changed', changes.menu);
             this.ent.getEntSet(this.menu.name).subscribe(set => {
                 this.fields = set.fields && set.fields.map(f => {
                     if (f.type === 'id' && !!f.useDict) {
@@ -292,8 +288,6 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         item.dictSelected = ev.target.value;
 
         this.checkConditionFields(item.id);
-
-        console.log('selected:', item, ev);
     }
 
     public refreshAssign(e) {
@@ -311,7 +305,6 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
             this.rerenderValueOfFields();
             return;
         }
-        console.log('selected service: ', service);
 
         this.currentService = service.data;
 
@@ -321,7 +314,6 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
                 if (key in service.data) {
                     // определяем наличие формы
                     const target = this.fields.find(f => f.id === key);
-                    console.log('target control: ', target);
                     if (!!target && target.control) {
                         target.control.setValue(service.data[key]);
                         if (
@@ -343,7 +335,6 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         if (this.menu.type === 'container' && this.isEditMode) {
             // получаем контейнер по типу и id
             this.cont.getContainer(this.menu.containerKey, service.data.id).subscribe(containerData => {
-                console.log('GET container DATA:', containerData);
                 if (!containerData.items) {
                     return;
                 }
@@ -375,7 +366,6 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         if (this.form.get(key)) {
             this.form.get(key).setValue(value);
         }
-        console.log('new form state: ', this.form.value);
     }
 
     public removeEntity() {

@@ -6,7 +6,7 @@ import {map, mapTo, shareReplay, switchMap, tap} from 'rxjs/operators';
 import {hasher} from '../modules/utils/hasher';
 import {Subject, Observable, of, forkJoin} from 'rxjs';
 import {summatorPipe} from '../modules/utils/price-summator';
-import {ConfiguratorConfigSrc, SelectionOrderSlot} from '../modules/configurator/configurator.model';
+import {ConfiguratorConfigSrc, SelectionOrderSlot, TabFloorSetting} from '../modules/configurator/configurator.model';
 import {uniq} from '../modules/utils/uniq';
 import {SectionType} from './search.service';
 
@@ -20,9 +20,11 @@ export interface ValidationTreeItem {
     required: boolean;
     selectionMode: SelectMode;
     locked: boolean;
+    message: string;
 }
 export interface ValidationTreeContragent {
     contragentHash: string;
+    section: SectionType;
     _tabs: ValidationTreeItem[];
     _floors: ValidationTreeItem[];
     _orders: Order[];
@@ -45,7 +47,6 @@ export class OrderService {
     doPriceRecalculate$ = new Subject<null>();
 
     onOrderListChanged$ = this.doListRefresh$.pipe(
-        tap(() => console.log('doListRefresh$')),
         switchMap(() => this.fetchCurrentOrders()),
         switchMap(list => this.smartRefresher(list)),
         map(() => this.userOrdersStore),
@@ -61,6 +62,7 @@ export class OrderService {
                 .map(order => order?.slot)
                 .filter( _ => !!_ ),
         ),
+        shareReplay(1),
     );
 
     onSummaryPriceChanged$ = this.onSlots$.pipe(
@@ -81,9 +83,10 @@ export class OrderService {
         private restService: RestService,
     ) {
         this.userOrdersStore = [];
-        console.log('OrderService', this);
         this.onValidationTreeCompleted$
             .subscribe((tree) => console.log('onValidationTreeCompleted$ data:', tree) );
+
+        this.onSummaryPriceChanged$.subscribe();
     }
 
     refreshValidationConfigsHashes(orders: Order[]): void {
@@ -136,6 +139,7 @@ export class OrderService {
                         selectionMode: tab?.selectMode ?? 'multi',
                         status: 'pending',
                         locked: false,
+                        message: '',
                     } as ValidationTreeItem;
                 }) ?? [],
                 _floors: contragentFloors.map(floor => {
@@ -146,10 +150,12 @@ export class OrderService {
                         selectionMode: floor?.selectMode ?? 'multi',
                         status: 'pending',
                         locked: false,
+                        message: '',
                     } as ValidationTreeItem;
                 }) ?? [],
                 _orders: currentContragentOrders,
                 isInvalid: false,
+                section: targetCfgKey,
             };
         }).filter(_ => !!_);
     }
@@ -169,7 +175,9 @@ export class OrderService {
 
     calculateTreeStatuses(): void {
         for (const contragentTree of this.validationTree) {
+            const cfg = this.sectionConfigs[contragentTree.section];
             contragentTree._tabs.forEach(tab => {
+                const tabConfig = cfg?.tabs?.find(t => tab.key === t.key);
                 tab.status = 'valid';
                 if (tab.selected === 0) {
                     tab.status =  tab.required ? 'poor' : 'valid';
@@ -181,10 +189,19 @@ export class OrderService {
                     tab.status = tab.selectionMode === 'single' ? 'rich' : 'valid';
                 }
                 if (tab.status !== 'valid') {
+                    tab.message = tab.status === 'poor'
+                        ? tabConfig?.poorErrorMessage || tabConfig?.defaultMessage || 'Выберите хотя бы один пункт'
+                        : tabConfig?.richErrorMessage || tabConfig?.defaultMessage || 'Может быть выбран только один пункт';
                     contragentTree.isInvalid = true;
+                }
+                if (tab.locked && tab.status === 'valid') {
+                    tab.message = tabConfig.lockMessage || '';
                 }
             });
             contragentTree._floors.forEach(floor => {
+                const floorConfigs = cfg?.tabs?.reduce(
+                    (floors, tab) => ([...floors, ...tab.floors]), [] as TabFloorSetting[]);
+                const targetConfig = floorConfigs.find(f => f.key === floor.key);
                 floor.status = 'valid';
                 if (floor.selected === 0) {
                     floor.status =  floor.required ? 'poor' : 'valid';
@@ -196,7 +213,13 @@ export class OrderService {
                     floor.status = floor.selectionMode === 'single' ? 'rich' : 'valid';
                 }
                 if (floor.status !== 'valid') {
+                    floor.message = floor.status === 'poor'
+                        ? targetConfig?.poorErrorMessage || targetConfig?.defaultMessage || 'Выберите хотя бы один пункт'
+                        : targetConfig?.richErrorMessage || targetConfig?.defaultMessage || 'Может быть выбран только один пункт';
                     contragentTree.isInvalid = true;
+                }
+                if (floor.locked && floor.status === 'valid') {
+                    floor.message = targetConfig.lockMessage || '';
                 }
             });
         }
@@ -213,7 +236,6 @@ export class OrderService {
     }
 
     async smartRefresher(ordersList: OrderSrc[]): Promise<void> {
-        console.log('smartRefresher', ordersList);
         const hash = hasher(ordersList);
         if (hash === this.storeHash) {
             return;
@@ -240,7 +262,6 @@ export class OrderService {
             }
         }
         this.storeHash = hasher(this.userOrdersStore.map(o => o.raw));
-
         this.doPriceRecalculate$.next();
     }
 
