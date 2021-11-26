@@ -3,7 +3,7 @@ import { IMenuRepo } from '../Dashboard.component';
 import { MenuService } from '../menu.service';
 
 @Component({
-  selector: 'app-Menu',
+  selector: 'app-menu',
   templateUrl: './Menu.component.html',
   styleUrls: ['./Menu.component.css']
 })
@@ -13,12 +13,9 @@ export class MenuComponent implements OnInit {
 
   constructor( private menuServive: MenuService ) { }
 
-  ngOnInit() {
-    console.log('menu init:', this.menu);
-  }
+  ngOnInit() {}
 
   public selectMenuItem( item: IMenuRepo ) {
-    console.log('selected menu item: ', item);
     this.menuServive.menuStream$.next( item );
   }
 

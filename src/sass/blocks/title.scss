@@ -1,0 +1,31 @@
+.title-h1 {
+  font-size: 64px;
+  line-height: 56px;
+  margin: 0;
+  font-weight: bold;
+}
+
+.title-h2 {
+    font-size: 40px;
+    font-weight: 500;
+    line-height: 1.18;
+    text-align: center;
+    color: $black;
+    margin: 0 auto;
+}
+
+.title-h3 {
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1.2;
+    color: $blue;
+    margin: 0 auto;
+
+    & .invalid {
+        color: $red;
+    }
+
+    & .muted {
+        color: $dark-grey;
+    }
+}

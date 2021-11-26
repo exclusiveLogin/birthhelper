@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {IDictItem} from './dict.service';
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 import {ApiService} from './api.service';
 import {IEntityItem, ISet} from './entity.model';
 import {ITableFilter} from './table/table/table.component';
-import {IContainer, IContainerData} from './container.model';
+import {IContainerData} from './container.model';
 import {LoaderService} from './loader.service';
 import {switchMap, tap} from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
@@ -53,9 +53,7 @@ export class RestService {
         private api: ApiService,
         private loader: LoaderService,
         private interceptor: InterceptorService,
-    ) {
-        console.log('ADMIN REST SERVICE', this);
-    }
+    ) {}
 
     public createEntity(key: string, data: IEntityItem): Observable<any> {
         const entSetting: ISettingsParams = {
@@ -115,10 +113,6 @@ export class RestService {
 
     }
 
-    public getFormFieldCurrentValue(name: string): any {
-        return null;
-    }
-
     public getEntityFilters(key: string): Observable<ITableFilter[]> {
         const entFiltersSetting: ISettingsParams = {
             mode: 'admin',
@@ -174,7 +168,7 @@ export class RestService {
         return this.getData<IContainerData[]>(entSetting, data);
     }
 
-    public getContainerFromId(key: string, id: number, qp?: IRestParams): Observable<IContainerData[]> {
+    public getContainerFromId(key: string, id: number, qp?: IRestParams): Observable<IContainerData> {
 
         const entSetting: ISettingsParams = {
             mode: 'admin',
@@ -182,7 +176,7 @@ export class RestService {
             resource: '' + id
         };
 
-        return this.getData<IContainerData[]>(entSetting, qp);
+        return this.getData<IContainerData>(entSetting, qp);
     }
 
     public saveContainer(key: string, id: number, qp?: IRestBody): Observable<any> {

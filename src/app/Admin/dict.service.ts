@@ -1,59 +1,60 @@
-import { Injectable } from '@angular/core';
-import { Observable , of} from 'rxjs';
-import { ISettingsParams, RestService } from './rest.service';
-import {share, tap} from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {Observable, of} from 'rxjs';
+import {ISettingsParams, RestService} from './rest.service';
+import {share, shareReplay, switchMap, take, tap} from 'rxjs/operators';
 
 export interface IDictItem {
-  id: number;
-  name: string;
-  title: string;
-  icon?: string;
-  comment?: string;
+    id: number;
+    name: string;
+    title: string;
+    icon?: string;
+    comment?: string;
 }
 
 export interface IDict {
-  dctKey: string;
-  dict: IDictItem[];
+    dctKey: string;
+    dict: IDictItem[];
 }
 
 const settingsParams: ISettingsParams = {
-  mode: 'admin',
-  segment: 'dict'
+    mode: 'admin',
+    segment: 'dict'
 };
 
 @Injectable({providedIn: 'root'})
 export class DictService {
 
-  constructor(
-    private rest: RestService,
-  ) {
-    console.log('DEVSS DICT', this);
-  }
+    constructor(
+        private rest: RestService,
+    ) {}
 
-  private dictRepo: { [key: string]: IDictItem[] } = {};
-  private dictGetStreams$: { [key: string]: Observable<IDictItem[]> } = {};
+    private dictRepo: { [key: string]: IDictItem[] } = {};
+    private dictStreams$: { [key: string]: Observable<IDictItem[]> } = {};
 
-  public getDict( name: string, page: number = 1 ): Observable<IDictItem[]> {
-    if ( name && this.dictRepo[name] ) { return of(this.dictRepo[name]); }
-    if ( this.dictGetStreams$[name] ) { return this.dictGetStreams$[name]; }
+    getDictStream(name, page = 1): Observable<IDictItem[]> {
+        const dict$ = this.rest.getDict(name, page)
+            .pipe(
+                tap(dict => this.dictRepo[name] = dict),
+                tap(dict => delete this.dictStreams$[name]),
+                shareReplay(1),
+            );
 
-    this.dictGetStreams$[name] = this.rest.getDict( name, page )
-      .pipe(
-        tap(dict => {
-          if ( dict ) { this.dictRepo[name] = dict; }
-        }),
-        share()
-      );
+        return of(null).pipe(switchMap(() => this.dictStreams$[name] ? this.dictStreams$[name] : (this.dictStreams$[name] = dict$)));
+    }
+    public getDict(name: string, page: number = 1): Observable<IDictItem[]> {
 
-    return this.dictGetStreams$[name];
-  }
-
-  public resetDict(key?: string): void {
-    if (key && this.dictRepo[key]) {
-      delete this.dictRepo[key];
-      return;
+        return of(null).pipe(
+            switchMap(() => this.dictRepo[name] ? of(this.dictRepo[name]) : this.getDictStream(name, page)),
+            take(1),
+        );
     }
 
-    this.dictRepo = {};
-  }
+    public resetDict(key?: string): void {
+        if (key && this.dictRepo[key]) {
+            delete this.dictRepo[key];
+            return;
+        }
+
+        this.dictRepo = {};
+    }
 }

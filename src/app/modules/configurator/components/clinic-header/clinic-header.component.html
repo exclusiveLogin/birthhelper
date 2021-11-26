@@ -1,0 +1,15 @@
+<div class="clinic__header clinic-header" *ngIf="contragent$ | async as CT">
+    <div class="clinic-header__info">
+        <h2 class="clinic-header__ttl">{{CT.title}}</h2>
+        <p class="clinic-header__address">{{CT?.meta?.address_id?.address_str || 'Адрес не определен'}}</p>
+        <p class="clinic-header__license">Лицензия: {{CT.license || 'нет данных о лицензии'}}</p>
+    </div>
+    <div class="clinic-header__actions clinic-header-actions">
+        <p class="clinic-header-actions__review">
+<!--            <img src="img/icons/star-24.svg" width="22" height="22" class="clinic-header-actions__review-icon" alt="">-->
+<!--            <span>4,54 (285)</span>-->
+        </p>
+        <a href="#" class="clinic-header-actions-link muted">Оставить отзыв</a>
+        <button class="clinic-header-actions-btn muted">Запланировать посещение</button>
+    </div>
+</div>

@@ -1,0 +1,55 @@
+.clinic {
+    position: relative;
+}
+
+.clinic__close {
+    position: absolute;
+    top: -30px;
+    right: 0;
+    z-index: 10;
+}
+
+.clinic-close {
+    border: none;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    background: transparent;
+}
+
+.clinic-close__img {
+    width: 100%;
+    height: 100%;
+}
+
+.clinic__cards {
+    margin-top: 25px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px 30px;
+}
+
+.clinic_block {
+    margin-top: 25px;
+}
+
+.clinic__specialists-category {
+    display: inline-block;
+    width: 242px;
+    margin: 25px 24px 0 0;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.21;
+    color: #2d333f;
+
+    &-type {
+        font-weight: bold;
+        color: #487ff1;
+        text-transform: uppercase;
+    }
+}
+
+.title-h3 {
+    margin-top: 55px;
+}

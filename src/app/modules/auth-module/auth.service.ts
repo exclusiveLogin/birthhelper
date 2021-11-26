@@ -1,18 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {Observable, Subject} from 'rxjs';
-import {of} from 'rxjs/internal/observable/of';
+import {Observable, Subject, asyncScheduler, merge, of} from 'rxjs';
 import {filter, map, shareReplay, switchMap, tap, throttleTime} from 'rxjs/operators';
 import {RegistrationResponseSrc, RestService, UserRoleSrc} from '../../services/rest.service';
 import {User} from '../../models/user.interface';
-import {merge} from 'rxjs/internal/observable/merge';
 import {InterceptorService} from './interceptor.service';
-import {asyncScheduler} from 'rxjs/internal/scheduler/async';
-
-interface ISecure {
-    user: string;
-    token: string;
-}
 
 export interface SessionResponse {
     // user id
@@ -61,14 +53,10 @@ export class AuthService {
     private token: string = null;
 
     token$: Observable<string> = merge(of(this.token), this.userToken$, this.onResetToken$).pipe(
-        tap((token) => console.log('token fire: ', token)),
         switchMap((token) => token ? of(token) : this.getTokenFromLS$()),
-        tap((token) => console.log('getTokenFromLS$ fire: ', token)),
         switchMap((token) => token ? of(token) : this.createGuestToken$()),
-        tap((token) => console.log('createGuestToken$ fire: ', token)),
         tap(token => this.token = token),
         tap(token => this.saveLSToken(token)),
-        tap((token) => console.log('token: ', token)),
         shareReplay(1),
     );
 
@@ -76,7 +64,6 @@ export class AuthService {
         switchMap(token => token ? this.getCurrentRole() : of(null)),
         tap((token) => {
             if (this.urlToRedirect) {
-                console.log('redirect to ', this.urlToRedirect);
                 location.pathname = this.urlToRedirect;
                 this.urlToRedirect = null;
             }
@@ -119,7 +106,6 @@ export class AuthService {
     }
 
     login(login: string, password: string, url: string) {
-        console.log('login ', login, password, url);
         this.creds$.next({login, password});
         this.urlToRedirect = url || '/';
     }
@@ -133,12 +119,10 @@ export class AuthService {
     }
 
     registration(login: string, password: string): Observable<RegistrationResponseSrc> {
-        console.log('registration ', login, password);
         return this.rest.createNewUser(login, password);
     }
 
     createUserToken(login: string, password: string): Observable<string> {
-        console.log('createUserToken ', login, password);
         return this.rest.createUserToken(login, password);
     }
 

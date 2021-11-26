@@ -1,15 +1,19 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {ApiService} from './api.service';
 import {filter, map, switchMap, take, tap} from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {IDictItem} from 'app/Admin/dict.service';
-import {EntityType} from './data-provider.service';
+import {SectionType} from './search.service';
 import {SearchFilterConfig, SearchSection} from '../models/filter.interface';
-import {FilterResult} from '../search/search/components/filter/filter.component';
+import {FilterResult} from '../modules/search/search/components/filter/filter.component';
 import {SessionResponse, UserRole} from '../modules/auth-module/auth.service';
 import {User} from '../models/user.interface';
 import {InterceptorService} from '../modules/auth-module/interceptor.service';
+import {ConfiguratorConfigSrc, Restrictor, SelectionOrderSlot} from 'app/modules/configurator/configurator.model';
+import {Entity} from 'app/models/entity.interface';
+import md5 from 'md5';
+import {ODRER_ACTIONS, OrderResponse, orderRestMapper, OrderSrc} from '../models/order.interface';
 
 export interface ISettingsParams {
     mode: string;
@@ -88,15 +92,36 @@ export class RestService {
     ) {
     }
 
-    public getEntity(key: string, id: number): Observable<any> {
+    cacheStore = {};
+
+    public getConfiguratorSettings(section: SectionType): Observable<ConfiguratorConfigSrc> {
         const entSetting: ISettingsParams = {
             mode: 'api',
-            segment: 'entity',
-            resource: key,
-            script: id.toString()
+            segment: 'configurator',
+            resource: section,
         };
 
         return this.getData(entSetting);
+    }
+
+    public getEntity<T = Entity>(key: string, id: number): Observable<T> {
+        const entSetting: ISettingsParams = {
+            mode: 'api',
+            segment: key,
+            resource: id.toString(),
+        };
+
+        return this.getData<T>(entSetting).pipe(map(d => d?.[0]));
+    }
+
+    public getOrdersByCurrentSession(): Observable<OrderSrc[]> {
+        const entSetting: ISettingsParams = {
+            mode: 'order',
+            segment: null,
+        };
+
+        return this.getData<OrderResponse>(entSetting, null, true).pipe(
+            map(response => response?.result ?? []));
     }
 
     public activateUser(url: string): Observable<any> {
@@ -109,8 +134,7 @@ export class RestService {
         return this.getData(config);
     }
 
-    public getFilterConfigByHash(key: EntityType, hash: string): Observable<SearchFilterConfig> {
-        console.log('getFilterConfig');
+    public getFilterConfigByHash(key: SectionType, hash: string): Observable<SearchFilterConfig> {
         const entSetting: ISettingsParams = {
             mode: 'search',
             segment: key,
@@ -121,8 +145,7 @@ export class RestService {
         return this.getData<SearchFilterConfig>(entSetting);
     }
 
-    public getFilterConfig(key: EntityType): Observable<SearchSection[]> {
-        console.log('getFilterConfig');
+    public getFilterConfig(key: SectionType): Observable<SearchSection[]> {
         const entSetting: ISettingsParams = {
             mode: 'search',
             segment: key,
@@ -132,8 +155,7 @@ export class RestService {
             .pipe(map(data => data.results));
     }
 
-    public getHashBySearchSection(key: EntityType, filters: FilterResult): Observable<string> {
-        console.log('getHashBySearchSection', key, filters);
+    public getHashBySearchSection(key: SectionType, filters: FilterResult): Observable<string> {
         const setting: ISettingsParams = {
             mode: 'search',
             segment: key,
@@ -142,7 +164,15 @@ export class RestService {
         return this.postData<SearchVectorSrc>(setting, filters).pipe(map(result => result.hash));
     }
 
-    public getEntityList(key: string, page?: number, qp?: IRestParams): Observable<any[]> {
+    public getSlotsByContragent<T = any>(key: string, contragentID: number, restrictors: Restrictor[]): Observable<T[]> {
+        const filters: IRestParams = {
+            contragent_id: contragentID.toString(),
+        };
+        restrictors.forEach(r => filters[r.key] = r.value.toString());
+        return this.getEntityList(key, null, filters);
+    }
+
+    public getEntityList<T = Entity>(key: string, page?: number, qp?: IRestParams): Observable<T[]> {
         const entSetting: ISettingsParams = {
             mode: 'api',
             segment: key,
@@ -154,7 +184,7 @@ export class RestService {
             Object.assign(data, qp);
         }
 
-        return this.getData<any[]>(entSetting, data);
+        return this.getData<T[]>(entSetting, data);
     }
 
     public getEntitySet(key: string, qp?: IRestParams): Observable<any[]> {
@@ -183,7 +213,6 @@ export class RestService {
     }
 
     public createUserToken(login?: string, password?: string): Observable<string> {
-        console.log('createUserToken', login, password);
         return this.createSession(login, password).pipe(map(data => data?.token));
     }
 
@@ -201,6 +230,29 @@ export class RestService {
         };
 
         return this.postData<SessionResponse>(ep_config, data, true);
+    }
+
+    public createOrder(selection): Observable<any> {
+        const data = orderRestMapper(selection, ODRER_ACTIONS.ADD);
+        const ep_config: ISettingsParams = {
+            mode: 'order',
+            segment: null,
+        };
+
+        return this.postData<OrderSrc>(ep_config, data);
+    }
+
+    public changeOrder(
+        action: ODRER_ACTIONS,
+        selection?: SelectionOrderSlot,
+    ): Observable<OrderSrc> {
+        const data = orderRestMapper(selection, action);
+        const ep_config: ISettingsParams = {
+            mode: 'order',
+            segment: null,
+        };
+
+        return this.postData<OrderSrc>(ep_config, data);
     }
 
     public getUserRole(): Observable<UserRoleSrc> {
@@ -254,12 +306,14 @@ export class RestService {
         return `${this.api.getApiPath()}${path.mode ?? ''}${path.segment ?? ''}${path.resource ?? ''}${path.script ?? ''}`;
     }
 
-    public getData<T>(path: ISettingsParams, data?: IRestParams): Observable<T> {
-
-        console.log('getData fire REST: ', path, data);
-
+    public getData<T>(path: ISettingsParams, data?: IRestParams, nocache = false): Observable<T> {
         if (path) {
             this.pathGen(path);
+        }
+        const cacheKey = md5(`${JSON.stringify(path)}_${JSON.stringify(data)}`);
+
+        if (this.cacheStore[cacheKey] && !nocache) {
+            return of(this.cacheStore[cacheKey]) as Observable<T>;
         }
 
         const url = this.createUrl(path);
@@ -270,12 +324,15 @@ export class RestService {
                 this.interceptor.interceptor(),
                 filter(d => !!d),
             );
-        this.interceptor.token$.subscribe((r) => console.log('test', r));
 
         const req = this.interceptor.token$.pipe(
-            tap((token) => console.log('getData token REST: ', token)),
             switchMap(http),
             take(1),
+            tap(_ => {
+                if (!nocache) {
+                    this.cacheStore[cacheKey] = _;
+                }
+            }),
         );
 
         return req as Observable<T>;
@@ -297,8 +354,8 @@ export class RestService {
         );
 
         const req = insecure ? http() : this.interceptor.token$.pipe(
-            tap((token) => console.log('postData token REST: ', token)),
-            switchMap(http), take(1),);
+            switchMap(http), take(1),
+        );
 
         return req as Observable<T>;
     }
@@ -319,7 +376,6 @@ export class RestService {
         );
 
         const req = insecure ? http() : this.interceptor.token$.pipe(
-            tap((token) => console.log('postData token REST: ', token)),
             switchMap(http),
             take(1),
         );
@@ -343,7 +399,6 @@ export class RestService {
         );
 
         const req = this.interceptor.token$.pipe(
-            tap((token) => console.log('postData token REST: ', token)),
             switchMap(http),
             take(1),
         );
@@ -367,7 +422,6 @@ export class RestService {
         );
 
         const req = this.interceptor.token$.pipe(
-            tap((token) => console.log('remData token REST: ', token)),
             switchMap(http),
             take(1),
         );

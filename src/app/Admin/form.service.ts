@@ -104,7 +104,6 @@ export class FormService {
       return this.formsRepo[formKey].valueChanges.pipe(
         map(() => this.formsRepo[formKey].getRawValue()),
         filter(data => !!data),
-        tap(data => console.log('getFormFieldVC$:data: ', data)),
         distinctUntilChanged((prev, next) => prev[fieldKey] === next[fieldKey]),
         pluck(fieldKey),
       );

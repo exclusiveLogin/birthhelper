@@ -1,73 +1,89 @@
-:host{
+:host {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
     background-color: antiquewhite;
 }
 
-.bh_block{
-  display: flex;
-  margin: 20px;
-  padding: 10px;
-  flex-direction: column;
-  background-color: bisque;
-  box-shadow: 5px 5px 5px 1px rgba(100, 100, 100, 0.3);
-  justify-content: center;
-  border: 2px solid rgba(100, 100, 100, 0.3);
+.bh_block {
+    display: flex;
+    margin: 20px;
+    padding: 10px;
+    flex-direction: column;
+    background-color: bisque;
+    box-shadow: 5px 5px 5px 1px rgba(100, 100, 100, 0.3);
+    justify-content: center;
+    border: 2px solid rgba(100, 100, 100, 0.3);
 }
 
-.bh_control{
-  margin: 15px;
-  flex-basis: 75%;
-  display: flex;
-  align-items: center;
+.bh_control {
+    margin: 15px;
+    flex-basis: 75%;
+    display: flex;
+    align-items: center;
 }
-.bh_control label{
-  flex-basis: 200px;
-  padding: 10px;
+
+.bh_control label {
+    flex-basis: 200px;
+    padding: 10px;
 }
-input[readonly]{
-  background-color: darkgrey;
-  opacity: 0.5;
+
+input[readonly] {
+    background-color: darkgrey;
+    opacity: 0.5;
 }
-input, textarea, select{
-  font-size: 15pt;
-  width: 90%;
-  justify-content: center;
-  color: dimgray;
-  margin: 10px;
+
+input, textarea, select {
+    font-size: 15pt;
+    width: 90%;
+    justify-content: center;
+    color: dimgray;
+    margin: 10px;
 }
-.bh_admin_close{
-  justify-self: flex-end;
+
+.bh_admin_close {
+    justify-self: flex-end;
 }
-.bh_service_title{
-  flex-grow: 1;
+
+.bh_service_title {
+    flex-grow: 1;
+    padding: 5px 10px;
 }
-.service_head{
-  display: flex;
+
+.service_head {
+    display: flex;
+    flex-grow: 1;
+    width: 100%;
+    justify-content: space-between;
 }
-.ng-invalid{
-  border-bottom: 2px red solid;
+
+.ng-invalid {
+    border-bottom: 2px red solid;
 }
-form.ng-invalid::after{
-  content: 'не заполнены обязательные поля';
-  margin-top: -15px;
+
+form.ng-invalid::after {
+    content: 'не заполнены обязательные поля';
+    margin-top: -15px;
 }
-.bh_control .bh_control_half{
-  justify-content: flex-start;
-  width: 100%;
-  display: flex;
+
+.bh_control .bh_control_half {
+    justify-content: flex-start;
+    width: 100%;
+    display: flex;
 }
-.bh_control .bh_control_half input{
-  width: 25px;
-  height: 25px;
-  margin-left: -25px;
+
+.bh_control .bh_control_half input {
+    width: 25px;
+    height: 25px;
+    margin-left: -25px;
 }
-.bh_link_control{
+
+.bh_link_control {
 
 }
-.bh_error_block{
-  background-color: brown;
-  color: antiquewhite;
-  padding: 5px;
+
+.bh_error_block {
+    background-color: brown;
+    color: antiquewhite;
+    padding: 5px;
 }

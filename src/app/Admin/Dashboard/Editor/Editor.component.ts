@@ -1,5 +1,5 @@
-import {Component, OnInit, Input, SimpleChanges, OnDestroy, AfterViewInit, OnChanges} from '@angular/core';
-import {IFieldSetting, FormService, ILinkFieldSetting} from '../../form.service';
+import {AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {FormService, IFieldSetting, ILinkFieldSetting} from '../../form.service';
 import {DictService, IDictItem} from '../../dict.service';
 import {IImageOptions, ITableItem} from '../../table/table/table.component';
 import {EMENUMODE, IMenuRepo} from '../Dashboard.component';
@@ -40,6 +40,10 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
 
     public get isDeleteMode(): boolean {
         return this.mode === EMENUMODE.DELETE;
+    }
+
+    public get isViewMode(): boolean {
+        return this.mode === EMENUMODE.VIEW;
     }
 
     @Input() mode: EMENUMODE;
@@ -130,7 +134,6 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
     }
 
     private rerenderFields() {
-        console.log('render: ', this.fields);
         if (!(this.fields && this.fields.length)) {
             return;
         }
@@ -146,7 +149,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
                 field.descriptionControl = this.forms.createFormControl(null);
             }
 
-            if (field.readonly) {
+            if (field.readonly && this.mode === EMENUMODE.VIEW) {
                 field.control.disable();
             }
             // готовим словари
@@ -176,7 +179,6 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         });
 
         this.forms.registerFields(this.fields, this.form);
-        console.log('dev form:', this.form);
     }
 
     public setImageForUpload(ev) {
@@ -232,7 +234,6 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
     }
 
     private rerenderValueOfFields() {
-        console.log('rerender: ', this.fields);
         this.fields.forEach(field => {
             field.initData && field.control ?
                 field.control.setValue(field.initData) :
@@ -265,7 +266,6 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
             this.rerenderValueOfFields();
         }
         if (!!changes.menu && !!changes.menu.currentValue) {
-            console.log('test menu changed', changes.menu);
             this.ent.getEntSet(this.menu.name).subscribe(set => {
                 this.fields = set.fields && set.fields.map(f => {
                     if (f.type === 'id' && !!f.useDict) {
@@ -288,8 +288,6 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         item.dictSelected = ev.target.value;
 
         this.checkConditionFields(item.id);
-
-        console.log('selected:', item, ev);
     }
 
     public refreshAssign(e) {
@@ -307,7 +305,6 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
             this.rerenderValueOfFields();
             return;
         }
-        console.log('selected service: ', service);
 
         this.currentService = service.data;
 
@@ -317,7 +314,6 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
                 if (key in service.data) {
                     // определяем наличие формы
                     const target = this.fields.find(f => f.id === key);
-                    console.log('target control: ', target);
                     if (!!target && target.control) {
                         target.control.setValue(service.data[key]);
                         if (
@@ -339,20 +335,16 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         if (this.menu.type === 'container' && this.isEditMode) {
             // получаем контейнер по типу и id
             this.cont.getContainer(this.menu.containerKey, service.data.id).subscribe(containerData => {
-                console.log('GET container DATA:', containerData);
-                containerData.forEach(cd => {
-                        if (!cd.items) {
-                            return;
-                        }
-                        const dummyItems = cd.items.map(itemsEnt => <ITableItem>({
-                            data: itemsEnt.entity,
-                            text: '' + itemsEnt.entity.id,
-                            selected: true,
-                        }));
+                if (!containerData.items) {
+                    return;
+                }
+                const dummyItems = containerData.items.map(itemsEnt => <ITableItem>({
+                    data: itemsEnt.entity,
+                    text: '' + itemsEnt.entity.id,
+                    selected: true,
+                }));
 
-                        this.containerLinker$.next(dummyItems);
-                    }
-                );
+                this.containerLinker$.next(dummyItems);
             }, (err) => this.currentError = err.message ? err.message : err);
         }
 
@@ -374,7 +366,6 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         if (this.form.get(key)) {
             this.form.get(key).setValue(value);
         }
-        console.log('new form state: ', this.form.value);
     }
 
     public removeEntity() {
@@ -383,26 +374,18 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
 
             switch (this.menu.type) {
                 case 'container':
-                    this.cont.removeContainer(this.menu.containerKey, this.currentService.id).subscribe(result => {
+                    this.cont.removeContainer(this.menu.containerKey, this.currentService.id).subscribe(() => {
                         this.refresh();
                         this.currentService = null;
                         this.toastr.success('Удаление сущности ', 'Сущность ' + this.menu.titleVoc + ' успешно удалена');
                     }, (err) => this.currentError = err.message ? err.message : err);
                     break;
-                case 'entity':
-                    this.ent.remEnt(this.menu.name, this.currentService.id).subscribe(result => {
+                default:
+                    this.ent.remEnt(this.menu.name, this.currentService.id).subscribe(() => {
                         this.refresh();
                         this.currentService = null;
                         this.toastr.success('Удаление сущности ', 'Сущность ' + this.menu.titleVoc + ' успешно удалена');
                     }, (err) => this.currentError = err.message ? err.message : err);
-                    break;
-                case 'slot':
-                    this.ent.removeSlotEntity(this.menu.slotKey, this.currentService.id).subscribe(result => {
-                        this.refresh();
-                        this.currentService = null;
-                        this.toastr.success('Удаление сущности ', 'Сущность ' + this.menu.titleVoc + ' успешно удалена');
-                    }, (err) => this.currentError = err.message ? err.message : err);
-                    break;
             }
         }
     }
@@ -417,7 +400,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         }
         // отправить post с сущностью
         if (confirm('Уверен что хочешь создать ' + this.menu.titleVoc + ' ?')) {
-            this.ent.createEnt(this.menu.name, data).subscribe(result => {
+            this.ent.createEnt(this.menu.name, data).subscribe(() => {
                 // alert('Сущность успешно создана');
                 this.toastr.success('Создание сущности', 'Сущность ' + this.menu.titleVoc + ' успешно создана');
                 this.form.reset();
@@ -440,7 +423,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
 
         if (this.currentService) {
             data.id = this.currentService.id;
-            this.ent.createEnt(this.menu.name, data).subscribe(result => {
+            this.ent.createEnt(this.menu.name, data).subscribe(() => {
 
                 // alert('Сущность успешно изменена');
                 this.refresh();
@@ -467,7 +450,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         const ids4save = this.containerLinker$.value.map(di => di.data.id);
         const body: IRestBody = {body: {ids: ids4save}};
         this.cont.saveContainer(this.menu.containerKey, this.currentService.id, body)
-            .subscribe(result => {
+            .subscribe(() => {
                 // alert('Данные сохранены');
                 this.refresh();
                 // this.close();

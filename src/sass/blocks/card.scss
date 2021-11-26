@@ -157,7 +157,7 @@
   margin: 0 0 0 10px;
   border: none;
   border-radius: 3px;
-  //padding: 0;
+  padding: 0 18px;
 
   &--green {
     margin: 0;
@@ -209,6 +209,14 @@
   }
 }
 
+.card__btn-tooltip__anchor {
+  &:hover {
+    .card__btn-tooltip {
+      display: block;
+    }
+  }
+}
+
 .card__btn-tooltip {
   display: none;
   position: absolute;
@@ -220,6 +228,7 @@
   box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.15);
   background-color: $white;
   color: $dark;
+  z-index: 1000;
 
   &::before {
     position: absolute;

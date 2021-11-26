@@ -16,7 +16,7 @@ export class ContainerService {
     return this.rest.getContainersList(name, page, qp);
   }
 
-  public getContainer(name: string, container_id: number, qp?: IRestParams): Observable<IContainerData[]> {
+  public getContainer(name: string, container_id: number, qp?: IRestParams): Observable<IContainerData> {
     return this.rest.getContainerFromId(name, container_id, qp);
   }
 

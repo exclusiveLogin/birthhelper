@@ -1,0 +1,94 @@
+.clinic-tabs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-right: 24px;
+    padding: 5px 0;
+    border-radius: 5px;
+    background: #fff;
+    box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.03);
+}
+
+.clinic-tabs__item {
+    position: relative;
+    padding: 0 20px;
+
+    &:after {
+        position: absolute;
+        content: '';
+        right: 0;
+        top: 50%;
+        margin-top: -10px;
+        height: 20px;
+        width: 1px;
+        background: rgba(45,51,63,0.1);
+    }
+
+    &:last-child {
+        &:after {
+            display: none;
+        }
+    }
+}
+
+.clinic-tabs-rbt {
+    position: relative;
+    display: block;
+}
+
+.clinic-tabs-rbt__input {
+    display: none;
+
+    & + .clinic-tabs-rbt__label {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 40px;
+        margin: 0;
+        padding: 0 20px;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1.2;
+        color: #2d333f;
+        white-space: nowrap;
+        background: transparent;
+        border-radius: 3px;
+        cursor: pointer;
+
+        &:hover {
+            background: rgba(45, 51, 63, 0.05);
+        }
+    }
+
+    &:checked + .clinic-tabs-rbt__label {
+        color: #fff;
+        background-color: #487ff1;
+
+        .clinic-tabs-rbt__badge {
+            color: #fff;
+        }
+    }
+}
+
+.clinic-tabs-rbt__badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 16px;
+    padding: 6px 8px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.14;
+    color: #2d333f;
+    border-radius: 3px;
+    background-color: rgba(45,51,63, 0.05);
+
+  &.valid {
+    background-color: rgba(60, 200, 70, 0.7);
+  }
+
+  &.invalid {
+    background-color: rgba(200, 60, 70, 0.7);
+  }
+}
+

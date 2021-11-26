@@ -1,0 +1,132 @@
+<ng-template #other_card_tpl let-data = "$implicit">
+    <div class="clinic-cards__card clinic-card"
+         *ngIf="{
+         locked: data.locked | async,
+         invalid: data.invalid | async
+         } as state"
+         [class.active]="data.state === 'confirmed'"
+         [class.muted]="data.state === 'selected'"
+         [class.invalid]="state.invalid"
+    >
+        <div class="clinic-card__controls clinic-card-controls">
+            <button class="clinic-card-controls__btn clinic-card-controls__btn-check"
+                    (click)="selectCard()"
+                    [class.muted]="state.locked && data.state !== 'confirmed'"
+        ></button>
+            <button class="clinic-card-controls__btn clinic-card-controls__btn-favorites muted"></button>
+        </div>
+
+        <div class="clinic-card__img-wrap">
+            <img [src]="url" width="150" height="120" alt="" class="clinic-card__img">
+        </div>
+        <a href="#" class="clinic-card__ttl">{{viewEnt.title}}</a>
+        <p class="clinic-card__desc">{{viewEnt.description}}</p>
+        <p class="clinic-card__price">{{viewEnt.price}} руб.</p>
+    </div>
+</ng-template>
+
+<ng-template #placement_card_tpl let-data = "$implicit">
+    <div class="accommodation-card"
+         *ngIf="{
+         locked: data.locked | async,
+         invalid: data.invalid | async
+         } as state"
+         [class.active]="data.state === 'confirmed'"
+         [class.muted]="data.state === 'selected'"
+         [class.invalid]="state.invalid"
+    >
+        <div class="clinic-card__controls clinic-card-controls">
+            <button class="clinic-card-controls__btn clinic-card-controls__btn-check"
+                    (click)="selectCard()"
+                    [class.muted]="state.locked && data.state !== 'confirmed'"
+            ></button>
+            <button class="clinic-card-controls__btn clinic-card-controls__btn-favorites muted"></button>
+        </div>
+        <div class="accommodation-card__top">
+            <div class="accommodation-card__img-wrap">
+                <img [src]="url" class="accommodation-card__img">
+            </div>
+            <div class="accommodation-card__info">
+                <p class="accommodation-card__txt">{{viewEnt.description}}</p>
+                <p class="accommodation-card__txt">Площадь палаты: {{viewEnt.area}} кв.м.</p>
+                <p class="accommodation-card__price">{{viewEnt.price}} руб.</p>
+            </div>
+        </div>
+        <div class="accommodation-card__actions-admin">
+            <button class="accommodation-card__btn">Редактировать карточку</button>
+            <div class="accommodation-card__actions-row">
+                <div class="checkbox checkbox--end accommodation-card__actions-checkbox">
+                    <input type="checkbox" class="checkbox__input" id="checkbox">
+                    <label class="checkbox__label" for="checkbox">Доступность</label>
+                </div>
+                <button class="accommodation-card__btn-del">Удалить карточку</button>
+            </div>
+        </div>
+
+        <button class="accommodation-card__btn-more">Подробнее</button>
+    </div>
+</ng-template>
+
+<ng-template #person_card_tpl let-data = "$implicit">
+    <div class="specialists-card"
+         *ngIf="{
+         locked: data.locked | async,
+         invalid: data.invalid | async
+         } as state"
+         [class.active]="data.state === 'confirmed'"
+         [class.muted]="data.state === 'selected'"
+         [class.invalid]="state.invalid"
+    >
+        <div class="clinic-card__controls clinic-card-controls">
+            <button class="clinic-card-controls__btn clinic-card-controls__btn-check"
+                    (click)="selectCard()"
+                    [class.muted]="state.locked && data.state !== 'confirmed'"
+            ></button>
+            <button class="clinic-card-controls__btn clinic-card-controls__btn-favorites muted"></button>
+        </div>
+        <div class="specialists-card__category card__btn-tooltip__anchor" *ngIf="viewEnt.category_lettera">{{viewEnt.category_lettera}}
+            <span class="card__btn-tooltip">{{viewEnt.category_title}}</span>
+        </div>
+        <div class="specialists-card__avatar">
+            <img [src]="url" class="specialists-card__avatar-img">
+        </div>
+
+        <div class="specialists-card__info">
+            <p class="specialists-card__name">{{viewEnt.first_name}}</p>
+            <p class="specialists-card__name">{{viewEnt.last_name}}</p>
+            <p class="specialists-card__exp" *ngIf="viewEnt.experience_years">Стаж (полных лет): {{viewEnt.experience_years}}</p>
+            <p class="specialists-card__exp" *ngIf="viewEnt.count_birth">Количество родов: {{viewEnt.count_birth}}</p>
+            <p class="specialists-card__position">{{viewEnt.description}}</p>
+        </div>
+
+        <div class="specialists-card__actions">
+            <p class="specialists-card__price">{{viewEnt.price}} руб.</p>
+            <div class="specialists-card__actions-admin">
+                <button class="specialists-card__btn">Редактировать карточку</button>
+                <div class="checkbox checkbox--end specialists-card__actions-checkbox">
+                    <input type="checkbox" class="checkbox__input" id="checkbox4">
+                    <label class="checkbox__label" for="checkbox4">Доступность врача</label>
+                </div>
+                <button class="accommodation-card__btn-del">Удалить карточку</button>
+            </div>
+            <div class="specialists-card__actions-user muted">
+                <a href="#" class="specialists-card__link-review">
+                    Отзывы
+                    <span class="specialists-card__link-review-badge">8,6</span>
+                </a>
+                <button class="specialists-card__btn-question">Задать вопрос</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-container [ngSwitch]="cardType" *ngIf="{
+state: selectionState,
+trigger: onSelectionChanges$ | async,
+locked: isLocked$,
+invalid: isInvalid$
+}  as data">
+    <ng-container *ngSwitchCase="'person'" [ngTemplateOutlet]="person_card_tpl" [ngTemplateOutletContext]="{ $implicit: data }"></ng-container>
+    <ng-container *ngSwitchCase="'placement'" [ngTemplateOutlet]="placement_card_tpl" [ngTemplateOutletContext]="{ $implicit: data }"></ng-container>
+    <ng-container *ngSwitchDefault [ngTemplateOutlet]="other_card_tpl" [ngTemplateOutletContext]="{ $implicit: data }"></ng-container>
+</ng-container>
