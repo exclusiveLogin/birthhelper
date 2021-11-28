@@ -1,7 +1,11 @@
-<div class="popup-wrapper">
+<ng-container *ngIf="_showed$ | async">
+    <div class="popup-wrapper">
+        <ng-container *ngTemplateOutlet="template; context: tpl_context"></ng-container>
+    </div>
+</ng-container>
 
 <!--Оставить отзыв-->
-<div class="popup popup--middle">
+<!--<div class="popup popup&#45;&#45;middle">
     <button class="popup__close"></button>
     <div class="popup__header">
         <p class="popup__title">Оставить отзыв о клинике</p>
@@ -135,7 +139,7 @@
     <div class="popup__footer">
         <button class="popup__footer-btn">Отправить</button>
     </div>
-</div>
+</div>-->
 <!--Оставить отзыв-end-->
 
 
@@ -170,7 +174,8 @@
 
 
 <!--О палате-->
-<!--<div class="popup popup--large">
+<ng-template #tpl_popup_placement>
+    <div class="popup popup--large">
     <div class="popup__actions">
         <button class="popup__actions-close"></button>
         <div class="popup__actions-checkbox checkbox-action">
@@ -210,12 +215,14 @@
     <div class="popup__footer">
         <button class="popup__footer-btn popup__footer-btn--short">Выбрать</button>
     </div>
-    </div>-->
+    </div>
+</ng-template>
 <!--О палате-end-->
 
 
 <!--О специалисте-->
-<!--<div class="popup popup--xmiddle">
+<ng-template #tpl_popup_person>
+    <div class="popup popup--xmiddle">
     <div class="popup__actions">
         <button class="popup__actions-close"></button>
         <div class="popup__actions-checkbox checkbox-action">
@@ -265,12 +272,14 @@
     <div class="popup__footer">
         <button class="popup__footer-btn popup__footer-btn--short">Выбрать</button>
     </div>
-    </div>-->
+    </div>
+</ng-template>
 <!--О специалисте-end-->
 
 
 <!--Доп. услуги-->
-<!--<div class="popup popup--xmiddle">
+<ng-template #tpl_popup_other>
+    <div class="popup popup--xmiddle">
     <div class="popup__actions">
         <button class="popup__actions-close"></button>
         <div class="popup__actions-checkbox checkbox-action">
@@ -302,7 +311,8 @@
     <div class="popup__footer">
         <button class="popup__footer-btn popup__footer-btn--short">Выбрать</button>
     </div>
-    </div>-->
+    </div>
+</ng-template>
 <!--Доп. услуги-end-->
 
 <!--Запрос доп.параметров-->
@@ -568,4 +578,30 @@
     </div>
 </div>-->
 <!--Номер полиса-end-->
-</div>
+
+<!--Доп. услуги-->
+<ng-template #tpl_popup_blank let-data>
+    <div class="popup popup--xmiddle">
+        <div class="popup__actions">
+            <button class="popup__actions-close" (click)="closeDialog()"></button>
+            <div class="popup__actions-checkbox checkbox-action">
+                <input type="checkbox" class="checkbox-action__input" id="checkbox">
+                <label class="checkbox-action__label" for="checkbox"></label>
+            </div>
+        </div>
+
+        <div class="popup__body">
+            <div class="popup__body-columns">
+                <div class="popup__body-column">
+                    <div class="popup__body-avatar popup__body-avatar--square">
+                        <img src="img/clinic-cards/1.png" alt="">
+                    </div>
+                    <p class="popup__dop-name">Ошибка</p>
+                    <p class="popup__dop-short-desc">{{ data.error_tpl }}</p>
+                    <p class="popup__dop-price">code: {{data.error_tpl_code }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<!--Доп. услуги-end-->

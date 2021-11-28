@@ -6,7 +6,7 @@ export type DialogType = 'dialog' | 'alert' | 'prompt' | 'popup';
 export interface DialogAction {
     dialogKey: string;
     action: 'show' | 'close' | 'submit' | 'reject';
-    mode: DialogType;
+    mode?: DialogType;
     templateKey?: string;
     template?: TemplateRef<any>;
     data?: any;
