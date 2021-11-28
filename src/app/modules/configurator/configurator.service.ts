@@ -74,7 +74,6 @@ export class ConfiguratorService {
 
     onConfigLoad$: Observable<ConfiguratorConfigSrc> = this.onSectionChanged$.pipe(
         filter((section) => !!section),
-        tap(section => console.log('onConfigLoad$ section', section)),
         distinctUntilChanged((pre, cur) => pre === cur),
         switchMap(section => this.restService.getConfiguratorSettings(section)),
         tap(config => this._config = config),
@@ -89,11 +88,9 @@ export class ConfiguratorService {
             this.currentContragentID$.value,
             this.currentContragentEntityKey$.value),
         ),
-        tap(contragentValidation => console.log('onValidationTreeChanged$', contragentValidation)),
     );
 
     onValidationStateByContragentChanged$ = this.onValidationTreeChanged$.pipe(
-        tap(s => console.log('s: ', s)),
         map(tree => tree?.isInvalid ?? true));
 
     onValidationTabsChanged$ = this.onValidationTreeChanged$.pipe(map(tree => tree?._tabs ?? []));
