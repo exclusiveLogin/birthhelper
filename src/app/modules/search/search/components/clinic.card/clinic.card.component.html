@@ -27,7 +27,7 @@
         </div>
         <div class="card__description">
             <div class="card__description-top">
-                <a href="#" class="card__ttl">{{viewClinic.title}}</a>
+                <a [routerLink]="['/system/configurator/clinic', viewClinic.id]" class="card__ttl">{{viewClinic.title}}</a>
                 <div class="card__controls muted">
                     <div class="card-controls__btn-group">
                         <button class="card-controls__btn card-controls__btn-bookmark">
@@ -64,7 +64,8 @@
 
 
             <div class="card__footer">
-                <p class="card__price"><span class="card__price-ttl">Пакеты услуг от:</span>
+                <p class="card__price">
+                    <span class="card__price-ttl">Пакеты услуг от:</span>
                     <span class="card__price-cnt card__price-cnt--green" *ngIf="viewClinic.price_from else noslots">{{viewClinic.price_from}}</span>
                     <ng-template #noslots>
                         <span class="card__price-cnt">Нет оказываемых услуг</span>
@@ -74,10 +75,15 @@
 <!--                    <button class="card__btn card__btn&#45;&#45;green card__btn&#45;&#45;offer"><span class="card__btn-txt">Спецпредложение<br>+5 опций в подарок</span>-->
 <!--                        <span class="card__btn-icon"><img src="img/icons/ic-new-releases-24px.svg" alt=""></span>-->
 <!--                    </button>-->
-                <button class="card__btn card__btn--blue" (click)="gotoConfigurator()"><span class="card__btn-txt">Перейти на страницу роддома</span> <span
-                        class="card__btn-tooltip-icon"><img src="img/icons/ic-info-outline-24px.svg" alt=""> <span
-                        class="card__btn-tooltip">Перейти к конфигуратору</span></span></button>
+                <button class="card__btn card__btn--blue" (click)="gotoConfigurator()">
+                    <span class="card__btn-txt">Перейти на страницу роддома</span>
+                    <span class="card__btn-tooltip-icon">
+                        <img src="img/icons/ic-info-outline-24px.svg" alt="">
+                        <span class="card__btn-tooltip">Перейти к конфигуратору</span>
+                    </span>
+                </button>
             </div>
         </div>
+    </div>
     </div>
 </div>

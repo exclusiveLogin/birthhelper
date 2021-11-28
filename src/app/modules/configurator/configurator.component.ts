@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {ConfiguratorService} from 'app/modules/configurator/configurator.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SectionType} from 'app/services/search.service';
@@ -10,7 +10,8 @@ import {ValidationTreeItem} from '../../services/order.service';
 @Component({
     selector: 'app-configurator',
     templateUrl: './configurator.component.html',
-    styleUrls: ['./configurator.component.scss']
+    styleUrls: ['./configurator.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfiguratorComponent implements OnInit {
 
