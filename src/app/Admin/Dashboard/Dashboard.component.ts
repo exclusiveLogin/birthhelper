@@ -196,6 +196,20 @@ export class DashboardComponent implements OnInit {
             ]
         },
         {
+            name: 'ent_birth_additional_slots',
+            slotKey: 'slot_doctors',
+            title: 'Слоты дополнительных услуг',
+            titleVoc: 'слот',
+            titleVocs: 'слота',
+            type: 'slot',
+            modes: [
+                EMENUMODE.VIEW,
+                EMENUMODE.CREATE,
+                EMENUMODE.DELETE,
+                EMENUMODE.EDIT,
+            ]
+        },
+        {
             name: 'ent_images',
             title: 'Изображения системы',
             titleVoc: 'изображение',
