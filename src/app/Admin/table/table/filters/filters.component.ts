@@ -64,8 +64,14 @@ export class FiltersComponent implements OnInit, OnDestroy {
 
     private setFilters(name: string, value: any) {
         const targetField = this.fields.find(f => f.name === name);
-        if (targetField.type === 'flag') {
-            value = !!value ? '1' : null;
+        if (!targetField) { return; }
+
+        switch (targetField.type) {
+            case 'flag':
+                value = !!value ? '1' : null;
+                break;
+            default:
+                targetField.control.setValue(value, {emitEvent: false});
         }
         this.filters[name] = value;
 

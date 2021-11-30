@@ -59,6 +59,19 @@ export class DashboardComponent implements OnInit {
             ]
         },
         {
+            name: 'ent_services_placement',
+            title: 'Палаты',
+            titleVoc: 'палату',
+            titleVocs: 'палат',
+            type: 'entity',
+            modes: [
+                EMENUMODE.VIEW,
+                EMENUMODE.CREATE,
+                EMENUMODE.EDIT,
+                EMENUMODE.DELETE,
+            ]
+        },
+        {
             name: 'ent_service_containers',
             containerKey: 'container_services',
             title: 'Контейнеры услуг',
