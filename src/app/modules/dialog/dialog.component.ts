@@ -1,8 +1,7 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {DialogType} from './dialog.model';
-import {hasher} from '../utils/hasher';
 import {DialogService} from './dialog.service';
-import {filter} from 'rxjs/operators';
+import {filter, tap} from 'rxjs/operators';
 import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
 import {Subject} from 'rxjs';
 
@@ -17,7 +16,7 @@ export class DialogComponent implements OnInit {
 
     template: TemplateRef<any>;
     _showed$ = new Subject<boolean>();
-    private _template_hash: string;
+    tabIdx: number;
     private _mode: DialogType = 'popup';
     constructor(
         private cdr: ChangeDetectorRef,
@@ -43,24 +42,20 @@ export class DialogComponent implements OnInit {
         if (this.id_dialog) {
             this.dialogService.dialogBus$.pipe(
                 filter(action => action.dialogKey === this.id_dialog),
-                filter(action => !!action.mode && !!action.template),
+                filter(action => !!action.mode && (!!action.template || !!action.templateKey)),
+                tap(() => this.tabIdx = 0),
                 untilDestroyed(this),
             ).subscribe(action => {
                 if (action.action === 'show') {
                     const _tpl = action.template || this[`tpl_${action.templateKey}`];
+                    this.tpl_context.$implicit = action.data;
                     if (!_tpl) { return; }
                     switch (action.mode) {
                         case 'dialog':
                             this.showDialog(_tpl);
                             break;
-                        case 'alert':
-                            this.showAlert(_tpl);
-                            break;
                         case 'popup':
                             this.showPopup(_tpl);
-                            break;
-                        case 'prompt':
-                            this.showPrompt(_tpl);
                             break;
                     }
                 }
@@ -76,19 +71,13 @@ export class DialogComponent implements OnInit {
     showPopup(tpl: TemplateRef<any>): void {
         this.installDialog(tpl, 'popup');
     }
-    showAlert(tpl: TemplateRef<any>): void {
-        this.installDialog(tpl, 'alert');
-    }
-    showPrompt(tpl: TemplateRef<any>): void {
-        this.installDialog(tpl, 'prompt');
-    }
 
     closeDialog(): void {
         this._showed$.next(false);
     }
     uninstallDialog(): void {
         this.template = null;
-        this._template_hash = null;
+        this.tpl_context.$implicit = this.tplData;
         this._mode = 'popup';
     }
     installDialog(tpl: TemplateRef<any>, mode: DialogType): void {
@@ -100,8 +89,7 @@ export class DialogComponent implements OnInit {
         }
     }
     generateDialog(template: TemplateRef<any>): boolean {
-        const hash = hasher(template);
-        if (hash !== this._template_hash) {
+        if (this.template !== template) {
             this.template = template;
             return true;
         }
@@ -113,5 +101,10 @@ export class DialogComponent implements OnInit {
             return true;
         }
         return false;
+    }
+
+    setTabIdx(idx: number): void {
+        this.tabIdx = idx;
+        this.cdr.markForCheck();
     }
 }

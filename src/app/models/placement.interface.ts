@@ -3,6 +3,7 @@ import {MetaInterface} from 'app/models/meta.interface';
 import {SlotEntity} from 'app/models/entity.interface';
 import {ServiceSlot} from 'app/models/slot';
 import {ServiceEntity} from 'app/models/service.interface';
+import {environment} from '@environments/environment';
 
 export interface PlacementSlot extends ServiceSlot, SlotEntity<PlacementSrc> {
     photo_url: string;
@@ -26,7 +27,7 @@ export class PlacementBuilder {
 
         return {
             ...src,
-            photo_url: ph?.filename,
+            photo_url: `${environment.static}/${ph?.filename || 'noimage'}`,
             title,
             description: description ?? 'Нет описания',
             area,

@@ -4,7 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {SectionType} from 'app/services/search.service';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {Entity} from 'app/models/entity.interface';
+import {Entity, SlotEntity} from 'app/models/entity.interface';
 import {ValidationTreeItem} from '../../services/order.service';
 
 @Component({
@@ -31,7 +31,7 @@ export class ConfiguratorComponent implements OnInit {
     onTabsLoad$ = this.configuratorService.onTabsReady$;
     onView$ = this.configuratorService.onViewChanged$;
 
-    getConsumerByID(key: string): Observable<Entity[]> {
+    getConsumerByID(key: string): Observable<SlotEntity[]> {
         return this.configuratorService.getConsumerByID(key);
     }
 

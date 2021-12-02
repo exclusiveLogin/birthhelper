@@ -1,7 +1,7 @@
 import {FormGroup} from '@angular/forms';
 import {TemplateRef} from '@angular/core';
 
-export type DialogType = 'dialog' | 'alert' | 'prompt' | 'popup';
+export type DialogType = 'dialog' | 'popup';
 
 export interface DialogAction {
     dialogKey: string;
@@ -16,4 +16,5 @@ export interface DialogAction {
 export interface DialogServiceConfig {
     idDialog: string;
     mode: DialogType;
+    data: any;
 }

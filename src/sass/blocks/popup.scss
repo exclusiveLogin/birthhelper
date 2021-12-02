@@ -357,6 +357,7 @@
     position: relative;
     max-height: 305px;
     overflow: hidden;
+    padding-bottom: 30px;
 
     &:after {
         position: absolute;
@@ -405,7 +406,9 @@
     line-height: 1.33;
     color: rgba($black, 0.7);
 }
-
+.popup__body-content {
+    flex-grow: 1;
+}
 .popup__body-content-header {
     display: flex;
     justify-content: space-between;
@@ -463,6 +466,7 @@
 
 .popup__spec-tabs-content {
     margin-top: 20px;
+    padding: 15px 0 15px 0;
 }
 
 .popup__dop-name {

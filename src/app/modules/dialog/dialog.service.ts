@@ -16,7 +16,7 @@ export class DialogService {
         this.default_id_dialog = config.idDialog ?? this.default_id_dialog;
         this.default_mode = config.mode ?? this.default_mode;
     }
-    showDialogByTemplate(template: TemplateRef<any>, cfg?: DialogServiceConfig): void {
+    showDialogByTemplate(template: TemplateRef<any>, cfg?: Partial<DialogServiceConfig>): void {
         this.validateAndSend({
             template,
             templateKey: null,
@@ -24,10 +24,10 @@ export class DialogService {
             action: 'show',
             dialogKey: cfg?.idDialog,
             form: null,
-            data: null,
+            data: cfg.data ?? {},
         });
     }
-    showDialogByTemplateKey(templateKey: string, cfg?: DialogServiceConfig): void {
+    showDialogByTemplateKey(templateKey: string, cfg?: Partial<DialogServiceConfig>): void {
         this.validateAndSend({
             template: null,
             templateKey,
@@ -35,7 +35,7 @@ export class DialogService {
             action: 'show',
             dialogKey: cfg?.idDialog,
             form: null,
-            data: null,
+            data: cfg.data ?? {},
         });
     }
 
