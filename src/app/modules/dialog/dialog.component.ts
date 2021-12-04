@@ -4,6 +4,7 @@ import {DialogService} from './dialog.service';
 import {filter, tap} from 'rxjs/operators';
 import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
 import {Subject} from 'rxjs';
+import {dialogAnimation, dialogWrapperAnimation} from './dialog.animation';
 
 @UntilDestroy()
 @Component({
@@ -11,6 +12,7 @@ import {Subject} from 'rxjs';
     templateUrl: './dialog.component.html',
     styleUrls: ['./dialog.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: [dialogWrapperAnimation, dialogAnimation],
 })
 export class DialogComponent implements OnInit {
 

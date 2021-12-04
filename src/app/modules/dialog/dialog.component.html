@@ -1,8 +1,6 @@
-<ng-container *ngIf="_showed$ | async">
-    <div class="popup-wrapper">
+<div class="popup-wrapper" *ngIf="_showed$ | async" @dialogWrapper>
         <ng-container *ngTemplateOutlet="template; context: tpl_context"></ng-container>
-    </div>
-</ng-container>
+</div>
 
 <!--Оставить отзыв-->
 <!--<div class="popup popup&#45;&#45;middle">
@@ -175,7 +173,7 @@
 
 <!--О палате-->
 <ng-template #tpl_popup_placement let-data>
-    <div class="popup popup--large">
+    <div class="popup popup--large" @dialogState>
         <div class="popup__actions">
             <button class="popup__actions-close" (click)="closeDialog()"></button>
             <div class="popup__actions-checkbox checkbox-action">
@@ -216,7 +214,7 @@
 
 <!--О специалисте-->
 <ng-template #tpl_popup_person let-data>
-    <div class="popup popup--xmiddle">
+    <div class="popup popup--xmiddle" @dialogState>
     <div class="popup__actions">
         <button class="popup__actions-close" (click)="closeDialog()"></button>
         <div class="popup__actions-checkbox checkbox-action">
@@ -291,7 +289,7 @@
 
 <!--Доп. услуги-->
 <ng-template #tpl_popup_other let-data>
-    <div class="popup popup--xmiddle">
+    <div class="popup popup--xmiddle" @dialogState>
     <div class="popup__actions">
         <button class="popup__actions-close" (click)="closeDialog()"></button>
         <div class="popup__actions-checkbox checkbox-action">
