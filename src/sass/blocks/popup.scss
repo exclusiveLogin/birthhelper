@@ -1,14 +1,21 @@
 .popup-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    background: rgba($black,0.45);
-    z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background: rgba($black,0.45);
+  z-index: 10;
+  transition: all 250ms ease-out;
+}
+
+@media (max-width: 1440px) {
+  .popup-wrapper {
+    backdrop-filter: blur(4px);
+  }
 }
 
 .popup {
