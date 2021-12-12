@@ -307,6 +307,9 @@ export class RestService {
     }
 
     public getData<T>(path: ISettingsParams, data?: IRestParams, nocache = false): Observable<T> {
+        if (path?.mode === 'auth') {
+            nocache = true;
+        }
         if (path) {
             this.pathGen(path);
         }

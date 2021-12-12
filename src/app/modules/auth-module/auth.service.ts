@@ -76,7 +76,9 @@ export class AuthService {
         shareReplay(1),
     );
 
-    isAuthorizedAs$: Observable<UserRole> = this.role$.pipe(map(role => role?.slug || null));
+    isAuthorizedAs$: Observable<UserRole> = this.role$.pipe(
+        map(role => role?.slug || null),
+    );
 
     onAdminAccess$: Observable<boolean> = this.isAuthorizedAs$.pipe(
         map(slug => slug && (slug === 'admin' || slug === 'master' || slug === 'moderator')),
@@ -102,7 +104,9 @@ export class AuthService {
     }
 
     getCurrentRole(): Observable<UserRoleSrc> {
-        return this.rest.getUserRole().pipe(tap(role => this.role = role));
+        return this.rest.getUserRole().pipe(
+            tap(role => this.role = role),
+        );
     }
 
     login(login: string, password: string, url: string) {
