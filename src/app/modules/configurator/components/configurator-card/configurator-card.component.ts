@@ -8,7 +8,8 @@ import {CardSlot, ConfiguratorCardBuilder} from 'app/models/cardbuilder.interfac
 import {ConfiguratorService} from '../../configurator.service';
 import {map, tap} from 'rxjs/operators';
 import {Observable, combineLatest} from 'rxjs';
-import {OrderService} from '../../../../services/order.service';
+import {DialogService} from '../../../dialog/dialog.service';
+import {DialogServiceConfig} from '../../../dialog/dialog.model';
 
 @Component({
     selector: 'app-configurator-card',
@@ -39,7 +40,7 @@ export class ConfiguratorCardComponent implements OnInit {
             this.cardType === 'other' ? ConfiguratorCardBuilder.serialize(data as CardSlot) : null;
         this.viewEnt = this.viewEnt ? this.viewEnt : data;
 
-        this.url = `${environment.static}/${this.viewEnt.photo_url || 'noimage'}`;
+        this.url = this.viewEnt.photo_url;
         this.refreshSelectionState();
     }
 
@@ -47,7 +48,7 @@ export class ConfiguratorCardComponent implements OnInit {
     isInvalid$: Observable<boolean>;
     constructor(
         private configuratorService: ConfiguratorService,
-        private orderService: OrderService,
+        private dialogService: DialogService,
     ) {
     }
 
@@ -61,6 +62,14 @@ export class ConfiguratorCardComponent implements OnInit {
             this.floorKey,
             this.sectionKey,
         );
+    }
+
+    openInPopup(): void {
+        const cfg: Partial<DialogServiceConfig> = {
+            mode: 'popup',
+            data: this.viewEnt,
+        };
+        this.dialogService.showDialogByTemplateKey(this.cardType, cfg);
     }
 
     ngOnInit(): void {

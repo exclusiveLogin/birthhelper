@@ -167,8 +167,8 @@ export class TableComponent implements OnInit {
             this.finishItemsPhase();
         });
 
-        this.filters$ = this.filters ?
-            combineLatest([of(this.filters), this.provider.getFilters(this.key, this.type)]).pipe(
+        this.filters$ = this.filters
+            ? combineLatest([of(this.filters), this.provider.getFilters(this.key, this.type)]).pipe(
                 map(filters => ([...filters[0], ...filters[1]])),
                 tap(filters => {
                     filters.forEach(f => {
@@ -178,8 +178,8 @@ export class TableComponent implements OnInit {
                         }
                     });
                 })
-            ) :
-            this.provider.getFilters(this.key, this.type).pipe(
+            )
+            : this.provider.getFilters(this.key, this.type).pipe(
                 tap(filters => {
                     filters.forEach(f => {
                         f.control = new FormControl({value: f.value || '', disabled: f.readonly});

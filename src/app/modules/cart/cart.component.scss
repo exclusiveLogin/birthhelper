@@ -1,3 +1,10 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  /* align-content: center; */
+  /* justify-content: center; */
+  align-items: center;
+}
 .cart__columns {
     display: flex;
     width: 100%;

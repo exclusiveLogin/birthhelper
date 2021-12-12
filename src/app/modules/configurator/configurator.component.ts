@@ -1,16 +1,17 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {ConfiguratorService} from 'app/modules/configurator/configurator.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SectionType} from 'app/services/search.service';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {Entity} from 'app/models/entity.interface';
+import {Entity, SlotEntity} from 'app/models/entity.interface';
 import {ValidationTreeItem} from '../../services/order.service';
 
 @Component({
     selector: 'app-configurator',
     templateUrl: './configurator.component.html',
-    styleUrls: ['./configurator.component.scss']
+    styleUrls: ['./configurator.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfiguratorComponent implements OnInit {
 
@@ -30,7 +31,7 @@ export class ConfiguratorComponent implements OnInit {
     onTabsLoad$ = this.configuratorService.onTabsReady$;
     onView$ = this.configuratorService.onViewChanged$;
 
-    getConsumerByID(key: string): Observable<Entity[]> {
+    getConsumerByID(key: string): Observable<SlotEntity[]> {
         return this.configuratorService.getConsumerByID(key);
     }
 

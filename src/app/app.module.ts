@@ -15,6 +15,7 @@ import {AuthComponent} from './modules/auth-module/auth/auth.component';
 import { ActivationComponent } from './modules/auth-module/auth/activation/activation.component';
 import { BhDoingComponent } from './main/components/bh-doing/bh-doing.component';
 import {ConfiguratorComponent} from './modules/configurator/configurator.component';
+import {DialogModule} from './modules/dialog/dialog.module';
 
 const routes: Routes = [
     {path: '', component: MainComponent},
@@ -43,6 +44,7 @@ const routes: Routes = [
         ReactiveFormsModule,
         BrowserAnimationsModule,
         HttpClientModule,
+        DialogModule,
     ],
     bootstrap: [
         AppComponent

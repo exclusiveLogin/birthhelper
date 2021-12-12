@@ -78,6 +78,7 @@
     border: solid 2px rgba(45, 51, 63, 0.1);
     border-radius: 5px;
     background: #fff;
+    cursor: pointer;
 }
 
 .clinic-card__ttl {
@@ -89,6 +90,7 @@
     color: rgba(45,51,63,0.7);
     text-align: center;
     text-decoration: none;
+    cursor: pointer;
 
     &:before {
         position: absolute;
@@ -125,6 +127,7 @@
     color: rgba(45,51,63,0.7);
     text-align: center;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .clinic-card__price {

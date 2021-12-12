@@ -59,6 +59,19 @@ export class DashboardComponent implements OnInit {
             ]
         },
         {
+            name: 'ent_services_placement',
+            title: 'Палаты',
+            titleVoc: 'палату',
+            titleVocs: 'палат',
+            type: 'entity',
+            modes: [
+                EMENUMODE.VIEW,
+                EMENUMODE.CREATE,
+                EMENUMODE.EDIT,
+                EMENUMODE.DELETE,
+            ]
+        },
+        {
             name: 'ent_service_containers',
             containerKey: 'container_services',
             title: 'Контейнеры услуг',
@@ -172,6 +185,20 @@ export class DashboardComponent implements OnInit {
             name: 'ent_birth_type_slots',
             slotKey: 'slot_doctors',
             title: 'Слоты видов родов',
+            titleVoc: 'слот',
+            titleVocs: 'слота',
+            type: 'slot',
+            modes: [
+                EMENUMODE.VIEW,
+                EMENUMODE.CREATE,
+                EMENUMODE.DELETE,
+                EMENUMODE.EDIT,
+            ]
+        },
+        {
+            name: 'ent_birth_additional_slots',
+            slotKey: 'slot_doctors',
+            title: 'Слоты дополнительных услуг',
             titleVoc: 'слот',
             titleVocs: 'слота',
             type: 'slot',

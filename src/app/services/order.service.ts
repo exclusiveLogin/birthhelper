@@ -77,6 +77,7 @@ export class OrderService {
         tap( () => this.calculateTreeSelections()),
         tap( () => this.calculateTreeStatuses()),
         map(() => this.validationTree),
+        shareReplay(1),
     );
 
     constructor(
@@ -121,7 +122,11 @@ export class OrderService {
 
     updateValidationTreeStructure(orders: Order[]): void {
         this.validationTree = this.uniqContragentHashes.map(hash => {
-            const currentContragentOrders = orders.filter(o => o?.slot?.[o.slot._contragent_id_key]);
+            const currentContragentOrders = orders.filter(o => {
+                const {_contragent_entity_key: contragentEntityKey, _contragent_id_key: contragentId} = o.slot;
+                const body = {id: o.slot[contragentId], entKey: contragentEntityKey};
+                return hasher(body) === hash;
+            });
             if (!currentContragentOrders.length) { return ; }
             const targetCfgKey = currentContragentOrders[0].section_key;
             const targetCfg = this.sectionConfigs[targetCfgKey];

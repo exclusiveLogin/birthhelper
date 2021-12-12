@@ -48,7 +48,7 @@ export class ClinicCardComponent implements OnInit {
 
     wrapped = false;
 
-    constructor(private router: Router){}
+    constructor(private router: Router) {}
 
     wrap(): void {
         this.wrapped = true;

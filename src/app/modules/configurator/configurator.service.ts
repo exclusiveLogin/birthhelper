@@ -20,7 +20,7 @@ import {
 
 import {RestService} from 'app/services/rest.service';
 import {Entity, SlotEntity} from 'app/models/entity.interface';
-import {filter, map, mapTo, shareReplay, switchMap, tap} from 'rxjs/operators';
+import {distinctUntilChanged, filter, map, mapTo, shareReplay, switchMap, tap} from 'rxjs/operators';
 import {hasher} from '../utils/hasher';
 import {OrderService, ValidationTreeItem} from '../../services/order.service';
 import {Order} from '../../models/order.interface';
@@ -56,38 +56,41 @@ export class ConfiguratorService {
     private _selection$ = new Subject<SelectionOrderSlot>();
     private _syncOrders$ = new Subject<null>();
 
-    onContragent$ = combineLatest([this.currentContragentID$, this.currentContragentEntityKey$]).pipe(
-        tap(() => this.selectionStore = {}),
-        filter(([id, key]) => !!id && !!key),
-        switchMap(([id, key]) => this.restService.getEntity(key, id)),
+    onContragentDataLoad$ = combineLatest([this.currentContragentID$, this.currentContragentEntityKey$, this.currentSectionKey$])
+        .pipe(
+            map(([id, cid, sid]) => ({contragentId: id, contragentEntityKey: cid, contragentSectionKey: sid})));
+
+    onSectionChanged$ = this.onContragentDataLoad$.pipe(
+        map(data => data.contragentSectionKey),
+        distinctUntilChanged(),
+        shareReplay(1),
     );
 
-    onContragentDataLoad$ = combineLatest([this.currentContragentID$, this.currentContragentEntityKey$, this.currentSectionKey$])
-        .pipe(map(([id, cid, sid]) => ({contragentId: id, contragentEntityKey: cid, contragentSectionKey: sid})));
+    onContragent$ = this.onContragentDataLoad$.pipe(
+        filter((cfg) => !!cfg?.contragentId && !!cfg?.contragentEntityKey),
+        switchMap((cfg) => this.restService.getEntity(cfg.contragentEntityKey, cfg.contragentId)),
+        shareReplay(1),
+    );
 
-    onConfigLoad$: Observable<ConfiguratorConfigSrc> = this.onContragentDataLoad$.pipe(
-            filter((
-                {
-                    contragentId: id,
-                    contragentEntityKey: entKey,
-                    contragentSectionKey: section
-                }) => !!id && !!entKey && !!section),
-            switchMap((
-                {
-                    contragentId: id,
-                    contragentEntityKey: entKey,
-                    contragentSectionKey: section
-                }) => this.restService.getConfiguratorSettings(section)),
-            tap(config => this._config = config),
-        );
+    onConfigLoad$: Observable<ConfiguratorConfigSrc> = this.onSectionChanged$.pipe(
+        filter((section) => !!section),
+        distinctUntilChanged((pre, cur) => pre === cur),
+        switchMap(section => this.restService.getConfiguratorSettings(section)),
+        tap(config => this._config = config),
+        tap((config) => this._currentTab$.next(config?.tabs[0]?.key)),
+        shareReplay(1),
+    );
 
     onSynced$: Observable<null> = this._syncOrders$.pipe();
 
-    onValidationTreeChanged$ = this.onConfigLoad$.pipe(switchMap(() =>
-        this.orderService.getValidationTreeByContragent(this.currentContragentID$.value, this.currentContragentEntityKey$.value)));
+    onValidationTreeChanged$ = combineLatest([this.onContragent$, this.onConfigLoad$]).pipe(
+        switchMap(() => this.orderService.getValidationTreeByContragent(
+            this.currentContragentID$.value,
+            this.currentContragentEntityKey$.value),
+        ),
+    );
 
     onValidationStateByContragentChanged$ = this.onValidationTreeChanged$.pipe(
-        tap(s => console.log('s: ', s)),
         map(tree => tree?.isInvalid ?? true));
 
     onValidationTabsChanged$ = this.onValidationTreeChanged$.pipe(map(tree => tree?._tabs ?? []));
@@ -105,7 +108,9 @@ export class ConfiguratorService {
 
     onViewChanged$: Observable<TabConfig> = this._currentTab$.pipe(
         filter(key => !!this.viewsStore[key]),
-        map(key => this.viewsStore[key]));
+        map(key => this.viewsStore[key]),
+        shareReplay(1),
+    );
 
     onSelectionByUser$: Observable<null> = this._selection$.pipe(
         tap((selection) => {
@@ -198,11 +203,12 @@ export class ConfiguratorService {
         const config = this._config;
         const providerConfigs = config?.providers ?? [];
         providerConfigs.forEach(_ => {
-            this.providers[_.key] = this.restService.getSlotsByContragent<SlotEntity>(
-                _.entityKey,
-                this.currentContragentID$.value,
-                _.restrictors ?? []
-            );
+            this.providers[_.key] = this.currentContragentID$.pipe(
+                switchMap(id => this.restService.getSlotsByContragent<SlotEntity>(
+                    _.entityKey,
+                    id,
+                    _.restrictors ?? []
+            )));
         });
     }
 
@@ -217,7 +223,6 @@ export class ConfiguratorService {
             const t_providers = t_configs.map(cfg => this.providers[cfg.key]);
             this.buses[key] = combineLatest(...[t_providers]).pipe(
                 map(data => data.reduce((e, acc) => ([...acc, ...e]), [])),
-                shareReplay(1)
             );
         });
     }
@@ -229,7 +234,6 @@ export class ConfiguratorService {
             const t_bus = this.buses[cfg.busKey];
             this.consumers[cfg.key] = t_bus.pipe(
                 map(list => list.map(ent => ({...ent, _entity_key: cfg.entityKey} as SlotEntity))),
-                // map(list => list.map(ent => ({...ent, photo_url: ent?._entity?.meta?.image_id?.filename ?? 'nophoto'}))),
             );
         });
 
