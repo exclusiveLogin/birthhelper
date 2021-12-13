@@ -39,3 +39,16 @@
 .cart__articles {
     margin-top: 125px;
 }
+
+.empty_cart {
+    height: 5rem;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.25rem;
+    color: grey;
+    border: 2px solid lightgrey;
+    margin: 5%;
+    text-align: center;
+}
