@@ -137,8 +137,12 @@ export class OrderService {
             const targetCfg = this.sectionConfigs[targetCfgKey];
             if (!targetCfg) { return ; }
             const contragentTabs = targetCfg?.tabs ?? [];
-            const contragentFloors = targetCfg?.tabs?.reduce(
-                (floors, tab) => ([...floors, ...tab.floors]), []) ?? [];
+            const contragentFloors = (targetCfg?.tabs?.reduce(
+                (floors, tab) => ([...floors, ...tab.floors]), []) ?? []) as TabFloorSetting[];
+            currentContragentOrders.forEach(order => {
+                const o_type = contragentFloors?.find(f => f.key === order.floor_key)?.entityType;
+                order.setUtility(o_type);
+            });
             return {
                 contragentHash: hash,
                 _tabs: contragentTabs.map(tab => {
@@ -264,7 +268,7 @@ export class OrderService {
         if (forUpdateOrders.length) {
             for (const o of forUpdateOrders) {
                 try {
-                    o.slot = await this.productFetcher(o.slot_entity_key, o.slot_entity_id).toPromise();
+                    o.setSlot(await this.productFetcher(o.slot_entity_key, o.slot_entity_id).toPromise());
                 } catch (e) {
                     o._status = 'error';
                     console.error('fetch slot ERROR: ', e);

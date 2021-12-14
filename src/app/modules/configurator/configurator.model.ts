@@ -1,5 +1,6 @@
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import {Entity, SlotEntity} from 'app/models/entity.interface';
+import {Observable} from 'rxjs';
+import {SlotEntity} from 'app/models/entity.interface';
+import {SlotEntityUtility} from '../../models/order.interface';
 
 export type PriorityFloor = 'high' | 'mid' | 'low';
 
@@ -45,7 +46,7 @@ export interface TabFloorSetting {
     title: string;
     consumerKeys: string[];
     invalid: boolean;
-    entityType?: 'person' | 'placement' | 'other';
+    entityType?: SlotEntityUtility;
     required?: boolean;
     selectMode?: SelectMode;
     poorErrorMessage?: string;

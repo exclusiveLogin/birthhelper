@@ -1,6 +1,6 @@
 import {hasher} from '../modules/utils/hasher';
-import {PriceEntitySlot} from './entity.interface';
-import {SelectionOrderSlot} from '../modules/configurator/configurator.model';
+import {PriceEntitySlot, SlotEntity} from './entity.interface';
+import {SelectionOrderSlot, TabFloorSetting} from '../modules/configurator/configurator.model';
 import {SectionType} from '../services/search.service';
 
 export interface OrderSrc {
@@ -54,6 +54,8 @@ export enum ORDER_STATUSES {
 
 export type StatusType = keyof typeof ORDER_STATUSES;
 
+export type SlotEntityUtility = 'person' | 'placement' | 'other';
+
 export class Order implements IOrder {
     id: number;
     user_id: number;
@@ -71,6 +73,8 @@ export class Order implements IOrder {
     raw: OrderSrc;
     hash: string;
     slot: PriceEntitySlot;
+    utility: SlotEntityUtility = 'other';
+    cartTitle: string;
     _status: 'pending' | 'error' | 'refreshing' | 'loading' | 'stable' = 'pending';
 
     constructor(src: OrderSrc) {
@@ -80,6 +84,7 @@ export class Order implements IOrder {
         }
         this.hash = hasher(src);
         this._status = 'loading';
+        this.cartTitle = `[${this.id}] - #${this.hash}`;
     }
 
     update(src: OrderSrc): void {
@@ -101,6 +106,16 @@ export class Order implements IOrder {
             this._status = 'loading';
         }
         Object.keys(src).forEach(k => this[k] = src[k]);
+    }
+
+    setSlot(slot: PriceEntitySlot): void {
+        // swi
+
+        this.slot = slot;
+    }
+
+    setUtility(value: SlotEntityUtility): void {
+        this.utility = value;
     }
 
 }

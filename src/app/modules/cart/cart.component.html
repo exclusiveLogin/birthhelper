@@ -13,7 +13,8 @@
                     <ng-container *ngIf="{
                         section: c.section,
                         valid: c.isInvalid,
-                        contragentEntity: getClinicContragentByHash(c.contragentHash) | async
+                        contragentEntity: getClinicContragentByHash(c.contragentHash) | async,
+                        orders: c._orders
                     } as contragent">
                         <ng-container [ngSwitch]="contragent.section">
                             <ng-container *ngSwitchCase="'clinic'" [ngTemplateOutlet]="clinic" [ngTemplateOutletContext]="{$implicit: contragent}"></ng-container>
@@ -61,7 +62,8 @@
                     </div>
 
                     <!-- Orders -->
-                    <div class="cart-pack__body-item cart-pack-item">
+                    {{contragent.orders | json}}
+                    <!--<div class="cart-pack__body-item cart-pack-item">
                         <p class="cart-pack-item__title">Специалисты</p>
                         <div class="cart-pack-item__inner">
                             <div class="cart-pack-item__inner-avatar">
@@ -74,8 +76,8 @@
                             </div>
                             <p class="cart-pack-item__inner-price">75 000 руб.</p>
                             <div class="cart-pack-item__inner-btns-group">
-                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn--share"></button>
-                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn--delete"></button>
+                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn&#45;&#45;share"></button>
+                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn&#45;&#45;delete"></button>
                             </div>
                         </div>
                     </div>
@@ -90,8 +92,8 @@
                             <div class="cart-pack-item__inner-value"></div>
                             <p class="cart-pack-item__inner-price">780 000 руб.</p>
                             <div class="cart-pack-item__inner-btns-group">
-                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn--share"></button>
-                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn--delete"></button>
+                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn&#45;&#45;share"></button>
+                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn&#45;&#45;delete"></button>
                             </div>
                         </div>
                     </div>
@@ -106,8 +108,8 @@
                             <div class="cart-pack-item__inner-value"></div>
                             <p class="cart-pack-item__inner-price">5 525 руб.</p>
                             <div class="cart-pack-item__inner-btns-group">
-                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn--share"></button>
-                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn--delete"></button>
+                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn&#45;&#45;share"></button>
+                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn&#45;&#45;delete"></button>
                             </div>
                         </div>
                         <div class="cart-pack-item__inner">
@@ -118,11 +120,11 @@
                             <div class="cart-pack-item__inner-value"></div>
                             <p class="cart-pack-item__inner-price">7 475 руб.</p>
                             <div class="cart-pack-item__inner-btns-group">
-                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn--share"></button>
-                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn--delete"></button>
+                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn&#45;&#45;share"></button>
+                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn&#45;&#45;delete"></button>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
                 <button class="cart-pack__body-btn">Свернуть</button>
             </div>
