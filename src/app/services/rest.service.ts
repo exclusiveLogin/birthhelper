@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {ApiService} from './api.service';
-import {filter, map, switchMap, take, tap} from 'rxjs/operators';
+import {filter, map, shareReplay, switchMap, take, tap} from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {IDictItem} from 'app/Admin/dict.service';
 import {SectionType} from './search.service';
@@ -316,7 +316,7 @@ export class RestService {
         const cacheKey = md5(`${JSON.stringify(path)}_${JSON.stringify(data)}`);
 
         if (this.cacheStore[cacheKey] && !nocache) {
-            return of(this.cacheStore[cacheKey]) as Observable<T>;
+            return this.cacheStore[cacheKey] as Observable<T>;
         }
 
         const url = this.createUrl(path);
@@ -327,17 +327,14 @@ export class RestService {
                 this.interceptor.interceptor(),
                 filter(d => !!d),
             );
-
         const req = this.interceptor.token$.pipe(
             switchMap(http),
             take(1),
-            tap(_ => {
-                if (!nocache) {
-                    this.cacheStore[cacheKey] = _;
-                }
-            }),
+            shareReplay(1),
         );
-
+        if (!nocache) {
+            this.cacheStore[cacheKey] = req;
+        }
         return req as Observable<T>;
     }
 
