@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 import {ApiService} from './api.service';
-import {filter, map, shareReplay, switchMap, take, tap} from 'rxjs/operators';
+import {filter, map, shareReplay, switchMap, take} from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {IDictItem} from 'app/Admin/dict.service';
 import {SectionType} from './search.service';
