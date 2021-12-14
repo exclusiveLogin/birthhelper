@@ -39,6 +39,7 @@ export class OrderService {
 
     validationTree: ValidationTreeContragent[] = [];
     uniqContragentHashes: string[] = [];
+    contragentHashMap: {[hash: string]: {id: number, entKey: string}};
     uniqSectionKeys: SectionType[] = [];
     sectionConfigs: { [id in SectionType]?: ConfiguratorConfigSrc} = {};
     userOrdersStore: Order[];
@@ -85,17 +86,21 @@ export class OrderService {
     ) {
         this.userOrdersStore = [];
         this.onValidationTreeCompleted$
-            .subscribe((tree) => console.log('onValidationTreeCompleted$ data:', tree) );
+            .subscribe((tree) => console.log('onValidationTreeCompleted$ data:', tree, this.contragentHashMap) );
 
         this.onSummaryPriceChanged$.subscribe();
+        this.updateOrderList();
     }
 
-    refreshValidationConfigsHashes(orders: Order[]): void {
+    private refreshValidationConfigsHashes(orders: Order[]): void {
         // собираем уникальные констрагенты по которым будем группировать заказы (позиции)
+        this.contragentHashMap = {};
         const c_hashes = orders.filter(o => !!o?.slot).map(o => {
             const {_contragent_entity_key: contragentEntityKey, _contragent_id_key: contragentId} = o.slot;
             const body = {id: o.slot[contragentId], entKey: contragentEntityKey};
-            return hasher(body);
+            const hash = hasher(body);
+            this.contragentHashMap[hash] = body;
+            return hash;
         });
         this.uniqContragentHashes = uniq(c_hashes);
 
@@ -106,7 +111,7 @@ export class OrderService {
         ) as SectionType[];
     }
 
-    updateConfigsBySections(): Observable<ConfiguratorConfigSrc[]> {
+    private updateConfigsBySections(): Observable<ConfiguratorConfigSrc[]> {
         if (!this.uniqSectionKeys.length) {
             return of(null);
         }
@@ -120,7 +125,7 @@ export class OrderService {
         );
     }
 
-    updateValidationTreeStructure(orders: Order[]): void {
+    private updateValidationTreeStructure(orders: Order[]): void {
         this.validationTree = this.uniqContragentHashes.map(hash => {
             const currentContragentOrders = orders.filter(o => {
                 const {_contragent_entity_key: contragentEntityKey, _contragent_id_key: contragentId} = o.slot;
@@ -165,7 +170,7 @@ export class OrderService {
         }).filter(_ => !!_);
     }
 
-    calculateTreeSelections(): void {
+    private calculateTreeSelections(): void {
         for (const contragentTree of this.validationTree) {
             contragentTree._orders.forEach(order => {
                 contragentTree._tabs.forEach(tab => tab.selected = order.tab_key === tab.key
@@ -178,7 +183,7 @@ export class OrderService {
         }
     }
 
-    calculateTreeStatuses(): void {
+    private calculateTreeStatuses(): void {
         for (const contragentTree of this.validationTree) {
             const cfg = this.sectionConfigs[contragentTree.section];
             contragentTree._tabs.forEach(tab => {

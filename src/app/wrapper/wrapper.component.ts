@@ -9,7 +9,6 @@ import {ActivatedRoute} from '@angular/router';
 export class WrapperComponent implements OnInit {
 
   constructor(
-      private ar: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {}

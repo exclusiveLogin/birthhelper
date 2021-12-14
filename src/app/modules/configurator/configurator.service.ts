@@ -35,7 +35,6 @@ export class ConfiguratorService {
         private orderService: OrderService,
     ) {
         this.orderService.onOrderListChanged_Pending$.subscribe(list => this.syncOrders(list));
-        this.orderService.updateOrderList();
     }
 
     private _config: ConfiguratorConfigSrc;

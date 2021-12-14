@@ -7,40 +7,60 @@
             <button class="cart-header__btn-link muted">Очистить корзину</button>
         </div>
 
-        <div class="empty_cart">Ваша корзина пуста <br> Выберите услуги чтобы оформить заказ</div>
+        <ng-container *ngIf="{contragentTree: validationTree$ | async} as data">
+            <ng-container *ngIf="data?.contragentTree?.length else empty">
+                <div *ngFor="let c of data.contragentTree">
+                    <ng-container *ngIf="{
+                        section: c.section,
+                        valid: c.isInvalid,
+                        contragentEntity: getClinicContragentByHash(c.contragentHash) | async
+                    } as contragent">
+                        <ng-container [ngSwitch]="contragent.section">
+                            <ng-container *ngSwitchCase="'clinic'" [ngTemplateOutlet]="clinic" [ngTemplateOutletContext]="{$implicit: contragent}"></ng-container>
+                        </ng-container>
 
-        <!--<div class="cart-pack cart-pack&#45;&#45;clinic">
-            <div class="cart-pack__name">
-                <p class="cart-pack__name-title">Ведение беременности</p>
-            </div>
+                    </ng-container>
 
-            <div class="cart-pack__body">
+                </div>
+            </ng-container>
+
+            <ng-template #empty>
+                <div class="empty_cart">Ваша корзина пуста <br> Выберите услуги чтобы оформить заказ</div>
+            </ng-template>
+        </ng-container>
+
+
+
+    </div>
+    <ng-template #clinic let-contragent>
+        <div class="cart-pack cart-pack--clinic" >
+            <div class="cart-pack__body" *ngIf="contragent?.contragentEntity as cnt">
                 <div class="cart-pack__body-title">
-                    <p class="cart-pack__body-title-text">ФГБУ «Национальный медицинский исследовательский центр
-                        акушерства, гинекологии и перинатологии имени академика
-                        В.И.Кулакова»</p>
+                    <p class="cart-pack__body-title-text">{{cnt.title}}</p>
                     <div class="edit_btn"><i class="far fa-edit fa-2x" title="Редактировать выбранные услуги"></i></div>
                 </div>
                 <div class="cart-pack__body-content">
+                    <!-- Options of Clinic -->
                     <div class="cart-pack__body-options cart-pack-options">
                         <p class="cart-pack-options__item">
                             <span class="cart-pack-options__item-name">Посещение мамы и малыша в палате:</span>
-                            <span class="cart-pack-options__item-value">Да</span>
+                            <span class="cart-pack-options__item-value">{{cnt?.features?.free_meets ? 'Да' : 'Нет'}}</span>
                         </p>
                         <p class="cart-pack-options__item">
                             <span class="cart-pack-options__item-name">Наличие детской реанимации:</span>
-                            <span class="cart-pack-options__item-value">Да</span>
+                            <span class="cart-pack-options__item-value">{{cnt?.features?.has_reanimation ? 'Да' : 'Нет'}}</span>
                         </p>
                         <p class="cart-pack-options__item">
                             <span class="cart-pack-options__item-name">Женская консультация при роддоме:</span>
-                            <span class="cart-pack-options__item-value">Да</span>
+                            <span class="cart-pack-options__item-value">{{cnt?.features?.has_consultation ? 'Да' : 'Нет'}}</span>
                         </p>
                         <p class="cart-pack-options__item">
-                            <span class="cart-pack-options__item-name">Рядом с домом:</span>
-                            <span class="cart-pack-options__item-value">Да</span>
+                            <span class="cart-pack-options__item-name">В палате с малышом:</span>
+                            <span class="cart-pack-options__item-value">{{cnt?.features?.mom_with_baby ? 'Да' : 'Нет'}}</span>
                         </p>
                     </div>
 
+                    <!-- Orders -->
                     <div class="cart-pack__body-item cart-pack-item">
                         <p class="cart-pack-item__title">Специалисты</p>
                         <div class="cart-pack-item__inner">
@@ -54,8 +74,8 @@
                             </div>
                             <p class="cart-pack-item__inner-price">75 000 руб.</p>
                             <div class="cart-pack-item__inner-btns-group">
-                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn&#45;&#45;share"></button>
-                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn&#45;&#45;delete"></button>
+                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn--share"></button>
+                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn--delete"></button>
                             </div>
                         </div>
                     </div>
@@ -70,8 +90,8 @@
                             <div class="cart-pack-item__inner-value"></div>
                             <p class="cart-pack-item__inner-price">780 000 руб.</p>
                             <div class="cart-pack-item__inner-btns-group">
-                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn&#45;&#45;share"></button>
-                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn&#45;&#45;delete"></button>
+                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn--share"></button>
+                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn--delete"></button>
                             </div>
                         </div>
                     </div>
@@ -86,8 +106,8 @@
                             <div class="cart-pack-item__inner-value"></div>
                             <p class="cart-pack-item__inner-price">5 525 руб.</p>
                             <div class="cart-pack-item__inner-btns-group">
-                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn&#45;&#45;share"></button>
-                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn&#45;&#45;delete"></button>
+                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn--share"></button>
+                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn--delete"></button>
                             </div>
                         </div>
                         <div class="cart-pack-item__inner">
@@ -98,16 +118,16 @@
                             <div class="cart-pack-item__inner-value"></div>
                             <p class="cart-pack-item__inner-price">7 475 руб.</p>
                             <div class="cart-pack-item__inner-btns-group">
-                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn&#45;&#45;share"></button>
-                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn&#45;&#45;delete"></button>
+                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn--share"></button>
+                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn--delete"></button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <button class="cart-pack__body-btn">Свернуть</button>
             </div>
-        </div>-->
-    </div>
+        </div>
+    </ng-template>
 
     <!--<div class="cart__sidebar">
         <div class="cart__sidebar-widget cart-widget muted">
