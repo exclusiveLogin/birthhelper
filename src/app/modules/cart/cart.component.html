@@ -62,69 +62,26 @@
                     </div>
 
                     <!-- Orders -->
-                    {{contragent.orders | json}}
-                    <!--<div class="cart-pack__body-item cart-pack-item">
-                        <p class="cart-pack-item__title">Специалисты</p>
-                        <div class="cart-pack-item__inner">
+
+                    <div class="cart-pack__body-item cart-pack-item">
+<!--                        <p class="cart-pack-item__title">Специалисты</p>-->
+                        <div class="cart-pack-item__inner" *ngFor="let o of contragent.orders">
                             <div class="cart-pack-item__inner-avatar">
                                 <img src="img/specialists-cards/specialist1.png">
                             </div>
-                            <p class="cart-pack-item__inner-name">Маркелова Анастасия</p>
+                            <p class="cart-pack-item__inner-name">{{o.cartTitle}}</p>
                             <div class="cart-pack-item__inner-value">
-                                <p class="cart-pack-item__inner-value-text">Личный акушер</p>
-                                <p class="cart-pack-item__inner-value-text">Категория - А</p>
+<!--                                <p class="cart-pack-item__inner-value-text">Личный акушер</p>-->
+<!--                                <p class="cart-pack-item__inner-value-text">Категория - А</p>-->
                             </div>
-                            <p class="cart-pack-item__inner-price">75 000 руб.</p>
+<!--                            <p class="cart-pack-item__inner-price">75 000 руб.</p>-->
                             <div class="cart-pack-item__inner-btns-group">
-                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn&#45;&#45;share"></button>
-                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn&#45;&#45;delete"></button>
+                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn--share"></button>
+                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn--delete"></button>
                             </div>
                         </div>
                     </div>
 
-                    <div class="cart-pack__body-item cart-pack-item">
-                        <p class="cart-pack-item__title">Размещение</p>
-                        <div class="cart-pack-item__inner">
-                            <div class="cart-pack-item__inner-avatar">
-                                <img src="img/accommodation-cards/accommodation-cards2.jpg">
-                            </div>
-                            <p class="cart-pack-item__inner-name">Площадь палаты: 32-36 кв.м.</p>
-                            <div class="cart-pack-item__inner-value"></div>
-                            <p class="cart-pack-item__inner-price">780 000 руб.</p>
-                            <div class="cart-pack-item__inner-btns-group">
-                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn&#45;&#45;share"></button>
-                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn&#45;&#45;delete"></button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="cart-pack__body-item cart-pack-item">
-                        <p class="cart-pack-item__title">Дополнительные услуги</p>
-                        <div class="cart-pack-item__inner">
-                            <div class="cart-pack-item__inner-avatar">
-                                <img src="img/accommodation-cards/accommodation-cards2.jpg">
-                            </div>
-                            <p class="cart-pack-item__inner-name">Маникюр</p>
-                            <div class="cart-pack-item__inner-value"></div>
-                            <p class="cart-pack-item__inner-price">5 525 руб.</p>
-                            <div class="cart-pack-item__inner-btns-group">
-                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn&#45;&#45;share"></button>
-                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn&#45;&#45;delete"></button>
-                            </div>
-                        </div>
-                        <div class="cart-pack-item__inner">
-                            <div class="cart-pack-item__inner-avatar">
-                                <img src="img/accommodation-cards/accommodation-cards2.jpg">
-                            </div>
-                            <p class="cart-pack-item__inner-name">Педикюр</p>
-                            <div class="cart-pack-item__inner-value"></div>
-                            <p class="cart-pack-item__inner-price">7 475 руб.</p>
-                            <div class="cart-pack-item__inner-btns-group">
-                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn&#45;&#45;share"></button>
-                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn&#45;&#45;delete"></button>
-                            </div>
-                        </div>
-                    </div>-->
                 </div>
                 <button class="cart-pack__body-btn">Свернуть</button>
             </div>

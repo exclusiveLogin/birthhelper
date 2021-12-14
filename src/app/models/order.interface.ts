@@ -109,15 +109,29 @@ export class Order implements IOrder {
     }
 
     setSlot(slot: PriceEntitySlot): void {
-        // swi
-
         this.slot = slot;
+        this.refreshTitle();
     }
 
     setUtility(value: SlotEntityUtility): void {
         this.utility = value;
+        this.refreshTitle();
     }
 
+    private refreshTitle(): void {
+        if (this.utility === 'person') {
+            this.cartTitle = this.slot?._entity?.full_name
+                ? `${this.slot?._entity?.full_name ?? ''} ${this.slot?._entity?.short_name ?? ''}` : 'Без имени';
+        }
+
+        if (this.utility === 'placement') {
+            this.cartTitle = this.slot?.title ?? this.slot?._entity?.title;
+        }
+
+        if (this.utility === 'other') {
+            this.cartTitle = this.slot?.title ?? this.slot?._entity?.title;
+        }
+    }
 }
 
 export interface OrderRequest {
