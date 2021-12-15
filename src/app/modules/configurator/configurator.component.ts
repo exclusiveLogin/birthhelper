@@ -1,12 +1,15 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {ConfiguratorService} from 'app/modules/configurator/configurator.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SectionType} from 'app/services/search.service';
 import {combineLatest, Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {Entity, SlotEntity} from 'app/models/entity.interface';
+import {map, tap} from 'rxjs/operators';
+import {SlotEntity} from 'app/models/entity.interface';
 import {ValidationTreeItem} from '../../services/order.service';
+import {TabConfig} from 'app/modules/configurator/configurator.model';
+import {UntilDestroy} from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
     selector: 'app-configurator',
     templateUrl: './configurator.component.html',
@@ -47,7 +50,6 @@ export class ConfiguratorComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        // this.configuratorService.getSectionConfig(null)
         this.onInitData$.subscribe(([id, type, key]) => {
             this.configuratorService.currentContragentID$.next(id);
             this.configuratorService.currentContragentEntityKey$.next(key);

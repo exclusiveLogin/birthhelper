@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {OrderService} from '../../services/order.service';
+import {OrderService, ValidationTreeContragent} from '../../services/order.service';
 import {map, tap} from 'rxjs/operators';
 import {Order} from 'app/models/order.interface';
 import {summatorPipe} from 'app/modules/utils/price-summator';
@@ -37,6 +37,10 @@ export class CartComponent implements OnInit {
         ) {}
 
     ngOnInit(): void {
+    }
+
+    trackIt(idx: number, vt: ValidationTreeContragent): string {
+        return vt.contragentHash;
     }
 
 

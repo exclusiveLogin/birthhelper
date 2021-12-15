@@ -12,7 +12,9 @@
         <p class="cart-pack-item__inner-price">{{o?.slot?.price}} руб.</p>
         <div class="cart-pack-item__inner-btns-group">
             <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn--share"></button>
-            <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn--delete"></button>
+            <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn--delete"
+                    (click)="removeOrder(o)">
+            </button>
         </div>
     </div>
 </div>

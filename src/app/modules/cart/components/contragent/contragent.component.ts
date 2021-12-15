@@ -7,6 +7,7 @@ import {map} from 'rxjs/operators';
 import {Contragent} from 'app/models/contragent.interface';
 import {SectionType} from 'app/services/search.service';
 import {Router} from '@angular/router';
+import {ConfiguratorService} from 'app/modules/configurator/configurator.service';
 
 @Component({
     selector: 'app-contragent',
@@ -25,13 +26,15 @@ export class ContragentComponent implements OnInit {
         private ordersService: OrderService,
         private restService: RestService,
         private router: Router,
+        private configurator: ConfiguratorService,
     ) {
     }
 
-    gotoConfigurator(): void {
+    async gotoConfigurator() {
         const contragentData = this.ordersService.contragentHashMap[this.validationTreeByContragent.contragentHash];
         if (!this.validationTreeByContragent) { return; }
-        this.router.navigate(['/system', 'configurator', this.validationTreeByContragent.section, contragentData.id]);
+        await this.router.navigate(['/system', 'configurator', this.validationTreeByContragent.section, contragentData.id]);
+        this.configurator.selectFirstTab();
     }
 
     ngOnInit(): void {

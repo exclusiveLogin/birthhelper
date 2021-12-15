@@ -9,7 +9,7 @@
 
         <ng-container *ngIf="{contragentTree: validationTree$ | async} as data">
             <ng-container *ngIf="data?.contragentTree?.length else empty">
-                <ng-container *ngFor="let c of data.contragentTree; let idx = index">
+                <ng-container *ngFor="let c of data.contragentTree; let idx = index; trackBy:trackIt">
                     <app-contragent [validationTreeByContragent]="c" [show]="idx === 0"></app-contragent>
                 </ng-container>
             </ng-container>

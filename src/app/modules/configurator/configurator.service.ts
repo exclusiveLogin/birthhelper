@@ -20,7 +20,7 @@ import {
 
 import {RestService} from 'app/services/rest.service';
 import {Entity, SlotEntity} from 'app/models/entity.interface';
-import {distinctUntilChanged, filter, map, mapTo, shareReplay, switchMap, tap} from 'rxjs/operators';
+import {distinctUntilChanged, filter, map, mapTo, shareReplay, switchMap, take, tap} from 'rxjs/operators';
 import {hasher} from '../utils/hasher';
 import {OrderService, ValidationTreeItem} from '../../services/order.service';
 import {Order} from '../../models/order.interface';
@@ -242,6 +242,16 @@ export class ConfiguratorService {
         this._currentTab$.next(tabKey);
     }
 
+    selectFirstTab(): void {
+        this.onConfigLoad$.pipe(
+            take(1),
+            map(data => data.tabs?.[0]?.key),
+            filter(data => !!data),
+        ).subscribe((tab ) => {
+            this.selectTab(tab);
+        });
+    }
+
     selectItem(
         entity: Entity,
         tabKey: string,
@@ -257,6 +267,10 @@ export class ConfiguratorService {
             sectionKey,
         };
         this._selection$.next(data);
+    }
+
+    deselectItemFromCart(selection: SelectionOrderSlot): void {
+        this._selection$.next(selection);
     }
 
     getSelectedStateByEntity(entity: Entity): SelectedState {
