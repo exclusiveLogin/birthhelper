@@ -27,6 +27,7 @@
 
     <ng-container *ngIf="{ invalid: onValidationState$ | async} as state">
         <button class="clinic-cart-btn"
+                (click)="gotoCart()"
                 *ngIf="state?.invalid !== null"
                 [class.muted]="state.invalid">
             <span class="clinic-cart-btn__txt" title="В корзину">{{ price$ | async}}&nbsp;&#x20bd;</span>

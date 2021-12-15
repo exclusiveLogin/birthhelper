@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {map, switchMap, tap} from 'rxjs/operators';
 import {OrderService, StatusValidation} from 'app/services/order.service';
 import {ConfiguratorService} from '../../configurator.service';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-configurator-tabs',
@@ -28,7 +29,12 @@ export class TabsComponent implements OnInit {
     constructor(
         private orderService: OrderService,
         private configuratorService: ConfiguratorService,
+        private router: Router,
     ) {}
+
+    async gotoCart() {
+        await this.router.navigate(['/system', 'cart']);
+    }
 
     selectTab(key: string): void {
         this.activeTab = key;
