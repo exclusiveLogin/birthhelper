@@ -44,6 +44,8 @@ export class CartComponent implements OnInit {
     }
 
     clearCart(): void {
+        const p = confirm('Вы действительно хотите отчистить корзину?');
+        if (!p) { return; }
         this.orderService.clearCart();
     }
 }
