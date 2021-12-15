@@ -35,24 +35,24 @@
         <div class="cart__sidebar-prise cart-price">
             <div class="cart-price__item">
                 <p class="cart-price__item-title">Стоимость заказа:</p>
-                <p class="cart-price__item-value cart-price__item-value--blue">1 237 969 руб.</p>
+                <p class="cart-price__item-value cart-price__item-value--blue">{{totalPrice$ | async}} руб.</p>
             </div>
-            <div class="cart-price__item">
-                <p class="cart-price__item-title">Скидка <span class="bold">Birth Helper</span>:</p>
-                <p class="cart-price__item-value cart-price__item-value--red">- 243 000 руб.</p>
-            </div>
-            <div class="cart-price__item">
-                <p class="cart-price__item-title">Скидка при оплате на сайте:</p>
-                <p class="cart-price__item-value cart-price__item-value--red">- 50 000 руб.</p>
-            </div>
+<!--            <div class="cart-price__item">-->
+<!--                <p class="cart-price__item-title">Скидка <span class="bold">Birth Helper</span>:</p>-->
+<!--                <p class="cart-price__item-value cart-price__item-value&#45;&#45;red">- 243 000 руб.</p>-->
+<!--            </div>-->
+<!--            <div class="cart-price__item">-->
+<!--                <p class="cart-price__item-title">Скидка при оплате на сайте:</p>-->
+<!--                <p class="cart-price__item-value cart-price__item-value&#45;&#45;red">- 50 000 руб.</p>-->
+<!--            </div>-->
             <div class="cart-price__item">
                 <p class="cart-price__item-title">Итого к оплате:</p>
-                <p class="cart-price__item-value cart-price__item-value--green">944 969 руб.</p>
+                <p class="cart-price__item-value cart-price__item-value--green">{{totalPriceValid$ | async}} руб.</p>
             </div>
         </div>
 
-        <button class="cart-price__btn cart-price__btn--blue">Отправить запрос менеджеру</button>
-        <button class="cart-price__btn cart-price__btn--ghost">Оформить кредит или рассрочку</button>
+        <button class="cart-price__btn cart-price__btn--blue muted">Отправить запрос менеджеру</button>
+        <button class="cart-price__btn cart-price__btn--ghost muted">Оформить кредит или рассрочку</button>
     </div>
 </div>
 
