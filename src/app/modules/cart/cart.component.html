@@ -9,20 +9,9 @@
 
         <ng-container *ngIf="{contragentTree: validationTree$ | async} as data">
             <ng-container *ngIf="data?.contragentTree?.length else empty">
-                <div *ngFor="let c of data.contragentTree">
-                    <ng-container *ngIf="{
-                        section: c.section,
-                        valid: c.isInvalid,
-                        contragentEntity: getClinicContragentByHash(c.contragentHash) | async,
-                        orders: c._orders
-                    } as contragent">
-                        <ng-container [ngSwitch]="contragent.section">
-                            <ng-container *ngSwitchCase="'clinic'" [ngTemplateOutlet]="clinic" [ngTemplateOutletContext]="{$implicit: contragent}"></ng-container>
-                        </ng-container>
-
-                    </ng-container>
-
-                </div>
+                <ng-container *ngFor="let c of data.contragentTree; let idx = index">
+                    <app-contragent [validationTreeByContragent]="c" [show]="idx === 0"></app-contragent>
+                </ng-container>
             </ng-container>
 
             <ng-template #empty>
@@ -33,62 +22,9 @@
 
 
     </div>
-    <ng-template #clinic let-contragent>
-        <div class="cart-pack cart-pack--clinic" >
-            <div class="cart-pack__body" *ngIf="contragent?.contragentEntity as cnt">
-                <div class="cart-pack__body-title">
-                    <p class="cart-pack__body-title-text">{{cnt.title}}</p>
-                    <div class="edit_btn"><i class="far fa-edit fa-2x" title="Редактировать выбранные услуги"></i></div>
-                </div>
-                <div class="cart-pack__body-content">
-                    <!-- Options of Clinic -->
-                    <div class="cart-pack__body-options cart-pack-options">
-                        <p class="cart-pack-options__item">
-                            <span class="cart-pack-options__item-name">Посещение мамы и малыша в палате:</span>
-                            <span class="cart-pack-options__item-value">{{cnt?.features?.free_meets ? 'Да' : 'Нет'}}</span>
-                        </p>
-                        <p class="cart-pack-options__item">
-                            <span class="cart-pack-options__item-name">Наличие детской реанимации:</span>
-                            <span class="cart-pack-options__item-value">{{cnt?.features?.has_reanimation ? 'Да' : 'Нет'}}</span>
-                        </p>
-                        <p class="cart-pack-options__item">
-                            <span class="cart-pack-options__item-name">Женская консультация при роддоме:</span>
-                            <span class="cart-pack-options__item-value">{{cnt?.features?.has_consultation ? 'Да' : 'Нет'}}</span>
-                        </p>
-                        <p class="cart-pack-options__item">
-                            <span class="cart-pack-options__item-name">В палате с малышом:</span>
-                            <span class="cart-pack-options__item-value">{{cnt?.features?.mom_with_baby ? 'Да' : 'Нет'}}</span>
-                        </p>
-                    </div>
 
-                    <!-- Orders -->
 
-                    <div class="cart-pack__body-item cart-pack-item">
-<!--                        <p class="cart-pack-item__title">Специалисты</p>-->
-                        <div class="cart-pack-item__inner" *ngFor="let o of contragent.orders">
-                            <div class="cart-pack-item__inner-avatar">
-                                <img src="img/specialists-cards/specialist1.png">
-                            </div>
-                            <p class="cart-pack-item__inner-name">{{o.cartTitle}}</p>
-                            <div class="cart-pack-item__inner-value">
-<!--                                <p class="cart-pack-item__inner-value-text">Личный акушер</p>-->
-<!--                                <p class="cart-pack-item__inner-value-text">Категория - А</p>-->
-                            </div>
-<!--                            <p class="cart-pack-item__inner-price">75 000 руб.</p>-->
-                            <div class="cart-pack-item__inner-btns-group">
-                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn--share"></button>
-                                <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn--delete"></button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <button class="cart-pack__body-btn">Свернуть</button>
-            </div>
-        </div>
-    </ng-template>
-
-    <!--<div class="cart__sidebar">
+    <div class="cart__sidebar">
         <div class="cart__sidebar-widget cart-widget muted">
             <p class="cart-widget__title">А можно <span>БЕСПЛАТНО</span></p>
             <p class="cart-widget__desc">Единоразовое пособие молодым
@@ -99,25 +35,25 @@
         <div class="cart__sidebar-prise cart-price">
             <div class="cart-price__item">
                 <p class="cart-price__item-title">Стоимость заказа:</p>
-                <p class="cart-price__item-value cart-price__item-value&#45;&#45;blue">1 237 969 руб.</p>
+                <p class="cart-price__item-value cart-price__item-value--blue">1 237 969 руб.</p>
             </div>
             <div class="cart-price__item">
                 <p class="cart-price__item-title">Скидка <span class="bold">Birth Helper</span>:</p>
-                <p class="cart-price__item-value cart-price__item-value&#45;&#45;red">- 243 000 руб.</p>
+                <p class="cart-price__item-value cart-price__item-value--red">- 243 000 руб.</p>
             </div>
             <div class="cart-price__item">
                 <p class="cart-price__item-title">Скидка при оплате на сайте:</p>
-                <p class="cart-price__item-value cart-price__item-value&#45;&#45;red">- 50 000 руб.</p>
+                <p class="cart-price__item-value cart-price__item-value--red">- 50 000 руб.</p>
             </div>
             <div class="cart-price__item">
                 <p class="cart-price__item-title">Итого к оплате:</p>
-                <p class="cart-price__item-value cart-price__item-value&#45;&#45;green">944 969 руб.</p>
+                <p class="cart-price__item-value cart-price__item-value--green">944 969 руб.</p>
             </div>
         </div>
 
-        <button class="cart-price__btn cart-price__btn&#45;&#45;blue">Отправить запрос менеджеру</button>
-        <button class="cart-price__btn cart-price__btn&#45;&#45;ghost">Оформить кредит или рассрочку</button>
-    </div>-->
+        <button class="cart-price__btn cart-price__btn--blue">Отправить запрос менеджеру</button>
+        <button class="cart-price__btn cart-price__btn--ghost">Оформить кредит или рассрочку</button>
+    </div>
 </div>
 
 <!--<div class="cart__columns muted">

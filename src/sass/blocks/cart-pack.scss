@@ -14,6 +14,12 @@
     }
 }
 
+.badge {
+  width: fit-content;
+  padding: 5px 15px;
+  font-size: 0.75rem;
+}
+
 .cart-pack__name {
     display: flex;
     align-items: center;
@@ -78,9 +84,17 @@
     border: none;
     color: $white;
 
+    &.unaccent {
+      background: $light-grey;
+      color: $dark-grey;
+      &:hover {
+        background: #eeeeee;
+      }
+    }
     &:hover {
         background: $light-blue;
     }
+
 }
 
 .cart-pack__body-review {

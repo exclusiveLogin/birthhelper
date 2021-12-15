@@ -1,9 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {OrderService} from '../../services/order.service';
 import {RestService} from '../../services/rest.service';
-import {of} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
-import {Clinic, IClinicSrc} from '../../models/clinic.interface';
+import {tap} from 'rxjs/operators';
 
 @Component({
     selector: 'app-cart',
@@ -12,22 +10,17 @@ import {Clinic, IClinicSrc} from '../../models/clinic.interface';
 })
 export class CartComponent implements OnInit {
 
-    validationTree$ = this.orderService.onValidationTreeCompleted$.pipe(tap((c => console.log(c))));
+    validationTree$ = this.orderService.onValidationTreeCompleted$.pipe(
+        tap((c => console.log(c))),
+    );
 
     constructor(
         private orderService: OrderService,
-        private restService: RestService,
         ) {}
 
     ngOnInit(): void {
     }
 
-    getClinicContragentByHash(hash: string) {
-        const contragentData = this.orderService.contragentHashMap[hash];
-        return contragentData
-            ? this.restService.getEntity<IClinicSrc>(contragentData.entKey, contragentData.id)
-                .pipe(map(c => Clinic.createClinicMini(c)))
-            : of(null);
-    }
+
 
 }

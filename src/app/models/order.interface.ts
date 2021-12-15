@@ -75,6 +75,7 @@ export class Order implements IOrder {
     slot: PriceEntitySlot;
     utility: SlotEntityUtility = 'other';
     cartTitle: string;
+    cartTitleAccent: string;
     _status: 'pending' | 'error' | 'refreshing' | 'loading' | 'stable' = 'pending';
 
     constructor(src: OrderSrc) {
@@ -122,6 +123,10 @@ export class Order implements IOrder {
         if (this.utility === 'person') {
             this.cartTitle = this.slot?._entity?.full_name
                 ? `${this.slot?._entity?.full_name ?? ''} ${this.slot?._entity?.short_name ?? ''}` : 'Без имени';
+
+            const position: string =  this.slot?._entity?.meta?.position?.title ?? '';
+            const cat: string =  this.slot?._entity?.meta?.category?.title ?? '';
+            this.cartTitleAccent = `${position ? position + ', ' : ''}${cat ?? ''}`;
         }
 
         if (this.utility === 'placement') {

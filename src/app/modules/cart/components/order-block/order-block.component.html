@@ -1,0 +1,18 @@
+<div class="cart-pack__body-item cart-pack-item">
+    <!--                        <p class="cart-pack-item__title">Специалисты</p>-->
+    <div class="cart-pack-item__inner" *ngFor="let o of orders">
+        <div class="cart-pack-item__inner-avatar">
+            <img src="img/specialists-cards/specialist1.png">
+        </div>
+        <p class="cart-pack-item__inner-name">{{o.cartTitle}}</p>
+        <div class="cart-pack-item__inner-value">
+            <p class="cart-pack-item__inner-value-text" *ngIf="o.cartTitleAccent">{{o.cartTitleAccent}}</p>
+            <!--                                <p class="cart-pack-item__inner-value-text">Категория - А</p>-->
+        </div>
+        <p class="cart-pack-item__inner-price">{{o?.slot?.price}} руб.</p>
+        <div class="cart-pack-item__inner-btns-group">
+            <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn--share"></button>
+            <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn--delete"></button>
+        </div>
+    </div>
+</div>
