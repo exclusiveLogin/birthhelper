@@ -2,7 +2,7 @@
     <!--                        <p class="cart-pack-item__title">Специалисты</p>-->
     <div class="cart-pack-item__inner" *ngFor="let o of orders">
         <div class="cart-pack-item__inner-avatar">
-            <img src="img/specialists-cards/specialist1.png">
+            <img [src]="o.cartPhotoUrl">
         </div>
         <p class="cart-pack-item__inner-name">{{o.cartTitle}}</p>
         <div class="cart-pack-item__inner-value">

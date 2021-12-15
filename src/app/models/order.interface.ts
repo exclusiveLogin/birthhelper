@@ -2,6 +2,8 @@ import {hasher} from '../modules/utils/hasher';
 import {PriceEntitySlot, SlotEntity} from './entity.interface';
 import {SelectionOrderSlot, TabFloorSetting} from '../modules/configurator/configurator.model';
 import {SectionType} from '../services/search.service';
+import {MetaPhoto} from 'app/models/map-object.interface';
+import {environment} from '@environments/environment';
 
 export interface OrderSrc {
     id: number;
@@ -76,6 +78,7 @@ export class Order implements IOrder {
     utility: SlotEntityUtility = 'other';
     cartTitle: string;
     cartTitleAccent: string;
+    cartPhotoUrl: string;
     _status: 'pending' | 'error' | 'refreshing' | 'loading' | 'stable' = 'pending';
 
     constructor(src: OrderSrc) {
@@ -111,15 +114,20 @@ export class Order implements IOrder {
 
     setSlot(slot: PriceEntitySlot): void {
         this.slot = slot;
-        this.refreshTitle();
+        this.refreshCartRenderData();
     }
 
     setUtility(value: SlotEntityUtility): void {
         this.utility = value;
-        this.refreshTitle();
+        this.refreshCartRenderData();
     }
 
-    private refreshTitle(): void {
+    private refreshCartRenderData(): void {
+        let ph: MetaPhoto = this.slot?.meta?.image_id as MetaPhoto;
+        ph = ph ?? this.slot?._entity?.meta?.image_id as MetaPhoto;
+
+        this.cartPhotoUrl = `${environment.static}/${ph?.filename || 'noimage'}`;
+
         if (this.utility === 'person') {
             this.cartTitle = this.slot?._entity?.full_name
                 ? `${this.slot?._entity?.full_name ?? ''} ${this.slot?._entity?.short_name ?? ''}` : 'Без имени';
