@@ -43,6 +43,7 @@ export class CartComponent implements OnInit {
         return vt.contragentHash;
     }
 
-
-
+    clearCart(): void {
+        this.orderService.clearCart();
+    }
 }

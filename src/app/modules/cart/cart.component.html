@@ -1,13 +1,17 @@
-<div class="cart__columns">
+<div class="cart__columns" *ngIf="{contragentTree: validationTree$ | async} as data">
     <div class="cart__columns-left">
         <div class="cart__header cart-header">
             <h3 class="cart-header__title">
                 <img src="img/icons/cart.svg" class="cart-header__title-img"/>
                 Корзина</h3>
-            <button class="cart-header__btn-link muted">Очистить корзину</button>
+            <button
+                    class="cart-header__btn-link muted"
+                    [class.muted]="!data?.contragentTree?.length"
+                    (click)="clearCart()"
+            >Очистить корзину</button>
         </div>
 
-        <ng-container *ngIf="{contragentTree: validationTree$ | async} as data">
+        <ng-container>
             <ng-container *ngIf="data?.contragentTree?.length else empty">
                 <ng-container *ngFor="let c of data.contragentTree; let idx = index; trackBy:trackIt">
                     <app-contragent [validationTreeByContragent]="c" [show]="idx === 0"></app-contragent>
@@ -18,8 +22,6 @@
                 <div class="empty_cart">Ваша корзина пуста <br> Выберите услуги чтобы оформить заказ</div>
             </ng-template>
         </ng-container>
-
-
 
     </div>
 

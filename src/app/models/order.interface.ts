@@ -34,6 +34,7 @@ export interface IOrder extends OrderSrc {
 export enum ODRER_ACTIONS {
     ADD = 'ADD',
     REMOVE = 'REMOVE',
+    CLEAR = 'CLEAR',
     SUBMIT = 'SUBMIT',
     RESOLVE = 'RESOLVE',
     REJECT = 'REJECT',
@@ -148,20 +149,24 @@ export class Order implements IOrder {
 }
 
 export interface OrderRequest {
-    ent_key: string;
-    ent_id: number;
-    tab_key: string;
-    floor_key: string;
-    section_key: string;
     action: ODRER_ACTIONS;
+    ent_key?: string;
+    ent_id?: number;
+    tab_key?: string;
+    floor_key?: string;
+    section_key?: string;
 }
 export function orderRestMapper(selection: SelectionOrderSlot, action: ODRER_ACTIONS): OrderRequest {
-    return {
-        ent_key: selection.entKey,
-        ent_id: selection.entId,
-        tab_key: selection.tabKey,
-        floor_key: selection.floorKey,
-        section_key: selection.sectionKey,
-        action,
-    };
+    return selection
+        ? {
+            ent_key: selection.entKey,
+            ent_id: selection.entId,
+            tab_key: selection.tabKey,
+            floor_key: selection.floorKey,
+            section_key: selection.sectionKey,
+            action,
+        }
+        : {
+            action
+        };
 }

@@ -252,7 +252,7 @@ export class RestService {
             segment: null,
         };
 
-        return this.postData<OrderSrc>(ep_config, data);
+        return this.postData<OrderSrc>(ep_config, data ?? {});
     }
 
     public getUserRole(): Observable<UserRoleSrc> {

@@ -4,7 +4,7 @@ import {ODRER_ACTIONS, Order, OrderSrc} from '../models/order.interface';
 import {PriceEntitySlot} from '../models/entity.interface';
 import {map, mapTo, shareReplay, switchMap, tap} from 'rxjs/operators';
 import {hasher} from '../modules/utils/hasher';
-import {Subject, Observable, of, forkJoin} from 'rxjs';
+import {forkJoin, Observable, of, Subject} from 'rxjs';
 import {summatorPipe} from '../modules/utils/price-summator';
 import {ConfiguratorConfigSrc, SelectionOrderSlot, TabFloorSetting} from '../modules/configurator/configurator.model';
 import {uniq} from '../modules/utils/uniq';
@@ -239,10 +239,6 @@ export class OrderService {
         }
     }
 
-    updateOrderList(): void {
-        this.doListRefresh$.next();
-    }
-
     getValidationTreeByContragent(contragentId: number, contragentEntityKey: string): Observable<ValidationTreeContragent> {
         const hash =  hasher({id: contragentId, entKey: contragentEntityKey});
         return this.onValidationTreeCompleted$.pipe(
@@ -294,10 +290,12 @@ export class OrderService {
             .pipe(map(list => list.filter(order => order.status !== 'deleted')));
     }
 
-    orderApiAction(action: ODRER_ACTIONS, selection: SelectionOrderSlot): Observable<any> {
+    orderApiAction(action: ODRER_ACTIONS, selection?: SelectionOrderSlot): Observable<any> {
         switch (action) {
             case ODRER_ACTIONS.ADD:
                 return this.restService.createOrder(selection);
+            case ODRER_ACTIONS.CLEAR:
+                return this.restService.changeOrder(action);
             default:
                 return this.restService.changeOrder(action, selection);
 
@@ -316,5 +314,13 @@ export class OrderService {
             map((prices: number[]) => prices.filter(price => !!price && !isNaN(price))),
             summatorPipe,
         );
+    }
+
+    updateOrderList(): void {
+        this.doListRefresh$.next();
+    }
+
+    clearCart(): void {
+        this.orderApiAction(ODRER_ACTIONS.CLEAR).subscribe(() => this.updateOrderList());
     }
 }
