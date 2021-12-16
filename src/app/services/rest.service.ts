@@ -198,7 +198,7 @@ export class RestService {
     }
 
     public createGuestToken(): Observable<string> {
-        return this.createSession().pipe(map(data => data?.token));
+        return this.authRequest().pipe(map(data => data?.token));
     }
 
     public createNewUser(login?: string, password?: string): Observable<RegistrationResponseSrc> {
@@ -212,16 +212,14 @@ export class RestService {
         return this.putData(config, data, true);
     }
 
-    public createUserToken(login?: string, password?: string): Observable<string> {
-        return this.createSession(login, password).pipe(map(data => data?.token));
+    public authorization(login?: string, password?: string): Observable<string> {
+        return this.authRequest(login, password).pipe(map(data => data?.token));
     }
 
-    public createSession(login?: string, password?: string): Observable<SessionResponse> {
+    public authRequest(login?: string, password?: string): Observable<SessionResponse> {
         let data;
-        if (login || password) {
-            data = {};
-            data = login ? {...data, login} : {...data};
-            data = password ? {...data, password} : {...data};
+        if (login && password) {
+            data = {login, password};
         }
 
         const ep_config: ISettingsParams = {
@@ -229,7 +227,7 @@ export class RestService {
             segment: null,
         };
 
-        return this.postData<SessionResponse>(ep_config, data, true);
+        return this.postData<SessionResponse>(ep_config, data);
     }
 
     public createOrder(selection): Observable<any> {
@@ -326,10 +324,11 @@ export class RestService {
             .pipe(
                 this.interceptor.interceptor(),
                 filter(d => !!d),
+                take(1),
             );
         const req = this.interceptor.token$.pipe(
-            switchMap(http),
             take(1),
+            switchMap(http),
             shareReplay(1),
         );
         if (!nocache) {
@@ -351,10 +350,12 @@ export class RestService {
         ).pipe(
             this.interceptor.interceptor(),
             filter(d => !!d),
+            take(1),
         );
 
         const req = insecure ? http() : this.interceptor.token$.pipe(
-            switchMap(http), take(1),
+            take(1),
+            switchMap(http),
         );
 
         return req as Observable<T>;
@@ -373,11 +374,12 @@ export class RestService {
         ).pipe(
             this.interceptor.interceptor(),
             filter(d => !!d),
+            take(1),
         );
 
         const req = insecure ? http() : this.interceptor.token$.pipe(
-            switchMap(http),
             take(1),
+            switchMap(http),
         );
 
         return req as Observable<T>;
@@ -396,11 +398,12 @@ export class RestService {
         ).pipe(
             this.interceptor.interceptor(),
             filter(d => !!d),
+            take(1),
         );
 
         const req = this.interceptor.token$.pipe(
-            switchMap(http),
             take(1),
+            switchMap(http),
         );
 
         return req as Observable<T>;
@@ -419,11 +422,12 @@ export class RestService {
         ).pipe(
             this.interceptor.interceptor(),
             filter(d => !!d),
+            take(1),
         );
 
         const req = this.interceptor.token$.pipe(
-            switchMap(http),
             take(1),
+            switchMap(http),
         );
 
         return req as Observable<T>;

@@ -16,6 +16,7 @@ import { ActivationComponent } from './modules/auth-module/auth/activation/activ
 import { BhDoingComponent } from './main/components/bh-doing/bh-doing.component';
 import {ConfiguratorComponent} from './modules/configurator/configurator.component';
 import {DialogModule} from './modules/dialog/dialog.module';
+import {ToastrModule} from 'ngx-toastr';
 
 const routes: Routes = [
     {path: '', component: MainComponent},
@@ -45,6 +46,7 @@ const routes: Routes = [
         BrowserAnimationsModule,
         HttpClientModule,
         DialogModule,
+        ToastrModule.forRoot(),
     ],
     bootstrap: [
         AppComponent

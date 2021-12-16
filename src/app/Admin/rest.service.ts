@@ -6,7 +6,7 @@ import {IEntityItem, ISet} from './entity.model';
 import {ITableFilter} from './table/table/table.component';
 import {IContainerData} from './container.model';
 import {LoaderService} from './loader.service';
-import {switchMap, tap} from 'rxjs/operators';
+import {switchMap, take, tap} from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {InterceptorService} from '../modules/auth-module/interceptor.service';
 
@@ -224,6 +224,7 @@ export class RestService {
 
     createTokenizeRequest(httpRequest$: (token: string) => Observable<any>): Observable<any> {
         return this.interceptor.token$.pipe(
+            take(1),
             switchMap(httpRequest$),
             tap(
                 () => this.loader.hide(),

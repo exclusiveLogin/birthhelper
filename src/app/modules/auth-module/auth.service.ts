@@ -39,12 +39,11 @@ export class AuthService {
 
     onResetToken$ = this.reset$.pipe(
         throttleTime(2000, asyncScheduler, {leading: true, trailing: false}),
-        tap(() => this.clearLSToken())
     );
 
     creds$ = new Subject<{ login: string, password: string }>();
     userToken$ = this.creds$.pipe(
-        switchMap(creds => this.createUserToken(creds.login, creds.password)),
+        switchMap(creds => this.authorization(creds.login, creds.password)),
         filter((token: string) => !!token),
         tap(token => this.saveLSToken(token)),
         tap((tok) => console.log('userToken$ fire', tok)),
@@ -126,8 +125,8 @@ export class AuthService {
         return this.rest.createNewUser(login, password);
     }
 
-    createUserToken(login: string, password: string): Observable<string> {
-        return this.rest.createUserToken(login, password);
+    authorization(login: string, password: string): Observable<string> {
+        return this.rest.authorization(login, password);
     }
 
     clearLSToken(): void {
