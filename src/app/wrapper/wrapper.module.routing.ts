@@ -21,6 +21,10 @@ const routes: Routes = [{
     loadChildren: () => import('../modules/cart/cart.module').then(m => m.CartModule),
     component: WrapperComponent,
 }, {
+    path: 'profile',
+    loadChildren: () => import('../modules/profile/profile.module').then(m => m.ProfileModule),
+    component: WrapperComponent,
+}, {
   path: '**', component: NotFoundComponent,
 }];
 
