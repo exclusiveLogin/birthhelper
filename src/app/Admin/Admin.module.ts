@@ -16,7 +16,7 @@ import {FormsModule} from '@angular/forms';
         DashboardModule,
         HttpClientModule,
         AdminRoutingModule,
-        ToastrModule.forRoot(),
+        ToastrModule,
         FormsModule,
     ],
   declarations: [
