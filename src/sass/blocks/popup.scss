@@ -309,7 +309,6 @@
     flex-shrink: 0;
     border: solid 2px rgba(45, 51, 63, 0.1);
     background-color: #fff;
-    padding: 3px;
 
     &--square {
         width: 160px;
@@ -323,6 +322,7 @@
         height: 100%;
         box-sizing: border-box;
         object-fit: cover;
+        object-position: top;
     }
 }
 
