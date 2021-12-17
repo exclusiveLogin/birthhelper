@@ -56,6 +56,7 @@ export class OrderService {
 
     onOrderListChanged_Pending$ = this.onOrderListChanged$.pipe(
         map(list => list.filter((o) => o.status === 'pending')),
+        shareReplay(1),
     );
 
     onSlots$ = this.doPriceRecalculate$.pipe(

@@ -269,6 +269,10 @@ export class ConfiguratorService {
         this._selection$.next(data);
     }
 
+    clearAllSelections(): void {
+        this.selectionStore = {};
+    }
+
     deselectItemFromCart(selection: SelectionOrderSlot): void {
         this._selection$.next(selection);
     }
