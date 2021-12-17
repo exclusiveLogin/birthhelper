@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {WrapperModuleRouting} from 'app/wrapper/wrapper.module.routing';
+import {WrapperModuleRouting} from './wrapper.module.routing';
 
 
 
