@@ -9,6 +9,9 @@ import {SearchFilterConfig, SearchSection} from '../models/filter.interface';
 import {FilterResult} from '../modules/search/search/components/filter/filter.component';
 
 export type SectionType = 'clinic';
+export type SectionTypeDict = {
+    [key in SectionType]: string;
+};
 export type FetchersSection<T> = {
     [key in SectionType]?: (args?: any) => Observable<T>
 };

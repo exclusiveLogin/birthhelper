@@ -37,7 +37,7 @@
         <div class="cart__sidebar-prise cart-price">
             <div class="cart-price__item">
                 <p class="cart-price__item-title">Стоимость заказа:</p>
-                <p class="cart-price__item-value cart-price__item-value--blue">{{(totalPrice$ | async) || 0}} руб.</p>
+                <p class="cart-price__item-value cart-price__item-value--blue">{{(totalPrice$ | async) || 0 | digitalSeparator}} руб.</p>
             </div>
 <!--            <div class="cart-price__item">-->
 <!--                <p class="cart-price__item-title">Скидка <span class="bold">Birth Helper</span>:</p>-->
@@ -49,7 +49,7 @@
 <!--            </div>-->
             <div class="cart-price__item">
                 <p class="cart-price__item-title">Итого к оплате:</p>
-                <p class="cart-price__item-value cart-price__item-value--green">{{(totalPriceValid$ | async) || 0}} руб.</p>
+                <p class="cart-price__item-value cart-price__item-value--green">{{(totalPriceValid$ | async) || 0 | digitalSeparator}} руб.</p>
             </div>
         </div>
 
