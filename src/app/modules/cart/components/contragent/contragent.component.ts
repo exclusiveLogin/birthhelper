@@ -8,19 +8,34 @@ import {Contragent} from 'app/models/contragent.interface';
 import {SectionType} from 'app/services/search.service';
 import {Router} from '@angular/router';
 import {ConfiguratorService} from 'app/modules/configurator/configurator.service';
+import {Sections} from 'app/models/core';
+import {Order} from 'app/models/order.interface';
+
+interface Titled {
+    title: string;
+    key: string;
+}
 
 @Component({
     selector: 'app-contragent',
     templateUrl: './contragent.component.html',
     styleUrls: ['./contragent.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Default,
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContragentComponent implements OnInit {
 
-    @Input() validationTreeByContragent: ValidationTreeContragent;
+    _validationTreeByContragent: ValidationTreeContragent;
+    @Input() set validationTreeByContragent(value: ValidationTreeContragent) {
+        this._validationTreeByContragent = value;
+        this.sections = value.sections.map(sc => ({key: sc, title: Sections[sc]}));
+        value.sections.forEach((s, idx) =>
+            this.sectionTabs[s] = value.sectionConfigs[idx].tabs.map(t => ({key: t.key, title: t.title})));
+    }
     @Input() show = false;
     contragent$: Observable<Contragent | IClinicMini>;
     shown$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.show);
+    sections: { key: SectionType, title: string }[] = [];
+    sectionTabs: { [sectionKey in SectionType]?: Titled[] } = {};
 
     constructor(
         private ordersService: OrderService,
@@ -30,19 +45,22 @@ export class ContragentComponent implements OnInit {
     ) {
     }
 
+    getOrders(section: SectionType, tabKey: string): Order[] {
+        return this._validationTreeByContragent._orders.filter(o => (o.section_key === section && o.tab_key === tabKey));
+    }
     async gotoConfigurator() {
-        const contragentData = this.ordersService.contragentHashMap[this.validationTreeByContragent.contragentHash];
-        if (!this.validationTreeByContragent) { return; }
-        await this.router.navigate(['/system', 'configurator', this.validationTreeByContragent.section, contragentData.id]);
+        const contragentData = this.ordersService.contragentHashMap[this._validationTreeByContragent.contragentHash];
+        if (!this._validationTreeByContragent) { return; }
+        await this.router.navigate(['/system', 'configurator', this._validationTreeByContragent.sections[0], contragentData.id]);
         this.configurator.selectFirstTab();
     }
 
     ngOnInit(): void {
-        if (!this.validationTreeByContragent) { return; }
+        if (!this._validationTreeByContragent) { return; }
 
         this.shown$.next(this.show);
 
-        const contragentData = this.ordersService.contragentHashMap[this.validationTreeByContragent.contragentHash];
+        const contragentData = this.ordersService.contragentHashMap[this._validationTreeByContragent.contragentHash];
         this.contragent$ = contragentData
             ? this.restService.getEntity<IClinicSrc>(contragentData.entKey, contragentData.id)
                 .pipe(map(c => Clinic.createClinicMini(c)))
@@ -50,7 +68,7 @@ export class ContragentComponent implements OnInit {
     }
 
     getContextContragent(sectionKey: SectionType) {
-        if (this.validationTreeByContragent.section === 'clinic') {
+        if (sectionKey === 'clinic') {
             return this.contragent$ as unknown as Observable<IClinicMini>;
         }
         return this.contragent$ as Observable<Contragent>;

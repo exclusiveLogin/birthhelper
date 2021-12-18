@@ -1,10 +1,10 @@
-<ng-container [ngSwitch]="validationTreeByContragent.section">
+<ng-container [ngSwitch]="_validationTreeByContragent.sections[0]">
     <ng-container
             *ngSwitchCase="'clinic'"
             [ngTemplateOutlet]="clinic"
             [ngTemplateOutletContext]="
                 {$implicit: getContextContragent('clinic'),
-                invalid: validationTreeByContragent.isInvalid}">
+                invalid: _validationTreeByContragent.isInvalid}">
     </ng-container>
 </ng-container>
 
@@ -45,7 +45,19 @@
                 </div>
 
                 <!-- Orders -->
-                <app-order-block [orders]="validationTreeByContragent._orders" *ngIf="data.show"></app-order-block>
+                <ng-container *ngIf="data.show">
+
+                    <div class="cart-pack__body-item" *ngFor="let section of sections">
+                        <p class="cart-pack-item__title section__title">{{section.title}}</p>
+                        <ng-container *ngFor="let tab of sectionTabs[section.key]">
+                            <div class="cart-pack__body-item cart-pack-item" *ngIf="getOrders(section.key, tab.key).length">
+                                <p class="cart-pack-item__title">{{tab.title}}</p>
+                                <app-order-block [orders]="getOrders(section.key, tab.key)"></app-order-block>
+                            </div>
+                        </ng-container>
+                    </div>
+                </ng-container>
+
 
             </div>
             <ng-container>

@@ -4,6 +4,7 @@ import {CartComponent} from './cart.component';
 import {CartModuleRouting} from './cart.module.routing';
 import { OrderBlockComponent } from './components/order-block/order-block.component';
 import { ContragentComponent } from './components/contragent/contragent.component';
+import {PipeModule} from 'app/pipes/pipe.module';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { ContragentComponent } from './components/contragent/contragent.componen
     ],
     imports: [
         CommonModule,
-        CartModuleRouting
+        CartModuleRouting,
+        PipeModule,
     ]
 })
 export class CartModule {

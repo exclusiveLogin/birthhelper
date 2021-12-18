@@ -21,7 +21,7 @@
         </div>
         <a class="clinic-card__ttl" (click)="openInPopup()">{{viewEnt.title}}</a>
         <p class="clinic-card__desc" (click)="openInPopup()">{{viewEnt.description}}</p>
-        <p class="clinic-card__price" (click)="openInPopup()">{{viewEnt.price}} руб.</p>
+        <p class="clinic-card__price" (click)="openInPopup()">{{viewEnt.price | digitalSeparator}} руб.</p>
     </div>
 </ng-template>
 
@@ -49,7 +49,7 @@
             <div class="accommodation-card__info">
                 <p class="accommodation-card__txt">{{viewEnt.description}}</p>
                 <p class="accommodation-card__txt">Площадь палаты: {{viewEnt.area}} кв.м.</p>
-                <p class="accommodation-card__price">{{viewEnt.price}} руб.</p>
+                <p class="accommodation-card__price">{{viewEnt.price | digitalSeparator}} руб.</p>
             </div>
         </div>
         <div class="accommodation-card__actions-admin">
@@ -102,7 +102,7 @@
         </div>
 
         <div class="specialists-card__actions">
-            <p class="specialists-card__price">{{viewEnt.price}} руб.</p>
+            <p class="specialists-card__price">{{viewEnt.price | digitalSeparator}} руб.</p>
             <div class="specialists-card__actions-admin">
                 <button class="specialists-card__btn">Редактировать карточку</button>
                 <div class="checkbox checkbox--end specialists-card__actions-checkbox">
