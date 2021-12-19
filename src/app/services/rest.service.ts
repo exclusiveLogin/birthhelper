@@ -218,8 +218,11 @@ export class RestService {
 
     public authRequest(login?: string, password?: string): Observable<SessionResponse> {
         let data;
+        let insecure = false;
         if (login && password) {
             data = {login, password};
+        } else {
+            insecure = true;
         }
 
         const ep_config: ISettingsParams = {
@@ -227,7 +230,7 @@ export class RestService {
             segment: null,
         };
 
-        return this.postData<SessionResponse>(ep_config, data);
+        return this.postData<SessionResponse>(ep_config, data, insecure);
     }
 
     public createOrder(selection): Observable<any> {
