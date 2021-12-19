@@ -232,7 +232,10 @@ export class ConfiguratorService {
         config.consumers.forEach(cfg => {
             const t_bus = this.buses[cfg.busKey];
             this.consumers[cfg.key] = t_bus.pipe(
-                map(list => list.map(ent => ({...ent, _entity_key: cfg.entityKey} as SlotEntity))),
+                map(list =>
+                    list.map(ent => ({...ent, _entity_key: cfg.entityKey} as SlotEntity))
+                        .filter(ent => cfg.restrictors.length ? cfg.restrictors.every(r => ent._entity[r.key] === r.value) : true),
+                ),
             );
         });
 
