@@ -78,7 +78,7 @@ export class Clinic {
             title: src.title,
             price_from: src?.summary?.min_price,
             price_until: src?.summary?.max_price,
-            photo_url: ph?.filename,
+            photo_url: ph?.aws || ph?.filename,
             stat_count: 0,
             stat_value: 0,
             features,

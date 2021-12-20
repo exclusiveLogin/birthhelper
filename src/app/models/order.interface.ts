@@ -127,7 +127,7 @@ export class Order implements IOrder {
         let ph: MetaPhoto = this.slot?.meta?.image_id as MetaPhoto;
         ph = ph ?? this.slot?._entity?.meta?.image_id as MetaPhoto;
 
-        this.cartPhotoUrl = `${environment.static}/${ph?.filename || 'noimage'}`;
+        this.cartPhotoUrl = ph?.aws ?? `${environment.static}/${ph?.filename || 'noimage'}`;
 
         if (this.utility === 'person') {
             this.cartTitle = this.slot?._entity?.full_name

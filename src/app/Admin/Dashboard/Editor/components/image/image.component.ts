@@ -14,6 +14,7 @@ export interface IImage {
     _id: number;
     type: string;
     filename: string;
+    aws: string;
 }
 
 @Component({
@@ -23,7 +24,7 @@ export interface IImage {
 })
 export class ImageComponent implements OnInit, OnChanges {
 
-    @Input('id') id: number;
+    @Input() private id: number;
     @Input('control') fieldControl: FormControl;
 
     constructor(

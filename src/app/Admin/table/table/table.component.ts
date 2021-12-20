@@ -210,7 +210,9 @@ export class TableComponent implements OnInit {
 
     private imageGenerator() {
         if (this.imageOptions && this.imageOptions.urlType === 'simple') {
-            this.items.forEach(i => i.image = environment.static + '/' + i.data[this.imageOptions.urlKey]);
+            this.items.forEach(i => i.image =   i.data?.['aws']
+                ? i.data?.['aws']
+                :  environment.static + '/' + i.data[this.imageOptions.urlKey]);
         }
     }
 

@@ -18,15 +18,14 @@ export interface MatanizedServiceSrc extends ServiceEntity, MetaInterface {}
 export class ConfiguratorCardBuilder {
     static serialize(src: CardSlot): CardSlot {
         // photo
-        let ph: MetaPhoto = src?.meta?.image_id as MetaPhoto;
-        ph = ph ?? src?._entity?.meta?.image_id as MetaPhoto;
+        const ph: MetaPhoto = src?._entity?.meta?.image_id as MetaPhoto;
 
         const title: string = src?.title ?? src?._entity?.title;
         const description: string = src?.description ?? src?._entity?.description;
 
         return {
             ...src,
-            photo_url: `${environment.static}/${ph?.filename || 'noimage'}`,
+            photo_url: ph?.aws ?? `${environment.static}/${ph?.filename || 'noimage'}`,
             title,
             description: description ?? 'Нет описания',
             description_ext1: src?._entity?.description_ext1 ?? '',

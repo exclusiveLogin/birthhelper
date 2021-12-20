@@ -35,6 +35,7 @@ export interface IFileSaveResponse {
 export interface IFile {
     id: number;
     filename: string;
+    aws: string;
     folder: string;
     type: string;
 }
