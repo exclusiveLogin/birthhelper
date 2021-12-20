@@ -44,6 +44,7 @@ export interface IFileAdditionalData {
     title?: string;
     description?: string;
     position?: any;
+    folder?: string;
 }
 
 @Injectable({providedIn: 'root'})

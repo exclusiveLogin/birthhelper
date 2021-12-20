@@ -192,7 +192,8 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         if (this.fileForUpload) {
             const _data: IFileAdditionalData = {
                 title: field.titleControl.value,
-                description: field.descriptionControl.value
+                description: field.descriptionControl.value,
+                folder: '/system-images'
             };
 
             this.ent.uploadImg(this.fileForUpload, _data).subscribe(data => {
@@ -212,7 +213,8 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         if (this.fileForUpload) {
             const _data: IFileAdditionalData = {
                 title: field.titleControl.value,
-                description: field.descriptionControl.value
+                description: field.descriptionControl.value,
+                folder: '/system-images'
             };
 
             this.ent.uploadImg(this.fileForUpload, _data).subscribe(data => {
