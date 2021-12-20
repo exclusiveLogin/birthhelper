@@ -35,4 +35,5 @@ export interface MetaPhoto {
     datetime_update: string;
     datetime_create: string;
     filename: string;
+    aws: string;
 }
