@@ -52,7 +52,7 @@ export class PersonBuilder {
 
         return {
             ...src,
-            photo_url: ph?.aws ?? `${environment.static}${ph?.folder}/${ph?.filename || 'noimage'}`,
+            photo_url: ph?.aws ?? `${environment.static}${ph?.folder ?? ''}/${ph?.filename || 'noimage'}`,
             category_lettera: cat_lettera,
             first_name: src?._entity?.full_name ?? 'Без имени',
             last_name: src?._entity?.short_name ?? '',
