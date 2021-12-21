@@ -41,7 +41,7 @@ export class ClinicCardComponent implements OnInit {
     @Input()
     private set clinic(data: IClinicMini) {
         this.viewClinic = data;
-        this.url = `${environment.static}/${data.photo_url || 'noimage'}`;
+        this.url = data.photo_url;
     }
 
     @Output() private gotoMap = new EventEmitter<IClinicMini>();

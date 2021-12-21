@@ -25,7 +25,7 @@ export class ConfiguratorCardBuilder {
 
         return {
             ...src,
-            photo_url: ph?.aws ?? `${environment.static}/${ph?.filename || 'noimage'}`,
+            photo_url: ph?.aws ?? `${environment.static}${ph?.folder}/${ph?.filename || 'noimage'}`,
             title,
             description: description ?? 'Нет описания',
             description_ext1: src?._entity?.description_ext1 ?? '',

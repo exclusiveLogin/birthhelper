@@ -2,6 +2,7 @@ import {AddressSrc, MapObject, MetaPhoto} from 'app/models/map-object.interface'
 import {MetaInterface} from 'app/models/meta.interface';
 import {Entity} from 'app/models/entity.interface';
 import {Summarized} from './summary.interface';
+import {environment} from '@environments/environment';
 
 export interface IClinicMini extends MapObject, Entity {
     id: number;
@@ -78,7 +79,7 @@ export class Clinic {
             title: src.title,
             price_from: src?.summary?.min_price,
             price_until: src?.summary?.max_price,
-            photo_url: ph?.aws || ph?.filename,
+            photo_url: ph?.aws ?? `${environment.static}${ph?.folder}/${ph?.filename || 'noimage'}`,
             stat_count: 0,
             stat_value: 0,
             features,

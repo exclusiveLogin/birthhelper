@@ -15,6 +15,7 @@ export interface IImage {
     type: string;
     filename: string;
     aws: string;
+    folder: string;
 }
 
 @Component({
@@ -49,7 +50,7 @@ export class ImageComponent implements OnInit, OnChanges {
                 filter(img => !!img),
             ).subscribe((image: IImage) => {
                 this.image = image;
-                this.image.filename = environment.static + '/' + this.image.filename;
+                this.image.filename = environment.static + this.image.folder + '/' + this.image.filename;
             });
         }
     }

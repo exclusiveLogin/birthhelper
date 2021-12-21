@@ -27,7 +27,7 @@ export class PlacementBuilder {
 
         return {
             ...src,
-            photo_url: ph?.aws ?? `${environment.static}/${ph?.filename || 'noimage'}`,
+            photo_url: ph?.aws ?? `${environment.static}${ph?.folder}/${ph?.filename || 'noimage'}`,
             title,
             description: description ?? 'Нет описания',
             area,
