@@ -6,7 +6,7 @@ import {ServiceEntity} from 'app/models/service.interface';
 import {environment} from '@environments/environment';
 
 export interface CardSlot extends ServiceSlot, SlotEntity<MatanizedServiceSrc> {
-    photo_url: string;
+    photo: MetaPhoto;
     title: string;
     description: string;
     description_ext1: string;
@@ -25,7 +25,7 @@ export class ConfiguratorCardBuilder {
 
         return {
             ...src,
-            photo_url: ph?.aws ?? `${environment.static}${ph?.folder ?? ''}/${ph?.filename || 'noimage'}`,
+            photo: ph,
             title,
             description: description ?? 'Нет описания',
             description_ext1: src?._entity?.description_ext1 ?? '',

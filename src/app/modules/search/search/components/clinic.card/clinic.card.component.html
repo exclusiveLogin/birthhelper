@@ -2,7 +2,7 @@
     <div class="card">
         <div class="card__photo">
             <img class="img_clinic"
-                  [src]="url"
+                  [src]="photoUrl$ | async"
                   [alt]="viewClinic?.title">
             <div class="card__photo-mark-block mark-block">
                 <div class="mark-block__item">

@@ -104,6 +104,10 @@ export class RestService {
         return this.getData(entSetting);
     }
 
+    public getRaw(url: string): Observable<any> {
+        return this.http.get(url, {observe: 'response', responseType: 'arraybuffer'}).pipe(map(data => data.body));
+    }
+
     public getEntity<T = Entity>(key: string, id: number): Observable<T> {
         const entSetting: ISettingsParams = {
             mode: 'api',

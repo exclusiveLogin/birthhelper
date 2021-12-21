@@ -13,7 +13,9 @@
     style="margin-left: 5px"
   >Снять выбор</button>
   <div class="bh_table_error_block" *ngIf="currentError">{{ currentError }}</div>
-  <img class="img_block" *ngIf="currentItem && currentItem.image" [src]="currentItem.image" width="35"/>
+
+  <img class="img_block" *ngIf="currentItem && currentItem.image$ | async as url" [src]="url" width="35"/>
+
 </div>
 <app-filters [fields$]="filters$" (update)="refreshTable($event)"></app-filters>
 <table class="table">
