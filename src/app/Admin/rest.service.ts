@@ -75,8 +75,8 @@ export class RestService {
         };
 
         const data: FormData = new FormData();
-        data.append('photo', file);
         data.append('meta', JSON.stringify(_data));
+        data.append('photo', file);
 
         return this.uploadData(fileSetting, data);
     }

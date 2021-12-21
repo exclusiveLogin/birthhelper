@@ -9,18 +9,18 @@ services:
     ports:
     - "8091:3000"
     volumes:
-    - "/var/www/html/birthhelper_backend/uploads/:/usr/src/app/uploads/"
+    - "/var/www/html/bh_files/:/usr/src/app/uploads/"
   guide:
     image: "exclusivelogin/birthhelper-guide"
     ports:
     - "8090:80"
-  hellgame24_back:
-    image: "exclusivelogin/hellgame24-back"
-    ports:
-    - "8093:80"
-  hellgame24_front:
-    image: "exclusivelogin/hellgame24-front"
-    ports:
-    - "8094:80"
+#  hellgame24_back:
+#    image: "exclusivelogin/hellgame24-back"
+#    ports:
+#    - "8093:80"
+#  hellgame24_front:
+#    image: "exclusivelogin/hellgame24-front"
+#    ports:
+#    - "8094:80"
 #  hellgame24_bot:
 #    image: "exclusivelogin/hellgame24-bot"
