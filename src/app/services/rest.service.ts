@@ -104,6 +104,10 @@ export class RestService {
         return this.getData(entSetting);
     }
 
+    public getRaw(url: string): Observable<any> {
+        return this.http.get(url, {observe: 'response', responseType: 'arraybuffer'}).pipe(map(data => data.body));
+    }
+
     public getEntity<T = Entity>(key: string, id: number): Observable<T> {
         const entSetting: ISettingsParams = {
             mode: 'api',
@@ -218,8 +222,11 @@ export class RestService {
 
     public authRequest(login?: string, password?: string): Observable<SessionResponse> {
         let data;
+        let insecure = false;
         if (login && password) {
             data = {login, password};
+        } else {
+            insecure = true;
         }
 
         const ep_config: ISettingsParams = {
@@ -227,7 +234,7 @@ export class RestService {
             segment: null,
         };
 
-        return this.postData<SessionResponse>(ep_config, data);
+        return this.postData<SessionResponse>(ep_config, data, insecure);
     }
 
     public createOrder(selection): Observable<any> {

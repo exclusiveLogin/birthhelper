@@ -79,7 +79,7 @@ export class Order implements IOrder {
     utility: SlotEntityUtility = 'other';
     cartTitle: string;
     cartTitleAccent: string;
-    cartPhotoUrl: string;
+    cartPhoto: MetaPhoto;
     _status: 'pending' | 'error' | 'refreshing' | 'loading' | 'stable' = 'pending';
 
     constructor(src: OrderSrc) {
@@ -126,8 +126,7 @@ export class Order implements IOrder {
     private refreshCartRenderData(): void {
         let ph: MetaPhoto = this.slot?.meta?.image_id as MetaPhoto;
         ph = ph ?? this.slot?._entity?.meta?.image_id as MetaPhoto;
-
-        this.cartPhotoUrl = `${environment.static}/${ph?.filename || 'noimage'}`;
+        this.cartPhoto = ph;
 
         if (this.utility === 'person') {
             this.cartTitle = this.slot?._entity?.full_name

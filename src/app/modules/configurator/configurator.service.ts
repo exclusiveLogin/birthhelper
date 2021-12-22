@@ -170,7 +170,10 @@ export class ConfiguratorService {
     }
 
     getConsumerByID(key: string): Observable<SlotEntity[]> {
-        return this.consumers[key] ?? NEVER;
+        return this.consumers[key].pipe(
+            take(1),
+            shareReplay(1),
+        ) ?? NEVER;
     }
 
     tabLayerFactory(): void {
@@ -232,7 +235,10 @@ export class ConfiguratorService {
         config.consumers.forEach(cfg => {
             const t_bus = this.buses[cfg.busKey];
             this.consumers[cfg.key] = t_bus.pipe(
-                map(list => list.map(ent => ({...ent, _entity_key: cfg.entityKey} as SlotEntity))),
+                map(list =>
+                    list.map(ent => ({...ent, _entity_key: cfg.entityKey} as SlotEntity))
+                        .filter(ent => cfg.restrictors.length ? cfg.restrictors.every(r => ent._entity[r.key] === r.value) : true),
+                ),
             );
         });
 
@@ -267,6 +273,10 @@ export class ConfiguratorService {
             sectionKey,
         };
         this._selection$.next(data);
+    }
+
+    clearAllSelections(): void {
+        this.selectionStore = {};
     }
 
     deselectItemFromCart(selection: SelectionOrderSlot): void {

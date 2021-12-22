@@ -6,7 +6,7 @@ import {map, mapTo, shareReplay, switchMap, tap} from 'rxjs/operators';
 import {hasher} from '../modules/utils/hasher';
 import {forkJoin, Observable, of, Subject} from 'rxjs';
 import {summatorPipe} from '../modules/utils/price-summator';
-import {ConfiguratorConfigSrc, SelectionOrderSlot, TabFloorSetting} from '../modules/configurator/configurator.model';
+import {ConfiguratorConfigSrc, SelectionOrderSlot, TabConfig, TabFloorSetting} from '../modules/configurator/configurator.model';
 import {uniq} from '../modules/utils/uniq';
 import {SectionType} from './search.service';
 
@@ -24,7 +24,8 @@ export interface ValidationTreeItem {
 }
 export interface ValidationTreeContragent {
     contragentHash: string;
-    section: SectionType;
+    sections: SectionType[];
+    sectionConfigs: ConfiguratorConfigSrc[];
     _tabs: ValidationTreeItem[];
     _floors: ValidationTreeItem[];
     _orders: Order[];
@@ -56,6 +57,7 @@ export class OrderService {
 
     onOrderListChanged_Pending$ = this.onOrderListChanged$.pipe(
         map(list => list.filter((o) => o.status === 'pending')),
+        shareReplay(1),
     );
 
     onSlots$ = this.doPriceRecalculate$.pipe(
@@ -133,12 +135,14 @@ export class OrderService {
                 return hasher(body) === hash;
             });
             if (!currentContragentOrders.length) { return ; }
-            const targetCfgKey = currentContragentOrders[0].section_key;
-            const targetCfg = this.sectionConfigs[targetCfgKey];
-            if (!targetCfg) { return ; }
-            const contragentTabs = targetCfg?.tabs ?? [];
-            const contragentFloors = (targetCfg?.tabs?.reduce(
-                (floors, tab) => ([...floors, ...tab.floors]), []) ?? []) as TabFloorSetting[];
+            const targetCfgKeys: SectionType[] = uniq(currentContragentOrders.map(o => o.section_key)) as SectionType[];
+            const targetCfgs: ConfiguratorConfigSrc[] = targetCfgKeys.map(k => this.sectionConfigs[k]);
+
+            if (!targetCfgs.length) { return ; }
+
+            const contragentTabs = targetCfgs.reduce((tabs, cfg) => ([...tabs, ...cfg.tabs]) , [] as TabConfig[]);
+            const contragentFloors = (contragentTabs.reduce(
+                (floors, tab) => ([...floors, ...tab.floors]), [] as TabFloorSetting[]) ?? []) as TabFloorSetting[];
             currentContragentOrders.forEach(order => {
                 const o_type = contragentFloors?.find(f => f.key === order.floor_key)?.entityType;
                 order.setUtility(o_type);
@@ -169,7 +173,8 @@ export class OrderService {
                 }) ?? [],
                 _orders: currentContragentOrders,
                 isInvalid: false,
-                section: targetCfgKey,
+                sections: targetCfgKeys,
+                sectionConfigs: targetCfgs,
             };
         }).filter(_ => !!_);
     }
@@ -189,9 +194,11 @@ export class OrderService {
 
     private calculateTreeStatuses(): void {
         for (const contragentTree of this.validationTree) {
-            const cfg = this.sectionConfigs[contragentTree.section];
+            const cfgs = contragentTree.sectionConfigs;
+            const contragentTabs = cfgs.reduce((tabs, cfg) => ([...tabs, ...cfg.tabs]) , [] as TabConfig[]);
+
             contragentTree._tabs.forEach(tab => {
-                const tabConfig = cfg?.tabs?.find(t => tab.key === t.key);
+                const tabConfig = contragentTabs?.find(t => tab.key === t.key);
                 tab.status = 'valid';
                 if (tab.selected === 0) {
                     tab.status =  tab.required ? 'poor' : 'valid';
@@ -213,7 +220,7 @@ export class OrderService {
                 }
             });
             contragentTree._floors.forEach(floor => {
-                const floorConfigs = cfg?.tabs?.reduce(
+                const floorConfigs = contragentTabs?.reduce(
                     (floors, tab) => ([...floors, ...tab.floors]), [] as TabFloorSetting[]);
                 const targetConfig = floorConfigs.find(f => f.key === floor.key);
                 floor.status = 'valid';

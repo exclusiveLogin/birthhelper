@@ -10,6 +10,9 @@ import {catchError, filter, map, publishReplay, refCount, switchMap, tap} from '
 import {FormControl} from '@angular/forms';
 import {BehaviorSubject, combineLatest, Observable, of, Subject} from 'rxjs';
 import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
+import {SafeUrl} from '@angular/platform-browser';
+import {ImageService} from '../../../services/image.service';
+import {IImage} from '../../Dashboard/Editor/components/image/image.component';
 
 export interface ITableRows {
     title?: string;
@@ -22,7 +25,8 @@ export interface ITableItem {
     data: IEntityItem | IDictItem;
     text?: string;
     selected?: boolean;
-    image?: string;
+    image$?: Observable<SafeUrl>;
+    imageSignal$?: BehaviorSubject<null>;
 }
 
 export interface ITableFilter {
@@ -56,6 +60,7 @@ export class TableComponent implements OnInit {
 
     constructor(
         private provider: ProviderService,
+        private imageService: ImageService,
     ) {
     }
 
@@ -210,7 +215,11 @@ export class TableComponent implements OnInit {
 
     private imageGenerator() {
         if (this.imageOptions && this.imageOptions.urlType === 'simple') {
-            this.items.forEach(i => i.image = environment.static + '/' + i.data[this.imageOptions.urlKey]);
+            this.items.forEach(i => {
+                const imgData = this.imageService.getImage$(i.data as IImage);
+                i.image$ = imgData[0];
+                i.imageSignal$ = imgData[1];
+            });
         }
     }
 
@@ -238,7 +247,7 @@ export class TableComponent implements OnInit {
     }
 
     public hasImages(): boolean {
-        return this.items.some(i => !!i.image);
+        return this.items.some(i => !!i.image$);
     }
 
     public pageChanged(page: number, qp?: IRestParams) {

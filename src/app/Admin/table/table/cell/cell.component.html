@@ -1,5 +1,5 @@
 <tr [ngClass]="{'selected': !!data.selected}">
-    <td class="imagerow" *ngIf="data.image"><img class="img_block" height="35" width="35" [src]="data.image"/></td>
+    <td class="imagerow" *ngIf="data.image$ | async as url"><img class="img_block" height="35" width="35" [src]="url"/></td>
     <td class="" *ngFor="let col of cols | async">{{ col || '' }}</td>
     <td class="">
         <button class="remove " *ngIf="hasRemoveMode" (click)="removeMe()">Удалить</button>

@@ -3,8 +3,10 @@ import {DialogType} from './dialog.model';
 import {DialogService} from './dialog.service';
 import {filter, tap} from 'rxjs/operators';
 import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
-import {Subject} from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {dialogAnimation, dialogWrapperAnimation} from './dialog.animation';
+import {ImageService} from '../../services/image.service';
+import {SafeUrl} from '@angular/platform-browser';
 
 @UntilDestroy()
 @Component({
@@ -23,6 +25,7 @@ export class DialogComponent implements OnInit {
     constructor(
         private cdr: ChangeDetectorRef,
         private dialogService: DialogService,
+        private imageService: ImageService,
     ) {}
     @Input() id_dialog = 'main_app_dialog';
 
@@ -38,6 +41,9 @@ export class DialogComponent implements OnInit {
     @ViewChild('tpl_popup_other', { static: true }) tpl_other: TemplateRef<any>;
     @ViewChild('tpl_popup_blank', { static: true }) tpl_default: TemplateRef<any>;
 
+    photoUrl$: Observable<SafeUrl>;
+    imageSignal$: BehaviorSubject<null>;
+
     ngOnInit(): void {
         this.template = this.tpl_default;
 
@@ -51,6 +57,15 @@ export class DialogComponent implements OnInit {
                 if (action.action === 'show') {
                     const _tpl = action.template || this[`tpl_${action.templateKey}`];
                     this.tpl_context.$implicit = action.data;
+                    if (this.imageSignal$) {
+                        this.imageSignal$.complete();
+                        this.imageSignal$ = null;
+                        this.photoUrl$ = null;
+                    }
+                    const imgData = this.imageService.getImage$(action?.data?.photo);
+                    this.photoUrl$ = imgData[0];
+                    this.imageSignal$ = imgData[1];
+
                     if (!_tpl) { return; }
                     switch (action.mode) {
                         case 'dialog':

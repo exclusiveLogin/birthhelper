@@ -1,13 +1,16 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {OrderService, ValidationTreeContragent} from '../../services/order.service';
 import {map, tap} from 'rxjs/operators';
 import {Order} from 'app/models/order.interface';
 import {summatorPipe} from 'app/modules/utils/price-summator';
+import {ConfiguratorService} from 'app/modules/configurator/configurator.service';
+import {Observable} from 'rxjs';
 
 @Component({
     selector: 'app-cart',
     templateUrl: './cart.component.html',
-    styleUrls: ['./cart.component.scss']
+    styleUrls: ['./cart.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CartComponent implements OnInit {
 
@@ -15,7 +18,7 @@ export class CartComponent implements OnInit {
         tap((c => console.log(c))),
     );
 
-    totalPrice$ = this.validationTree$.pipe(
+    totalPrice$: Observable<number> = this.validationTree$.pipe(
         map(tree => tree.reduce((keys, cur) => [...keys, ...cur._orders], [] as Order[])),
         map(orders => orders.map(o => o?.slot?.price ?? 0)),
         map((prices: number[]) => prices.map(price => +price)),
@@ -23,7 +26,7 @@ export class CartComponent implements OnInit {
         summatorPipe,
     );
 
-    totalPriceValid$ = this.validationTree$.pipe(
+    totalPriceValid$: Observable<number> = this.validationTree$.pipe(
         map(tree => tree.filter(t => !t.isInvalid)),
         map(tree => tree.reduce((keys, cur) => [...keys, ...cur._orders], [] as Order[])),
         map(orders => orders.map(o => o?.slot?.price ?? 0)),
@@ -34,6 +37,7 @@ export class CartComponent implements OnInit {
 
     constructor(
         private orderService: OrderService,
+        private configurator: ConfiguratorService,
         ) {}
 
     ngOnInit(): void {
@@ -46,6 +50,7 @@ export class CartComponent implements OnInit {
     clearCart(): void {
         const p = confirm('Вы действительно хотите отчистить корзину?');
         if (!p) { return; }
+        this.configurator.clearAllSelections();
         this.orderService.clearCart();
     }
 }

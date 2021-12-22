@@ -1,8 +1,10 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {EntityService} from '../../../../entity.service';
-import {filter, map, tap} from 'rxjs/operators';
-import {environment} from '@environments/environment';
+import {filter, tap} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
+import {ImageService} from '../../../../../services/image.service';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {SafeUrl} from '@angular/platform-browser';
 
 export interface IImage {
     id: number;
@@ -14,6 +16,8 @@ export interface IImage {
     _id: number;
     type: string;
     filename: string;
+    aws: string;
+    folder: string;
 }
 
 @Component({
@@ -23,14 +27,16 @@ export interface IImage {
 })
 export class ImageComponent implements OnInit, OnChanges {
 
-    @Input('id') id: number;
-    @Input('control') fieldControl: FormControl;
+    @Input() private id: number;
+    @Input() fieldControl: FormControl;
 
     constructor(
-        private entityService: EntityService
+        private entityService: EntityService,
+        public imageService: ImageService,
     ) {
     }
-
+    public image$: Observable<SafeUrl>;
+    public imageSignal$: BehaviorSubject<null>;
     public image: IImage;
 
     ngOnInit() {
@@ -48,7 +54,9 @@ export class ImageComponent implements OnInit, OnChanges {
                 filter(img => !!img),
             ).subscribe((image: IImage) => {
                 this.image = image;
-                this.image.filename = environment.static + '/' + this.image.filename;
+                const imgData = this.imageService.getImage$(image);
+                this.image$ = imgData[0];
+                this.imageSignal$ = imgData[1];
             });
         }
     }

@@ -183,8 +183,8 @@
         </div>
         <div class="popup__body">
             <div class="popup__body-columns">
-                <div class="popup__body-img">
-                    <img [src]="data?.photo_url" [alt]="data?.title">
+                <div class="popup__body-img" *ngIf="photoUrl$ | async as url">
+                    <img [src]="url" (error)="imageSignal$.next(null)" [alt]="data?.title">
                 </div>
                 <div class="popup__body-content">
                     <p class="popup__desc" *ngIf="!data?.description_ext1">{{data.description}}</p>
@@ -226,8 +226,8 @@
     <div class="popup__body">
         <div class="popup__body-columns">
             <div class="popup__body-column">
-                <div class="popup__body-avatar">
-                    <img [src]="data?.photo_url" [alt]="data?.title">
+                <div class="popup__body-avatar" *ngIf="photoUrl$ | async as url">
+                    <img [src]="url" (error)="imageSignal$.next(null)" [alt]="data?.title">
                 </div>
                 <button class="popup__spec-btn popup__spec-btn--blue muted">Задать вопрос</button>
                 <button class="popup__spec-btn popup__spec-btn--ghost muted">Записаться на прием</button>
@@ -301,8 +301,8 @@
     <div class="popup__body">
         <div class="popup__body-columns">
             <div class="popup__body-column">
-                <div class="popup__body-avatar popup__body-avatar--square">
-                    <img [src]="data?.photo_url" [alt]="data?.title">
+                <div class="popup__body-avatar popup__body-avatar--square" *ngIf="photoUrl$ | async as url">
+                    <img [src]="url" (error)="imageSignal$.next(null)" [alt]="data?.title">
                 </div>
                 <p class="popup__dop-name">{{data.title}}</p>
 <!--                <p class="popup__dop-short-desc">Патронаж новорожденного-->

@@ -1,12 +1,12 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {ConfiguratorService} from 'app/modules/configurator/configurator.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SectionType} from 'app/services/search.service';
-import {combineLatest, Observable} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
+import {combineLatest, forkJoin, Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 import {SlotEntity} from 'app/models/entity.interface';
 import {ValidationTreeItem} from '../../services/order.service';
-import {TabConfig} from 'app/modules/configurator/configurator.model';
+import {TabFloorSetting} from 'app/modules/configurator/configurator.model';
 import {UntilDestroy} from '@ngneat/until-destroy';
 
 @UntilDestroy()
@@ -36,6 +36,14 @@ export class ConfiguratorComponent implements OnInit {
 
     getConsumerByID(key: string): Observable<SlotEntity[]> {
         return this.configuratorService.getConsumerByID(key);
+    }
+
+    getVisibilityFloor(floor: TabFloorSetting): Observable<boolean> {
+        const consumerKeys = floor?.consumerKeys;
+        return forkJoin(...[consumerKeys.map(k => this.getConsumerByID(k))]).pipe(
+            map((data: SlotEntity[][]) => data.reduce((acc, cur) => [...acc, ...cur], [])),
+            map((slots) => !!slots.length),
+        );
     }
 
     selectTab(key: string): void {

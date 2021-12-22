@@ -35,6 +35,7 @@ export interface IFileSaveResponse {
 export interface IFile {
     id: number;
     filename: string;
+    aws: string;
     folder: string;
     type: string;
 }
@@ -43,6 +44,7 @@ export interface IFileAdditionalData {
     title?: string;
     description?: string;
     position?: any;
+    folder?: string;
 }
 
 @Injectable({providedIn: 'root'})
@@ -73,8 +75,8 @@ export class RestService {
         };
 
         const data: FormData = new FormData();
-        data.append('photo', file);
         data.append('meta', JSON.stringify(_data));
+        data.append('photo', file);
 
         return this.uploadData(fileSetting, data);
     }
