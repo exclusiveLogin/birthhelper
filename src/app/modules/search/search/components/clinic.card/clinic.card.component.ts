@@ -1,8 +1,7 @@
 import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {IClinicMini} from 'app/models/clinic.interface';
-import {environment} from '@environments/environment';
 import { Router } from '@angular/router';
-import {Observable, of} from 'rxjs';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 import {ImageService} from '../../../../../services/image.service';
 import {SafeUrl} from '@angular/platform-browser';
 
@@ -39,12 +38,15 @@ export class ClinicCardComponent implements OnInit {
             foreign_service: null,
         }
     };
-    photoUrl$: Observable<SafeUrl> = of(null);
+    photoUrl$: Observable<SafeUrl>;
+    imageSignal$: BehaviorSubject<null>;
 
     @Input()
     private set clinic(data: IClinicMini) {
         this.viewClinic = data;
-        this.photoUrl$ = this.imageService.getImage(data.photo);
+        const imgData = this.imageService.getImage$(data.photo);
+        this.photoUrl$ = imgData[0];
+        this.imageSignal$ = imgData[1];
     }
 
     @Output() private gotoMap = new EventEmitter<IClinicMini>();

@@ -1,5 +1,5 @@
-<div class="img_container" *ngIf="image$ | async as url">
-  <img [src]="url" />
+<div class="img_container">
+  <img [src]="image$ | async" (error)="imageSignal$.next(null)" />
   <span>{{ image.title ? image.title : 'Без названия'}}</span>
   <button (click)="removeImage()">Удалить</button>
 </div>

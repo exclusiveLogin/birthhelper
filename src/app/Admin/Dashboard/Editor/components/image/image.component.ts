@@ -1,10 +1,9 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {EntityService} from '../../../../entity.service';
-import {filter, map, tap} from 'rxjs/operators';
-import {environment} from '@environments/environment';
+import {filter, tap} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
 import {ImageService} from '../../../../../services/image.service';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {SafeUrl} from '@angular/platform-browser';
 
 export interface IImage {
@@ -37,6 +36,7 @@ export class ImageComponent implements OnInit, OnChanges {
     ) {
     }
     public image$: Observable<SafeUrl>;
+    public imageSignal$: BehaviorSubject<null>;
     public image: IImage;
 
     ngOnInit() {
@@ -54,7 +54,9 @@ export class ImageComponent implements OnInit, OnChanges {
                 filter(img => !!img),
             ).subscribe((image: IImage) => {
                 this.image = image;
-                this.image$ = this.imageService.getImage(image);
+                const imgData = this.imageService.getImage$(image);
+                this.image$ = imgData[0];
+                this.imageSignal$ = imgData[1];
             });
         }
     }

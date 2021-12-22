@@ -1,8 +1,8 @@
 import {Injectable, SecurityContext} from '@angular/core';
 import {RestService} from './rest.service';
-import {Observable, of} from 'rxjs';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 import {IImage} from '../Admin/Dashboard/Editor/components/image/image.component';
-import {catchError, finalize, map, shareReplay, startWith, switchMap, tap} from 'rxjs/operators';
+import {catchError, map, shareReplay, switchMap, tap} from 'rxjs/operators';
 import {environment} from '@environments/environment';
 import {MetaPhoto} from '../models/map-object.interface';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
@@ -16,7 +16,9 @@ export class ImageService {
     constructor(
         private rest: RestService,
         private sanitizer: DomSanitizer,
-    ) {}
+    ) {
+        console.log('ImageService', this);
+    }
     checkCache(url: string): boolean {
         return (url in this.cache);
     }
@@ -41,8 +43,18 @@ export class ImageService {
             tap((url: SafeUrl) => Promise.resolve(() => URL.revokeObjectURL(url as string))),
         );
     }
-    getDataFromUrl(url: string): Observable<ArrayBuffer> {
-        return this.rest.getRaw(url).pipe(tap(data => this.cache[url] = data));
+    getImage$(image: IImage | MetaPhoto): [Observable<SafeUrl>, BehaviorSubject<null>] {
+        let cursor = -1;
+        const signal = new BehaviorSubject<null>(null);
+        const mainURL: string = image?.aws ?? `${environment.static}${image?.folder ?? ''}/${image?.filename || 'noimage'}`;
+        const fallbackURL = `${environment.static}${image?.folder ?? ''}/${image?.filename || 'noimage'}`;
+        const urls = [mainURL, fallbackURL];
+        return [signal.pipe(
+            map(() => ++cursor),
+            map((c) => urls[c] ?? fallbackURL),
+            map((url: string) => this.sanitizer.bypassSecurityTrustUrl(url)),
+        ), signal];
     }
+
 
 }

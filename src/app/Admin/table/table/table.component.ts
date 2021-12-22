@@ -26,6 +26,7 @@ export interface ITableItem {
     text?: string;
     selected?: boolean;
     image$?: Observable<SafeUrl>;
+    imageSignal$?: BehaviorSubject<null>;
 }
 
 export interface ITableFilter {
@@ -214,7 +215,11 @@ export class TableComponent implements OnInit {
 
     private imageGenerator() {
         if (this.imageOptions && this.imageOptions.urlType === 'simple') {
-            this.items.forEach(i => i.image$ = this.imageService.getImage(i.data as IImage));
+            this.items.forEach(i => {
+                const imgData = this.imageService.getImage$(i.data as IImage);
+                i.image$ = imgData[0];
+                i.imageSignal$ = imgData[1];
+            });
         }
     }
 

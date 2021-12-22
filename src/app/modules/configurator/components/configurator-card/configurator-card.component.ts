@@ -7,10 +7,11 @@ import {PlacementBuilder, PlacementSlot} from 'app/models/placement.interface';
 import {CardSlot, ConfiguratorCardBuilder} from 'app/models/cardbuilder.interface';
 import {ConfiguratorService} from '../../configurator.service';
 import {map, tap} from 'rxjs/operators';
-import {Observable, combineLatest, of} from 'rxjs';
+import {Observable, combineLatest, BehaviorSubject} from 'rxjs';
 import {DialogService} from '../../../dialog/dialog.service';
 import {DialogServiceConfig} from '../../../dialog/dialog.model';
 import {ImageService} from '../../../../services/image.service';
+import {SafeUrl} from '@angular/platform-browser';
 
 @Component({
     selector: 'app-configurator-card',
@@ -19,7 +20,8 @@ import {ImageService} from '../../../../services/image.service';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfiguratorCardComponent implements OnInit {
-    photoUrl$ = of(null);
+    photoUrl$: Observable<SafeUrl>;
+    imageSignal$: BehaviorSubject<null>;
     viewEnt: SlotEntity | PersonDoctorSlot | PlacementSlot;
     selectionState: SelectedState;
     onSelectionChanges$ = this.configuratorService.onSelection$.pipe(
@@ -39,7 +41,9 @@ export class ConfiguratorCardComponent implements OnInit {
         this.viewEnt = this.viewEnt ? this.viewEnt :
             this.cardType === 'other' ? ConfiguratorCardBuilder.serialize(data as CardSlot) : null;
         this.viewEnt = this.viewEnt ? this.viewEnt : data;
-        this.photoUrl$ = this.imageService.getImage(this.viewEnt.photo);
+        const imgData = this.imageService.getImage$(this.viewEnt.photo);
+        this.photoUrl$ = imgData[0];
+        this.imageSignal$ = imgData[1];
         this.refreshSelectionState();
     }
 

@@ -17,7 +17,7 @@
         </div>
 
         <div class="clinic-card__img-wrap" (click)="openInPopup()">
-            <img [src]="photoUrl$ | async" width="150" height="120" alt="" class="clinic-card__img">
+            <img [src]="photoUrl$ | async" (error)="imageSignal$.next(null)" width="150" height="120" alt="" class="clinic-card__img">
         </div>
         <a class="clinic-card__ttl" (click)="openInPopup()">{{viewEnt.title}}</a>
         <p class="clinic-card__desc" (click)="openInPopup()">{{viewEnt.description}}</p>
@@ -44,7 +44,7 @@
         </div>
         <div class="accommodation-card__top">
             <div class="accommodation-card__img-wrap">
-                <img [src]="photoUrl$ | async" class="accommodation-card__img">
+                <img [src]="photoUrl$ | async" (error)="imageSignal$.next(null)" class="accommodation-card__img">
             </div>
             <div class="accommodation-card__info">
                 <p class="accommodation-card__txt">{{viewEnt.description}}</p>
@@ -90,7 +90,7 @@
             <span class="card__btn-tooltip">{{viewEnt.category_title}}</span>
         </div>
         <div class="specialists-card__avatar" (click)="openInPopup()">
-            <img [src]="photoUrl$ | async" class="specialists-card__avatar-img">
+            <img [src]="photoUrl$ | async" (error)="imageSignal$.next(null)" class="specialists-card__avatar-img">
         </div>
 
         <div class="specialists-card__info" (click)="openInPopup()">
