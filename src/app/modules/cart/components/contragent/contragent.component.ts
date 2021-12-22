@@ -52,7 +52,6 @@ export class ContragentComponent implements OnInit {
         const contragentData = this.ordersService.contragentHashMap[this._validationTreeByContragent.contragentHash];
         if (!this._validationTreeByContragent) { return; }
         await this.router.navigate(['/system', 'configurator', this._validationTreeByContragent.sections[0], contragentData.id]);
-        this.configurator.selectFirstTab();
     }
 
     ngOnInit(): void {
