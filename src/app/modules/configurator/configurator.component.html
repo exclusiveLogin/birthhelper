@@ -10,33 +10,35 @@
     <ng-container *ngIf="onView$ | async as view">
         <ng-container *ngIf="onInitSectionType$ | async as section">
             <ng-container *ngFor="let floor of view.floors">
-                <ng-container *ngIf="{ state: getFloorState(floor.key) | async } as floorState">
-                    <h3 class="title-h3"
-                        *ngIf="floor.title">
-                        {{floor.title}}
-                        <span
-                            [class.muted]="floorState?.state?.locked && floorState?.state?.status === 'valid' || floorState?.state?.status === 'poor'"
-                            [class.invalid]="floorState?.state?.status === 'rich'"
-                        >{{ floorState?.state?.message || '' }}</span>
-                    </h3>
-                </ng-container>
-
-                <div class="clinic__cards">
-                    <ng-container *ngFor="let consumerKEY of floor.consumerKeys">
-                        <ng-container *ngIf="{list: getConsumerByID(consumerKEY) | async} as data">
-                            <app-configurator-card
-                                *ngFor="let entity of data.list"
-                                [cardType]="floor.entityType"
-                                [active]="false"
-                                [entity]="entity"
-                                [tabKey]="view.key"
-                                [floorKey]="floor.key"
-                                [sectionKey]="section"
-                            ></app-configurator-card>
-                        </ng-container>
+                <ng-container *ngIf="getVisibilityFloor(floor) | async">
+                    <ng-container *ngIf="{state: getFloorState(floor.key) | async} as state">
+                        <h3 class="title-h3"
+                            *ngIf="floor.title">
+                            {{floor.title}}
+                            <span
+                                [class.muted]="state.state?.locked && state.state?.status === 'valid' || state.state?.status === 'poor'"
+                                [class.invalid]="state.state?.status === 'rich'"
+                            >{{ state.state?.message || '' }}</span>
+                        </h3>
                     </ng-container>
 
-                </div>
+                    <div class="clinic__cards">
+                        <ng-container *ngFor="let consumerKEY of floor.consumerKeys">
+                            <ng-container *ngIf="{ list: getConsumerByID(consumerKEY) | async } as data">
+                                <app-configurator-card
+                                    *ngFor="let entity of data.list"
+                                    [cardType]="floor.entityType"
+                                    [active]="false"
+                                    [entity]="entity"
+                                    [tabKey]="view.key"
+                                    [floorKey]="floor.key"
+                                    [sectionKey]="section"
+                                ></app-configurator-card>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                </ng-container>
+
             </ng-container>
         </ng-container>
     </ng-container>

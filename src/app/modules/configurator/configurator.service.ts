@@ -170,7 +170,10 @@ export class ConfiguratorService {
     }
 
     getConsumerByID(key: string): Observable<SlotEntity[]> {
-        return this.consumers[key] ?? NEVER;
+        return this.consumers[key].pipe(
+            take(1),
+            shareReplay(1),
+        ) ?? NEVER;
     }
 
     tabLayerFactory(): void {
