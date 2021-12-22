@@ -5,7 +5,7 @@ import {ServiceSlot} from 'app/models/slot';
 import {environment} from '@environments/environment';
 
 export interface PersonDoctorSlot extends ServiceSlot, SlotEntity<DoctorSrc> {
-    photo_url: string;
+    photo: MetaPhoto;
     full_name: string;
     first_name: string;
     last_name: string;
@@ -52,7 +52,7 @@ export class PersonBuilder {
 
         return {
             ...src,
-            photo_url: ph?.aws ?? `${environment.static}${ph?.folder ?? ''}/${ph?.filename || 'noimage'}`,
+            photo: ph,
             category_lettera: cat_lettera,
             first_name: src?._entity?.full_name ?? 'Без имени',
             last_name: src?._entity?.short_name ?? '',

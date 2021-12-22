@@ -1,8 +1,8 @@
 <div class="cart-pack__body-item cart-pack-item">
     <!--                        <p class="cart-pack-item__title">Специалисты</p>-->
     <div class="cart-pack-item__inner" *ngFor="let o of orders">
-        <div class="cart-pack-item__inner-avatar">
-            <img [src]="o.cartPhotoUrl">
+        <div class="cart-pack-item__inner-avatar" *ngIf="{data: imageService.getImage$(o.cartPhoto)} as imageData">
+            <img [src]="imageData.data[0] | async" (error)="imageData.data[1].next(null)" >
         </div>
         <p class="cart-pack-item__inner-name">{{o.cartTitle}}</p>
         <div class="cart-pack-item__inner-value">

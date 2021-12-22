@@ -6,7 +6,7 @@ import {ServiceEntity} from 'app/models/service.interface';
 import {environment} from '@environments/environment';
 
 export interface PlacementSlot extends ServiceSlot, SlotEntity<PlacementSrc> {
-    photo_url: string;
+    photo: MetaPhoto;
     title: string;
     area: string;
     description: string;
@@ -27,7 +27,7 @@ export class PlacementBuilder {
 
         return {
             ...src,
-            photo_url: ph?.aws ?? `${environment.static}${ph?.folder ?? ''}/${ph?.filename || 'noimage'}`,
+            photo: ph,
             title,
             description: description ?? 'Нет описания',
             area,

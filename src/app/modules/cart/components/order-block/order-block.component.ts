@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Order} from 'app/models/order.interface';
 import {SelectionOrderSlot} from 'app/modules/configurator/configurator.model';
 import {ConfiguratorService} from 'app/modules/configurator/configurator.service';
+import {ImageService} from '../../../../services/image.service';
 
 @Component({
     selector: 'app-order-block',
@@ -12,7 +13,10 @@ export class OrderBlockComponent implements OnInit {
 
     @Input() public orders: Order[];
 
-    constructor( private configurator: ConfiguratorService ) {
+    constructor(
+        private configurator: ConfiguratorService,
+        public imageService: ImageService,
+    ) {
     }
 
     ngOnInit(): void {
