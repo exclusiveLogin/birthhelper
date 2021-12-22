@@ -2,7 +2,7 @@
     <div class="clinic-tabs" *ngIf="tabs$ | async as t">
 
         <div class="clinic-tabs__item" *ngFor="let tab of t">
-            <div class="clinic-tabs__rbt clinic-tabs-rbt">
+            <div class="clinic-tabs__rbt clinic-tabs-rbt" *ngIf="tab.inCount$ | async">
                 <input type="radio"
                        name="rbt"
                        class="clinic-tabs-rbt__input"
