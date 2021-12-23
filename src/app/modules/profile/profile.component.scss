@@ -1,0 +1,67 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile_container {
+    display: flex;
+    width: 100%;
+    max-width: 1180px;
+    flex-direction: column;
+}
+
+.profile_body {
+    margin-top: 25px;
+    border-radius: 5px;
+    box-shadow: 0 10px 24px 0 rgb(0 0 0 / 6%);
+    background-color: #fff;
+    flex-grow: 1;
+}
+input[type~='text email number'] {
+    border-radius: 5px;
+    display: inline-block;
+    vertical-align: middle;
+    border: 1px solid rgba(45,51,63,.1);
+    height: 44px;
+    padding: 14px 8px 14px 8px;
+    font-size: 14px;
+    line-height: 1.14;
+    text-align: left;
+    color: #4c4c4c;
+    outline: none;
+}
+
+.half {
+    flex-grow: 3;
+    min-width: calc(50% - 16px);
+}
+
+.third {
+    flex-grow: 2;
+    min-width: calc(33.3% - 16px);
+}
+.nogrow {
+    flex-grow: 0 !important;
+}
+
+.profile-form{
+    display: flex;
+    margin: 16px;
+    flex-wrap: wrap;
+}
+.form-group{
+    margin: 16px 24px;
+    flex-grow: 1;
+}
+.profile_footer {
+    align-self: flex-end;
+    display: flex;
+}
+button {
+    margin: 16px 0 24px 16px;
+}
+
+.form-group {
+    margin: 16px 8px;
+}
