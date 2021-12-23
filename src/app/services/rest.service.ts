@@ -171,6 +171,7 @@ export class RestService {
     public getSlotsByContragent<T = any>(key: string, contragentID: number, restrictors: Restrictor[]): Observable<T[]> {
         const filters: IRestParams = {
             contragent_id: contragentID.toString(),
+            active: '1',
         };
         restrictors.forEach(r => filters[r.key] = r.value.toString());
         return this.getEntityList(key, null, filters);
