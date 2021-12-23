@@ -63,6 +63,7 @@ export class ConfiguratorComponent implements OnInit {
             this.configuratorService.currentContragentEntityKey$.next(key);
             this.configuratorService.currentSectionKey$.next(type);
         });
+        this.configuratorService.selectFirstTab();
     }
 
     gotoSearch(): void {
