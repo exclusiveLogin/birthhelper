@@ -65,3 +65,50 @@ button {
 .form-group {
     margin: 16px 8px;
 }
+.filter__ttl {
+    width: 100%;
+}
+$skype-color: #00aff0;
+$whatsapp-color: #128C7E;
+$telegram-color: #0088cc;
+$viber-color: #59267c;
+.fa-viber {
+    color: $viber-color;
+}
+.fa-whatsapp {
+    color: $whatsapp-color;
+}
+.fa-skype {
+    color: $skype-color;
+}
+.fa-telegram-plane {
+    color: $telegram-color;
+}
+.profile_ttl__container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 24px;
+    justify-content: space-around;
+}
+.profile_ttl{
+    font-size: 1.75rem;
+}
+.profile_ttl_accent{
+    color: #4c4c4c;
+}
+.profile_avatar {
+    height: 128px;
+    border-radius: 50%;
+}
+
+.profile_avatar__img {
+    height: inherit;
+}
+.profile_header {
+    display: flex;
+    padding: 16px 24px;
+}
+.checkbox {
+    height: calc(0.5em + 0.75rem + 2px);
+    margin-top: 8px;
+}

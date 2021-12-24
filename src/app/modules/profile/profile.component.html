@@ -1,5 +1,13 @@
 <div class="profile_container">
-    <div class="profile_header"></div>
+    <div class="profile_header">
+        <div class="profile_avatar"><img class="profile_avatar__img" src="/img/ava@3x.png"></div>
+        <div class="profile_ttl__container">
+            <p class="profile_ttl">Протасова Анна</p>
+            <p class="profile_ttl_accent">Возраст не указан</p>
+            <p class="profile_ttl_accent">Статус аккаунта: Активный</p>
+        </div>
+
+    </div>
     <div class="profile_body">
         <form class="profile-form">
             <div class="form-group half">
@@ -16,25 +24,74 @@
                 <small class="form-text text-muted">Если имеется</small>
             </div>
             <div class="form-group half">
+                <label for="patronic">Дата рождения</label>
+                <input type="text" id="" placeholder="Введите фамилию" class="form-control">
+                <small class="form-text text-muted">Можно примерно</small>
+            </div>
+            <div class="form-group half">
                 <label for="patronic">Статус</label>
-                <input type="text" id="status" placeholder="Ваш статус" class="form-control">
+                <select class="form-control"><option value="null">Не выбрано</option></select>
                 <small class="form-text text-muted">Будет использован для подбора персональных предложений</small>
+            </div>
+            <div class="form-group half">
+                <label for="patronic">Дата зачатия</label>
+                <input type="text" id="" placeholder="Введите фамилию" class="form-control">
+                <small class="form-text text-muted">Можно примерно</small>
             </div>
             <div class="form-group nogrow">
                     <label for="multi_pregnant">Многоплодная беременность</label>
-                    <input type="checkbox" id="multi_pregnant" class="form-control">
+                    <input type="checkbox" id="multi_pregnant" class="form-control checkbox">
             </div>
-            <div class="form-group third">
+            <div class="form-group">
                 <label for="weight">Вес</label>
                 <input type="text" id="weight" placeholder="Введите вес" class="form-control">
             </div>
-            <div class="form-group third">
+            <div class="form-group">
                 <label for="height">Рост</label>
                 <input type="text" id="height" placeholder="Введите рост" class="form-control">
             </div>
-            <div class="form-group third">
+            <div class="form-group">
                 <label for="size">Размер одежды</label>
                 <input type="text" id="size" placeholder="Введите размер" class="form-control">
+            </div>
+            <div class="filter__separator ng-star-inserted"></div>
+            <p class="filter__ttl" >Контактные данные</p>
+            <div class="form-group">
+                <label for="phone">Телефон</label>
+                <input type="phone" id="phone" placeholder="Введите Телефон" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="email">Эл. почта</label>
+                <input type="email" id="email" placeholder="Введите e-mail" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="skype">Skype</label>
+                <input type="text" id="skype" placeholder="Введите skype" class="form-control">
+            </div>
+            <p class="filter__ttl" >Предпочитаемый канал связи</p>
+            <div class="form-group text-center">
+                <label for="ch_phone"><i class="fas fa-phone fa-2x" aria-hidden="true" title="Телефон"></i></label>
+                <input type="checkbox" id="ch_phone" class="form-control checkbox">
+            </div>
+            <div class="form-group text-center">
+                <label for="ch_viber"><i class="fab fa-viber fa-2x" aria-hidden="true" title="Viber"></i></label>
+                <input type="checkbox" id="ch_viber" class="form-control checkbox">
+            </div>
+            <div class="form-group text-center">
+                <label for="ch_whatsapp"><i class="fab fa-whatsapp fa-2x" aria-hidden="true" title="WhatsApp"></i></label>
+                <input type="checkbox" id="ch_whatsapp" class="form-control checkbox">
+            </div>
+            <div class="form-group text-center">
+                <label for="ch_telegram"><i class="fab fa-telegram-plane fa-2x" aria-hidden="true" title="Telegram"></i></label>
+                <input type="checkbox" id="ch_telegram" class="form-control checkbox">
+            </div>
+            <div class="form-group text-center">
+                <label for="ch_email"><i class="fa fa-envelope fa-2x" aria-hidden="true" title="E-mail"></i></label>
+                <input type="checkbox" id="ch_email" class="form-control checkbox">
+            </div>
+            <div class="form-group text-center">
+                <label for="ch_skype"><i class="fab fa-skype fa-2x" aria-hidden="true" title="Skype"></i></label>
+                <input type="checkbox" id="ch_skype" class="form-control checkbox">
             </div>
         </form>
     </div>
