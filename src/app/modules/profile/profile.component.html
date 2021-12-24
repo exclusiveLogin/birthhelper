@@ -1,6 +1,10 @@
 <div class="profile_container">
     <div class="profile_header">
-        <div class="profile_avatar"><img class="profile_avatar__img" src="/img/ava@3x.png"></div>
+        <div class="profile_avatar">
+            <img class="profile_avatar__img" src="/img/ava@3x.png">
+            <input type="file" style="display: none;" #file accept="image/png, image/jpeg" (change)="upload($event)">
+            <i class="fas fa-camera fa-lg upload_photo__icon" (click)="uploadAvatarHandler()"></i>
+        </div>
         <div class="profile_ttl__container">
             <p class="profile_ttl">Протасова Анна</p>
             <p class="profile_ttl_accent">Возраст не указан</p>
@@ -11,31 +15,31 @@
     <div class="profile_body">
         <form class="profile-form">
             <div class="form-group half">
-                <label for="name">Имя</label>
-                <input type="text" id="name" placeholder="Введите имя" class="form-control">
+                <label for="first_name">Имя</label>
+                <input type="text" id="first_name" placeholder="Введите имя" class="form-control">
             </div>
             <div class="form-group half">
-                <label for="family">Фамилия</label>
-                <input type="text" id="family" placeholder="Введите фамилию" class="form-control">
+                <label for="last_name">Фамилия</label>
+                <input type="text" id="last_name" placeholder="Введите фамилию" class="form-control">
             </div>
             <div class="form-group half">
-                <label for="patronic">Отчество</label>
-                <input type="text" id="patronic" placeholder="Введите фамилию" class="form-control">
+                <label for="patronymic">Отчество</label>
+                <input type="text" id="patronymic" placeholder="Введите фамилию" class="form-control">
                 <small class="form-text text-muted">Если имеется</small>
             </div>
             <div class="form-group half">
-                <label for="patronic">Дата рождения</label>
-                <input type="text" id="" placeholder="Введите фамилию" class="form-control">
+                <label for="client_bithday_datetime">Дата рождения</label>
+                <input type="text" id="client_bithday_datetime" placeholder="Введите фамилию" class="form-control">
                 <small class="form-text text-muted">Можно примерно</small>
             </div>
             <div class="form-group half">
-                <label for="patronic">Статус</label>
-                <select class="form-control"><option value="null">Не выбрано</option></select>
+                <label for="status_type">Статус</label>
+                <select class="form-control" id="status_type"><option value="null">Не выбрано</option></select>
                 <small class="form-text text-muted">Будет использован для подбора персональных предложений</small>
             </div>
             <div class="form-group half">
-                <label for="patronic">Дата зачатия</label>
-                <input type="text" id="" placeholder="Введите фамилию" class="form-control">
+                <label for="conception_datetime">Дата зачатия</label>
+                <input type="text" id="conception_datetime" placeholder="Введите фамилию" class="form-control">
                 <small class="form-text text-muted">Можно примерно</small>
             </div>
             <div class="form-group nogrow">
@@ -51,8 +55,12 @@
                 <input type="text" id="height" placeholder="Введите рост" class="form-control">
             </div>
             <div class="form-group">
-                <label for="size">Размер одежды</label>
-                <input type="text" id="size" placeholder="Введите размер" class="form-control">
+                <label for="clothes_size">Размер одежды</label>
+                <input type="text" id="clothes_size" placeholder="Введите размер" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="shoes_size">Размер обуви</label>
+                <input type="text" id="shoes_size" placeholder="Введите размер" class="form-control">
             </div>
             <div class="filter__separator ng-star-inserted"></div>
             <p class="filter__ttl" >Контактные данные</p>

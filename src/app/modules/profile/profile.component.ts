@@ -1,15 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+    selector: 'app-profile',
+    templateUrl: './profile.component.html',
+    styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
 
-  constructor() { }
+    @ViewChild('file') private fileRef: ElementRef;
 
-  ngOnInit(): void {
-  }
+    constructor() {
+    }
+
+    ngOnInit(): void {
+    }
+
+    uploadAvatarHandler(): void {
+        this.fileRef.nativeElement.click();
+    }
+
+    upload(ev): void {
+        console.log('Ready to load', ev);
+    }
+
 
 }

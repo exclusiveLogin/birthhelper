@@ -99,6 +99,14 @@ $viber-color: #59267c;
 .profile_avatar {
     height: 128px;
     border-radius: 50%;
+
+    &:hover {
+        .upload_photo__icon {
+            cursor: pointer;
+            top: -32px;
+            opacity: 1;
+        }
+    }
 }
 
 .profile_avatar__img {
@@ -111,4 +119,13 @@ $viber-color: #59267c;
 .checkbox {
     height: calc(0.5em + 0.75rem + 2px);
     margin-top: 8px;
+}
+.upload_photo__icon {
+    text-align: center;
+    position: relative;
+    color: white;
+    opacity: 0;
+    top: 0;
+    display: block;
+    transition: all 0.25s ease-in;
 }
