@@ -40,9 +40,9 @@ export class InterceptorService {
                     this.toastr.error('Ошибка доступа при выполнении: ' + error, `[500] ${err.status}`);
                     return throwError(err.error);
                 }
-                return of(err);
+                return throwError(err);
             }),
-            map(r => r?.body ?? r?.error ?? null),
+            // map(r => r?.body ?? r?.error ?? null),
         );
     }
 }

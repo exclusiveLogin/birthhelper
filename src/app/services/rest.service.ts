@@ -220,7 +220,9 @@ export class RestService {
     }
 
     public createGuestToken(): Observable<string> {
-        return this.authRequest().pipe(map(data => data?.token));
+        return this.authRequest().pipe(
+            map(data => data?.token),
+        );
     }
 
     public createNewUser(login?: string, password?: string): Observable<RegistrationResponseSrc> {
@@ -345,7 +347,7 @@ export class RestService {
         const url = this.createUrl(path);
 
         const http = (token) => this.http.get(
-            url, {params: data, headers: token ? new HttpHeaders({token}) : null, observe: 'response'})
+            url, {params: data, headers: token ? new HttpHeaders({token}) : null})
             .pipe(
                 this.interceptor.interceptor(),
                 filter(d => !!d),
@@ -371,7 +373,7 @@ export class RestService {
         const url = this.createUrl(path);
 
         const http = (token?: string) => this.http.post(url, data,
-            {headers: token ? new HttpHeaders({token}) : null, observe: 'response'}
+            {headers: token ? new HttpHeaders({token}) : null}
         ).pipe(
             this.interceptor.interceptor(),
             filter(d => !!d),
@@ -395,7 +397,7 @@ export class RestService {
         const url = this.createUrl(path);
 
         const http = (token?: string) => this.http.put(url, data,
-            {headers: token ? new HttpHeaders({token}) : null, observe: 'response'}
+            {headers: token ? new HttpHeaders({token}) : null}
         ).pipe(
             this.interceptor.interceptor(),
             filter(d => !!d),
@@ -419,7 +421,7 @@ export class RestService {
         const url = this.createUrl(path);
 
         const http = (token) => this.http.post(url, data.body,
-            {headers: token ? new HttpHeaders({token}) : null, observe: 'response'}
+            {headers: token ? new HttpHeaders({token}) : null}
         ).pipe(
             this.interceptor.interceptor(),
             filter(d => !!d),
@@ -443,7 +445,7 @@ export class RestService {
         const url = this.createUrl(path);
 
         const http = (token) => this.http.request('delete', url,
-            {body: data, headers: token ? new HttpHeaders({token}) : null, observe: 'response'}
+            {body: data, headers: token ? new HttpHeaders({token}) : null}
         ).pipe(
             this.interceptor.interceptor(),
             filter(d => !!d),

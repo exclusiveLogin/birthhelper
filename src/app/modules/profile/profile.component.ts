@@ -5,8 +5,10 @@ import {AuthService} from '../auth-module/auth.service';
 import {FormControl, FormGroup} from '@angular/forms';
 import {IFileAdditionalData} from '../../Admin/rest.service';
 import {ISettingsParams, RestService} from '../../services/rest.service';
-import {map, shareReplay, switchMap, take, tap} from 'rxjs/operators';
+import {filter, map, shareReplay, switchMap, take, tap} from 'rxjs/operators';
 import {User} from '../../models/user.interface';
+import {ImageService} from '../../services/image.service';
+import {IImage} from '../../Admin/Dashboard/Editor/components/image/image.component';
 
 @Component({
     selector: 'app-profile',
@@ -16,18 +18,32 @@ import {User} from '../../models/user.interface';
 export class ProfileComponent implements OnInit {
 
     @ViewChild('file') private fileRef: ElementRef;
-
-    user$: Observable<any> = this.authService.user$.pipe(
+    user$: Observable<User> = this.authService.user$.pipe(
+        tap((user) => {
+            const nonEmptyKeys = Object.keys(user).filter(k => user[k] !== null);
+            nonEmptyKeys.forEach(k => this.formGroup.get(k)?.setValue(user[k]));
+        }),
         tap((user) => console.log('user Data: ', user)),
         shareReplay(1),
     );
-    statuses$: Observable<IDictItem[]> = this.dictService.getDict('dict_user_status_type');
+    role$ = this.authService.role$;
+    userPhotoData$ = this.user$.pipe(
+        filter(user => !!user.photo_id),
+        map(user => user.photo_id),
+        switchMap(userPhotoId => this.restService.getEntity('ent_images', userPhotoId)),
+        map(image => this.imageService.getImage$(image as IImage)),
+    );
+    userPhoto$ = this.userPhotoData$.pipe(map(d => d[0]));
+    userPhotoSignal$ = this.userPhotoData$.pipe(map(d => d[1]));
+
+    statuses$: Observable<IDictItem[]> = this.dictService.getDict('dict_user_status_type')
+        .pipe(tap(dict => console.log('statuses$:', dict)));
     formGroup = new FormGroup({
         login: new FormControl(),
         first_name: new FormControl(),
         last_name: new FormControl(),
         patronymic: new FormControl(),
-        client_bithday_datetime: new FormControl(),
+        client_birthday_datetime: new FormControl(),
         status_type: new FormControl('null'),
         conception_datetime: new FormControl(),
         multi_pregnant: new FormControl(),
@@ -50,15 +66,11 @@ export class ProfileComponent implements OnInit {
         private dictService: DictService,
         private authService: AuthService,
         private restService: RestService,
+        private imageService: ImageService,
     ) {
     }
 
-    ngOnInit(): void {
-        this.user$.subscribe(user => {
-            const nonEmptyKeys = Object.keys(user).filter(k => user[k] !== null);
-            nonEmptyKeys.forEach(k => this.formGroup.get(k)?.setValue(user[k]));
-        });
-    }
+    ngOnInit(): void {}
 
     uploadAvatarHandler(): void {
         this.fileRef.nativeElement.click();
@@ -79,12 +91,23 @@ export class ProfileComponent implements OnInit {
                     map(user => ({...user, photo_id: data?.file?.id} as User)))),
                 switchMap(user => this.updateUser(user))
             ).subscribe(data => {
-                console.log('uploadImage complete', data);
                 this.authService.updateUser$.next();
             });
         }
     }
 
+    reject(): void {
+        this.authService.updateUser$.next();
+    }
+    submit(): void {
+        this.user$.pipe(
+            take(1),
+            map(user => ({...user, ...this.formGroup.value} as User)),
+            switchMap(userData => this.updateUser(userData)),
+        ).subscribe(_ => {
+            this.authService.updateUser$.next();
+        });
+    }
     updateUser(data: Partial<User>): Observable<any> {
         // Object.keys(data).forEach(k => data[k] =  data[k] === null ? 'null' : data[k]);
         const path: ISettingsParams = {

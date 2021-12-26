@@ -55,8 +55,8 @@ export class AuthService {
     token$: Observable<string> = merge(of(this.token), this.userToken$, this.onResetToken$, this.updateUser$).pipe(
         switchMap((token) => token ? of(token) : this.getTokenFromLS$()),
         switchMap((token) => token ? of(token) : this.createGuestToken$()),
-        tap(token => this.token = token),
         tap(token => this.saveLSToken(token)),
+        tap(token => this.token = token),
         shareReplay(1),
     );
 
@@ -96,11 +96,14 @@ export class AuthService {
     );
 
     createGuestToken$(): Observable<string> {
-        return this.rest.createGuestToken();
+        return this.rest.createGuestToken().pipe(
+            tap(t => console.log('TOKEN: ', t)),
+        );
     }
 
     getCurrentUser(): Observable<User> {
         return this.rest.getUser().pipe(
+            tap(user => console.log('getCurrentUser', user)),
             map(data => new User(data)),
             tap(user => this.user = user)
         );
@@ -143,6 +146,6 @@ export class AuthService {
 
     getTokenFromLS$(): Observable<string> {
         const secureData = localStorage.getItem('bh_secure_token');
-        return of(secureData);
+        return secureData ? of(secureData) : of(null);
     }
 }

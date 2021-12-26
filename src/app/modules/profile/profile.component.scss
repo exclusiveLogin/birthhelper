@@ -97,9 +97,6 @@ $viber-color: #59267c;
     color: #4c4c4c;
 }
 .profile_avatar {
-    height: 128px;
-    border-radius: 50%;
-
     &:hover {
         .upload_photo__icon {
             cursor: pointer;
@@ -110,7 +107,9 @@ $viber-color: #59267c;
 }
 
 .profile_avatar__img {
-    height: inherit;
+    border-radius: 50%;
+    height: 128px;
+    width: 128px;
 }
 .profile_header {
     display: flex;

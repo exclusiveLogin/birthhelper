@@ -1,18 +1,45 @@
-<div class="profile_container">
+<ng-template #blankuser>
+    <img class="profile_avatar__img" src="/img/blank-user.jpg">
+</ng-template>
+
+<ng-template #blankuserinfo>
+    <p>Идет загрузка данных...</p>
+</ng-template>
+<div class="profile_container" *ngIf="{
+    user: user$ | async,
+    photo: userPhoto$ | async,
+    signal: userPhotoSignal$ | async,
+    role: role$ | async
+} as userData">
     <div class="profile_header">
         <div class="profile_avatar">
-            <img class="profile_avatar__img" src="/img/ava@3x.png">
+            <ng-container *ngIf="userData.photo | async as image else blankuser">
+                <img class="profile_avatar__img" [src]="image" (error)="userData.signal.next(null)">
+            </ng-container>
             <input type="file" style="display: none;" #file accept="image/png, image/jpeg" (change)="upload($event)">
             <i class="fas fa-camera fa-lg upload_photo__icon" (click)="uploadAvatarHandler()"></i>
         </div>
         <div class="profile_ttl__container">
-            <p class="profile_ttl">Протасова Анна</p>
-            <p class="profile_ttl_accent">Возраст не указан</p>
-            <p class="profile_ttl_accent">Статус аккаунта: Активный</p>
-        </div>
+            <p class="profile_ttl" *ngIf="userData?.user else blankuserinfo">
+                {{userData?.user?.first_name}} {{userData?.user?.last_name}}
+            </p>
+            <p class="profile_ttl_accent">Роль:
+                <span class="badge badge-info" *ngIf="userData?.role?.slug === 'user'">{{userData.role.title}}</span>
+                <span class="badge badge-warning" *ngIf="userData?.role?.slug === 'moderator'">{{userData.role.title}}</span>
+                <span class="badge badge-danger" *ngIf="userData?.role?.slug === 'admin'">{{userData.role.title}}</span>
+                <span class="badge badge-dark" *ngIf="userData?.role?.slug === 'master'">{{userData.role.title}}</span>
+                <span class="badge badge-light" *ngIf="userData?.role?.slug === 'guest'">{{userData.role.title}}</span>
+            </p>
+            <p class="profile_ttl_accent">Статус аккаунта:
+                <span class="badge badge-success" *ngIf="userData?.user?.active else deactive">Активный</span>
+                <ng-template #deactive>
+                    <span class="badge badge-danger">Не подтвержденный</span>
+                </ng-template>
 
+            </p>
+        </div>
     </div>
-    <div class="profile_body">
+    <div *ngIf="userData?.role?.slug !== 'guest'" class="profile_body">
         <form class="profile-form" [formGroup]="formGroup">
             <div class="form-group half">
                 <label for="first_name">Имя</label>
@@ -48,16 +75,17 @@
                        formControlName="login">
             </div>
             <div class="form-group half">
-                <label for="client_bithday_datetime">Дата рождения</label>
+                <label for="client_birthday_datetime">Дата рождения</label>
                 <input type="date"
-                       id="client_bithday_datetime"
+                       id="client_birthday_datetime"
                        placeholder="Ввыберите дату"
                        class="form-control"
-                       formControlName="client_bithday_datetime">
+                       formControlName="client_birthday_datetime">
             </div>
             <div class="form-group half">
                 <label for="status_type">Статус</label>
                 <select class="form-control" id="status_type" formControlName="status_type">
+                    {{statuses$ | async | json}}
                     <option value="null">Не выбрано</option>
                     <option *ngFor="let item of statuses$ | async" [value]="item.id">{{item.title}}</option>
                 </select>
@@ -182,8 +210,8 @@
             </div>
         </form>
     </div>
-    <div class="profile_footer">
-        <button class="filter__link">Отменить изменения</button>
-        <button class="filter__btn filter__btn--green">Применить</button>
+    <div *ngIf="userData?.role?.slug !== 'guest'" class="profile_footer">
+        <button class="filter__link" (click)="reject()">Отменить изменения</button>
+        <button class="filter__btn filter__btn--green" (click)="submit()" >Применить</button>
     </div>
 </div>
