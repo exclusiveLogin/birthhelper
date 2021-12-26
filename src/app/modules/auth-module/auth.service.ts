@@ -47,7 +47,6 @@ export class AuthService {
         switchMap(creds => this.authorization(creds.login, creds.password)),
         filter((token: string) => !!token),
         tap(token => this.saveLSToken(token)),
-        tap((tok) => console.log('userToken$ fire', tok)),
     );
 
     private token: string = null;
@@ -96,14 +95,11 @@ export class AuthService {
     );
 
     createGuestToken$(): Observable<string> {
-        return this.rest.createGuestToken().pipe(
-            tap(t => console.log('TOKEN: ', t)),
-        );
+        return this.rest.createGuestToken();
     }
 
     getCurrentUser(): Observable<User> {
         return this.rest.getUser().pipe(
-            tap(user => console.log('getCurrentUser', user)),
             map(data => new User(data)),
             tap(user => this.user = user)
         );
