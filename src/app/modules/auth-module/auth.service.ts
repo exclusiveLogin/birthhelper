@@ -35,6 +35,7 @@ export class AuthService {
     role: UserRoleSrc;
     urlToRedirect: string;
 
+    updateUser$ = new Subject<null>();
     reset$ = this.interceptor.reseterToken$;
 
     onResetToken$ = this.reset$.pipe(
@@ -46,16 +47,15 @@ export class AuthService {
         switchMap(creds => this.authorization(creds.login, creds.password)),
         filter((token: string) => !!token),
         tap(token => this.saveLSToken(token)),
-        tap((tok) => console.log('userToken$ fire', tok)),
     );
 
     private token: string = null;
 
-    token$: Observable<string> = merge(of(this.token), this.userToken$, this.onResetToken$).pipe(
+    token$: Observable<string> = merge(of(this.token), this.userToken$, this.onResetToken$, this.updateUser$).pipe(
         switchMap((token) => token ? of(token) : this.getTokenFromLS$()),
         switchMap((token) => token ? of(token) : this.createGuestToken$()),
-        tap(token => this.token = token),
         tap(token => this.saveLSToken(token)),
+        tap(token => this.token = token),
         shareReplay(1),
     );
 
@@ -99,7 +99,10 @@ export class AuthService {
     }
 
     getCurrentUser(): Observable<User> {
-        return this.rest.getUser().pipe(tap(user => this.user = user));
+        return this.rest.getUser().pipe(
+            map(data => new User(data)),
+            tap(user => this.user = user)
+        );
     }
 
     getCurrentRole(): Observable<UserRoleSrc> {
@@ -139,6 +142,6 @@ export class AuthService {
 
     getTokenFromLS$(): Observable<string> {
         const secureData = localStorage.getItem('bh_secure_token');
-        return of(secureData);
+        return secureData ? of(secureData) : of(null);
     }
 }

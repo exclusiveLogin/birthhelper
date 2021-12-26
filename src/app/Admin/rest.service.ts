@@ -244,7 +244,7 @@ export class RestService {
         const url = this.createUrl(path);
 
         const http = (token) => this.http.get(
-            url, {params: data, headers: token ? new HttpHeaders({token}) : null, observe: 'response'})
+            url, {params: data, headers: token ? new HttpHeaders({token}) : null})
             .pipe(
                 this.interceptor.interceptor(),
             );

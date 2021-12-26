@@ -11,6 +11,7 @@ export class MenuComponent implements OnInit {
     constructor(public auth: AuthService) {
     }
 
+    onUserAccess$ = this.auth.onUserAccess$;
     ngOnInit(): void {
     }
 

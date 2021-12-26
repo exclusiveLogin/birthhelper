@@ -45,11 +45,11 @@
   display: block;
   min-height: 57px;
   margin: 0;
-  font-size: 16px;
+  font-size: 1.5rem;
   font-weight: 500;
   line-height: 1.19;
   color: $black;
-  text-decoration: none;
+  text-decoration: none !important;
   flex: 1;
 }
 
@@ -80,11 +80,11 @@
 }
 
 .card__address {
-  width: 100%;
-  margin: 5px 0 0;
-  font-size: 14px;
-  line-height: 1.14;
-  color: $black;
+    font-size: 14px;
+    margin-left: 16px;
+    margin-top: 16px;
+    line-height: 1.14;
+    color: #2d333f;
 }
 
 .card__tags {
@@ -96,14 +96,14 @@
 
 .card__tags-ttl {
   margin: 0 10px 0 0;
-  font-size: 12px;
+  font-size: 0.9rem;
   line-height: 1.17;
   color: transparentize($black, 0.5);
 }
 
 .card__tags-txt {
   margin: 0;
-  font-size: 12px;
+  font-size: 0.9rem;
   line-height: 1.17;
   color: $black;
 }

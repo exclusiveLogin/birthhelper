@@ -8,7 +8,7 @@ import {SectionType} from './search.service';
 import {SearchFilterConfig, SearchSection} from '../models/filter.interface';
 import {FilterResult} from '../modules/search/search/components/filter/filter.component';
 import {SessionResponse, UserRole} from '../modules/auth-module/auth.service';
-import {User} from '../models/user.interface';
+import {UserExit, UserSrc} from '../models/user.interface';
 import {InterceptorService} from '../modules/auth-module/interceptor.service';
 import {ConfiguratorConfigSrc, Restrictor, SelectionOrderSlot} from 'app/modules/configurator/configurator.model';
 import {Entity} from 'app/models/entity.interface';
@@ -93,6 +93,23 @@ export class RestService {
     }
 
     cacheStore = {};
+    public uploadImage(file: File, _data?: IFileAdditionalData): Observable<IFileSaveResponse> {
+        const fileSetting: ISettingsParams = {
+            mode: 'admin',
+            segment: 'entity',
+            resource: 'file',
+        };
+
+        const data: FormData = new FormData();
+        data.append('meta', JSON.stringify(_data));
+        data.append('photo', file);
+
+        return this.uploadData(fileSetting, data);
+    }
+
+    public uploadData<T>(path: ISettingsParams, data?: FormData): Observable<T> {
+        return this.postData(path, data);
+    }
 
     public getConfiguratorSettings(section: SectionType): Observable<ConfiguratorConfigSrc> {
         const entSetting: ISettingsParams = {
@@ -203,7 +220,9 @@ export class RestService {
     }
 
     public createGuestToken(): Observable<string> {
-        return this.authRequest().pipe(map(data => data?.token));
+        return this.authRequest().pipe(
+            map(data => data?.token),
+        );
     }
 
     public createNewUser(login?: string, password?: string): Observable<RegistrationResponseSrc> {
@@ -270,7 +289,7 @@ export class RestService {
         return this.getData(ep_config);
     }
 
-    public getUser(): Observable<User> {
+    public getUser(): Observable<UserSrc> {
         const ep_config: ISettingsParams = {
             mode: 'auth',
             segment: 'user',
@@ -279,7 +298,7 @@ export class RestService {
         return this.getData(ep_config);
     }
 
-    public logout(everywhere?: boolean): Observable<User> {
+    public logout(everywhere?: boolean): Observable<UserExit> {
         const ep_config: ISettingsParams = {
             mode: 'auth',
             segment: null,
@@ -328,7 +347,7 @@ export class RestService {
         const url = this.createUrl(path);
 
         const http = (token) => this.http.get(
-            url, {params: data, headers: token ? new HttpHeaders({token}) : null, observe: 'response'})
+            url, {params: data, headers: token ? new HttpHeaders({token}) : null})
             .pipe(
                 this.interceptor.interceptor(),
                 filter(d => !!d),
@@ -354,7 +373,7 @@ export class RestService {
         const url = this.createUrl(path);
 
         const http = (token?: string) => this.http.post(url, data,
-            {headers: token ? new HttpHeaders({token}) : null, observe: 'response'}
+            {headers: token ? new HttpHeaders({token}) : null}
         ).pipe(
             this.interceptor.interceptor(),
             filter(d => !!d),
@@ -378,7 +397,7 @@ export class RestService {
         const url = this.createUrl(path);
 
         const http = (token?: string) => this.http.put(url, data,
-            {headers: token ? new HttpHeaders({token}) : null, observe: 'response'}
+            {headers: token ? new HttpHeaders({token}) : null}
         ).pipe(
             this.interceptor.interceptor(),
             filter(d => !!d),
@@ -402,7 +421,7 @@ export class RestService {
         const url = this.createUrl(path);
 
         const http = (token) => this.http.post(url, data.body,
-            {headers: token ? new HttpHeaders({token}) : null, observe: 'response'}
+            {headers: token ? new HttpHeaders({token}) : null}
         ).pipe(
             this.interceptor.interceptor(),
             filter(d => !!d),
@@ -426,7 +445,7 @@ export class RestService {
         const url = this.createUrl(path);
 
         const http = (token) => this.http.request('delete', url,
-            {body: data, headers: token ? new HttpHeaders({token}) : null, observe: 'response'}
+            {body: data, headers: token ? new HttpHeaders({token}) : null}
         ).pipe(
             this.interceptor.interceptor(),
             filter(d => !!d),

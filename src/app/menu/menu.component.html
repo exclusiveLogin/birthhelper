@@ -4,11 +4,11 @@
                                   class="logo__icon" alt=""></a>
 </div>
 <div class="menu__body">
-    <div class="menu__user menu-user">
+    <div class="menu__user menu-user" *ngIf="onUserAccess$ | async">
         <div class="menu__user-avatar"><img src="img/ava.png" srcset="img/ava@2x.png 2x, img/ava@3x.png 3x"
                                             class="menu__user-avatar-img" alt=""></div>
         <p class="menu__user-name">Протасова Анна</p>
-        <button class="menu__user-btn"><img src="img/icons/settings.svg" class="menu__user-btn-icon" alt=""></button>
+        <a [routerLink]="['/system', 'profile']" class="menu__user-btn"><img src="img/icons/settings.svg" class="menu__user-btn-icon" alt=""></a>
     </div>
     <ul class="menu__list">
         <!--<li class="menu__item">

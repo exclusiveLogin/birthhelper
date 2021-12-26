@@ -1,0 +1,130 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile_container {
+    display: flex;
+    width: 100%;
+    max-width: 1180px;
+    flex-direction: column;
+}
+
+.profile_body {
+    margin-top: 25px;
+    border-radius: 5px;
+    box-shadow: 0 10px 24px 0 rgb(0 0 0 / 6%);
+    background-color: #fff;
+    flex-grow: 1;
+}
+input[type~='text email number'] {
+    border-radius: 5px;
+    display: inline-block;
+    vertical-align: middle;
+    border: 1px solid rgba(45,51,63,.1);
+    height: 44px;
+    padding: 14px 8px 14px 8px;
+    font-size: 14px;
+    line-height: 1.14;
+    text-align: left;
+    color: #4c4c4c;
+    outline: none;
+}
+
+.half {
+    flex-grow: 3;
+    min-width: calc(50% - 16px);
+}
+
+.third {
+    flex-grow: 2;
+    min-width: calc(33.3% - 16px);
+}
+.nogrow {
+    flex-grow: 0 !important;
+}
+
+.profile-form{
+    display: flex;
+    margin: 16px;
+    flex-wrap: wrap;
+}
+.form-group{
+    margin: 16px 24px;
+    flex-grow: 1;
+}
+.profile_footer {
+    align-self: flex-end;
+    display: flex;
+}
+button {
+    margin: 16px 0 24px 16px;
+}
+
+.form-group {
+    margin: 16px 8px;
+}
+.filter__ttl {
+    width: 100%;
+}
+$skype-color: #00aff0;
+$whatsapp-color: #128C7E;
+$telegram-color: #0088cc;
+$viber-color: #59267c;
+.fa-viber {
+    color: $viber-color;
+}
+.fa-whatsapp {
+    color: $whatsapp-color;
+}
+.fa-skype {
+    color: $skype-color;
+}
+.fa-telegram-plane {
+    color: $telegram-color;
+}
+.profile_ttl__container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 24px;
+    justify-content: space-around;
+}
+.profile_ttl{
+    font-size: 1.75rem;
+}
+.profile_ttl_accent{
+    color: #4c4c4c;
+}
+.profile_avatar {
+    &:hover {
+        .upload_photo__icon {
+            cursor: pointer;
+            top: -32px;
+            opacity: 1;
+        }
+    }
+}
+
+.profile_avatar__img {
+    border-radius: 50%;
+    height: 128px;
+    width: 128px;
+}
+.profile_header {
+    display: flex;
+    padding: 16px 24px;
+}
+.checkbox {
+    height: calc(0.5em + 0.75rem + 2px);
+    margin-top: 8px;
+}
+.upload_photo__icon {
+    text-align: center;
+    position: relative;
+    color: white;
+    opacity: 0;
+    top: 0;
+    display: block;
+    transition: all 0.25s ease-in;
+}
