@@ -1,15 +1,40 @@
+<ng-template #blankuser>
+    <img class="profile_avatar__img" src="/img/blank-user.jpg">
+</ng-template>
+
+<ng-template #blankuserinfo>
+    <p>Идет загрузка данных...</p>
+</ng-template>
+
+
 <div class="menu__header">
     <a href="/" class="logo"><img src="img/logo.png"
                                   srcset="img/logo@2x.png 2x, img/logo@3x.png 3x"
                                   class="logo__icon" alt=""></a>
 </div>
 <div class="menu__body">
-    <div class="menu__user menu-user" *ngIf="onUserAccess$ | async">
-        <div class="menu__user-avatar"><img src="img/ava.png" srcset="img/ava@2x.png 2x, img/ava@3x.png 3x"
-                                            class="menu__user-avatar-img" alt=""></div>
-        <p class="menu__user-name">Протасова Анна</p>
-        <a [routerLink]="['/system', 'profile']" class="menu__user-btn"><img src="img/icons/settings.svg" class="menu__user-btn-icon" alt=""></a>
-    </div>
+    <ng-container *ngIf="{
+            access: onUserAccess$ | async,
+            photo: userPhoto$ | async,
+            signal: userPhotoSignal$ | async,
+            user: user$ | async
+         } as userData">
+        <div class="menu__user menu-user" *ngIf="userData.access">
+            <div class="menu__user-avatar">
+
+                <ng-container *ngIf="userData.photo | async as image else blankuser">
+                    <img
+                        [src]="image"
+                        (error)="userData.signal.next(null)"
+                        class="menu__user-avatar-img" [alt]="getUserName(userData.user)">
+                </ng-container>
+
+            </div>
+            <p class="menu__user-name" *ngIf="userData?.user else blankuserinfo">{{getUserName(userData.user)}}</p>
+            <a [routerLink]="['/system', 'profile']" class="menu__user-btn"><img src="img/icons/settings.svg" class="menu__user-btn-icon" alt=""></a>
+        </div>
+    </ng-container>
+
     <ul class="menu__list">
         <!--<li class="menu__item">
             <a [routerLink]="['/']" class="menu__link"><img src="img/icons/home.svg" class="menu__link-icon" alt="">
@@ -85,7 +110,7 @@
 </div>
 <div class="menu__footer muted">
     <a href="javascript:void(0);" class="menu__footer-link">О нас</a>
-    <button class="menu__footer-btn" (click)="auth.logout()">
+    <button class="menu__footer-btn" (click)="authService.logout()">
         <img src="img/icons/exit.svg" class="menu__footer-btn-icon" alt="">
         <span class="menu__footer-btn-txt">Выйти</span></button>
 </div>
