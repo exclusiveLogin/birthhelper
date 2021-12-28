@@ -82,7 +82,7 @@ export class ProfileComponent implements OnInit {
         console.log('file', file);
         if (file) {
             const _data: IFileAdditionalData = {
-                folder: '/system-images'
+                folder: '/user-images'
             };
 
             this.restService.uploadImage(file, _data).pipe(
