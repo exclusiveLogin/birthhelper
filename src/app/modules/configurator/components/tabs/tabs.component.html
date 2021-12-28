@@ -1,28 +1,30 @@
 <div class="clinic__tabs">
     <div class="clinic-tabs" *ngIf="tabs$ | async as t">
 
-        <div class="clinic-tabs__item" *ngFor="let tab of t">
-            <div class="clinic-tabs__rbt clinic-tabs-rbt" *ngIf="tab.inCount$ | async">
-                <input type="radio"
-                       name="rbt"
-                       class="clinic-tabs-rbt__input"
-                       [id]="tab.key"
-                       [checked]="isActiveTab(tab.key)"
-                       (change)="selectTab(tab.key)">
-                <label class="clinic-tabs-rbt__label" [for]="tab.key"
-                       *ngIf="{ count: tab.inCount$ | async,
+        <ng-container *ngFor="let tab of t">
+            <div class="clinic-tabs__item" *ngIf="tab.inCount$ | async">
+                <div class="clinic-tabs__rbt clinic-tabs-rbt">
+                    <input type="radio"
+                           name="rbt"
+                           class="clinic-tabs-rbt__input"
+                           [id]="tab.key"
+                           [checked]="isActiveTab(tab.key)"
+                           (change)="selectTab(tab.key)">
+                    <label class="clinic-tabs-rbt__label" [for]="tab.key"
+                           *ngIf="{ count: tab.inCount$ | async,
                                 selected: getTabSelectedCounts(tab.key) | async,
                                 status: getValidationByTabKey(tab.key) | async
                         } as stats"
-                >
-                    {{tab.title}}
-                    <span class="clinic-tabs-rbt__badge"
-                          [class.valid]="stats.status === 'valid' && stats.selected"
-                          [class.invalid]="stats.selected && (stats.status === 'poor' || stats.status === 'rich')"
-                    >{{stats.selected}} / {{stats.count || 0}}</span>
-                </label>
+                    >
+                        {{tab.title}}
+                        <span class="clinic-tabs-rbt__badge"
+                              [class.valid]="stats.status === 'valid' && stats.selected"
+                              [class.invalid]="stats.selected && (stats.status === 'poor' || stats.status === 'rich')"
+                        >{{stats.selected}} / {{stats.count || 0}}</span>
+                    </label>
+                </div>
             </div>
-        </div>
+        </ng-container>
     </div>
 
     <ng-container *ngIf="{ invalid: onValidationState$ | async} as state">
