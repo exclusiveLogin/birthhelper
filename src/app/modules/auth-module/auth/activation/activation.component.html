@@ -5,7 +5,7 @@
 
     <ng-container *ngIf="stream$ | async as result; else activation_tpl">
         <p class="activation_scs" >Результат: {{result?.msg || 'Активация прошла успешно'}}</p>
-        <p class="activation_scs" >Переход на главную чере 5 секунд...</p>
+        <p class="activation_scs" >Переход на главную через 5 секунд...</p>
     </ng-container>
 
 </div>
