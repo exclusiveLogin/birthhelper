@@ -1,1 +1,34 @@
-<p>orders works!</p>
+<h1 class="lk_ttl">Стол заказов
+    <a class="ctg_ttl_link">Родильный дом Плетнева</a>,
+    <a class="ctg_ttl_link">Родильный дом Якушенко</a>
+</h1>
+<div class="filter_block">
+    <div class="form-group inline">
+        <label for="category">Категория заказа</label>
+        <select class="form-control" id="category" formControlName="status_type">
+            <option value="null">Не выбрано</option>
+<!--            <option *ngFor="let item of statuses$ | async" [value]="item.id">{{item.title}}</option>-->
+        </select>
+    </div>
+    <div class="form-group inline">
+        <label for="status">Статус заказа</label>
+        <select class="form-control" id="status" formControlName="status_type">
+            <option value="null">Не выбрано</option>
+            <!--            <option *ngFor="let item of statuses$ | async" [value]="item.id">{{item.title}}</option>-->
+        </select>
+    </div>
+    <div class="form-group inline">
+        <label for="period_from">Период заказа - начало</label>
+        <input type="date"
+               id="period_from"
+               class="form-control"
+               formControlName="last_name">
+    </div>
+    <div class="form-group inline">
+        <label for="period_until">Период заказа - окончание</label>
+        <input type="date"
+               id="period_until"
+               class="form-control"
+               formControlName="last_name">
+    </div>
+</div>

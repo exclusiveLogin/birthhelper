@@ -4,10 +4,13 @@ import {AuthAdminGuard} from '../../../guards/auth.admin.guard';
 import {RouterModule, Routes} from '@angular/router';
 import {LkComponent} from '../lk.component';
 import {OrdersComponent} from '../orders/orders.component';
+import {NotFoundComponent} from '../../../NotFound/NotFound.component';
 
 const routes: Routes = [
-    {path: '', pathMatch: 'full', canActivate: [AuthAdminGuard], component: LkComponent},
-    {path: 'orders', component: OrdersComponent},
+    {path: '', canActivate: [AuthAdminGuard], component: LkComponent, children: [
+            { path: 'orders', component: OrdersComponent }
+        ]},
+    {path: '**', component: NotFoundComponent}
 ];
 
 @NgModule({
