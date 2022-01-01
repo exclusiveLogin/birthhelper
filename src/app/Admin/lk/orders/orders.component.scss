@@ -11,13 +11,13 @@
     width: 50px;
 }
 .mid {
-    width: 150px;
+    //width: 150px;
 }
 .long {
-    width: 280px;
+    width: 150px;
 }
 .extra {
-    width: 380px;
+    width: 210px;
 }
 .order_table {
     .order_tbl__head {
@@ -143,11 +143,21 @@
         }
     }
 }
-.cart-pack-item__inner {
+.order {
     margin-top: 10px;
     display: flex;
     align-items: center;
     column-gap: 25px;
+}
+
+.ctg_status_action {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.order_status_btn {
+    width: calc(100% - 30px);
+    height: 32px;
 }
 
 
