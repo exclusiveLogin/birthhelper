@@ -7,3 +7,103 @@
     display: flex;
     background-color: white;
 }
+.small {
+    width: 50px;
+}
+.mid {
+    width: 150px;
+}
+.long {
+    width: 280px;
+}
+.extra {
+    width: 380px;
+}
+.order_table {
+    .order_tbl__head {
+        ._row {
+            background-color: whitesmoke;
+            display: flex;
+            flex: 1;
+            .order_tbl__head__item {
+                margin: 15px;
+            }
+        }
+    }
+    .order_tbl__body {
+        ._row {
+            background-color: #ffffff;
+            display: flex;
+            flex: 1;
+            &:nth-child(odd) {
+                background-color: #DBE9FF;
+            }
+            .order_tbl__item {
+                margin: 15px;
+            }
+        }
+    }
+}
+.ctg_container {
+    display: flex;
+    flex-grow: 1;
+    .ctg_head {
+        display: flex;
+        flex-grow: 1;
+        width: 100%;
+        flex-wrap: wrap;
+        .header_led {
+            height: 8px;
+            width: 100%;
+        }
+        .ctg_info {
+            display: flex;
+            flex-grow: 1;
+            .ctg_features {
+                display: flex;
+                flex-direction: column;
+                margin: 5px 15px;
+                justify-content: space-between;
+                .ctg_features__item {
+                    display: flex;
+                    justify-content: space-between;
+                    .answer {
+                        width: 48px;
+                        text-align: center;
+                        border-radius: 5px;
+                        background-color: #ffffff;
+                        border: 1px solid grey;
+                        &.no {
+                            border-color: darkred;
+                        }
+                        &.yes {
+                            border-color: green;
+                        }
+                    }
+                }
+                .cart-pack-options__item {
+                    width: 100%;
+                }
+            }
+            .cart-pack__body-title {
+                width: 40%;
+                border-bottom: none;
+                margin-right: 28px;
+            }
+            .cart-pack-options {
+                border-bottom: none;
+            }
+        }
+    }
+}
+.btn_close {
+    width: 49px;
+    height: 35px;
+    background: url("/img/icons/lk_close_btn_icon.png") no-repeat;
+    background-size: cover;
+    align-self: center;
+    margin-left: auto;
+    margin-right: 15px;
+}
+
+
