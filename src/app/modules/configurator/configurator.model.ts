@@ -77,12 +77,14 @@ export interface DataStore {
 export type SelectedState = 'selected' | 'confirmed' | 'unselected';
 export interface SelectionOrderSlot {
     _status: SelectedState;
-    entKey: string;
-    entId: number;
-    tabKey: string;
-    floorKey: string;
-    sectionKey: string;
+    entKey?: string;
+    entId?: number;
+    tabKey?: string;
+    floorKey?: string;
+    sectionKey?: string;
     id?: number;
+    contragent_entity_key?: string;
+    contragent_entity_id?: number;
 }
 
 export interface SelectionStore {

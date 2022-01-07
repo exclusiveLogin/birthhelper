@@ -80,6 +80,8 @@ export class Order implements IOrder {
     cartTitle: string;
     cartTitleAccent: string;
     cartPhoto: MetaPhoto;
+    contragent_entity_key: string;
+    contragent_entity_id: number;
     _status: 'pending' | 'error' | 'refreshing' | 'loading' | 'stable' = 'pending';
 
     constructor(src: OrderSrc) {
@@ -154,6 +156,8 @@ export interface OrderRequest {
     tab_key?: string;
     floor_key?: string;
     section_key?: string;
+    contragent_entity_key?: string;
+    contragent_entity_id?: number;
 }
 export function orderRestMapper(selection: SelectionOrderSlot, action: ODRER_ACTIONS): OrderRequest {
     return selection
@@ -163,6 +167,8 @@ export function orderRestMapper(selection: SelectionOrderSlot, action: ODRER_ACT
             tab_key: selection.tabKey,
             floor_key: selection.floorKey,
             section_key: selection.sectionKey,
+            contragent_entity_key: selection.contragent_entity_key,
+            contragent_entity_id: selection.contragent_entity_id,
             action,
         }
         : {

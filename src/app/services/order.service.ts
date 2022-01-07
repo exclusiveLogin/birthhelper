@@ -50,7 +50,7 @@ export class OrderService {
 
     onOrderListChanged$ = this.doListRefresh$.pipe(
         switchMap(() => this.fetchCurrentOrders()),
-        switchMap(list => this.smartRefresher(list)),
+        tap(list => this.smartRefresher(list)),
         map(() => this.userOrdersStore),
         shareReplay(1),
     );
@@ -97,9 +97,8 @@ export class OrderService {
     private refreshValidationConfigsHashes(orders: Order[]): void {
         // собираем уникальные констрагенты по которым будем группировать заказы (позиции)
         this.contragentHashMap = {};
-        const c_hashes = orders.filter(o => !!o?.slot).map(o => {
-            const {_contragent_entity_key: contragentEntityKey, _contragent_id_key: contragentId} = o.slot;
-            const body = {id: o.slot[contragentId], entKey: contragentEntityKey};
+        const c_hashes = orders.filter(o => !!o?.contragent_entity_key && !!o?.contragent_entity_id).map(o => {
+            const body = {id: o.contragent_entity_id, entKey: o.contragent_entity_key};
             const hash = hasher(body);
             this.contragentHashMap[hash] = body;
             return hash;
@@ -130,8 +129,7 @@ export class OrderService {
     private updateValidationTreeStructure(orders: Order[]): void {
         this.validationTree = this.uniqContragentHashes.map(hash => {
             const currentContragentOrders = orders.filter(o => {
-                const {_contragent_entity_key: contragentEntityKey, _contragent_id_key: contragentId} = o.slot;
-                const body = {id: o.slot[contragentId], entKey: contragentEntityKey};
+                const body = { id: o.contragent_entity_id, entKey: o.contragent_entity_key };
                 return hasher(body) === hash;
             });
             if (!currentContragentOrders.length) { return ; }
@@ -252,7 +250,7 @@ export class OrderService {
             map(tree => tree.find(t => t.contragentHash === hash)));
     }
 
-    async smartRefresher(ordersList: OrderSrc[]): Promise<void> {
+    smartRefresher(ordersList: OrderSrc[]): void {
         const hash = hasher(ordersList);
         if (hash === this.storeHash) {
             return;
@@ -270,12 +268,13 @@ export class OrderService {
         const forUpdateOrders = this.userOrdersStore.filter(o => o._status === 'loading');
         if (forUpdateOrders.length) {
             for (const o of forUpdateOrders) {
-                try {
-                    o.setSlot(await this.productFetcher(o.slot_entity_key, o.slot_entity_id).toPromise());
-                } catch (e) {
-                    o._status = 'error';
-                    console.error('fetch slot ERROR: ', e);
-                }
+                this.productFetcher(o.slot_entity_key, o.slot_entity_id).subscribe(
+                    (slot) => o.setSlot(slot),
+                    (e) => {
+                        o._status = 'error';
+                        console.error('fetch slot ERROR: ', e);
+                    }
+                );
             }
         }
         this.storeHash = hasher(this.userOrdersStore.map(o => o.raw));
