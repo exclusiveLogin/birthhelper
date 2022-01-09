@@ -7,7 +7,14 @@ import {OrdersComponent} from '../orders/orders.component';
 import {NotFoundComponent} from '../../../NotFound/NotFound.component';
 
 const routes: Routes = [
-    {path: '', canActivate: [AuthAdminGuard], component: LkComponent, children: [
+    {
+        path: '',
+        canActivate: [AuthAdminGuard],
+        component: LkComponent,
+        data: {
+            mode: 'lk',
+        },
+        children: [
             { path: 'orders', component: OrdersComponent }
         ]},
     {path: '**', component: NotFoundComponent}

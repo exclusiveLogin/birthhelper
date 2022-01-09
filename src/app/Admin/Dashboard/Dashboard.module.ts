@@ -17,8 +17,9 @@ import { EditorModule } from './Editor/Editor.module';
     SubmenuComponent,
     SubmenuItemComponent,
   ],
-  exports: [
-    DashboardComponent
-  ],
+    exports: [
+        DashboardComponent,
+        MenuComponent
+    ],
 })
 export class DashboardModule { }

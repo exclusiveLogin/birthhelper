@@ -9,7 +9,6 @@ import {NotFoundComponent} from './NotFound/NotFound.component';
 import {HttpClientModule} from '@angular/common/http';
 import {MainComponent} from './main/main.component';
 import {WrapperComponent} from './wrapper/wrapper.component';
-import {MenuComponent} from './menu/menu.component';
 import {NonAuthComponent} from './modules/auth-module/auth/non-auth/non-auth.component';
 import {AuthComponent} from './modules/auth-module/auth/auth.component';
 import { ActivationComponent } from './modules/auth-module/auth/activation/activation.component';
@@ -17,6 +16,7 @@ import { BhDoingComponent } from './main/components/bh-doing/bh-doing.component'
 import {ConfiguratorComponent} from './modules/configurator/configurator.component';
 import {DialogModule} from './modules/dialog/dialog.module';
 import {ToastrModule} from 'ngx-toastr';
+import {MenuModule} from './modules/menu/menu.module';
 
 const routes: Routes = [
     {path: '', component: MainComponent},
@@ -35,18 +35,18 @@ const routes: Routes = [
         NotFoundComponent,
         MainComponent,
         WrapperComponent,
-        MenuComponent,
         ActivationComponent,
         BhDoingComponent
     ],
     imports: [
-        RouterModule.forRoot(routes, {relativeLinkResolution: 'legacy'}),
+        RouterModule.forRoot(routes),
         BrowserModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
         HttpClientModule,
         DialogModule,
         ToastrModule.forRoot(),
+        MenuModule,
     ],
     bootstrap: [
         AppComponent

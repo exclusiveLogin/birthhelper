@@ -1,14 +1,13 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {WrapperModuleRouting} from './wrapper.module.routing';
 
-
-
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    WrapperModuleRouting,
-  ]
+    declarations: [],
+    imports: [
+        CommonModule,
+        WrapperModuleRouting,
+    ]
 })
-export class WrapperModule { }
+export class WrapperModule {
+}

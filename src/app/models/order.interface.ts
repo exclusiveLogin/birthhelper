@@ -32,6 +32,7 @@ export interface IOrder extends OrderSrc {
 }
 
 export enum ODRER_ACTIONS {
+    GET = 'GET',
     ADD = 'ADD',
     REMOVE = 'REMOVE',
     CLEAR = 'CLEAR',
