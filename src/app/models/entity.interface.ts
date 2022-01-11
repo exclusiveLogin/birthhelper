@@ -1,6 +1,7 @@
 import {Summary} from 'app/models/summary.interface';
 import {Contragent} from 'app/models/contragent.interface';
 import {MetaInterface} from 'app/models/meta.interface';
+import {SectionType} from '../services/search.service';
 
 export interface Entity extends Summarized, MetaInterface {
     [key: string]: any;
@@ -25,6 +26,7 @@ export interface SlotEntity<T = Entity, K = Contragent> extends Entity {
     _entity_key: string;
     _contragent_id_key: string;
     _entity_id_key: string;
+    _section: SectionType;
 }
 
 export type PriceEntitySlot = SlotEntity & Price & Benefits;
