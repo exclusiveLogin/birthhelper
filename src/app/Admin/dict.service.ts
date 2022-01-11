@@ -1,13 +1,15 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {ISettingsParams, RestService} from './rest.service';
-import {share, shareReplay, switchMap, take, tap} from 'rxjs/operators';
+import {shareReplay, switchMap, take, tap} from 'rxjs/operators';
 
 export interface IDictItem {
     id: number;
     name: string;
     title: string;
+    slug?: string;
     icon?: string;
+    bg_color?: string;
     comment?: string;
 }
 

@@ -12,7 +12,7 @@
                                   srcset="img/logo@2x.png 2x, img/logo@3x.png 3x"
                                   class="logo__icon" alt=""></a>
 </div>
-<div class="menu__body" *ngIf="onDefaultMode$ | async">
+<div class="menu__body" *ngIf="isDefaultMode$ | async">
     <ng-container *ngIf="{
             access: onUserAccess$ | async,
             photo: userPhoto$ | async,
@@ -108,14 +108,17 @@
     </ul>
 </div>
 
-<div class="menu__body" *ngIf="onLKMode$ |async">
+<div class="menu__body" *ngIf="isLKMode$ |async">
     <ul class="menu__list">
-        <li class="menu__item muted">
-            <a href="javascript:void(0);" class="menu__link">
-                <img src="img/icons/chat.svg" class="menu__link-icon" alt="">
-                <span class="menu__link-txt">Тест</span>
-                <span class="menu__link-badge">13</span>
-            </a>
+        <li class="menu__item" *ngFor="let perm of permissionsRaw$ | async">
+            <ng-container *ngIf="getPoint(perm) as point">
+                <a [routerLink]="point.navigate" class="menu__link">
+                    <i class="menu__link-icon" [class]="point.classes"></i>
+                    <span class="menu__link-txt">{{ point.title }}</span>
+                    <!--                <span class="menu__link-badge">13</span>-->
+                </a>
+            </ng-container>
+
         </li>
     </ul>
 </div>
