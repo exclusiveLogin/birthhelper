@@ -4,6 +4,7 @@ import {SelectionOrderSlot, TabFloorSetting} from '../modules/configurator/confi
 import {SectionType} from '../services/search.service';
 import {MetaPhoto} from 'app/models/map-object.interface';
 import {environment} from '@environments/environment';
+import {IFiltersParams} from '../Admin/table/table/filters/filters.component';
 
 export interface OrderSrc {
     id: number;
@@ -29,6 +30,18 @@ export interface IOrder extends OrderSrc {
     raw: OrderSrc;
     hash: string;
     slot: PriceEntitySlot;
+}
+
+export interface OrderContacts {
+    phone: string;
+    email: string;
+    skype: string;
+    ch_email: boolean;
+    ch_phone: boolean;
+    ch_skype: boolean;
+    ch_viber: boolean;
+    ch_telegram: boolean;
+    ch_whatsapp: boolean;
 }
 
 export enum ODRER_ACTIONS {
@@ -159,6 +172,8 @@ export interface OrderRequest {
     section_key?: string;
     contragent_entity_key?: string;
     contragent_entity_id?: number;
+    contacts?: OrderContacts;
+    id?: number;
 }
 export function orderRestMapper(selection: SelectionOrderSlot, action: ODRER_ACTIONS): OrderRequest {
     return selection
@@ -171,6 +186,7 @@ export function orderRestMapper(selection: SelectionOrderSlot, action: ODRER_ACT
             contragent_entity_key: selection.contragent_entity_key,
             contragent_entity_id: selection.contragent_entity_id,
             action,
+            id: selection.id,
         }
         : {
             action

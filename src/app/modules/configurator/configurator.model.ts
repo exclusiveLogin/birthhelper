@@ -1,6 +1,6 @@
 import {Observable} from 'rxjs';
 import {SlotEntity} from 'app/models/entity.interface';
-import {SlotEntityUtility} from '../../models/order.interface';
+import {OrderContacts, SlotEntityUtility} from '../../models/order.interface';
 
 export type PriorityFloor = 'high' | 'mid' | 'low';
 
@@ -76,7 +76,7 @@ export interface DataStore {
 }
 export type SelectedState = 'selected' | 'confirmed' | 'unselected';
 export interface SelectionOrderSlot {
-    _status: SelectedState;
+    _status?: SelectedState;
     entKey?: string;
     entId?: number;
     tabKey?: string;
@@ -85,6 +85,7 @@ export interface SelectionOrderSlot {
     id?: number;
     contragent_entity_key?: string;
     contragent_entity_id?: number;
+    contacts?: OrderContacts;
 }
 
 export interface SelectionStore {

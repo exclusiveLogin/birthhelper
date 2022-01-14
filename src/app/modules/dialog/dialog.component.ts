@@ -21,7 +21,7 @@ export class DialogComponent implements OnInit {
     template: TemplateRef<any>;
     _showed$ = new Subject<boolean>();
     tabIdx: number;
-    private _mode: DialogType = 'popup';
+    _mode: DialogType = 'popup';
     constructor(
         private cdr: ChangeDetectorRef,
         private dialogService: DialogService,
@@ -36,6 +36,7 @@ export class DialogComponent implements OnInit {
     tpl_context = {
         $implicit: this.tplData,
     };
+    tpl_custom = false;
     @ViewChild('tpl_popup_placement', { static: true }) tpl_placement: TemplateRef<any>;
     @ViewChild('tpl_popup_person', { static: true }) tpl_person: TemplateRef<any>;
     @ViewChild('tpl_popup_other', { static: true }) tpl_other: TemplateRef<any>;
@@ -50,11 +51,12 @@ export class DialogComponent implements OnInit {
         if (this.id_dialog) {
             this.dialogService.dialogBus$.pipe(
                 filter(action => action.dialogKey === this.id_dialog),
-                filter(action => !!action.mode && (!!action.template || !!action.templateKey)),
+                filter(action => action.action === 'close' || (!!action.mode && (!!action.template || !!action.templateKey))),
                 tap(() => this.tabIdx = 0),
                 untilDestroyed(this),
             ).subscribe(action => {
                 if (action.action === 'show') {
+                    this.tpl_custom = !!action.template;
                     const _tpl = action.template || this[`tpl_${action.templateKey}`];
                     this.tpl_context.$implicit = action.data;
                     if (this.imageSignal$) {
@@ -96,6 +98,7 @@ export class DialogComponent implements OnInit {
         this.template = null;
         this.tpl_context.$implicit = this.tplData;
         this._mode = 'popup';
+        this.closeDialog();
     }
     installDialog(tpl: TemplateRef<any>, mode: DialogType): void {
         const dialogUpdated = this.generateDialog(tpl);

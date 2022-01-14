@@ -286,6 +286,11 @@ export class OrderService {
             .subscribe(() => this.doListRefresh$.next());
     }
 
+    submitCart(payload: SelectionOrderSlot): void {
+        this.orderApiAction(ODRER_ACTIONS.SUBMIT, payload)
+            .subscribe(() => this.doListRefresh$.next());
+    }
+
     removeOrderFromCart(selection: SelectionOrderSlot): void {
         this.orderApiAction(ODRER_ACTIONS.REMOVE, selection)
             .subscribe(() => this.doListRefresh$.next());
