@@ -27,8 +27,8 @@ export class CartComponent implements OnInit {
         tap(c => console.log(c)),
     );
 
-    hasValidTree$ = this.validationTree$.pipe(
-        map(tree => tree.filter(t => !t.isInvalid)),
+    hasInvalidTree$ = this.validationTree$.pipe(
+        map(tree => tree.filter(t => t.isInvalid)),
         map(tree => !!tree.length),
     );
 
