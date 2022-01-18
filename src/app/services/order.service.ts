@@ -267,15 +267,16 @@ export class OrderService {
         this.userOrdersStore = this.userOrdersStore.filter(o => o._status !== 'refreshing');
         const forUpdateOrders = this.userOrdersStore.filter(o => o._status === 'loading');
         if (forUpdateOrders.length) {
-            for (const o of forUpdateOrders) {
-                this.productFetcher(o.slot_entity_key, o.slot_entity_id).subscribe(
-                    (slot) => o.setSlot(slot),
-                    (e) => {
-                        o._status = 'error';
-                        console.error('fetch slot ERROR: ', e);
-                    }
-                );
-            }
+            forkJoin(forUpdateOrders
+                .filter(o => o.slot_entity_key && o.slot_entity_id)
+                .map(o => this.productFetcher(o.slot_entity_key, o.slot_entity_id).pipe(
+                    tap(
+                        (slot) => o.setSlot(slot),
+                        (e) => {
+                            o._status = 'error';
+                            console.error('fetch slot ERROR: ', e);
+                    }))))
+                .subscribe(_ => this.doPriceRecalculate$.next());
         }
         this.storeHash = hasher(this.userOrdersStore.map(o => o.raw));
         this.doPriceRecalculate$.next();
