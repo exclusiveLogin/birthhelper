@@ -108,15 +108,32 @@
     </ul>
 </div>
 
-<div class="menu__body" *ngIf="isLKMode$ |async">
+<div class="menu__body" *ngIf="isLKMode$ | async">
     <ul class="menu__list">
-        <li class="menu__item" *ngFor="let perm of permissionsRaw$ | async">
+        <li class="menu__item" *ngFor="let perm of permSections$ | async">
             <ng-container *ngIf="getPoint(perm) as point">
                 <a [routerLink]="point.navigate" class="menu__link">
                     <i class="menu__link-icon" [class]="point.classes"></i>
                     <span class="menu__link-txt">{{ point.title }}</span>
                     <!--                <span class="menu__link-badge">13</span>-->
                 </a>
+            </ng-container>
+        </li>
+    </ul>
+</div>
+
+<div class="menu__body" *ngIf="isContragentsMode$ |async">
+    <ul class="menu__list">
+        <li class="menu__item">
+            <ng-container *ngFor="let ctg of availableContragents$ | async; trackBy: trackByIdentity" >
+                <div class="ctg" *ngIf="getContragent(ctg.entKey, ctg.entId) | async as contragent">
+                    <div class="ctg_head" [style]="{background: getRandomColor()}">
+                        <input type="checkbox" [id]="'ctg_' + contragent.id">
+                    </div>
+                    <div class="ctg_info">
+                        <span>{{contragent.title}}</span>
+                    </div>
+                </div>
             </ng-container>
 
         </li>

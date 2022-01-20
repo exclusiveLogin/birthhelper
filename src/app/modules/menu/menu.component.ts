@@ -1,43 +1,46 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {AuthService} from '../auth-module/auth.service';
-import {combineLatest, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {User} from '../../models/user.interface';
 import {filter, map, pluck, shareReplay, switchMap, tap} from 'rxjs/operators';
 import {IImage} from '../../Admin/Dashboard/Editor/components/image/image.component';
 import {RestService} from '../../services/rest.service';
 import {ImageService} from '../../services/image.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {LkService} from '../../services/lk.service';
 import {Permission, PermissionMap, PermissionSetting} from '../../models/lk.permission.interface';
+import {Contragent} from '../../models/contragent.interface';
+import {randomColor} from '../utils/random';
+import {uniq} from '../utils/uniq';
 
-type MenuMode = 'default' | 'lk';
+type MenuMode = 'default' | 'lk' | 'contragents';
 
 @Component({
     selector: 'app-menu',
     templateUrl: './menu.component.html',
-    styleUrls: ['./menu.component.scss']
+    styleUrls: ['./menu.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MenuComponent implements OnInit {
 
-    routeData$ = this.ar.data.pipe(
-        tap(data => console.log('routeData: ', data)),
+    routeData$ = this.router.events.pipe(
+        filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+        map(() => this.ar.snapshot?.firstChild?.data ?? this.ar.snapshot?.data ?? {}),
+        tap(data => console.log('routeData$: ', data)),
         pluck('mode'),
+        shareReplay(1),
     );
     mode$: Observable<MenuMode> = this.routeData$.pipe(
-        tap(data => console.log('routeDataMode: ', data)),
-        map(data => data === 'lk' ? 'lk' : 'default'),
+        tap(data => console.log('mode$: ', data)),
     );
     isLKMode$ = this.mode$.pipe(
         map(mode => mode === 'lk'),
     );
+    isContragentsMode$ = this.mode$.pipe(
+        map(mode => mode === 'contragents'), tap(data => console.log('isContragentsMode$: ', data)),
+    );
     isDefaultMode$ = this.mode$.pipe(
         map(mode => mode === 'default'),
-    );
-    onLKMode$ = this.mode$.pipe(
-        filter(mode => mode === 'lk'),
-    );
-    onDefaultMode$ = this.mode$.pipe(
-        filter(mode => mode === 'default'),
     );
     onUserAccess$ = this.authService.onUserAccess$;
     user$: Observable<User> = this.authService.user$.pipe(shareReplay(1));
@@ -49,11 +52,17 @@ export class MenuComponent implements OnInit {
     );
     userPhoto$ = this.userPhotoData$.pipe(map(d => d[0]));
     userPhotoSignal$ = this.userPhotoData$.pipe(map(d => d[1]));
-    permissionsRaw$ = combineLatest([this.onLKMode$, this.user$]).pipe(
-        tap(data => console.log('permissionsRaw$: ', data)),
-        map(data => data[1]),
+    permissionsRaw$ = this.user$.pipe(
         switchMap(user => this.lkService.getPermissionsByUser(user)),
         tap(data => console.log('getPermissionsByUser: ', data)),
+    );
+    permSections$ = this.permissionsRaw$.pipe(
+        map(permissions => uniq(permissions.map(p => p?.meta?.permission_id?.slug))),
+    );
+    availableContragents$ = this.permissionsRaw$.pipe(
+        map((permissions) =>
+            permissions.map(p => ({entId: p.contragent_entity_id, entKey: p.contragent_entity_key}))),
+        tap(data => console.log('availableContragents$: ', data)),
     );
 
     constructor(
@@ -61,12 +70,14 @@ export class MenuComponent implements OnInit {
         private restService: RestService,
         private imageService: ImageService,
         private ar: ActivatedRoute,
+        private router: Router,
         private lkService: LkService,
     ) {
         /*
          todo "удалить"
          */
-        this.permissionsRaw$.subscribe();
+        this.availableContragents$.subscribe();
+        this.routeData$.subscribe();
     }
 
     getUserName(user: User): string {
@@ -75,8 +86,22 @@ export class MenuComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    getPoint(perm: Permission): PermissionSetting {
-        return PermissionMap[perm?.meta?.permission_id?.slug];
+    getPoint(perm: string): PermissionSetting {
+        return PermissionMap[perm];
+    }
+
+    getContragent(key: string, id: number): Observable<Contragent> {
+        return  this.restService.getEntity(key, id);
+    }
+
+    getRandomColor(): string {
+        return randomColor();
+    }
+
+    trackByIdentity(index: number, item: { entKey: string, entId: number }) {
+        return item.entId;
     }
 
 }
+
+

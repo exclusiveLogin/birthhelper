@@ -15,7 +15,7 @@ const routes: Routes = [
             mode: 'lk',
         },
         children: [
-            { path: 'orders', component: OrdersComponent }
+            { path: 'orders', component: OrdersComponent, data: { mode: 'contragents' } },
         ]},
     {path: '**', component: NotFoundComponent}
 ];
