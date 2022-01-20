@@ -22,10 +22,26 @@ export interface OrderSrc {
     datetime_create: string;
 }
 
+export interface OrderRequest {
+    action: ODRER_ACTIONS;
+    ent_key?: string;
+    ent_id?: number;
+    tab_key?: string;
+    floor_key?: string;
+    section_key?: string;
+    contragent_entity_key?: string;
+    contragent_entity_id?: number;
+    contacts?: OrderContacts;
+    id?: number;
+    status_mode?: StatusMode;
+    status?: StatusType;
+}
+
 export interface OrderResponse {
     context: 'orders';
     result: OrderSrc[];
 }
+
 export interface IOrder extends OrderSrc {
     raw: OrderSrc;
     hash: string;
@@ -67,7 +83,12 @@ export enum ORDER_STATUSES {
     completed = 'completed',
     canceled = 'canceled',
     inprogress = 'inprogress',
+    inwork = 'inwork',
+    incomplete = 'incomplete',
+    inplan = 'inplan',
 }
+
+export type StatusMode = 'complex' | 'simple';
 
 export type StatusType = keyof typeof ORDER_STATUSES;
 
@@ -163,18 +184,6 @@ export class Order implements IOrder {
     }
 }
 
-export interface OrderRequest {
-    action: ODRER_ACTIONS;
-    ent_key?: string;
-    ent_id?: number;
-    tab_key?: string;
-    floor_key?: string;
-    section_key?: string;
-    contragent_entity_key?: string;
-    contragent_entity_id?: number;
-    contacts?: OrderContacts;
-    id?: number;
-}
 export function orderRestMapper(selection: SelectionOrderSlot, action: ODRER_ACTIONS): OrderRequest {
     return selection
         ? {
