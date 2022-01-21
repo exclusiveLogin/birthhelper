@@ -4,11 +4,13 @@ import {LkComponent} from './lk.component';
 import {LkRoutingModule} from './lk.routing/lk.routing.module';
 import { OrdersComponent } from './orders/orders.component';
 import {MenuModule} from '../../modules/menu/menu.module';
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
     declarations: [
         LkComponent,
         OrdersComponent,
+        SettingsComponent,
     ],
     imports: [
         CommonModule,

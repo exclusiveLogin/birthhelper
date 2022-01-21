@@ -25,5 +25,11 @@ export const PermissionMap: { [key in PermissionLKType]?: PermissionSetting } = 
         title: 'Стол заказов',
         navigate: ['/admin', 'lk', 'orders'],
         classes: ['fas', 'fa-shopping-cart']
+    },
+    settings: {
+        slug: 'settings',
+        title: 'Настройки',
+        navigate: ['/admin', 'lk', 'settings'],
+        classes: ['fas', 'fa-cog']
     }
 };

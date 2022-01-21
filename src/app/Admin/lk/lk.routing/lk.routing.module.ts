@@ -5,6 +5,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {LkComponent} from '../lk.component';
 import {OrdersComponent} from '../orders/orders.component';
 import {NotFoundComponent} from '../../../NotFound/NotFound.component';
+import {SettingsComponent} from '../settings/settings.component';
 
 const routes: Routes = [
     {
@@ -12,10 +13,11 @@ const routes: Routes = [
         canActivate: [AuthAdminGuard],
         component: LkComponent,
         data: {
-            mode: 'lk',
+            main_menu_mode: 'lk',
         },
         children: [
-            { path: 'orders', component: OrdersComponent, data: { mode: 'contragents' } },
+            { path: 'orders', component: OrdersComponent, data: { main_menu_mode: 'contragents', permission_mode: 'orders' } },
+            { path: 'settings', component: SettingsComponent, data: { main_menu_mode: 'contragents', permission_mode: 'settings' } },
         ]},
     {path: '**', component: NotFoundComponent}
 ];
