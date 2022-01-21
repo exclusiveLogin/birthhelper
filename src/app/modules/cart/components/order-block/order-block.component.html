@@ -4,6 +4,7 @@
         <div class="cart-pack-item__inner-avatar" *ngIf="{data: imageService.getImage$(o.cartPhoto)} as imageData">
             <img [src]="imageData.data[0] | async" (error)="imageData.data[1].next(null)" >
         </div>
+        <span class="badge badge-danger" *ngIf="o.status === 'waiting'">Ожидает подтверждение</span>
         <p class="cart-pack-item__inner-name">{{o.cartTitle}}</p>
         <div class="cart-pack-item__inner-value">
             <p class="cart-pack-item__inner-value-text" *ngIf="o.cartTitleAccent">{{o.cartTitleAccent}}</p>

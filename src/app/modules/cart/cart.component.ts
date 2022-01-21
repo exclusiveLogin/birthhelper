@@ -32,6 +32,12 @@ export class CartComponent implements OnInit {
         map(tree => !!tree.length),
     );
 
+    hasPendingOrders$ = this.validationTree$.pipe(
+        map(tree => tree.reduce((acc, cur) => [...acc, ...cur._orders], [] as Order[])),
+        map(orders => orders.filter(o => o.status === 'pending')),
+        map(tree => !!tree.length),
+    );
+
     totalPrice$: Observable<number> = this.validationTree$.pipe(
         map(tree => tree.reduce((keys, cur) => [...keys, ...cur._orders], [] as Order[])),
         map(orders => orders.map(o => o?.slot?.price ?? 0)),

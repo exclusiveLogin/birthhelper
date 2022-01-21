@@ -35,6 +35,7 @@ export interface OrderRequest {
     id?: number;
     status_mode?: StatusMode;
     status?: StatusType;
+    groupMode?: boolean;
 }
 
 export interface OrderResponse {
@@ -196,6 +197,7 @@ export function orderRestMapper(selection: SelectionOrderSlot, action: ODRER_ACT
             contragent_entity_id: selection.contragent_entity_id,
             action,
             id: selection.id,
+            contacts: selection.contacts,
         }
         : {
             action

@@ -56,13 +56,17 @@
             </div>
         </div>
 
-        <button
-            class="cart-price__btn cart-price__btn--blue"
-            [class.muted]="hasInvalidTree$ | async"
-            (click)="attemptSubmitCart()">
-            Отправить запрос менеджеру
-        </button>
-        <small class="form-text text-muted" *ngIf="hasInvalidTree$ | async">Имеются невалидные пакеты. Удалите или исправьте</small>
+        <ng-container *ngIf="{ hasInvalid: hasInvalidTree$ | async, hasPending: hasPendingOrders$ | async } as state">
+            <button
+                class="cart-price__btn cart-price__btn--blue"
+                [class.muted]="state.hasInvalid || !state.hasPending"
+                (click)="attemptSubmitCart()">
+                Отправить запрос менеджеру
+            </button>
+            <small class="form-text text-muted" *ngIf="state.hasInvalid">Имеются невалидные пакеты. Удалите или исправьте</small>
+            <small class="form-text text-muted" *ngIf="!state.hasPending">Все пакеты ожидают подтверждения</small>
+        </ng-container>
+
         <button class="cart-price__btn cart-price__btn--ghost muted">Оформить кредит или рассрочку</button>
     </div>
 </div>
@@ -177,7 +181,12 @@
             </div>
         </div>
         <div class="popup__footer">
-            <button class="popup__footer-btn popup__footer-btn--short" [class.muted]="formGroup.invalid">Подтвердить
+            <button
+                class="popup__footer-btn popup__footer-btn--short"
+                [class.muted]="formGroup.invalid"
+                (click)="submitDialog($event)"
+            >
+                Подтвердить
             </button>
         </div>
     </form>
