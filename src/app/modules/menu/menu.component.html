@@ -124,10 +124,20 @@
 
 <div class="menu__body" *ngIf="isContragentsMode$ |async">
     <ul class="menu__list">
-        <li class="menu__item">
+        <li class="menu__item menu__item_ctg">
             <ng-container *ngIf="{ selectedState: selectedStateCtgs$ | async } as selState">
-                <button *ngIf="selState.selectedState" (click)="deselectAll()">Снять выбор</button>
-                <button *ngIf="!selState.selectedState" (click)="selectAll()">Выбрать все</button>
+                <button
+                    class="filter__btn filter__btn--blue selectall_btn"
+                    *ngIf="selState.selectedState"
+                    (click)="deselectAll()">
+                    Снять выбор
+                </button>
+                <button
+                    class="filter__btn filter__btn--green selectall_btn"
+                    *ngIf="!selState.selectedState"
+                    (click)="selectAll()">
+                    Выбрать все
+                </button>
             </ng-container>
 
             <ng-container *ngFor="let ctg of availableContragents$ | async; trackBy: trackByIdentity" >

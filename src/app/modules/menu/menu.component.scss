@@ -13,3 +13,14 @@
 .ctg_info {
     padding: 0.3rem 1rem;
 }
+.selectall_btn {
+    width: calc(100% - 30px);
+    height: 32px;
+    margin-bottom: 5px;
+}
+.menu__item_ctg {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
