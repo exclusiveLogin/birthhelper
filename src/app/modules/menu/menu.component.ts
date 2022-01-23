@@ -1,12 +1,12 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {AuthService} from '../auth-module/auth.service';
-import {combineLatest, Observable} from 'rxjs';
+import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import {User} from '../../models/user.interface';
 import {filter, map, pluck, shareReplay, switchMap, tap} from 'rxjs/operators';
 import {IImage} from '../../Admin/Dashboard/Editor/components/image/image.component';
 import {RestService} from '../../services/rest.service';
 import {ImageService} from '../../services/image.service';
-import {LkService} from '../../services/lk.service';
+import {CTG, LkService} from '../../services/lk.service';
 import {Permission, PermissionLKType, PermissionMap, PermissionSetting} from '../../models/lk.permission.interface';
 import {Contragent} from '../../models/contragent.interface';
 import {randomColor} from '../utils/random';
@@ -14,6 +14,7 @@ import {uniq} from '../utils/uniq';
 import {RoutingService} from '../../services/routing.service';
 
 type MenuMode = 'default' | 'lk' | 'contragents';
+
 @Component({
     selector: 'app-menu',
     templateUrl: './menu.component.html',
@@ -64,12 +65,19 @@ export class MenuComponent implements OnInit {
     permSections$: Observable<string[]> = this.permissionsRaw$.pipe(
         map(permissions => uniq(permissions.map(p => p?.meta?.permission_id?.slug))),
     );
-    availableContragents$ = combineLatest([this.permissionsRaw$, this.permissionMode$]).pipe(
+    availableContragents$: Observable<CTG[]> = combineLatest([this.permissionsRaw$, this.permissionMode$]).pipe(
         map(([permissions, mode]) =>
             permissions
                 .filter(p => p?.meta?.permission_id?.slug === mode)
-                .map(p => ({entId: p.contragent_entity_id, entKey: p.contragent_entity_key}))),
+                .map(p => ({entId: p.contragent_entity_id, entKey: p.contragent_entity_key, color: this.getRandomColor()}))),
         tap(data => console.log('availableContragents$: ', data)),
+        tap(av => this.lkService.setAvailableContragents(av)),
+        shareReplay(1),
+    );
+    selectedContragents$ = new BehaviorSubject<CTG[]>([]);
+    selectedStateCtgs$ = combineLatest([this.availableContragents$, this.selectedContragents$]).pipe(
+        map(([av, sel]) =>
+            av.every(a => sel.some(s => JSON.stringify(s) === JSON.stringify(a)))),
     );
 
     constructor(
@@ -79,9 +87,38 @@ export class MenuComponent implements OnInit {
         private lkService: LkService,
         private routingService: RoutingService,
     ) {
-        /*
-         todo "удалить"
-         */
+        this.selectedContragents$.pipe(
+            tap(selected => this.lkService.setSelectedContragents(selected)),
+            tap(data => console.log('selectedContragents$', data)),
+        ).subscribe();
+    }
+
+    selectCTG(ctg: CTG): void {
+        console.log('selectCTG tick', ctg);
+        if (this.selectedContragents$.value.some(c => JSON.stringify(c) === JSON.stringify(ctg))) {
+            // REMOVE
+            this.selectedContragents$.next(
+                [...this.selectedContragents$.value
+                    .filter(c => JSON.stringify(c) !== JSON.stringify(ctg))
+                ]);
+        } else {
+            // ADD
+            this.selectedContragents$.next([ctg, ...this.selectedContragents$.value]);
+        }
+    }
+
+    selectAll(): void {
+        this.availableContragents$.pipe(
+            tap(ctgs => this.selectedContragents$.next(ctgs)),
+        ).toPromise();
+    }
+
+    deselectAll(): void {
+        this.selectedContragents$.next([]);
+    }
+
+    isSelectedCTG(ctg: CTG): boolean {
+        return this.selectedContragents$.value.some(c => JSON.stringify(c) === JSON.stringify(ctg));
     }
 
     getUserName(user: User): string {
