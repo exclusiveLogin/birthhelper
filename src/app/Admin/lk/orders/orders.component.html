@@ -1,7 +1,6 @@
-<h1 class="lk_ttl">Стол заказов
-    <a class="ctg_ttl_link">Родильный дом Плетнева</a>,
-    <a class="ctg_ttl_link">Родильный дом Якушенко</a>
-</h1>
+<h4 class="lk_ttl" *ngIf="selectedContragents$ | async as ctgs">Стол заказов
+    <a class="ctg_ttl_link" *ngFor="let c of ctgs">{{ c.title }},&nbsp;</a>
+</h4>
 <div class="filter_block">
     <div class="form-group inline">
         <label for="category">Категория заказа</label>

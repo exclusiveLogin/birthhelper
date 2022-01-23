@@ -132,7 +132,7 @@ export class MenuComponent implements OnInit {
     }
 
     getContragent(key: string, id: number): Observable<Contragent> {
-        return  this.restService.getEntity(key, id);
+        return this.restService.getEntity(key, id);
     }
 
     getRandomColor(): string {

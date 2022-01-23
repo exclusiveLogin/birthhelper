@@ -27,6 +27,8 @@ export class LkService {
     constructor(
         private restService: RestService,
     ) {
+        this.selectedContragents$.subscribe();
+        this.availableContragents$.subscribe();
     }
     getPermissionsByUser(user: User): Observable<Permission[]> {
         if (!user?.id) { return throwError('Не передан корректный пользователь'); }
@@ -38,7 +40,7 @@ export class LkService {
     }
 
     setSelectedContragents(ctgs: CTG[]): void {
-        this._availableContragents$.next(ctgs);
+        this._selectedContragents$.next(ctgs);
     }
 
     getContragentColor(ctg: CTG): string {
