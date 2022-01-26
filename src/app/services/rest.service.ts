@@ -13,7 +13,14 @@ import {InterceptorService} from '../modules/auth-module/interceptor.service';
 import {ConfiguratorConfigSrc, Restrictor, SelectionOrderSlot} from 'app/modules/configurator/configurator.model';
 import {Entity} from 'app/models/entity.interface';
 import md5 from 'md5';
-import {ODRER_ACTIONS, OrderResponse, orderRestMapper, OrderSrc} from '../models/order.interface';
+import {
+    ODRER_ACTIONS,
+    OrderGroup,
+    OrderRequest,
+    OrderResponse,
+    orderRestMapper,
+    OrderSrc,
+} from '../models/order.interface';
 
 export interface ISettingsParams {
     mode: string;
@@ -257,27 +264,25 @@ export class RestService {
         return this.postData<SessionResponse>(ep_config, data, insecure);
     }
 
-    public createOrder(selection): Observable<any> {
-        const data = orderRestMapper(selection, ODRER_ACTIONS.ADD);
+    requestOrdersPost(payload: OrderRequest): Observable<any> {
         const ep_config: ISettingsParams = {
             mode: 'order',
             segment: null,
         };
-
-        return this.postData<OrderSrc>(ep_config, data);
+        return this.postData<OrderGroup[]>(ep_config, payload);
     }
 
-    public changeOrder(
+    public createOrder(selection): Observable<any> {
+        const data = orderRestMapper(selection, ODRER_ACTIONS.ADD);
+        return this.requestOrdersPost(data);
+    }
+
+    public changeOrderBySelection(
         action: ODRER_ACTIONS,
         selection?: SelectionOrderSlot,
     ): Observable<OrderSrc> {
         const data = orderRestMapper(selection, action);
-        const ep_config: ISettingsParams = {
-            mode: 'order',
-            segment: null,
-        };
-
-        return this.postData<OrderSrc>(ep_config, data ?? {});
+        return this.requestOrdersPost(data);
     }
 
     public getUserRole(): Observable<UserRoleSrc> {

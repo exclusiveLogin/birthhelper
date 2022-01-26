@@ -1,34 +1,39 @@
 <h4 class="lk_ttl" *ngIf="selectedContragents$ | async as ctgs">Стол заказов
     <a class="ctg_ttl_link" *ngFor="let c of ctgs">{{ c.title }},&nbsp;</a>
 </h4>
-<div class="filter_block">
+<div class="filter_block" [formGroup]="filterForm">
     <div class="form-group inline">
-        <label for="category">Категория заказа</label>
-        <select class="form-control" id="category" formControlName="status_type">
-            <option value="null">Не выбрано</option>
-<!--            <option *ngFor="let item of statuses$ | async" [value]="item.id">{{item.title}}</option>-->
+        <label for="group_mode">Тип сортировки</label>
+        <select class="form-control" id="group_mode" formControlName="group_mode">
+            <option value="order">По заказу</option>
+            <option value="session">По сессии</option>
         </select>
     </div>
     <div class="form-group inline">
         <label for="status">Статус заказа</label>
-        <select class="form-control" id="status" formControlName="status_type">
-            <option value="null">Не выбрано</option>
-            <!--            <option *ngFor="let item of statuses$ | async" [value]="item.id">{{item.title}}</option>-->
+        <select class="form-control" id="status" formControlName="status">
+            <option value="inwork">В работе</option>
+            <option value="incomplete">Завершенные</option>
+            <option value="inplan">Планируются</option>
         </select>
     </div>
     <div class="form-group inline">
+        <label for="section_key">Тип контрагента</label>
+        <select class="form-control" id="section_key" formControlName="section_key">
+            <option value="clinic">Роддом</option>
+        </select>
+    </div>
+    <div class="form-group inline muted">
         <label for="period_from">Период заказа - начало</label>
         <input type="date"
                id="period_from"
-               class="form-control"
-               formControlName="last_name">
+               class="form-control">
     </div>
-    <div class="form-group inline">
+    <div class="form-group inline muted">
         <label for="period_until">Период заказа - окончание</label>
         <input type="date"
                id="period_until"
-               class="form-control"
-               formControlName="last_name">
+               class="form-control">
     </div>
 </div>
 
@@ -115,7 +120,7 @@
                         <div class="ctg_status_action">
                             <div class="form-group inline">
                                 <label for="status_action">Изменить статус заказа</label>
-                                <select class="form-control" id="status_action" formControlName="status_type">
+                                <select class="form-control" id="status_action">
                                     <option value="null">Не выбрано</option>
                                     <!--            <option *ngFor="let item of statuses$ | async" [value]="item.id">{{item.title}}</option>-->
                                 </select>

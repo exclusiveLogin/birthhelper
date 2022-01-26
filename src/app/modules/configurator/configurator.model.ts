@@ -75,6 +75,7 @@ export interface DataStore {
     [key: string]: Observable<SlotEntity[]>;
 }
 export type SelectedState = 'selected' | 'confirmed' | 'unselected';
+
 export interface SelectionOrderSlot {
     _status?: SelectedState;
     entKey?: string;

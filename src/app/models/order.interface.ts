@@ -3,8 +3,7 @@ import {PriceEntitySlot, SlotEntity} from './entity.interface';
 import {SelectionOrderSlot, TabFloorSetting} from '../modules/configurator/configurator.model';
 import {SectionType} from '../services/search.service';
 import {MetaPhoto} from 'app/models/map-object.interface';
-import {environment} from '@environments/environment';
-import {IFiltersParams} from '../Admin/table/table/filters/filters.component';
+import {User} from './user.interface';
 
 export interface OrderSrc {
     id: number;
@@ -17,6 +16,8 @@ export interface OrderSrc {
     section_key: string;
     refferer: number;
     status: StatusType;
+    contragent_entity_key?: string;
+    contragent_entity_id?: number;
     group_token: string;
     datetime_update: string;
     datetime_create: string;
@@ -33,14 +34,21 @@ export interface OrderRequest {
     contragent_entity_id?: number;
     contacts?: OrderContacts;
     id?: number;
-    status_mode?: StatusMode;
     status?: StatusType;
-    groupMode?: boolean;
+    groupMode?: OrderGroupMode;
 }
 
 export interface OrderResponse {
     context: 'orders';
     result: OrderSrc[];
+}
+
+export interface OrderGroup {
+    group_id: string;
+    groupMode: OrderGroupMode;
+    user: User;
+    contacts: OrderContacts;
+    orders: OrderSrc[];
 }
 
 export interface IOrder extends OrderSrc {
@@ -89,7 +97,7 @@ export enum ORDER_STATUSES {
     inplan = 'inplan',
 }
 
-export type StatusMode = 'complex' | 'simple';
+export type OrderGroupMode = 'order' | 'session';
 
 export type StatusType = keyof typeof ORDER_STATUSES;
 

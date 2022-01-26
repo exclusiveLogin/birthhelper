@@ -307,9 +307,9 @@ export class OrderService {
             case ODRER_ACTIONS.ADD:
                 return this.restService.createOrder(selection);
             case ODRER_ACTIONS.CLEAR:
-                return this.restService.changeOrder(action);
+                return this.restService.changeOrderBySelection(action);
             default:
-                return this.restService.changeOrder(action, selection);
+                return this.restService.changeOrderBySelection(action, selection);
 
         }
     }
