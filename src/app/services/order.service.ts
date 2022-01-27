@@ -31,7 +31,13 @@ export interface ValidationTreeContragent {
     _orders: Order[];
     isInvalid: boolean;
 }
-
+export interface ValidationTreeSimple {
+    tabs: ValidationTreeItem[];
+    floors: ValidationTreeItem[];
+    orders: Order[];
+    isInvalid: boolean;
+    config: ConfiguratorConfigSrc;
+}
 
 @Injectable({
     providedIn: 'root'
