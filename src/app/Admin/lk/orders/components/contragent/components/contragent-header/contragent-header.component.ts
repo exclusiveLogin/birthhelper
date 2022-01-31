@@ -1,15 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {CTG} from '@services/lk.service';
+import {RestService} from '@services/rest.service';
+import {Observable} from 'rxjs';
+import {Contragent} from '@models/contragent.interface';
 
 @Component({
-  selector: 'app-contragent-header',
-  templateUrl: './contragent-header.component.html',
-  styleUrls: ['./contragent-header.component.scss']
+    selector: 'app-contragent-header',
+    templateUrl: './contragent-header.component.html',
+    styleUrls: ['./contragent-header.component.scss']
 })
 export class ContragentHeaderComponent implements OnInit {
 
-  constructor() { }
+    @Input() public contragent: CTG;
+    constructor(
+        private restService: RestService,
+    ) {
+    }
 
-  ngOnInit(): void {
-  }
+    @ViewChild('ctg_ent_clinic') public tpl_ent_clinic: TemplateRef<any>;
+    @ViewChild('default') public tpl_default: TemplateRef<any>;
+    tpl: TemplateRef<any>;
+
+    contragent$: Observable<Contragent>;
+    bgColor: string;
+
+    ngOnInit(): void {
+        this.contragent$ = this.restService.getEntity(this.contragent.entKey, this.contragent.entId);
+        this.bgColor = this.contragent.color ?? '#ffffff';
+        this.tpl = this['tpl_' + this.contragent?.entKey];
+    }
 
 }
