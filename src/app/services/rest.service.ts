@@ -264,12 +264,12 @@ export class RestService {
         return this.postData<SessionResponse>(ep_config, data, insecure);
     }
 
-    requestOrdersPost(payload: OrderRequest): Observable<any> {
+    requestOrdersPost<T = any>(payload: OrderRequest): Observable<T> {
         const ep_config: ISettingsParams = {
             mode: 'order',
             segment: null,
         };
-        return this.postData<OrderGroup[]>(ep_config, payload);
+        return this.postData<T>(ep_config, payload);
     }
 
     public createOrder(selection): Observable<any> {

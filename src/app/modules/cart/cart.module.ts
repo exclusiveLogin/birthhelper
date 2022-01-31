@@ -14,6 +14,9 @@ import {ReactiveFormsModule} from '@angular/forms';
         OrderBlockComponent,
         ContragentComponent
     ],
+    exports: [
+        ContragentComponent
+    ],
     imports: [
         CommonModule,
         CartModuleRouting,

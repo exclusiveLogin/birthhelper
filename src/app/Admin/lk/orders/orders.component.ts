@@ -57,7 +57,10 @@ export class OrdersComponent implements OnInit {
 
     onOrders$: Observable<OrderGroup[]> = this.onFilters$.pipe(
         switchMap(setting => !!setting.length
-            ? forkJoin(setting.map(s => this.restService.requestOrdersPost(s)))
+            ? forkJoin(setting.map(s =>
+                this.restService.requestOrdersPost<OrderGroup[]>(s))).pipe(
+                    map((data) => data.reduce((acc, grp) =>
+                        [...acc, ...grp], [] as OrderGroup[])))
             : NEVER),
     );
 
