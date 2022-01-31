@@ -48,7 +48,7 @@ export interface OrderGroup {
     groupMode: OrderGroupMode;
     user: User;
     contacts: OrderContacts;
-    orders: OrderSrc[];
+    orders: Order[];
 }
 
 export interface IOrder extends OrderSrc {
@@ -91,11 +91,26 @@ export enum ORDER_STATUSES {
     rejected = 'rejected',
     completed = 'completed',
     canceled = 'canceled',
-    inprogress = 'inprogress',
     inwork = 'inwork',
     incomplete = 'incomplete',
     inplan = 'inplan',
 }
+export type StatusTypeMap = {
+    [key in StatusType]: string;
+};
+
+export const StatusRusMap: StatusTypeMap = {
+    pending: 'Выбран',
+    waiting: 'Ожидает',
+    canceled: 'Отменен',
+    completed: 'Завершен',
+    deleted: 'Удален',
+    rejected: 'Отклонен',
+    resolved: 'Одобрен',
+    incomplete: 'Завершенные',
+    inplan: 'Планируемые',
+    inwork: 'В работе',
+};
 
 export type OrderGroupMode = 'order' | 'session';
 

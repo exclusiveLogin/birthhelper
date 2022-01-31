@@ -29,13 +29,6 @@
             &:nth-child(odd) {
                 background-color: #DBE9FF;
             }
-            .order_tbl__item {
-                margin: 15px;
-
-                &.open_btn {
-                    margin-left: auto;
-                }
-            }
         }
     }
 }

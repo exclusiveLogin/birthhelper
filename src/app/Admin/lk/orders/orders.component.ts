@@ -62,6 +62,7 @@ export class OrdersComponent implements OnInit {
                     map((data) => data.reduce((acc, grp) =>
                         [...acc, ...grp], [] as OrderGroup[])))
             : NEVER),
+        tap(grp => grp.forEach(g => g.orders = g.orders.map(o => new Order(o)))),
     );
 
     ngOnInit(): void {

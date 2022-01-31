@@ -15,7 +15,6 @@ import {Entity} from 'app/models/entity.interface';
 import md5 from 'md5';
 import {
     ODRER_ACTIONS,
-    OrderGroup,
     OrderRequest,
     OrderResponse,
     orderRestMapper,

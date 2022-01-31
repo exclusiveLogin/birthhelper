@@ -1,3 +1,10 @@
+:host {
+    display: flex;
+    flex-grow: 1;
+    width: 100%;
+    flex-wrap: wrap;
+    background-color: #F3F3F3;
+}
 .default {
     height: 5rem;
     display: flex;
@@ -7,49 +14,9 @@
     font-size: 1.25rem;
     color: grey;
     border: 2px solid lightgrey;
-    margin: 5%;
     text-align: center;
-}
-.small {
-    width: 50px;
-}
-.mid {
-    width: 90px;
-}
-.long {
-    width: 150px;
-}
-.extra {
-    width: 210px;
-}
-.order_table {
-    .order_tbl__head {
-        ._row {
-            background-color: whitesmoke;
-            display: flex;
-            flex: 1;
-            .order_tbl__head__item {
-                margin: 15px;
-            }
-        }
-    }
-    .order_tbl__body {
-        ._row {
-            background-color: #ffffff;
-            display: flex;
-            flex: 1;
-            &:nth-child(odd) {
-                background-color: #DBE9FF;
-            }
-            .order_tbl__item {
-                margin: 15px;
-
-                &.open_btn {
-                    margin-left: auto;
-                }
-            }
-        }
-    }
+    padding: 15px;
+    width: 100%;
 }
 
 .header_led {
@@ -103,26 +70,6 @@
         border-bottom: none;
     }
 }
-.ctg_orders {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    padding: 24px;
-}
-.section__title{
-    width: 100%;
-    font-size: 16px;
-    border-bottom: 2px solid grey;
-}
-.ctg_status_action {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-}
-.order_status_btn {
-    width: calc(100% - 30px);
-    height: 32px;
-}
 .ctg_phone {
     display: flex;
     flex-direction: column;
@@ -138,20 +85,4 @@
     .ctg_phone__number {
         font-size: 2.4rem;
     }
-}
-$skype-color: #00aff0;
-$whatsapp-color: #128C7E;
-$telegram-color: #0088cc;
-$viber-color: #59267c;
-.fa-viber {
-    color: $viber-color;
-}
-.fa-whatsapp {
-    color: $whatsapp-color;
-}
-.fa-skype {
-    color: $skype-color;
-}
-.fa-telegram-plane {
-    color: $telegram-color;
 }

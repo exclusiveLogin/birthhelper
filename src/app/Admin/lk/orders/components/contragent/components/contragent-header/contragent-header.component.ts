@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {CTG} from '@services/lk.service';
 import {RestService} from '@services/rest.service';
-import {Observable} from 'rxjs';
+import {config, Observable} from 'rxjs';
 import {Contragent} from '@models/contragent.interface';
 
 @Component({
@@ -18,16 +18,20 @@ export class ContragentHeaderComponent implements OnInit {
     }
 
     @ViewChild('ctg_ent_clinic') public tpl_ent_clinic: TemplateRef<any>;
-    @ViewChild('default') public tpl_default: TemplateRef<any>;
+    @ViewChild('default', {static: true}) public tpl_default: TemplateRef<any>;
     tpl: TemplateRef<any>;
 
     contragent$: Observable<Contragent>;
     bgColor: string;
 
     ngOnInit(): void {
-        this.contragent$ = this.restService.getEntity(this.contragent.entKey, this.contragent.entId);
-        this.bgColor = this.contragent.color ?? '#ffffff';
-        this.tpl = this['tpl_' + this.contragent?.entKey];
+        if (!!this.contragent) {
+            this.contragent$ = this.restService.getEntity(this.contragent.entKey, this.contragent.entId);
+            this.bgColor = this.contragent.color ?? '#ffffff';
+            this.tpl = this['tpl_' + this.contragent?.entKey] ?? this.tpl_default;
+        } else {
+            this.tpl = this.tpl_default;
+        }
     }
 
 }

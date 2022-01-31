@@ -1,6 +1,6 @@
-<ng-container *ngTemplateOutlet="unwrap"></ng-container>
+<ng-container *ngTemplateOutlet="wrapMode ? tpl_wrap : tpl_unwrap"></ng-container>
 
-<ng-template #wrap>
+<ng-template #tpl_wrap>
     <div class="order_container cart-pack cart-pack--clinic">
         <div class="order_container_head">
             <div class="header_bar">
@@ -34,7 +34,7 @@
                         <button type="button" class="btn btn-danger">Отменить</button>
                     </div>
                 </div>
-                <div class="btn_close"></div>
+                <div class="btn_close" (click)="unwrap()"></div>
             </div>
         </div>
         <div class="ctg_orders">
@@ -141,15 +141,40 @@
     </div>
 </ng-template>
 
-<ng-template #unwrap>
-    <div class="order_tbl__item small">251</div>
-    <div class="order_tbl__item mid">LanaDark</div>
-    <div class="order_tbl__item extra">Софья Владимировна Полищук</div>
-    <div class="order_tbl__item extra">lanadark21081981@gmail.com</div>
-    <div class="order_tbl__item long">+7 900 800 70 60</div>
-    <div class="order_tbl__item long"></div>
-    <div class="order_tbl__item long">27.01.2020 20:03:20</div>
-    <div class="order_tbl__item mid">Ожидание</div>
-    <div class="order_tbl__item mid">150 000</div>
-    <div class="order_tbl__item open_btn"><i class="fas fa-eye fa-lg"></i></div>
+<ng-template #tpl_unwrap>
+    <ng-container *ngIf="data$ | async as data">
+        <!--        ID      -->
+        <div class="order_tbl__item small">{{data.group_id}}</div>
+        <!--        login      -->
+        <div class="order_tbl__item mid">{{data.user.login || '---'}}</div>
+        <!--        ФИО      -->
+        <div class="order_tbl__item extra">
+            {{data.user.first_name}}&nbsp;
+            {{data.user.last_name}}&nbsp;
+            {{data.user.patronymic}}
+        </div>
+        <!--        email      -->
+        <div class="order_tbl__item extra">{{data.contacts.email || 'email не указан'}}</div>
+        <!--        телефон      -->
+        <div class="order_tbl__item long">{{data.contacts.phone || 'телефон не указан'}}</div>
+        <!--        предпочитаемый канал связи      -->
+        <div class="order_tbl__item long">
+            <i class="fas fa-phone" aria-hidden="true" title="Телефон"></i>
+            <i class="fab fa-viber" aria-hidden="true" title="Viber"></i>
+            <i class="fab fa-whatsapp" aria-hidden="true" title="WhatsApp"></i>
+            <i class="fab fa-telegram-plane" aria-hidden="true" title="Telegram"></i>
+            <i class="fa fa-envelope" aria-hidden="true" title="E-mail"></i>
+            <i class="fab fa-skype" aria-hidden="true" title="Skype"></i>
+        </div>
+        <!--        предпочитаемый канал связи      -->
+        <div class="order_tbl__item long">---</div>
+        <!--        статус      -->
+        <div class="order_tbl__item mid">{{getStatusTitle()}}</div>
+        <!--        цена      -->
+        <div class="order_tbl__item mid">{{getGroupPrice()}}</div>
+        <!--        кнопка открыть      -->
+        <div class="order_tbl__item open_btn" (click)="wrap()">
+            <i class="fas fa-eye fa-lg"></i>
+        </div>
+    </ng-container>
 </ng-template>

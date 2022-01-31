@@ -20,6 +20,7 @@
 
     &.open_btn {
         margin-left: auto;
+        cursor: pointer;
     }
 }
 .order_container {
@@ -132,6 +133,7 @@
     align-self: center;
     margin-left: auto;
     margin-right: 15px;
+    cursor: pointer;
 }
 .order_actions{
     display: flex;
