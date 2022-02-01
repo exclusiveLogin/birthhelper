@@ -16,6 +16,7 @@ import {User, UserSrc} from '@models/user.interface';
 })
 export class ContragentComponent implements OnInit {
 
+    public isLoading = true;
     public sectionKeys = Object.keys(Sections);
     public contragent$: Observable<Contragent>;
     public orderGroups$: Observable<OrderGroup[]>;
@@ -23,6 +24,7 @@ export class ContragentComponent implements OnInit {
     @Input()
     private set contragent(value: CTG) {
         if (value?.entId && value?.entKey) {
+            this.isLoading = true;
             this.ctg = value;
             this.contragent$ = this.restService.getEntity<Contragent>(value.entKey, value.entId);
         }
@@ -42,6 +44,7 @@ export class ContragentComponent implements OnInit {
 
     onOrdersGroups$ = this.onRequest$.pipe(
         switchMap(request => this.restService.requestOrdersPost<OrderGroup[]>(request)),
+        tap(_ => this.isLoading = false),
         tap(grp => grp?.forEach(g => g.orders = g.orders.map(o => new Order(o)))),
         tap(grp => grp?.forEach(g => g.user = new User(g.user as unknown as UserSrc))),
     );

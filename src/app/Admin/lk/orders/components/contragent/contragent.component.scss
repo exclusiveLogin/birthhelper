@@ -1,3 +1,16 @@
+.default {
+    height: 5rem;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.25rem;
+    color: grey;
+    border: 2px solid lightgrey;
+    text-align: center;
+    padding: 15px;
+    width: 100%;
+}
 .small {
     width: 50px;
 }
