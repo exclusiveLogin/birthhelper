@@ -1,35 +1,49 @@
 <ng-container *ngTemplateOutlet="wrapMode ? tpl_wrap : tpl_unwrap"></ng-container>
 
+<ng-template #blankuser>
+    <img class="profile_avatar__img" src="/img/blank-user.jpg">
+</ng-template>
+
 <ng-template #tpl_wrap>
-    <div class="order_container cart-pack cart-pack--clinic">
+    <div class="order_container cart-pack cart-pack--clinic"
+         *ngIf="{
+            data: data$ | async,
+            photo: userPhoto$ | async,
+            signal: userPhotoSignal$ | async
+         } as data">
         <div class="order_container_head">
             <div class="header_bar">
-                <div>ID: 9d13efb4-40c2-413c-8ccf-8c843515de7d</div>
-                <div>Заказан: 27.01.2020 20:03:20</div>
+                <div>ID: {{_orderGroup.group_id}}</div>
+                <div>Заказан: {{getLastDate()}}</div>
             </div>
-            <div class="user_info">
-                <img class="user_avatar" src="img/ava@3x.png">
+            <div class="user_info" *ngIf="data.data.user as user">
+                <ng-container *ngIf="data.photo | async as image else blankuser">
+                    <img class="user_avatar" [src]="image" (error)="data.signal.next(null)">
+                </ng-container>
                 <div class="user_info_block">
-                    <p class="user_info__fio">Софья Владимировна Полищук</p>
-                    <p class="user_info__login">LanaDark</p>
+                    <p class="user_info__fio">
+                        {{user.first_name}}&nbsp;
+                        {{user.last_name}}&nbsp;
+                        {{user.patronymic}}</p>
+                    <p class="user_info__login">{{user.login || '---'}}</p>
                 </div>
-                <div class="user_contacts">
-                    <div class="user_contacts__phone">+7 900 800 70 60</div>
-                    <div class="user_contacts__email">lanadark21081981@gmail.com</div>
+                <div class="user_contacts" *ngIf="data.data.contacts as contacts">
+                    <div class="user_contacts__phone">{{contacts.phone}}</div>
+                    <div class="user_contacts__email">{{contacts.email}}</div>
                     <div class="user_contacts__ttl">Предпочитаемый канал связи</div>
                     <div class="user_contacts__ch">
-                        <i class="fas fa-phone fa-2x" aria-hidden="true" title="Телефон"></i>
-                        <i class="fab fa-viber fa-2x" aria-hidden="true" title="Viber"></i>
-                        <i class="fab fa-whatsapp fa-2x" aria-hidden="true" title="WhatsApp"></i>
-                        <i class="fab fa-telegram-plane fa-2x" aria-hidden="true" title="Telegram"></i>
-                        <i class="fa fa-envelope fa-2x" aria-hidden="true" title="E-mail"></i>
-                        <i class="fab fa-skype fa-2x" aria-hidden="true" title="Skype"></i>
+                        <i class="fas fa-phone fa-2x" aria-hidden="true" title="Телефон" *ngIf="contacts.ch_phone"></i>
+                        <i class="fab fa-viber fa-2x" aria-hidden="true" title="Viber" *ngIf="contacts.ch_viber"></i>
+                        <i class="fab fa-whatsapp fa-2x" aria-hidden="true" title="WhatsApp" *ngIf="contacts.ch_whatsapp"></i>
+                        <i class="fab fa-telegram-plane fa-2x" aria-hidden="true" title="Telegram" *ngIf="contacts.ch_telegram"></i>
+                        <i class="fa fa-envelope fa-2x" aria-hidden="true" title="E-mail" *ngIf="contacts.ch_email"></i>
+                        <i class="fab fa-skype fa-2x" aria-hidden="true" title="Skype" *ngIf="contacts.ch_skype"></i>
                     </div>
                 </div>
                 <div class="user_price_block">
                     <p class="user_price__ttl">Общая сумма заказа</p>
-                    <p class="user_price__price">548 000 рублей</p>
-                    <div class="btn-group" role="group" aria-label="Действия">
+                    <p class="user_price__price">{{getGroupPrice()}} рублей</p>
+                    <div class="btn-group muted" role="group" aria-label="Действия">
                         <button type="button" class="btn btn-outline-success">Завершить</button>
                         <button type="button" class="btn btn-danger">Отменить</button>
                     </div>
@@ -39,57 +53,6 @@
         </div>
         <div class="ctg_orders">
             <p class="cart-pack-item__title section__title">Родовспоможение</p>
-            <div class="order">
-                <div class="cart-pack-item__inner-avatar">
-                    <img src="/no_image.png" >
-                </div>
-                <p class="cart-pack-item__inner-name">Антонина Егоровна Павсиенко</p>
-                <div class="cart-pack-item__inner-value">
-                    <p class="cart-pack-item__inner-value-text">Врач Неоантолог - высшая категория</p>
-                    <!--                                <p class="cart-pack-item__inner-value-text">Категория - А</p>-->
-                </div>
-                <p class="cart-pack-item__inner-price">50 000 руб.</p>
-                <div class="order_actions">
-                    <div class="order_btn order_resolve inactive"></div>
-                    <div class="order_btn order_reject inactive"></div>
-                    <div class="order_btn order_edit inactive"></div>
-                    <div class="order_btn order_remove inactive"></div>
-                </div>
-            </div>
-            <div class="order">
-                <div class="cart-pack-item__inner-avatar">
-                    <img src="/no_image.png" >
-                </div>
-                <p class="cart-pack-item__inner-name">Антонина Егоровна Павсиенко</p>
-                <div class="cart-pack-item__inner-value">
-                    <p class="cart-pack-item__inner-value-text">Врач Неоантолог - высшая категория</p>
-                    <!--                                <p class="cart-pack-item__inner-value-text">Категория - А</p>-->
-                </div>
-                <p class="cart-pack-item__inner-price">50 000 руб.</p>
-                <div class="order_actions">
-                    <div class="order_btn order_resolve inactive"></div>
-                    <div class="order_btn order_reject inactive"></div>
-                    <div class="order_btn order_edit inactive"></div>
-                    <div class="order_btn order_remove inactive"></div>
-                </div>
-            </div>
-            <div class="order">
-                <div class="cart-pack-item__inner-avatar">
-                    <img src="/no_image.png" >
-                </div>
-                <p class="cart-pack-item__inner-name">Антонина Егоровна Павсиенко</p>
-                <div class="cart-pack-item__inner-value">
-                    <p class="cart-pack-item__inner-value-text">Врач Неоантолог - высшая категория</p>
-                    <!--                                <p class="cart-pack-item__inner-value-text">Категория - А</p>-->
-                </div>
-                <p class="cart-pack-item__inner-price">50 000 руб.</p>
-                <div class="order_actions">
-                    <div class="order_btn order_resolve inactive"></div>
-                    <div class="order_btn order_reject inactive"></div>
-                    <div class="order_btn order_edit inactive"></div>
-                    <div class="order_btn order_remove inactive"></div>
-                </div>
-            </div>
             <div class="order">
                 <div class="cart-pack-item__inner-avatar">
                     <img src="/no_image.png" >
@@ -122,20 +85,6 @@
                     <button class="filter__btn filter__btn--blue">Выбрать услугу</button>
                 </div>
             </div>
-            <div class="order">
-                <div class="cart-pack-item__inner-avatar">
-                    <img src="/no_image.png" >
-                </div>
-                <p class="cart-pack-item__inner-name">Антонина Егоровна Павсиенко</p>
-                <div class="cart-pack-item__inner-value">
-                    <p class="cart-pack-item__inner-value-text">Врач Неоантолог - высшая категория</p>
-                    <!--                                <p class="cart-pack-item__inner-value-text">Категория - А</p>-->
-                </div>
-                <p class="cart-pack-item__inner-price">50 000 руб.</p>
-                <div class="order_actions">
-                    <button class="filter__btn filter__btn--blue">Выбрать услугу</button>
-                </div>
-            </div>
             <button class="filter__btn filter__btn--blue order_status_btn">Добавить услугу</button>
         </div>
     </div>
@@ -143,38 +92,40 @@
 
 <ng-template #tpl_unwrap>
     <ng-container *ngIf="data$ | async as data">
-        <!--        ID      -->
-        <div class="order_tbl__item small ellipsis" [title]="data.group_id">{{data.group_id}}</div>
-        <!--        login      -->
-        <div class="order_tbl__item mid">{{data.user.login || '---'}}</div>
-        <!--        ФИО      -->
-        <div class="order_tbl__item extra">
-            {{data.user.first_name}}&nbsp;
-            {{data.user.last_name}}&nbsp;
-            {{data.user.patronymic}}
-        </div>
-        <!--        email      -->
-        <div class="order_tbl__item extra">{{data.contacts.email || 'email не указан'}}</div>
-        <!--        телефон      -->
-        <div class="order_tbl__item long">{{data.contacts.phone || 'телефон не указан'}}</div>
-        <!--        предпочитаемый канал связи      -->
-        <div class="order_tbl__item long">
-            <i class="fas fa-phone" aria-hidden="true" title="Телефон" *ngIf="data.contacts.ch_phone"></i>
-            <i class="fab fa-viber" aria-hidden="true" title="Viber" *ngIf="data.contacts.ch_viber"></i>
-            <i class="fab fa-whatsapp" aria-hidden="true" title="WhatsApp" *ngIf="data.contacts.ch_whatsapp"></i>
-            <i class="fab fa-telegram-plane" aria-hidden="true" title="Telegram" *ngIf="data.contacts.ch_telegram"></i>
-            <i class="fa fa-envelope" aria-hidden="true" title="E-mail" *ngIf="data.contacts.ch_email"></i>
-            <i class="fab fa-skype" aria-hidden="true" title="Skype" *ngIf="data.contacts.ch_skype"></i>
-        </div>
-        <!--        предпочитаемый канал связи      -->
-        <div class="order_tbl__item long">---</div>
-        <!--        статус      -->
-        <div class="order_tbl__item mid">{{getStatusTitle()}}</div>
-        <!--        цена      -->
-        <div class="order_tbl__item mid">{{getGroupPrice()}}</div>
-        <!--        кнопка открыть      -->
-        <div class="order_tbl__item open_btn" (click)="wrap()">
-            <i class="fas fa-eye fa-lg"></i>
+        <div class="tbl_row" (click)="wrap()">
+            <!--        ID      -->
+            <div class="order_tbl__item small ellipsis" [title]="data.group_id">{{data.group_id}}</div>
+            <!--        login      -->
+            <div class="order_tbl__item mid">{{data.user.login || '---'}}</div>
+            <!--        ФИО      -->
+            <div class="order_tbl__item extra">
+                {{data.user.first_name}}&nbsp;
+                {{data.user.last_name}}&nbsp;
+                {{data.user.patronymic}}
+            </div>
+            <!--        email      -->
+            <div class="order_tbl__item extra">{{data.contacts.email || 'email не указан'}}</div>
+            <!--        телефон      -->
+            <div class="order_tbl__item long">{{data.contacts.phone || 'телефон не указан'}}</div>
+            <!--        предпочитаемый канал связи      -->
+            <div class="order_tbl__item long">
+                <i class="fas fa-phone" aria-hidden="true" title="Телефон" *ngIf="data.contacts.ch_phone"></i>
+                <i class="fab fa-viber" aria-hidden="true" title="Viber" *ngIf="data.contacts.ch_viber"></i>
+                <i class="fab fa-whatsapp" aria-hidden="true" title="WhatsApp" *ngIf="data.contacts.ch_whatsapp"></i>
+                <i class="fab fa-telegram-plane" aria-hidden="true" title="Telegram" *ngIf="data.contacts.ch_telegram"></i>
+                <i class="fa fa-envelope" aria-hidden="true" title="E-mail" *ngIf="data.contacts.ch_email"></i>
+                <i class="fab fa-skype" aria-hidden="true" title="Skype" *ngIf="data.contacts.ch_skype"></i>
+            </div>
+            <!--        предпочитаемый канал связи      -->
+            <div class="order_tbl__item long">---</div>
+            <!--        статус      -->
+            <div class="order_tbl__item mid">{{getStatusTitle()}}</div>
+            <!--        цена      -->
+            <div class="order_tbl__item mid">{{getGroupPrice()}}</div>
+            <!--        кнопка открыть      -->
+<!--            <div class="order_tbl__item open_btn" (click)="wrap()">-->
+<!--                <i class="fas fa-eye fa-lg"></i>-->
+<!--            </div>-->
         </div>
     </ng-container>
 </ng-template>

@@ -1,10 +1,14 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {OrderGroup, StatusRusMap, StatusType} from '@models/order.interface';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
+import {filter, map, switchMap, tap} from 'rxjs/operators';
 import {uniq} from '../../../../../../../modules/utils/uniq';
 import {RestService} from '@services/rest.service';
 import {PriceEntitySlot} from '@models/entity.interface';
+import * as moment from 'moment';
+import {IImage} from '../../../../../../Dashboard/Editor/components/image/image.component';
+import {User, UserSrc} from '@models/user.interface';
+import {ImageService} from '@services/image.service';
 
 @Component({
     selector: 'app-order-group',
@@ -22,17 +26,29 @@ export class OrderGroupComponent implements OnInit {
                 tap((slot: PriceEntitySlot) => order.setSlot(slot)),
             ).toPromise();
         }
+        this.updater$.next(null);
     }
 
     constructor(
         private cdr: ChangeDetectorRef,
         private restService: RestService,
+        private imageService: ImageService,
     ) {
     }
 
-    data$: Observable<OrderGroup>;
     updater$ = new BehaviorSubject<null>(null);
+    data$ = this.updater$.pipe(map(_ => this._orderGroup));
+    user$: Observable<User> = this.data$.pipe(map(data => data.user));
     wrapMode = false;
+
+    userPhotoData$ = this.user$.pipe(
+        filter(user => !!user.photo_id),
+        map(user => user.photo_id),
+        switchMap(userPhotoId => this.restService.getEntity('ent_images', userPhotoId)),
+        map(image => this.imageService.getImage$(image as IImage)),
+    );
+    userPhoto$ = this.userPhotoData$.pipe(map(d => d[0]));
+    userPhotoSignal$ = this.userPhotoData$.pipe(map(d => d[1]));
 
     ngOnInit(): void {
         this.data$ = this.updater$.pipe(map(_ => this._orderGroup));
@@ -63,6 +79,16 @@ export class OrderGroupComponent implements OnInit {
             .filter(price => !!price && !isNaN(price));
 
         return prices.reduce((acc, cur) => cur + acc, 0);
+    }
+
+    getLastDate(): string {
+        const orders = this._orderGroup.orders;
+        if (orders?.length) {
+            const mods = orders.map(o => moment(o.datetime_update));
+            const max = moment.max(mods);
+            return max.format('DD-MM-YYYY hh:mm:ss');
+        }
+        return null;
     }
 
 }

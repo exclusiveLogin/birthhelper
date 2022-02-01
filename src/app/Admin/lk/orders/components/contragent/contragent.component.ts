@@ -7,6 +7,7 @@ import {ODRER_ACTIONS, Order, OrderGroup, OrderRequest} from '@models/order.inte
 import {map, switchMap, tap} from 'rxjs/operators';
 import {Sections} from '@models/core';
 import {SectionType} from '@services/search.service';
+import {User, UserSrc} from '@models/user.interface';
 
 @Component({
     selector: 'app-contragent',
@@ -42,6 +43,7 @@ export class ContragentComponent implements OnInit {
     onOrdersGroups$ = this.onRequest$.pipe(
         switchMap(request => this.restService.requestOrdersPost<OrderGroup[]>(request)),
         tap(grp => grp?.forEach(g => g.orders = g.orders.map(o => new Order(o)))),
+        tap(grp => grp?.forEach(g => g.user = new User(g.user as unknown as UserSrc))),
     );
 
     constructor(
