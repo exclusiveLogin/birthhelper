@@ -144,7 +144,7 @@
 <ng-template #tpl_unwrap>
     <ng-container *ngIf="data$ | async as data">
         <!--        ID      -->
-        <div class="order_tbl__item small">{{data.group_id}}</div>
+        <div class="order_tbl__item small ellipsis" [title]="data.group_id">{{data.group_id}}</div>
         <!--        login      -->
         <div class="order_tbl__item mid">{{data.user.login || '---'}}</div>
         <!--        ФИО      -->
@@ -159,12 +159,12 @@
         <div class="order_tbl__item long">{{data.contacts.phone || 'телефон не указан'}}</div>
         <!--        предпочитаемый канал связи      -->
         <div class="order_tbl__item long">
-            <i class="fas fa-phone" aria-hidden="true" title="Телефон"></i>
-            <i class="fab fa-viber" aria-hidden="true" title="Viber"></i>
-            <i class="fab fa-whatsapp" aria-hidden="true" title="WhatsApp"></i>
-            <i class="fab fa-telegram-plane" aria-hidden="true" title="Telegram"></i>
-            <i class="fa fa-envelope" aria-hidden="true" title="E-mail"></i>
-            <i class="fab fa-skype" aria-hidden="true" title="Skype"></i>
+            <i class="fas fa-phone" aria-hidden="true" title="Телефон" *ngIf="data.contacts.ch_phone"></i>
+            <i class="fab fa-viber" aria-hidden="true" title="Viber" *ngIf="data.contacts.ch_viber"></i>
+            <i class="fab fa-whatsapp" aria-hidden="true" title="WhatsApp" *ngIf="data.contacts.ch_whatsapp"></i>
+            <i class="fab fa-telegram-plane" aria-hidden="true" title="Telegram" *ngIf="data.contacts.ch_telegram"></i>
+            <i class="fa fa-envelope" aria-hidden="true" title="E-mail" *ngIf="data.contacts.ch_email"></i>
+            <i class="fab fa-skype" aria-hidden="true" title="Skype" *ngIf="data.contacts.ch_skype"></i>
         </div>
         <!--        предпочитаемый канал связи      -->
         <div class="order_tbl__item long">---</div>

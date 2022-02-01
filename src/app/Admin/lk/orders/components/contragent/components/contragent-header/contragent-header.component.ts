@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {CTG} from '@services/lk.service';
 import {RestService} from '@services/rest.service';
-import {config, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {Contragent} from '@models/contragent.interface';
 
 @Component({
@@ -17,7 +17,7 @@ export class ContragentHeaderComponent implements OnInit {
     ) {
     }
 
-    @ViewChild('ctg_ent_clinic') public tpl_ent_clinic: TemplateRef<any>;
+    @ViewChild('ctg_ent_clinics', {static: true}) public tpl_ent_clinics: TemplateRef<any>;
     @ViewChild('default', {static: true}) public tpl_default: TemplateRef<any>;
     tpl: TemplateRef<any>;
 

@@ -1,10 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {CTG, LkService} from '@services/lk.service';
 import {Observable} from 'rxjs';
 import {Contragent} from '@models/contragent.interface';
 import {RestService} from '@services/rest.service';
 import {ODRER_ACTIONS, Order, OrderGroup, OrderRequest} from '@models/order.interface';
 import {map, switchMap, tap} from 'rxjs/operators';
+import {Sections} from '@models/core';
+import {SectionType} from '@services/search.service';
 
 @Component({
     selector: 'app-contragent',
@@ -13,6 +15,7 @@ import {map, switchMap, tap} from 'rxjs/operators';
 })
 export class ContragentComponent implements OnInit {
 
+    public sectionKeys = Object.keys(Sections);
     public contragent$: Observable<Contragent>;
     public orderGroups$: Observable<OrderGroup[]>;
     public ctg: CTG;
@@ -38,16 +41,26 @@ export class ContragentComponent implements OnInit {
 
     onOrdersGroups$ = this.onRequest$.pipe(
         switchMap(request => this.restService.requestOrdersPost<OrderGroup[]>(request)),
-        tap(grp => grp.forEach(g => g.orders = g.orders.map(o => new Order(o)))),
+        tap(grp => grp?.forEach(g => g.orders = g.orders.map(o => new Order(o)))),
     );
 
     constructor(
         private restService: RestService,
         private lkService: LkService,
+        private cdr: ChangeDetectorRef,
     ) {
     }
 
     ngOnInit(): void {
     }
 
+    getTitleSection(section: SectionType): string {
+        return Sections[section];
+    }
+
+    // getGroupsBySection(section: SectionType): Observable<OrderGroup[]> {
+    //     return this.onOrdersGroups$.pipe(
+    //         map(groups => groups.filter(grp => grp.))
+    //     );
+    // }
 }

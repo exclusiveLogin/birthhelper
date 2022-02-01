@@ -268,7 +268,7 @@ export class RestService {
             mode: 'order',
             segment: null,
         };
-        return this.postData<T>(ep_config, payload);
+        return this.postData<T>(ep_config, payload).pipe(map(data => data?.['result']));
     }
 
     public createOrder(selection): Observable<any> {

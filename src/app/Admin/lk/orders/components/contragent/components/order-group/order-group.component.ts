@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {OrderGroup, StatusRusMap, StatusType} from '@models/order.interface';
-import {BehaviorSubject, forkJoin, Observable, of} from 'rxjs';
-import {map, switchMap, tap} from 'rxjs/operators';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {map, tap} from 'rxjs/operators';
 import {uniq} from '../../../../../../../modules/utils/uniq';
 import {RestService} from '@services/rest.service';
 import {PriceEntitySlot} from '@models/entity.interface';
@@ -57,7 +57,11 @@ export class OrderGroupComponent implements OnInit {
     }
 
     getGroupPrice(): number {
-        const prices: number[] = this._orderGroup.orders.map(o => o.slot.price ?? 0);
+        const prices: number[] = this._orderGroup.orders
+            .map(o => o?.slot?.price ?? 0)
+            .map(price => +price)
+            .filter(price => !!price && !isNaN(price));
+
         return prices.reduce((acc, cur) => cur + acc, 0);
     }
 

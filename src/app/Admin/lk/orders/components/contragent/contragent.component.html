@@ -21,10 +21,10 @@
     </div>
 
     <div class="order_tbl__body">
-        <app-order-group class="_row"></app-order-group>
-        <app-order-group class="_row"></app-order-group>
-        <app-order-group class="_row"></app-order-group>
-        <app-order-group class="_row"></app-order-group>
+        <app-order-group class="_row"
+                         *ngFor="let group of onOrdersGroups$ | async"
+                         [orderGroup]="group"
+        ></app-order-group>
     </div>
 
 </div>
