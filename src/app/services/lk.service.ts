@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {RestService} from './rest.service';
 import {User} from '../models/user.interface';
-import {BehaviorSubject, Observable, throwError} from 'rxjs';
+import {BehaviorSubject, Observable, Subject, throwError} from 'rxjs';
 import {Permission} from '../models/lk.permission.interface';
 import {shareReplay} from 'rxjs/operators';
 
@@ -15,6 +15,10 @@ export interface CTG {
     providedIn: 'root'
 })
 export class LkService {
+
+    _ordersFilters$ = new BehaviorSubject<any>(null);
+    ordersFilters$: Observable<any> = this._ordersFilters$
+        .pipe(shareReplay(1));
 
     _availableContragents$ = new BehaviorSubject<CTG[]>([]);
     availableContragents$: Observable<CTG[]> = this._availableContragents$
@@ -46,5 +50,9 @@ export class LkService {
     getContragentColor(ctg: CTG): string {
         return this._availableContragents$.value
             .find(_ => JSON.stringify(_) === JSON.stringify(ctg))?.color ?? '#ffffff';
+    }
+
+    setFilters(filters: any): void {
+        this._ordersFilters$.next(filters);
     }
 }
