@@ -3,7 +3,7 @@ import {RestService} from './rest.service';
 import {User} from '../models/user.interface';
 import {BehaviorSubject, Observable, Subject, throwError} from 'rxjs';
 import {Permission} from '../models/lk.permission.interface';
-import {shareReplay} from 'rxjs/operators';
+import {shareReplay, tap} from 'rxjs/operators';
 
 export interface CTG {
     entId: number;
@@ -16,9 +16,10 @@ export interface CTG {
 })
 export class LkService {
 
-    _ordersFilters$ = new BehaviorSubject<any>(null);
-    ordersFilters$: Observable<any> = this._ordersFilters$
-        .pipe(shareReplay(1));
+    _ordersFilters$ = new Subject<any>();
+    ordersFilters$: Observable<any> = this._ordersFilters$.pipe(
+        shareReplay(1),
+    );
 
     _availableContragents$ = new BehaviorSubject<CTG[]>([]);
     availableContragents$: Observable<CTG[]> = this._availableContragents$
@@ -33,6 +34,7 @@ export class LkService {
     ) {
         this.selectedContragents$.subscribe();
         this.availableContragents$.subscribe();
+        this.ordersFilters$.subscribe();
     }
     getPermissionsByUser(user: User): Observable<Permission[]> {
         if (!user?.id) { return throwError('Не передан корректный пользователь'); }
@@ -53,6 +55,7 @@ export class LkService {
     }
 
     setFilters(filters: any): void {
+        console.log('setFilters');
         this._ordersFilters$.next(filters);
     }
 }

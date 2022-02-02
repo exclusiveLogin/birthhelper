@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {Contragent} from '@models/contragent.interface';
 import {RestService} from '@services/rest.service';
 import {ODRER_ACTIONS, Order, OrderGroup, OrderRequest} from '@models/order.interface';
-import {map, switchMap, tap} from 'rxjs/operators';
+import {map, shareReplay, switchMap, tap} from 'rxjs/operators';
 import {Sections} from '@models/core';
 import {SectionType} from '@services/search.service';
 import {User, UserSrc} from '@models/user.interface';
@@ -19,7 +19,6 @@ export class ContragentComponent implements OnInit {
     public isLoading = true;
     public sectionKeys = Object.keys(Sections);
     public contragent$: Observable<Contragent>;
-    public orderGroups$: Observable<OrderGroup[]>;
     public ctg: CTG;
     @Input()
     private set contragent(value: CTG) {
@@ -31,7 +30,6 @@ export class ContragentComponent implements OnInit {
     }
 
     onRequest$ = this.lkService.ordersFilters$.pipe(
-        tap(data => console.log('onFilters$: ', data)),
         map((filters) => ({
             action: ODRER_ACTIONS.GET,
             groupMode: filters.group_mode,
@@ -47,6 +45,7 @@ export class ContragentComponent implements OnInit {
         tap(_ => this.isLoading = false),
         tap(grp => grp?.forEach(g => g.orders = g.orders.map(o => new Order(o)))),
         tap(grp => grp?.forEach(g => g.user = new User(g.user as unknown as UserSrc))),
+        shareReplay(1),
     );
 
     constructor(
