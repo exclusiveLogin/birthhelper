@@ -207,6 +207,8 @@ export class Order implements IOrder {
         if (this.utility === 'other') {
             this.cartTitle = this.slot?.title ?? this.slot?._entity?.title;
         }
+
+        this._status = 'stable';
     }
 }
 

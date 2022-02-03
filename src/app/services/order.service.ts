@@ -74,11 +74,6 @@ export class OrderService {
         shareReplay(1),
     );
 
-    onSummaryPriceChanged$ = this.onSlots$.pipe(
-        map((slots: PriceEntitySlot[]) => slots.map(slot => slot?.price ?? 0)),
-        summatorPipe,
-    );
-
     onValidationTreeCompleted$ = this.onOrderListChanged$.pipe(
         tap((orders => this.refreshValidationConfigsHashes(orders))),
         switchMap((orders) => this.updateConfigsBySections().pipe(mapTo(orders))),
@@ -95,8 +90,6 @@ export class OrderService {
         this.userOrdersStore = [];
         this.onValidationTreeCompleted$
             .subscribe((tree) => console.log('onValidationTreeCompleted$ data:', tree, this.contragentHashMap) );
-
-        this.onSummaryPriceChanged$.subscribe();
         this.updateOrderList();
     }
 

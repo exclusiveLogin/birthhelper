@@ -1,10 +1,10 @@
 import {ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {OrderService, ValidationTreeContragent} from '../../services/order.service';
-import {map, take, tap} from 'rxjs/operators';
+import {map, shareReplay, switchMap, take} from 'rxjs/operators';
 import {Order} from 'app/models/order.interface';
 import {summatorPipe} from 'app/modules/utils/price-summator';
 import {ConfiguratorService} from 'app/modules/configurator/configurator.service';
-import {Observable} from 'rxjs';
+import {merge, Observable, of} from 'rxjs';
 import {DialogService} from '../dialog/dialog.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {requiredOneOfList} from '../../validators/atOneOfListRequiredValidator';
@@ -24,7 +24,7 @@ export class CartComponent implements OnInit {
     @ViewChild('tpl_suggestion', { static: true }) tpl_suggestion: TemplateRef<any>;
 
     validationTree$ = this.orderService.onValidationTreeCompleted$.pipe(
-        tap(c => console.log(c)),
+        shareReplay(1),
     );
 
     hasInvalidTree$ = this.validationTree$.pipe(
@@ -46,8 +46,9 @@ export class CartComponent implements OnInit {
         summatorPipe,
     );
 
-    totalPriceValid$: Observable<number> = this.validationTree$.pipe(
-        map(tree => tree.filter(t => !t.isInvalid)),
+    totalPriceValid$: Observable<number> = merge(this.orderService.onSlots$, of(null)).pipe(
+        switchMap(_ => this.validationTree$),
+        map((tree) => tree.filter(t => !t.isInvalid)),
         map(tree => tree.reduce((keys, cur) => [...keys, ...cur._orders], [] as Order[])),
         map(orders => orders.map(o => o?.slot?.price ?? 0)),
         map((prices: number[]) => prices.map(price => +price)),
