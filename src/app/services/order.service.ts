@@ -61,8 +61,12 @@ export class OrderService {
         shareReplay(1),
     );
 
-    onOrderListChanged_Pending$ = this.onOrderListChanged$.pipe(
-        map(list => list.filter((o) => o.status === 'pending')),
+    onOrderListChanged_inCart$ = this.onOrderListChanged$.pipe(
+        map(list => list.filter((o) =>
+            o.status === 'pending'  ||
+            o.status === 'resolved' ||
+            o.status === 'rejected' ||
+            o.status === 'waiting')),
         shareReplay(1),
     );
 

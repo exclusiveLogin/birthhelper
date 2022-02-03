@@ -34,7 +34,7 @@ export class ConfiguratorService {
         private restService: RestService,
         private orderService: OrderService,
     ) {
-        this.orderService.onOrderListChanged_Pending$.subscribe(list => this.syncOrders(list));
+        this.orderService.onOrderListChanged_inCart$.subscribe(list => this.syncOrders(list));
     }
 
     private _config: ConfiguratorConfigSrc;
