@@ -169,6 +169,9 @@
         }
     }
 }
+.inactive {
+    filter: grayscale(1);
+}
 .order {
     margin-top: 10px;
     display: flex;

@@ -9,6 +9,7 @@ import * as moment from 'moment';
 import {IImage} from '../../../../../../Dashboard/Editor/components/image/image.component';
 import {User, UserSrc} from '@models/user.interface';
 import {ImageService} from '@services/image.service';
+import {Sections} from '@models/core';
 
 @Component({
     selector: 'app-order-group',
@@ -17,6 +18,10 @@ import {ImageService} from '@services/image.service';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrderGroupComponent implements OnInit {
+
+    sectionsDict = Sections;
+    sections = Object.keys(this.sectionsDict);
+    repoMode = false;
 
     _orderGroup: OrderGroup;
     @Input() set orderGroup(value) {
@@ -89,6 +94,14 @@ export class OrderGroupComponent implements OnInit {
             return max.format('DD-MM-YYYY hh:mm:ss');
         }
         return null;
+    }
+
+    selectSlot(): void {
+        this.repoMode = false;
+    }
+
+    addSlotIntoOrders(): void {
+        this.repoMode = true;
     }
 
 }

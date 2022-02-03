@@ -52,40 +52,35 @@
             </div>
         </div>
         <div class="ctg_orders">
-            <p class="cart-pack-item__title section__title">Родовспоможение</p>
-            <div class="order">
-                <div class="cart-pack-item__inner-avatar">
-                    <img src="/no_image.png" >
+            <ng-container *ngFor="let section of sections">
+                <p class="cart-pack-item__title section__title">{{sectionsDict[section]}}</p>
+                <div class="order">
+                    <div class="cart-pack-item__inner-avatar">
+                        <img src="/no_image.png" >
+                    </div>
+                    <p class="cart-pack-item__inner-name">Антонина Егоровна Павсиенко</p>
+                    <div class="cart-pack-item__inner-value">
+                        <p class="cart-pack-item__inner-value-text">Врач Неоантолог - высшая категория</p>
+                        <!--                                <p class="cart-pack-item__inner-value-text">Категория - А</p>-->
+                    </div>
+                    <p class="cart-pack-item__inner-price">50 000 руб.</p>
+                    <div class="order_actions">
+                        <ng-template #orderActionsTpl>
+                            <div class="order_btn order_resolve inactive"></div>
+                            <div class="order_btn order_reject inactive"></div>
+                            <div class="order_btn order_edit inactive"></div>
+                            <div class="order_btn order_remove inactive"></div>
+                        </ng-template>
+
+                        <ng-container *ngIf="repoMode else orderActionsTpl">
+                            <button class="filter__btn filter__btn--blue" (click)="selectSlot()">Выбрать услугу</button>
+                        </ng-container>
+
+                    </div>
                 </div>
-                <p class="cart-pack-item__inner-name">Антонина Егоровна Павсиенко</p>
-                <div class="cart-pack-item__inner-value">
-                    <p class="cart-pack-item__inner-value-text">Врач Неоантолог - высшая категория</p>
-                    <!--                                <p class="cart-pack-item__inner-value-text">Категория - А</p>-->
-                </div>
-                <p class="cart-pack-item__inner-price">50 000 руб.</p>
-                <div class="order_actions">
-                    <div class="order_btn order_resolve inactive"></div>
-                    <div class="order_btn order_reject inactive"></div>
-                    <div class="order_btn order_edit inactive"></div>
-                    <div class="order_btn order_remove inactive"></div>
-                </div>
-            </div>
-            <p class="cart-pack-item__title section__title">Консультации</p>
-            <div class="order">
-                <div class="cart-pack-item__inner-avatar">
-                    <img src="/no_image.png" >
-                </div>
-                <p class="cart-pack-item__inner-name">Антонина Егоровна Павсиенко</p>
-                <div class="cart-pack-item__inner-value">
-                    <p class="cart-pack-item__inner-value-text">Врач Неоантолог - высшая категория</p>
-                    <!--                                <p class="cart-pack-item__inner-value-text">Категория - А</p>-->
-                </div>
-                <p class="cart-pack-item__inner-price">50 000 руб.</p>
-                <div class="order_actions">
-                    <button class="filter__btn filter__btn--blue">Выбрать услугу</button>
-                </div>
-            </div>
-            <button class="filter__btn filter__btn--blue order_status_btn">Добавить услугу</button>
+                <button class="filter__btn filter__btn--blue order_status_btn"
+                        *ngIf="!repoMode" (click)="addSlotIntoOrders()">Добавить услугу</button>
+            </ng-container>
         </div>
     </div>
 </ng-template>
