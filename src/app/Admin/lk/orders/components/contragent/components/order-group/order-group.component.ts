@@ -4,10 +4,10 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {filter, map, switchMap, tap} from 'rxjs/operators';
 import {uniq} from '../../../../../../../modules/utils/uniq';
 import {RestService} from '@services/rest.service';
-import {PriceEntitySlot} from '@models/entity.interface';
+import {PriceEntitySlot, SlotEntity} from '@models/entity.interface';
 import * as moment from 'moment';
 import {IImage} from '../../../../../../Dashboard/Editor/components/image/image.component';
-import {User, UserSrc} from '@models/user.interface';
+import {User} from '@models/user.interface';
 import {ImageService} from '@services/image.service';
 import {Sections} from '@models/core';
 
@@ -21,7 +21,7 @@ export class OrderGroupComponent implements OnInit {
 
     sectionsDict = Sections;
     sections = Object.keys(this.sectionsDict);
-    repoMode = false;
+    repoMode$ = new BehaviorSubject(false);
 
     _orderGroup: OrderGroup;
     @Input() set orderGroup(value) {
@@ -97,11 +97,11 @@ export class OrderGroupComponent implements OnInit {
     }
 
     selectSlot(): void {
-        this.repoMode = false;
+        this.repoMode$.next(false);
     }
 
     addSlotIntoOrders(): void {
-        this.repoMode = true;
+        this.repoMode$.next(true);
     }
 
 }
