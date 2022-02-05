@@ -51,52 +51,61 @@
                 <div class="btn_close" (click)="unwrap()"></div>
             </div>
         </div>
-        <div class="ctg_orders">
-            <ng-container *ngFor="let section of sections">
-                <p class="cart-pack-item__title section__title">{{sectionsDict[section]}}</p>
-                <div class="order">
-                    <div class="cart-pack-item__inner-avatar">
-                        <img src="/no_image.png" >
-                    </div>
-                    <p class="cart-pack-item__inner-name">Антонина Егоровна Павсиенко</p>
-                    <div class="cart-pack-item__inner-value">
-                        <p class="cart-pack-item__inner-value-text">Врач Неоантолог - высшая категория</p>
-                        <!--                                <p class="cart-pack-item__inner-value-text">Категория - А</p>-->
-                    </div>
-                    <p class="cart-pack-item__inner-price">50 000 руб.</p>
-                    <div class="order_actions">
-                        <ng-template #orderActionsTpl>
-                            <div class="order_btn order_resolve inactive"></div>
-                            <div class="order_btn order_reject inactive"></div>
-                            <div class="order_btn order_edit inactive"></div>
-                            <div class="order_btn order_remove inactive"></div>
-                        </ng-template>
+        <div class="ctg_orders" *ngIf="{repoMode: repoMode$ | async} as state">
+            <ng-container *ngTemplateOutlet="state.repoMode ? repoModeTpl : cartModeTpl"></ng-container>
 
-                        <ng-container *ngIf="repoMode else orderActionsTpl">
-                            <button class="filter__btn filter__btn--blue" (click)="selectSlot()">Выбрать услугу</button>
-                        </ng-container>
+            <ng-template #cartModeTpl>
+                <ng-container *ngFor="let section of sections">
+                    {{section}}
+                    <p class="cart-pack-item__title section__title">{{sectionsDict[section]}}</p>
+                    <ng-container *ngIf="{orders: getOrdersBySection(section) | async} as data">
+                        <div class="order" *ngFor="let order of data.orders">
+                            <div class="cart-pack-item__inner-avatar" *ngIf="getPhoto(order?.cartPhoto) as imageData">
+                                <ng-container *ngIf="{image: imageData[0] | async, signal: imageData[1]} as image">
+                                    <img [src]="imageData[0] | async" (error)="image.signal.next(null)">
+                                </ng-container>
+                            </div>
+                            <p class="cart-pack-item__inner-name">{{order.cartTitle}}</p>
+                            <div class="cart-pack-item__inner-value">
+                                <p class="cart-pack-item__inner-value-text">{{order.cartTitleAccent}}</p>
+                            </div>
+                            <p class="cart-pack-item__inner-price">{{order?.slot?.price | digitalSeparator}} руб.</p>
+                            <div class="order_actions">
+                                <div class="order_btn order_resolve inactive"></div>
+                                <div class="order_btn order_reject inactive"></div>
+                                <div class="order_btn order_edit inactive"></div>
+                                <div class="order_btn order_remove inactive"></div>
+                            </div>
+                        </div>
+                    </ng-container>
 
-                    </div>
-                </div>
-                <button class="filter__btn filter__btn--blue order_status_btn"
-                        *ngIf="!repoMode" (click)="addSlotIntoOrders()">Добавить услугу</button>
-            </ng-container>
+                    <button class="filter__btn filter__btn--blue order_status_btn"
+                            (click)="addSlotIntoOrders()">Добавить услугу</button>
+                </ng-container>
+            </ng-template>
             <ng-template #repoModeTpl>
-                <ng-container>
-                    <div class="order">
-                        <div class="cart-pack-item__inner-avatar">
-                            <img src="/no_image.png" >
+                <ng-container *ngIf="onRepoData$ | async as orders">
+                    <ng-container *ngFor="let section of sections">
+                        <p class="cart-pack-item__title section__title">{{sectionsDict[section]}}</p>
+
+                        <div class="order">
+                            <div class="cart-pack-item__inner-avatar">
+                                <img src="/no_image.png" >
+                            </div>
+                            <p class="cart-pack-item__inner-name">Антонина Егоровна Павсиенко</p>
+                            <div class="cart-pack-item__inner-value">
+                                <p class="cart-pack-item__inner-value-text">Врач Неоантолог - высшая категория</p>
+                                <!--                                <p class="cart-pack-item__inner-value-text">Категория - А</p>-->
+                            </div>
+                            <p class="cart-pack-item__inner-price">50 000 руб.</p>
+
+                            <div class="order_actions">
+                                <button class="filter__btn filter__btn--blue" (click)="selectSlot()">Выбрать услугу</button>
+                            </div>
                         </div>
-                        <p class="cart-pack-item__inner-name">Антонина Егоровна Павсиенко</p>
-                        <div class="cart-pack-item__inner-value">
-                            <p class="cart-pack-item__inner-value-text">Врач Неоантолог - высшая категория</p>
-                            <!--                                <p class="cart-pack-item__inner-value-text">Категория - А</p>-->
-                        </div>
-                        <p class="cart-pack-item__inner-price">50 000 руб.</p>
-                        <div class="order_actions">
-                            <button class="filter__btn filter__btn--blue" (click)="selectSlot()">Выбрать услугу</button>
-                        </div>
-                    </div>
+                    </ng-container>
+                    <button class="filter__btn filter__btn--blue order_status_btn"
+                            (click)="unwrap()">Отменить добавление</button>
                 </ng-container>
             </ng-template>
         </div>

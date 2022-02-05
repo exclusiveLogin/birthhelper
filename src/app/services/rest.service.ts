@@ -11,7 +11,7 @@ import {SessionResponse, UserRole} from '../modules/auth-module/auth.service';
 import {UserExit, UserSrc} from '../models/user.interface';
 import {InterceptorService} from '../modules/auth-module/interceptor.service';
 import {ConfiguratorConfigSrc, Restrictor, SelectionOrderSlot} from 'app/modules/configurator/configurator.model';
-import {Entity} from 'app/models/entity.interface';
+import {ContragentSlots, Entity} from 'app/models/entity.interface';
 import md5 from 'md5';
 import {
     ODRER_ACTIONS,
@@ -198,6 +198,16 @@ export class RestService {
         };
         restrictors.forEach(r => filters[r.key] = r.value.toString());
         return this.getEntityList(key, null, filters);
+    }
+
+    public getSlotListByContragent(id: number): Observable<ContragentSlots> {
+        const entSetting: ISettingsParams = {
+            mode: 'api',
+            segment: 'slots',
+            resource: id.toString(),
+        };
+
+        return this.getData<ContragentSlots>(entSetting);
     }
 
     public getEntityList<T = Entity>(key: string, page?: number, qp?: IRestParams): Observable<T[]> {

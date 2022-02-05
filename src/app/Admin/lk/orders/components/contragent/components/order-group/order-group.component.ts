@@ -1,15 +1,17 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
-import {OrderGroup, StatusRusMap, StatusType} from '@models/order.interface';
+import {Order, OrderGroup, StatusRusMap, StatusType} from '@models/order.interface';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {filter, map, switchMap, tap} from 'rxjs/operators';
 import {uniq} from '../../../../../../../modules/utils/uniq';
 import {RestService} from '@services/rest.service';
-import {PriceEntitySlot, SlotEntity} from '@models/entity.interface';
+import {ContragentSlots, PriceEntitySlot, SlotEntity} from '@models/entity.interface';
 import * as moment from 'moment';
 import {IImage} from '../../../../../../Dashboard/Editor/components/image/image.component';
 import {User} from '@models/user.interface';
 import {ImageService} from '@services/image.service';
 import {Sections} from '@models/core';
+import {SectionType} from '@services/search.service';
+import {MetaPhoto} from '@models/map-object.interface';
 
 @Component({
     selector: 'app-order-group',
@@ -23,6 +25,29 @@ export class OrderGroupComponent implements OnInit {
     sections = Object.keys(this.sectionsDict);
     repoMode$ = new BehaviorSubject(false);
 
+    filters: {
+        contragentId: number,
+        section: SectionType,
+        slotEntityKey: string,
+    } = {
+        contragentId: null,
+        section: null,
+        slotEntityKey: null,
+    };
+
+    onRepoMode$ = this.repoMode$.pipe(filter(state => !!state));
+    onRepoData$ = this.onRepoMode$.pipe(
+        filter(_ => !!this.filters?.slotEntityKey && !!this.filters?.contragentId),
+        switchMap(_ => this.filters.slotEntityKey
+            ? this.restService.getSlotsByContragent(this.filters.slotEntityKey, this.filters.contragentId, []).pipe(
+                map(data => ({[this.filters.section]: {
+                        title: Sections[this.filters.section],
+                        key: this.filters.section,
+                        list: data,
+                    }} as ContragentSlots)))
+            : this.restService.getSlotListByContragent(this.filters.contragentId))
+    );
+
     _orderGroup: OrderGroup;
     @Input() set orderGroup(value) {
         this._orderGroup = value;
@@ -32,6 +57,11 @@ export class OrderGroupComponent implements OnInit {
             ).toPromise();
         }
         this.updater$.next(null);
+    }
+
+    @Input()
+    set contragentId(value: number) {
+        this.filters.contragentId = value;
     }
 
     constructor(
@@ -94,6 +124,15 @@ export class OrderGroupComponent implements OnInit {
             return max.format('DD-MM-YYYY hh:mm:ss');
         }
         return null;
+    }
+
+    getOrdersBySection(section: string): Observable<Order[]> {
+        const _ = section as SectionType;
+        return this.data$.pipe(map(orders => orders.orders.filter(o => o.section_key === _)));
+    }
+
+    getPhoto(photo: MetaPhoto) {
+        return this.imageService.getImage$(photo);
     }
 
     selectSlot(): void {

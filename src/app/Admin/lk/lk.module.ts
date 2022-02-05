@@ -10,6 +10,7 @@ import { ContragentComponent } from './orders/components/contragent/contragent.c
 import { OrderGroupComponent } from './orders/components/contragent/components/order-group/order-group.component';
 import { ContragentHeaderComponent } from './orders/components/contragent/components/contragent-header/contragent-header.component';
 import { OrdersFilterComponent } from './orders/components/orders-filter/orders-filter.component';
+import {PipeModule} from '../../pipes/pipe.module';
 
 @NgModule({
     declarations: [
@@ -26,6 +27,7 @@ import { OrdersFilterComponent } from './orders/components/orders-filter/orders-
         LkRoutingModule,
         MenuModule,
         ReactiveFormsModule,
+        PipeModule,
     ]
 })
 export class LkModule {

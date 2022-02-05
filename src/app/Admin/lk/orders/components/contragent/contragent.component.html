@@ -24,6 +24,7 @@
         <app-order-group class="_row"
                          *ngFor="let group of onOrdersGroups$ | async"
                          [orderGroup]="group"
+                         [contragentId]="ctg.entId"
         ></app-order-group>
     </div>
 

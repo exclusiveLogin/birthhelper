@@ -1,4 +1,4 @@
-import {Injectable, SecurityContext} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {RestService} from './rest.service';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {IImage} from '../Admin/Dashboard/Editor/components/image/image.component';
