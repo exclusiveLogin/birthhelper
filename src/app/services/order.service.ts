@@ -144,10 +144,6 @@ export class OrderService {
             const contragentTabs = targetCfgs.reduce((tabs, cfg) => ([...tabs, ...cfg.tabs]) , [] as TabConfig[]);
             const contragentFloors = (contragentTabs.reduce(
                 (floors, tab) => ([...floors, ...tab.floors]), [] as TabFloorSetting[]) ?? []) as TabFloorSetting[];
-            currentContragentOrders.forEach(order => {
-                const o_type = contragentFloors?.find(f => f.key === order.floor_key)?.entityType;
-                order.setUtility(o_type);
-            });
             return {
                 contragentHash: hash,
                 _tabs: contragentTabs.map(tab => {

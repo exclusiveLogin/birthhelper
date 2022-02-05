@@ -174,8 +174,10 @@
 }
 .order {
     margin-top: 10px;
-    display: flex;
+    display: grid;
+    grid-template-columns: 50px 1fr 1fr 1fr 0.5fr;
     align-items: center;
+    -moz-column-gap: 25px;
     column-gap: 25px;
 }
 

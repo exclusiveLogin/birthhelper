@@ -54,6 +54,8 @@ export class OrderGroupComponent implements OnInit {
         for (const order of this._orderGroup.orders) {
             this.restService.getEntity(order.slot_entity_key, order.slot_entity_id).pipe(
                 tap((slot: PriceEntitySlot) => order.setSlot(slot)),
+                tap(_ => this.updater$.next(null)),
+                tap(_ => this.cdr.markForCheck()),
             ).toPromise();
         }
         this.updater$.next(null);
@@ -128,7 +130,9 @@ export class OrderGroupComponent implements OnInit {
 
     getOrdersBySection(section: string): Observable<Order[]> {
         const _ = section as SectionType;
-        return this.data$.pipe(map(orders => orders.orders.filter(o => o.section_key === _)));
+        return this.data$.pipe(
+            map(orders => orders.orders.filter(o => o.section_key === _)),
+        );
     }
 
     getPhoto(photo: MetaPhoto) {

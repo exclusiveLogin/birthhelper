@@ -56,13 +56,12 @@
 
             <ng-template #cartModeTpl>
                 <ng-container *ngFor="let section of sections">
-                    {{section}}
                     <p class="cart-pack-item__title section__title">{{sectionsDict[section]}}</p>
                     <ng-container *ngIf="{orders: getOrdersBySection(section) | async} as data">
                         <div class="order" *ngFor="let order of data.orders">
                             <div class="cart-pack-item__inner-avatar" *ngIf="getPhoto(order?.cartPhoto) as imageData">
                                 <ng-container *ngIf="{image: imageData[0] | async, signal: imageData[1]} as image">
-                                    <img [src]="imageData[0] | async" (error)="image.signal.next(null)">
+                                    <img [src]="image.image" (error)="image.signal.next(null)">
                                 </ng-container>
                             </div>
                             <p class="cart-pack-item__inner-name">{{order.cartTitle}}</p>

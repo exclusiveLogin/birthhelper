@@ -181,11 +181,6 @@ export class Order implements IOrder {
         this.refreshCartRenderData();
     }
 
-    setUtility(value: SlotEntityUtility): void {
-        this.utility = value;
-        this.refreshCartRenderData();
-    }
-
     private refreshCartRenderData(): void {
         let ph: MetaPhoto = this.slot?.meta?.image_id as MetaPhoto;
         ph = ph ?? this.slot?._entity?.meta?.image_id as MetaPhoto;
