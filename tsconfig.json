@@ -29,7 +29,19 @@
             ],
             "@models/*": [
                 "app/models/*"
-            ]
+            ],
+            "@modules/*": [
+                "app/modules/*"
+            ],
+            "@pipes/*": [
+                "app/pipes/*"
+            ],
+            "@guards/*": [
+                "app/guards/*"
+            ],
+            "@validators/*": [
+                "app/validators/*"
+            ],
         }
     }
 }

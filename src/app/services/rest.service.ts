@@ -204,7 +204,8 @@ export class RestService {
         const entSetting: ISettingsParams = {
             mode: 'api',
             segment: 'slots',
-            resource: id.toString(),
+            resource: 'contragent',
+            script: id.toString(),
         };
 
         return this.getData<ContragentSlots>(entSetting);
