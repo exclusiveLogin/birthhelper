@@ -1,10 +1,16 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
-import {Order, OrderGroup, StatusRusMap, StatusType} from '@models/order.interface';
+import {Order, OrderGroup, SlotEntityUtility, StatusRusMap, StatusType} from '@models/order.interface';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {filter, map, switchMap, tap} from 'rxjs/operators';
+import {filter, map, pluck, switchMap, tap} from 'rxjs/operators';
 import {uniq} from '@modules/utils/uniq';
 import {RestService} from '@services/rest.service';
-import {PriceEntitySlot, SectionedContragentSlots} from '@models/entity.interface';
+import {
+    ContragentSlots,
+    PriceEntitySlot,
+    SlotEntity,
+    TabedSlots,
+    UtilizedFloorOfSlotEntity
+} from '@models/entity.interface';
 import * as moment from 'moment';
 import {IImage} from '../../../../../../Dashboard/Editor/components/image/image.component';
 import {User} from '@models/user.interface';
@@ -12,6 +18,17 @@ import {ImageService} from '@services/image.service';
 import {Sections} from '@models/core';
 import {SectionType} from '@services/search.service';
 import {MetaPhoto} from '@models/map-object.interface';
+import {PersonBuilder, PersonDoctorSlot} from '@models/doctor.interface';
+import {PlacementBuilder, PlacementSlot} from '@models/placement.interface';
+import {CardSlot, ConfiguratorCardBuilder} from '@models/cardbuilder.interface';
+
+interface OrderGroupFilters {
+    contragentId: number;
+    section: SectionType;
+    slotEntityKey: string;
+    utility: SlotEntityUtility;
+    order: Order;
+}
 
 @Component({
     selector: 'app-order-group',
@@ -25,23 +42,55 @@ export class OrderGroupComponent implements OnInit {
     sections = Object.keys(this.sectionsDict);
     repoMode$ = new BehaviorSubject(false);
 
-    filters: {
-        contragentId: number,
-        section: SectionType,
-        slotEntityKey: string,
-    } = {
+    filters: OrderGroupFilters = {
         contragentId: null,
         section: null,
         slotEntityKey: null,
+        utility: 'other',
+        order: null,
     };
 
     onRepoMode$ = this.repoMode$.pipe(filter(state => !!state));
     onRepoData$ = this.onRepoMode$.pipe(
         filter(_ => !!this.filters?.contragentId),
         switchMap(_ => this.filters.slotEntityKey
-            ? this.restService.getSlotsByContragent(this.filters.slotEntityKey, this.filters.contragentId, [])
+            ? this.restService.getSlotsByContragent(this.filters.slotEntityKey, this.filters.contragentId, []).pipe(
+                map(data => ({
+                    [this.filters.section]: {
+                        config: null,
+                        tabs: [
+                            {
+                                title: '',
+                                key: this.filters.order.tab_key,
+                                floors: [
+                                    {
+                                        title: '',
+                                        utility: this.filters.utility,
+                                        key: this.filters.order.floor_key,
+                                        list: [...data]
+                                    }
+                                ],
+                            },
+                        ],
+                        } as ContragentSlots
+                    })))
             : this.restService.getSlotListByContragent(this.filters.contragentId)),
-        tap(_ => console.log('onRepoData$', _)),
+        tap(data => {
+            for (const section of this.sections) {
+                const sectionData = data[section];
+                if (sectionData?.tabs?.length) {
+                    const floors = (sectionData.tabs as TabedSlots[])
+                        .reduce((acc, tab) => ([...acc, ...tab.floors]), [] as UtilizedFloorOfSlotEntity[]);
+                    floors.forEach(f => {
+                        const newSlots = [];
+                        for (const slot of f.list) {
+                            newSlots.push(this.generateCartSlot(slot, f.utility));
+                        }
+                        f.list = newSlots;
+                    });
+                }
+            }
+        }),
     );
 
     _orderGroup: OrderGroup;
@@ -85,6 +134,14 @@ export class OrderGroupComponent implements OnInit {
 
     ngOnInit(): void {
         this.data$ = this.updater$.pipe(map(_ => this._orderGroup));
+    }
+
+    generateCartSlot(data: SlotEntity, type: SlotEntityUtility): PersonDoctorSlot | PlacementSlot | CardSlot {
+        let _: any;
+        _ = type === 'person' ? PersonBuilder.serialize(data as PersonDoctorSlot) : _;
+        _ = type === 'placement' ? PlacementBuilder.serialize(data as PlacementSlot) : _;
+        _ = type === 'other' ? ConfiguratorCardBuilder.serialize(data as CardSlot) : _;
+        return _;
     }
 
     wrap() {
@@ -131,6 +188,13 @@ export class OrderGroupComponent implements OnInit {
         );
     }
 
+    getSlotsBySection(section: string): Observable<ContragentSlots> {
+        const _ = section as SectionType;
+        return this.onRepoData$.pipe(
+            pluck(_),
+        );
+    }
+
     getPhoto(photo: MetaPhoto) {
         return this.imageService.getImage$(photo);
     }
@@ -141,6 +205,9 @@ export class OrderGroupComponent implements OnInit {
 
     addSlotIntoOrders(): void {
         this.repoMode$.next(true);
+    }
+    gotoCartMode(): void {
+        this.repoMode$.next(false);
     }
 
 }

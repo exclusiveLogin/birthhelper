@@ -87,24 +87,39 @@
                     <ng-container *ngFor="let section of sections">
                         <p class="cart-pack-item__title section__title">{{sectionsDict[section]}}</p>
 
-<!--                        <div class="order" *ngFor="let order of orders">-->
-<!--                            <div class="cart-pack-item__inner-avatar">-->
-<!--                                <img src="/no_image.png" >-->
-<!--                            </div>-->
-<!--                            <p class="cart-pack-item__inner-name">Антонина Егоровна Павсиенко</p>-->
-<!--                            <div class="cart-pack-item__inner-value">-->
-<!--                                <p class="cart-pack-item__inner-value-text">Врач Неоантолог - высшая категория</p>-->
-<!--                                &lt;!&ndash;                                <p class="cart-pack-item__inner-value-text">Категория - А</p>&ndash;&gt;-->
-<!--                            </div>-->
-<!--                            <p class="cart-pack-item__inner-price">50 000 руб.</p>-->
+                        <ng-container *ngIf="getSlotsBySection(section) | async as slots">
+                            <ng-container *ngFor="let tab of slots.tabs">
+                                <p class="cart-pack-item__title">{{tab.title}}</p>
+                                <ng-container *ngFor="let floor of tab.floors">
+                                    <p class="cart-pack-item__title">{{floor.title}}</p>
+                                    <div class="order" *ngFor="let slot of floor.list">
+                                        <div class="cart-pack-item__inner-avatar" *ngIf="getPhoto(slot?.photo) as imageData">
+                                            <ng-container *ngIf="{image: imageData[0] | async, signal: imageData[1]} as image">
+                                                <img [src]="image.image" (error)="image.signal.next(null)">
+                                            </ng-container>
+                                        </div>
 
-<!--                            <div class="order_actions">-->
-<!--                                <button class="filter__btn filter__btn&#45;&#45;blue" (click)="selectSlot()">Выбрать услугу</button>-->
-<!--                            </div>-->
-<!--                        </div>-->
+                                        <p class="cart-pack-item__inner-name">{{slot.title}}</p>
+
+                                        <div class="cart-pack-item__inner-value">
+                                            <p class="cart-pack-item__inner-value-text" *ngIf="floor.utility === 'person'">{{slot.description}}</p>
+                                            <p class="cart-pack-item__inner-value-text" *ngIf="floor.utility === 'placement'"></p>
+                                            <p class="cart-pack-item__inner-value-text" *ngIf="floor.utility === 'other'"></p>
+                                        </div>
+
+                                        <p class="cart-pack-item__inner-price">{{slot?.price | digitalSeparator}} руб.</p>
+
+                                        <div class="order_actions">
+                                            <button class="filter__btn filter__btn--blue" (click)="selectSlot()">Выбрать услугу</button>
+                                        </div>
+                                    </div>
+                                </ng-container>
+
+                            </ng-container>
+                        </ng-container>
                     </ng-container>
                     <button class="filter__btn filter__btn--blue order_status_btn"
-                            (click)="unwrap()">Отменить добавление</button>
+                            (click)="gotoCartMode()">Отменить добавление</button>
                 </ng-container>
             </ng-template>
         </div>

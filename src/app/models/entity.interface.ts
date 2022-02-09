@@ -32,10 +32,11 @@ export interface SlotEntity<T = Entity, K = Contragent> extends Entity {
     _section: SectionType;
 }
 
+export type UtilizedFloorOfSlotEntity = ({utility: SlotEntityUtility} & TitledList<SlotEntity>);
 export interface TabedSlots {
     key: string;
     title: string;
-    floors: ({utility: SlotEntityUtility} & TitledList<Entity>)[];
+    floors: UtilizedFloorOfSlotEntity[];
 }
 export interface ContragentSlots {
     tabs: TabedSlots[];

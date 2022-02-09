@@ -1,7 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
-import {SelectedState, TabFloorSetting} from 'app/modules/configurator/configurator.model';
+import {SelectedState} from 'app/modules/configurator/configurator.model';
 import {SlotEntity} from 'app/models/entity.interface';
-import {environment} from '@environments/environment';
 import {PersonBuilder, PersonDoctorSlot} from 'app/models/doctor.interface';
 import {PlacementBuilder, PlacementSlot} from 'app/models/placement.interface';
 import {CardSlot, ConfiguratorCardBuilder} from 'app/models/cardbuilder.interface';
@@ -10,8 +9,9 @@ import {map, tap} from 'rxjs/operators';
 import {Observable, combineLatest, BehaviorSubject} from 'rxjs';
 import {DialogService} from '../../../dialog/dialog.service';
 import {DialogServiceConfig} from '../../../dialog/dialog.model';
-import {ImageService} from '../../../../services/image.service';
+import {ImageService} from '@services/image.service';
 import {SafeUrl} from '@angular/platform-browser';
+import {SlotEntityUtility} from '@models/order.interface';
 
 @Component({
     selector: 'app-configurator-card',
@@ -27,7 +27,7 @@ export class ConfiguratorCardComponent implements OnInit {
     onSelectionChanges$ = this.configuratorService.onSelection$.pipe(
         tap(() => this.refreshSelectionState()));
 
-    @Input() public cardType: TabFloorSetting['entityType'] = 'other';
+    @Input() public cardType: SlotEntityUtility = 'other';
     @Input() public active: boolean;
     @Input() public tabKey: string;
     @Input() public floorKey: string;

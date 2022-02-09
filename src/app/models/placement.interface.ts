@@ -3,7 +3,6 @@ import {MetaInterface} from 'app/models/meta.interface';
 import {SlotEntity} from 'app/models/entity.interface';
 import {ServiceSlot} from 'app/models/slot';
 import {ServiceEntity} from 'app/models/service.interface';
-import {environment} from '@environments/environment';
 
 export interface PlacementSlot extends ServiceSlot, SlotEntity<PlacementSrc> {
     photo: MetaPhoto;
