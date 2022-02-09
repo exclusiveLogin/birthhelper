@@ -21,7 +21,7 @@ import {MenuModule} from './modules/menu/menu.module';
 const routes: Routes = [
     {path: '', component: MainComponent},
     {path: 'system', loadChildren: () => import('./wrapper/wrapper.module').then(m => m.WrapperModule)},
-    {path: 'admin', loadChildren: () => import('./Admin/Admin.module').then(m => m.AdminModule)},
+    {path: 'admin', loadChildren: () => import('./modules/admin/Admin.module').then(m => m.AdminModule)},
     {path: 'auth', pathMatch: 'full', component: AuthComponent},
     {path: 'activation', pathMatch: 'full', component: ActivationComponent},
     {path: 'static/configurator', pathMatch: 'full', component: ConfiguratorComponent},

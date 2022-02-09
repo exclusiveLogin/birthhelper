@@ -1,4 +1,4 @@
-import {IDictItem} from '../Admin/dict.service';
+import {IDictItem} from '../modules/admin/dict.service';
 
 export interface Permission {
     id: number;

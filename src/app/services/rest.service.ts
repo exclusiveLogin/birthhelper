@@ -3,7 +3,7 @@ import {Observable} from 'rxjs';
 import {ApiService} from './api.service';
 import {filter, map, shareReplay, switchMap, take} from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {IDictItem} from 'app/Admin/dict.service';
+import {IDictItem} from 'app/modules/admin/dict.service';
 import {SectionType} from './search.service';
 import {SearchFilterConfig, SearchSection} from '../models/filter.interface';
 import {FilterResult} from '../modules/search/search/components/filter/filter.component';

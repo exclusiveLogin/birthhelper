@@ -3,7 +3,7 @@ import {AuthService} from '../auth-module/auth.service';
 import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import {User} from '../../models/user.interface';
 import {filter, map, pluck, shareReplay, switchMap, tap} from 'rxjs/operators';
-import {IImage} from '../../Admin/Dashboard/Editor/components/image/image.component';
+import {IImage} from '../admin/Dashboard/Editor/components/image/image.component';
 import {RestService} from '../../services/rest.service';
 import {ImageService} from '../../services/image.service';
 import {CTG, LkService} from '../../services/lk.service';
