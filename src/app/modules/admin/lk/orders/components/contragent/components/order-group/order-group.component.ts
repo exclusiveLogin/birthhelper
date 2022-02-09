@@ -4,7 +4,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {filter, map, switchMap, tap} from 'rxjs/operators';
 import {uniq} from '@modules/utils/uniq';
 import {RestService} from '@services/rest.service';
-import {PriceEntitySlot} from '@models/entity.interface';
+import {PriceEntitySlot, SectionedContragentSlots} from '@models/entity.interface';
 import * as moment from 'moment';
 import {IImage} from '../../../../../../Dashboard/Editor/components/image/image.component';
 import {User} from '@models/user.interface';
@@ -38,14 +38,9 @@ export class OrderGroupComponent implements OnInit {
     onRepoMode$ = this.repoMode$.pipe(filter(state => !!state));
     onRepoData$ = this.onRepoMode$.pipe(
         filter(_ => !!this.filters?.contragentId),
-        // switchMap(_ => this.filters.slotEntityKey
-        //     // ? this.restService.getSlotsByContragent(this.filters.slotEntityKey, this.filters.contragentId, []).pipe(
-        //     //     map(data => ({[this.filters.section]: {
-        //     //             title: Sections[this.filters.section],
-        //     //             key: this.filters.section,
-        //     //             list: data,
-        //     //         }} as SectionedContragentSlots)))
-        //     // : this.restService.getSlotListByContragent(this.filters.contragentId)),
+        switchMap(_ => this.filters.slotEntityKey
+            ? this.restService.getSlotsByContragent(this.filters.slotEntityKey, this.filters.contragentId, [])
+            : this.restService.getSlotListByContragent(this.filters.contragentId)),
         tap(_ => console.log('onRepoData$', _)),
     );
 
