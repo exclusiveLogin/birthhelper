@@ -175,7 +175,7 @@
 .order {
     margin-top: 10px;
     display: grid;
-    grid-template-columns: 50px 1fr 1fr 1fr 0.5fr;
+    grid-template-columns: 50px 1fr 1fr 1fr 0.5fr 0.5fr;
     align-items: center;
     -moz-column-gap: 25px;
     column-gap: 25px;
@@ -187,6 +187,7 @@
     align-items: flex-end;
 }
 .order_status_btn {
+    margin-top: 32px;
     width: calc(100% - 30px);
     height: 32px;
 }
@@ -221,4 +222,19 @@ $viber-color: #59267c;
 }
 .fa-telegram-plane {
     color: $telegram-color;
+}
+.loading_container {
+    display: flex;
+    justify-content: center;
+    .loading {
+        opacity: 60%;
+    }
+}
+.floor_ttl{
+    font-weight: lighter;
+    text-decoration: underline;
+    margin: 16px 5px;
+}
+.tab_ttl {
+    margin-top: 0.5rem;
 }

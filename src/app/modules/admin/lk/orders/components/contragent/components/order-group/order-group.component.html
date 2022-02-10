@@ -57,7 +57,7 @@
             <ng-template #cartModeTpl>
                 <ng-container *ngFor="let section of sections">
                     <p class="cart-pack-item__title section__title">{{sectionsDict[section]}}</p>
-                    <ng-container *ngIf="{orders: getOrdersBySection(section) | async} as data">
+                    <ng-container *ngIf="{orders: getOrdersBySection(section) | async} as data  else loading">
                         <div class="order" *ngFor="let order of data.orders">
                             <div class="cart-pack-item__inner-avatar" *ngIf="getPhoto(order?.cartPhoto) as imageData">
                                 <ng-container *ngIf="{image: imageData[0] | async, signal: imageData[1]} as image">
@@ -69,11 +69,23 @@
                                 <p class="cart-pack-item__inner-value-text">{{order.cartTitleAccent}}</p>
                             </div>
                             <p class="cart-pack-item__inner-price">{{order?.slot?.price | digitalSeparator}} руб.</p>
+                            <div class="cart-pack-item__inner-value">
+                                <p class="cart-pack-item__inner-value-text" *ngIf="order.status">
+                                    <span class="badge"
+                                          [ngClass]="{
+                                                        'badge-info': order.status === 'waiting',
+                                                        'badge-success': order.status === 'resolved',
+                                                        'badge-danger': order.status === 'rejected',
+                                                        'badge-default': order.status === 'completed'
+                                    }">{{getStatusTitleForOrder(order)}}</span>
+                                </p>
+                                <!--                                <p class="cart-pack-item__inner-value-text">Категория - А</p>-->
+                            </div>
                             <div class="order_actions">
-                                <div class="order_btn order_resolve inactive"></div>
-                                <div class="order_btn order_reject inactive"></div>
-                                <div class="order_btn order_edit inactive"></div>
-                                <div class="order_btn order_remove inactive"></div>
+                                <div class="order_btn order_resolve inactive" (click)="orderAction(order, 'resolve')"></div>
+                                <div class="order_btn order_reject inactive" (click)="orderAction(order, 'reject')"></div>
+                                <div class="order_btn order_edit inactive" (click)="orderAction(order, 'edit')"></div>
+                                <div class="order_btn order_remove inactive" (click)="orderAction(order, 'remove')"></div>
                             </div>
                         </div>
                     </ng-container>
@@ -83,15 +95,15 @@
                 </ng-container>
             </ng-template>
             <ng-template #repoModeTpl>
-                <ng-container *ngIf="onRepoData$ | async as orders">
+                <ng-container *ngIf="onRepoData$ | async as orders else loading">
                     <ng-container *ngFor="let section of sections">
                         <p class="cart-pack-item__title section__title">{{sectionsDict[section]}}</p>
 
                         <ng-container *ngIf="getSlotsBySection(section) | async as slots">
                             <ng-container *ngFor="let tab of slots.tabs">
-                                <p class="cart-pack-item__title">{{tab.title}}</p>
+                                <p class="cart-pack-item__title tab_ttl">{{tab.title}}</p>
                                 <ng-container *ngFor="let floor of tab.floors">
-                                    <p class="cart-pack-item__title">{{floor.title}}</p>
+                                    <p class="cart-pack-item__title floor_ttl">{{floor.title}}</p>
                                     <div class="order" *ngFor="let slot of floor.list">
                                         <div class="cart-pack-item__inner-avatar" *ngIf="getPhoto(slot?.photo) as imageData">
                                             <ng-container *ngIf="{image: imageData[0] | async, signal: imageData[1]} as image">
@@ -109,6 +121,7 @@
 
                                         <p class="cart-pack-item__inner-price">{{slot?.price | digitalSeparator}} руб.</p>
 
+                                        <div class="cart-pack-item__inner-value"></div>
                                         <div class="order_actions">
                                             <button class="filter__btn filter__btn--blue" (click)="selectSlot()">Выбрать услугу</button>
                                         </div>
@@ -123,6 +136,12 @@
                 </ng-container>
             </ng-template>
         </div>
+    </div>
+</ng-template>
+
+<ng-template #loading>
+    <div class="loading_container">
+        <img src="assets/loading_1.gif" class="loading">
     </div>
 </ng-template>
 

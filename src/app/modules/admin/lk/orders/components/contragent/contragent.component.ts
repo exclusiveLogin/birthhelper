@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {CTG, LkService} from '@services/lk.service';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import {Contragent} from '@models/contragent.interface';
 import {RestService} from '@services/rest.service';
 import {ODRER_ACTIONS, Order, OrderGroup, OrderRequest} from '@models/order.interface';
@@ -29,6 +29,7 @@ export class ContragentComponent implements OnInit {
         }
     }
 
+    updater$ = new BehaviorSubject(null);
     onRequest$ = this.lkService.ordersFilters$.pipe(
         map((filters) => ({
             action: ODRER_ACTIONS.GET,
@@ -40,7 +41,8 @@ export class ContragentComponent implements OnInit {
         }) as OrderRequest),
     );
 
-    onOrdersGroups$ = this.onRequest$.pipe(
+    onOrdersGroups$ = combineLatest([this.updater$, this.onRequest$]).pipe(
+        map(([_, data]) => data),
         switchMap(request => this.restService.requestOrdersPost<OrderGroup[]>(request)),
         tap(_ => this.isLoading = false),
         tap(grp => grp?.forEach(g => g.orders = g.orders.map(o => new Order(o)))),
@@ -56,6 +58,10 @@ export class ContragentComponent implements OnInit {
     }
 
     ngOnInit(): void {
+    }
+
+    trackIt(idx: number, og: OrderGroup): string {
+        return og.group_id;
     }
 
     getTitleSection(section: SectionType): string {

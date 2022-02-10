@@ -1,16 +1,10 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
-import {Order, OrderGroup, SlotEntityUtility, StatusRusMap, StatusType} from '@models/order.interface';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ODRER_ACTIONS, Order, OrderGroup, OrderRequest, SlotEntityUtility, StatusRusMap, StatusType} from '@models/order.interface';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {filter, map, pluck, switchMap, tap} from 'rxjs/operators';
 import {uniq} from '@modules/utils/uniq';
 import {RestService} from '@services/rest.service';
-import {
-    ContragentSlots,
-    PriceEntitySlot,
-    SlotEntity,
-    TabedSlots,
-    UtilizedFloorOfSlotEntity
-} from '@models/entity.interface';
+import {ContragentSlots, PriceEntitySlot, SlotEntity, TabedSlots, UtilizedFloorOfSlotEntity} from '@models/entity.interface';
 import * as moment from 'moment';
 import {IImage} from '../../../../../../Dashboard/Editor/components/image/image.component';
 import {User} from '@models/user.interface';
@@ -21,6 +15,7 @@ import {MetaPhoto} from '@models/map-object.interface';
 import {PersonBuilder, PersonDoctorSlot} from '@models/doctor.interface';
 import {PlacementBuilder, PlacementSlot} from '@models/placement.interface';
 import {CardSlot, ConfiguratorCardBuilder} from '@models/cardbuilder.interface';
+import {ToastrService} from 'ngx-toastr';
 
 interface OrderGroupFilters {
     contragentId: number;
@@ -96,13 +91,20 @@ export class OrderGroupComponent implements OnInit {
     _orderGroup: OrderGroup;
     @Input() set orderGroup(value) {
         this._orderGroup = value;
+        this.filters = {
+            order: null,
+            slotEntityKey: null,
+            utility: 'other',
+            contragentId: this.filters.contragentId,
+            section: null,
+        };
+
         for (const order of this._orderGroup.orders) {
             this.restService.getEntity(order.slot_entity_key, order.slot_entity_id).pipe(
                 tap((slot: PriceEntitySlot) => order.setSlot(slot)),
-                tap(_ => this.updater$.next(null)),
-                tap(_ => this.cdr.markForCheck()),
             ).toPromise();
         }
+
         this.updater$.next(null);
     }
 
@@ -111,13 +113,22 @@ export class OrderGroupComponent implements OnInit {
         this.filters.contragentId = value;
     }
 
+    @Output() refresh = new EventEmitter<null>();
+
     constructor(
         private cdr: ChangeDetectorRef,
         private restService: RestService,
         private imageService: ImageService,
+        private toastr: ToastrService,
     ) {
     }
 
+    loading$ = new BehaviorSubject<string>(null);
+    isLoading = this.loading$.pipe(
+        tap(state => (state !== null)
+            ? this.toastr.info(state.length ? state : 'Пожалуйста ожидайте', 'Выполняется действие')
+            : this.toastr.clear())
+    );
     updater$ = new BehaviorSubject<null>(null);
     data$ = this.updater$.pipe(map(_ => this._orderGroup));
     user$: Observable<User> = this.data$.pipe(map(data => data.user));
@@ -133,7 +144,7 @@ export class OrderGroupComponent implements OnInit {
     userPhotoSignal$ = this.userPhotoData$.pipe(map(d => d[1]));
 
     ngOnInit(): void {
-        this.data$ = this.updater$.pipe(map(_ => this._orderGroup));
+        this.isLoading.subscribe();
     }
 
     generateCartSlot(data: SlotEntity, type: SlotEntityUtility): PersonDoctorSlot | PlacementSlot | CardSlot {
@@ -142,6 +153,55 @@ export class OrderGroupComponent implements OnInit {
         _ = type === 'placement' ? PlacementBuilder.serialize(data as PlacementSlot) : _;
         _ = type === 'other' ? ConfiguratorCardBuilder.serialize(data as CardSlot) : _;
         return _;
+    }
+
+    orderAction(order: Order, action: 'reject' | 'resolve' | 'edit' | 'remove'): void {
+        if (!confirm('вы уверены что хотите произвести это действие?')) { return; }
+        this.filters.order = order;
+        this.loading$.next('');
+        if (action === 'reject') { this.rejectOrder(order); }
+        if (action === 'resolve') { this.resolveOrder(order); }
+        if (action === 'remove') { this.removeOrder(order); }
+        if (action === 'edit') { this.editOrder(order); }
+    }
+
+    rejectOrder(order: Order): void {
+        const request: OrderRequest = {
+            action: ODRER_ACTIONS.REJECT,
+            id: order.id,
+        };
+
+        this.restService.requestOrdersPost(request).toPromise()
+            .then(() => this.refresh.next(null))
+            .finally(() => this.loading$.next(null));
+    }
+
+    resolveOrder(order: Order): void {
+        const request: OrderRequest = {
+            action: ODRER_ACTIONS.RESOLVE,
+            id: order.id,
+        };
+
+        this.restService.requestOrdersPost(request).toPromise()
+            .then(() => this.refresh.next(null))
+            .finally(() => this.loading$.next(null));
+    }
+
+    removeOrder(order: Order): void {
+        const request: OrderRequest = {
+            action: ODRER_ACTIONS.REMOVE,
+            id: order.id,
+        };
+
+        this.restService.requestOrdersPost(request).toPromise()
+            .then(() => this.refresh.next(null))
+            .finally(() => this.loading$.next(null));
+    }
+
+    editOrder(order: Order): void {
+        this.filters.slotEntityKey = order.slot_entity_key;
+        this.filters.section = order.section_key;
+        this.repoMode$.next(true);
     }
 
     wrap() {
@@ -160,6 +220,10 @@ export class OrderGroupComponent implements OnInit {
         status = statuses.some(s => s === 'waiting') ? 'waiting' : status;
         status = statuses.every(s => s === 'completed') ? 'completed' : status;
         return StatusRusMap[status] ?? '---';
+    }
+
+    getStatusTitleForOrder(order: Order): string {
+        return StatusRusMap[order.status] ?? '---';
     }
 
     getGroupPrice(): number {

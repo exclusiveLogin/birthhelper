@@ -22,9 +22,10 @@
 
     <div class="order_tbl__body">
         <app-order-group class="_row"
-                         *ngFor="let group of onOrdersGroups$ | async"
+                         *ngFor="let group of onOrdersGroups$ | async; trackBy: trackIt"
                          [orderGroup]="group"
                          [contragentId]="ctg.entId"
+                         (refresh)="updater$.next(null)"
         ></app-order-group>
     </div>
 
