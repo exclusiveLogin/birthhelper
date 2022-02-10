@@ -24,7 +24,7 @@
         <app-order-group class="_row"
                          *ngFor="let group of onOrdersGroups$ | async; trackBy: trackIt"
                          [orderGroup]="group"
-                         [contragentId]="ctg.entId"
+                         [contragent]="ctg"
                          (refresh)="updater$.next(null)"
         ></app-order-group>
     </div>

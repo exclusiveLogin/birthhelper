@@ -36,6 +36,7 @@ export interface OrderRequest {
     id?: number;
     status?: StatusType;
     groupMode?: OrderGroupMode;
+    group_token?: string;
 }
 
 export interface OrderResponse {
@@ -220,6 +221,8 @@ export function orderRestMapper(selection: SelectionOrderSlot, action: ODRER_ACT
             action,
             id: selection.id,
             contacts: selection.contacts,
+            status: selection.status,
+            group_token: selection.group_token,
         }
         : {
             action

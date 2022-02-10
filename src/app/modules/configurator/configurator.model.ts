@@ -1,6 +1,6 @@
 import {Observable} from 'rxjs';
 import {SlotEntity} from 'app/models/entity.interface';
-import {OrderContacts, SlotEntityUtility} from '../../models/order.interface';
+import {OrderContacts, SlotEntityUtility, StatusType} from '../../models/order.interface';
 
 export type PriorityFloor = 'high' | 'mid' | 'low';
 
@@ -87,6 +87,8 @@ export interface SelectionOrderSlot {
     contragent_entity_key?: string;
     contragent_entity_id?: number;
     contacts?: OrderContacts;
+    status?: StatusType;
+    group_token?: string;
 }
 
 export interface SelectionStore {

@@ -16,6 +16,8 @@ import {PersonBuilder, PersonDoctorSlot} from '@models/doctor.interface';
 import {PlacementBuilder, PlacementSlot} from '@models/placement.interface';
 import {CardSlot, ConfiguratorCardBuilder} from '@models/cardbuilder.interface';
 import {ToastrService} from 'ngx-toastr';
+import {SelectionOrderSlot} from '@modules/configurator/configurator.model';
+import {CTG} from '@services/lk.service';
 
 interface OrderGroupFilters {
     contragentId: number;
@@ -33,8 +35,9 @@ interface OrderGroupFilters {
 })
 export class OrderGroupComponent implements OnInit {
 
+    ctg: CTG;
     sectionsDict = Sections;
-    sections = Object.keys(this.sectionsDict);
+    sections = Object.keys(this.sectionsDict) as SectionType[];
     repoMode$ = new BehaviorSubject(false);
 
     filters: OrderGroupFilters = {
@@ -52,7 +55,6 @@ export class OrderGroupComponent implements OnInit {
             ? this.restService.getSlotsByContragent(this.filters.slotEntityKey, this.filters.contragentId, []).pipe(
                 map(data => ({
                     [this.filters.section]: {
-                        config: null,
                         tabs: [
                             {
                                 title: '',
@@ -109,8 +111,9 @@ export class OrderGroupComponent implements OnInit {
     }
 
     @Input()
-    set contragentId(value: number) {
-        this.filters.contragentId = value;
+    set contragent(value: CTG) {
+        this.filters.contragentId = value.entId;
+        this.ctg = value;
     }
 
     @Output() refresh = new EventEmitter<null>();
@@ -263,7 +266,23 @@ export class OrderGroupComponent implements OnInit {
         return this.imageService.getImage$(photo);
     }
 
-    selectSlot(): void {
+    selectSlot( sectionKey: SectionType, tabKey: string, floorKey: string, slot: SlotEntity ): void {
+        const selection: SelectionOrderSlot = {
+            sectionKey,
+            tabKey,
+            floorKey,
+            entKey: this.filters?.slotEntityKey ?? slot?.__entity_key,
+            entId: slot.id,
+            contragent_entity_key: this.ctg.entKey,
+            contragent_entity_id: this.ctg.entId,
+            status: 'waiting',
+            group_token: this.filters?.order?.group_token ?? this._orderGroup.groupMode === 'order' ? this._orderGroup.group_id : null,
+        };
+
+        console.log('selectSlot: ', selection);
+        this.restService.createOrder(selection).toPromise()
+            .then(() => this.refresh.next(null))
+            .finally(() => this.loading$.next(null));
         this.repoMode$.next(false);
     }
 

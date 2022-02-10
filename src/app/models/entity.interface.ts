@@ -40,7 +40,6 @@ export interface TabedSlots {
 }
 export interface ContragentSlots {
     tabs: TabedSlots[];
-    config: ConfiguratorConfigSrc;
 }
 
 export type SectionedContragentSlots = Sectioned<ContragentSlots>;
