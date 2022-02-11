@@ -89,6 +89,7 @@ export interface SelectionOrderSlot {
     contacts?: OrderContacts;
     status?: StatusType;
     group_token?: string;
+    utility?: SlotEntityUtility;
 }
 
 export interface SelectionStore {

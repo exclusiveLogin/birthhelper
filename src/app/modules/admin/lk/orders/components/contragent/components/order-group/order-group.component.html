@@ -57,39 +57,47 @@
             <ng-template #cartModeTpl>
                 <ng-container *ngFor="let section of sections">
                     <p class="cart-pack-item__title section__title">{{sectionsDict[section]}}</p>
-                    <ng-container *ngIf="{orders: getOrdersBySection(section) | async} as data  else loading">
-                        <div class="order" *ngFor="let order of data.orders">
-                            <div class="cart-pack-item__inner-avatar" *ngIf="getPhoto(order?.cartPhoto) as imageData">
-                                <ng-container *ngIf="{image: imageData[0] | async, signal: imageData[1]} as image">
-                                    <img [src]="image.image" (error)="image.signal.next(null)">
+                    <ng-container *ngIf="getConfigBySection(section) | async as config">
+                        <ng-container *ngFor="let tab of config.tabs">
+                            <p class="cart-pack-item__title tab_ttl">{{tab.title}}</p>
+                            <ng-container *ngFor="let floor of tab.floors">
+                                <p class="cart-pack-item__title floor_ttl">{{floor.title}}</p>
+                                <!--Selection by floors-->
+                                <ng-container *ngIf="getOrdersBySelection(section, tab.key, floor.key) | async as orders">
+                                    <div class="order" [ngClass]="{muted: order._status !== 'stable'}" *ngFor="let order of orders">
+                                        <div class="cart-pack-item__inner-avatar" *ngIf="getPhoto(order?.cartPhoto) as imageData">
+                                            <ng-container *ngIf="{image: imageData[0] | async, signal: imageData[1]} as image">
+                                                <img [src]="image.image" (error)="image.signal.next(null)">
+                                            </ng-container>
+                                        </div>
+                                        <p class="cart-pack-item__inner-name">{{order.cartTitle}}</p>
+                                        <div class="cart-pack-item__inner-value">
+                                            <p class="cart-pack-item__inner-value-text">{{order.cartTitleAccent}}</p>
+                                        </div>
+                                        <p class="cart-pack-item__inner-price">{{order?.slot?.price | digitalSeparator}} руб.</p>
+                                        <div class="cart-pack-item__inner-value">
+                                            <p class="cart-pack-item__inner-value-text" *ngIf="order.status">
+                                            <span class="badge"
+                                                  [ngClass]="{
+                                                                'badge-info': order.status === 'waiting',
+                                                                'badge-success': order.status === 'resolved',
+                                                                'badge-danger': order.status === 'rejected',
+                                                                'badge-default': order.status === 'completed'
+                                            }">{{getStatusTitleForOrder(order)}}</span>
+                                            </p>
+                                            <!--                                <p class="cart-pack-item__inner-value-text">Категория - А</p>-->
+                                        </div>
+                                        <div class="order_actions">
+                                            <div class="order_btn order_resolve" [ngClass]="{inactive: order.status === 'resolved'}" (click)="orderAction(order, 'resolve')"></div>
+                                            <div class="order_btn order_reject" [ngClass]="{inactive: order.status === 'rejected'}" (click)="orderAction(order, 'reject')"></div>
+                                            <div class="order_btn order_edit" (click)="orderAction(order, 'edit')"></div>
+                                            <div class="order_btn order_remove" (click)="orderAction(order, 'remove')"></div>
+                                        </div>
+                                    </div>
                                 </ng-container>
-                            </div>
-                            <p class="cart-pack-item__inner-name">{{order.cartTitle}}</p>
-                            <div class="cart-pack-item__inner-value">
-                                <p class="cart-pack-item__inner-value-text">{{order.cartTitleAccent}}</p>
-                            </div>
-                            <p class="cart-pack-item__inner-price">{{order?.slot?.price | digitalSeparator}} руб.</p>
-                            <div class="cart-pack-item__inner-value">
-                                <p class="cart-pack-item__inner-value-text" *ngIf="order.status">
-                                    <span class="badge"
-                                          [ngClass]="{
-                                                        'badge-info': order.status === 'waiting',
-                                                        'badge-success': order.status === 'resolved',
-                                                        'badge-danger': order.status === 'rejected',
-                                                        'badge-default': order.status === 'completed'
-                                    }">{{getStatusTitleForOrder(order)}}</span>
-                                </p>
-                                <!--                                <p class="cart-pack-item__inner-value-text">Категория - А</p>-->
-                            </div>
-                            <div class="order_actions">
-                                <div class="order_btn order_resolve inactive" (click)="orderAction(order, 'resolve')"></div>
-                                <div class="order_btn order_reject inactive" (click)="orderAction(order, 'reject')"></div>
-                                <div class="order_btn order_edit inactive" (click)="orderAction(order, 'edit')"></div>
-                                <div class="order_btn order_remove inactive" (click)="orderAction(order, 'remove')"></div>
-                            </div>
-                        </div>
+                            </ng-container>
+                        </ng-container>
                     </ng-container>
-
                     <button class="filter__btn filter__btn--blue order_status_btn"
                             (click)="addSlotIntoOrders()">Добавить услугу</button>
                 </ng-container>
@@ -123,7 +131,7 @@
 
                                         <div class="cart-pack-item__inner-value"></div>
                                         <div class="order_actions">
-                                            <button class="filter__btn filter__btn--blue" (click)="selectSlot(section, tab.key, floor.key, slot)">Выбрать услугу</button>
+                                            <button class="filter__btn filter__btn--blue" (click)="selectSlot(section, tab, floor, slot)">Выбрать услугу</button>
                                         </div>
                                     </div>
                                 </ng-container>

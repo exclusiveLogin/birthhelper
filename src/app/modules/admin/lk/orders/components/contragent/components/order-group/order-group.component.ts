@@ -16,7 +16,7 @@ import {PersonBuilder, PersonDoctorSlot} from '@models/doctor.interface';
 import {PlacementBuilder, PlacementSlot} from '@models/placement.interface';
 import {CardSlot, ConfiguratorCardBuilder} from '@models/cardbuilder.interface';
 import {ToastrService} from 'ngx-toastr';
-import {SelectionOrderSlot} from '@modules/configurator/configurator.model';
+import {ConfiguratorConfigSrc, Restrictor, SelectionOrderSlot} from '@modules/configurator/configurator.model';
 import {CTG} from '@services/lk.service';
 
 interface OrderGroupFilters {
@@ -25,6 +25,7 @@ interface OrderGroupFilters {
     slotEntityKey: string;
     utility: SlotEntityUtility;
     order: Order;
+    restrictors: Restrictor[];
 }
 
 @Component({
@@ -39,6 +40,7 @@ export class OrderGroupComponent implements OnInit {
     sectionsDict = Sections;
     sections = Object.keys(this.sectionsDict) as SectionType[];
     repoMode$ = new BehaviorSubject(false);
+    configRepo: { [section in SectionType ]?: ConfiguratorConfigSrc} = {};
 
     filters: OrderGroupFilters = {
         contragentId: null,
@@ -46,24 +48,33 @@ export class OrderGroupComponent implements OnInit {
         slotEntityKey: null,
         utility: 'other',
         order: null,
+        restrictors: null,
     };
 
     onRepoMode$ = this.repoMode$.pipe(filter(state => !!state));
     onRepoData$ = this.onRepoMode$.pipe(
         filter(_ => !!this.filters?.contragentId),
         switchMap(_ => this.filters.slotEntityKey
-            ? this.restService.getSlotsByContragent(this.filters.slotEntityKey, this.filters.contragentId, []).pipe(
+            ? this.restService.getSlotsByContragent(
+                this.filters.slotEntityKey,
+                this.filters.contragentId,
+                []
+            ).pipe(
+                map(data => data
+                    .filter(ent => this.filters?.restrictors?.length
+                        ? this.filters.restrictors.every(r => ent._entity[r.key] === r.value)
+                        : true)),
                 map(data => ({
                     [this.filters.section]: {
                         tabs: [
                             {
                                 title: '',
-                                key: this.filters.order.tab_key,
+                                key: this.filters?.order?.tab_key,
                                 floors: [
                                     {
                                         title: '',
-                                        utility: this.filters.utility,
-                                        key: this.filters.order.floor_key,
+                                        utility: this.filters?.order?.utility,
+                                        key: this.filters?.order?.floor_key,
                                         list: [...data]
                                     }
                                 ],
@@ -99,11 +110,13 @@ export class OrderGroupComponent implements OnInit {
             utility: 'other',
             contragentId: this.filters.contragentId,
             section: null,
+            restrictors: null,
         };
 
         for (const order of this._orderGroup.orders) {
             this.restService.getEntity(order.slot_entity_key, order.slot_entity_id).pipe(
                 tap((slot: PriceEntitySlot) => order.setSlot(slot)),
+                tap(_ => this.updater$.next(null)),
             ).toPromise();
         }
 
@@ -150,6 +163,16 @@ export class OrderGroupComponent implements OnInit {
         this.isLoading.subscribe();
     }
 
+    getOrdersBySelection(section: SectionType, tabKey: string, floorKey: string): Observable<Order[]> {
+        return this.data$.pipe(
+            map(data => data.orders.filter(order =>
+                order.section_key === section && order.tab_key === tabKey && order.floor_key === floorKey)));
+    }
+
+    getConfigBySection(section: SectionType): Observable<ConfiguratorConfigSrc> {
+        return this.restService.getConfiguratorSettings(section).pipe(
+            tap(config => this.configRepo[section] = config));
+    }
     generateCartSlot(data: SlotEntity, type: SlotEntityUtility): PersonDoctorSlot | PlacementSlot | CardSlot {
         let _: any;
         _ = type === 'person' ? PersonBuilder.serialize(data as PersonDoctorSlot) : _;
@@ -202,8 +225,18 @@ export class OrderGroupComponent implements OnInit {
     }
 
     editOrder(order: Order): void {
+        const config = order.section_key && this.configRepo[order.section_key];
+        if (!config) { return; }
+        const configFloor = config.tabs.find(t => t.key === order.tab_key)?.floors.find(f => f.key === order.floor_key);
+        const restrictors = [...configFloor.consumerKeys
+            .map(ck => config.consumers.find(c => c.key === ck))
+            .filter(_ => !!_)
+            .map(consumer => consumer.restrictors)
+            .reduce((acc, r) => [...acc, ...r])] ?? [] as Array<Restrictor>;
+        this.filters.restrictors = restrictors;
         this.filters.slotEntityKey = order.slot_entity_key;
         this.filters.section = order.section_key;
+        this.loading$.next(null);
         this.repoMode$.next(true);
     }
 
@@ -266,17 +299,19 @@ export class OrderGroupComponent implements OnInit {
         return this.imageService.getImage$(photo);
     }
 
-    selectSlot( sectionKey: SectionType, tabKey: string, floorKey: string, slot: SlotEntity ): void {
+    selectSlot( sectionKey: SectionType, tab: TabedSlots, floor: UtilizedFloorOfSlotEntity, slot: SlotEntity ): void {
+        this.loading$.next('');
         const selection: SelectionOrderSlot = {
             sectionKey,
-            tabKey,
-            floorKey,
+            tabKey: tab.key,
+            floorKey: floor.key,
             entKey: this.filters?.slotEntityKey ?? slot?.__entity_key,
             entId: slot.id,
             contragent_entity_key: this.ctg.entKey,
             contragent_entity_id: this.ctg.entId,
             status: 'waiting',
             group_token: this.filters?.order?.group_token ?? this._orderGroup.groupMode === 'order' ? this._orderGroup.group_id : null,
+            utility: floor.utility,
         };
 
         console.log('selectSlot: ', selection);
@@ -284,12 +319,19 @@ export class OrderGroupComponent implements OnInit {
             .then(() => this.refresh.next(null))
             .finally(() => this.loading$.next(null));
         this.repoMode$.next(false);
+        if (this.filters.order) {
+            this.removeOrder(this.filters.order);
+        }
     }
 
     addSlotIntoOrders(): void {
         this.repoMode$.next(true);
     }
     gotoCartMode(): void {
+        this.filters.restrictors = null;
+        this.filters.slotEntityKey = null;
+        this.filters.section = null;
+        this.filters.order = null;
         this.repoMode$.next(false);
     }
 
