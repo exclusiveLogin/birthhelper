@@ -17,7 +17,6 @@ import {User, UserSrc} from '@models/user.interface';
 export class ContragentComponent implements OnInit {
 
     public isLoading = true;
-    public sectionKeys = Object.keys(Sections);
     public contragent$: Observable<Contragent>;
     public ctg: CTG;
     @Input()

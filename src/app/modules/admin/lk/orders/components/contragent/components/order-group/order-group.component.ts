@@ -17,7 +17,7 @@ import {PlacementBuilder, PlacementSlot} from '@models/placement.interface';
 import {CardSlot, ConfiguratorCardBuilder} from '@models/cardbuilder.interface';
 import {ToastrService} from 'ngx-toastr';
 import {ConfiguratorConfigSrc, Restrictor, SelectionOrderSlot} from '@modules/configurator/configurator.model';
-import {CTG} from '@services/lk.service';
+import {CTG, LkService} from '@services/lk.service';
 
 interface OrderGroupFilters {
     contragentId: number;
@@ -136,10 +136,12 @@ export class OrderGroupComponent implements OnInit {
         private restService: RestService,
         private imageService: ImageService,
         private toastr: ToastrService,
+        private lkService: LkService,
     ) {
     }
 
     loading$ = new BehaviorSubject<string>(null);
+
     isLoading = this.loading$.pipe(
         tap(state => (state !== null)
             ? this.toastr.info(state.length ? state : 'Пожалуйста ожидайте', 'Выполняется действие')
@@ -147,6 +149,9 @@ export class OrderGroupComponent implements OnInit {
     );
     updater$ = new BehaviorSubject<null>(null);
     data$ = this.updater$.pipe(map(_ => this._orderGroup));
+    orders$ = this.data$.pipe(map(group => group.orders));
+    inWorkMode$ = this.lkService.ordersFilters$.pipe(map(filters => filters.status === 'inwork'));
+    canComplete$ = this.orders$.pipe(map(orders => orders.some(order => order.status === 'waiting')));
     user$: Observable<User> = this.data$.pipe(map(data => data.user));
     wrapMode = false;
 
@@ -185,43 +190,52 @@ export class OrderGroupComponent implements OnInit {
         if (!confirm('вы уверены что хотите произвести это действие?')) { return; }
         this.filters.order = order;
         this.loading$.next('');
-        if (action === 'reject') { this.rejectOrder(order); }
-        if (action === 'resolve') { this.resolveOrder(order); }
-        if (action === 'remove') { this.removeOrder(order); }
+
+        let request: Promise<any>;
+        if (action === 'reject') { request = this.rejectOrder(order); }
+        if (action === 'resolve') { request = this.resolveOrder(order); }
+        if (action === 'remove') { request = this.removeOrder(order); }
         if (action === 'edit') { this.editOrder(order); }
+
+        request
+            ?.then(() => this.refresh.next(null))
+            ?.finally(() => this.loading$.next(null));
     }
 
-    rejectOrder(order: Order): void {
+    rejectOrder(order: Order): Promise<any> {
         const request: OrderRequest = {
             action: ODRER_ACTIONS.REJECT,
             id: order.id,
         };
 
-        this.restService.requestOrdersPost(request).toPromise()
-            .then(() => this.refresh.next(null))
-            .finally(() => this.loading$.next(null));
+        return this.restService.requestOrdersPost(request).toPromise();
     }
 
-    resolveOrder(order: Order): void {
+    resolveOrder(order: Order): Promise<any>  {
         const request: OrderRequest = {
             action: ODRER_ACTIONS.RESOLVE,
             id: order.id,
         };
 
-        this.restService.requestOrdersPost(request).toPromise()
-            .then(() => this.refresh.next(null))
-            .finally(() => this.loading$.next(null));
+        return this.restService.requestOrdersPost(request).toPromise();
     }
 
-    removeOrder(order: Order): void {
+    removeOrder(order: Order): Promise<any>  {
         const request: OrderRequest = {
             action: ODRER_ACTIONS.REMOVE,
             id: order.id,
         };
 
-        this.restService.requestOrdersPost(request).toPromise()
-            .then(() => this.refresh.next(null))
-            .finally(() => this.loading$.next(null));
+        return this.restService.requestOrdersPost(request).toPromise();
+    }
+
+    completeOrder(order: Order): Promise<any> {
+        const request: OrderRequest = {
+            action: ODRER_ACTIONS.COMPLETE,
+            id: order.id,
+        };
+
+        return this.restService.requestOrdersPost(request).toPromise();
     }
 
     editOrder(order: Order): void {
@@ -314,7 +328,6 @@ export class OrderGroupComponent implements OnInit {
             utility: floor.utility,
         };
 
-        console.log('selectSlot: ', selection);
         this.restService.createOrder(selection).toPromise()
             .then(() => this.refresh.next(null))
             .finally(() => this.loading$.next(null));
@@ -333,6 +346,31 @@ export class OrderGroupComponent implements OnInit {
         this.filters.section = null;
         this.filters.order = null;
         this.repoMode$.next(false);
+    }
+
+    complete(): void {
+        if (!confirm('вы уверены что хотите произвести это действие?')) { return; }
+
+        const successOrders = this._orderGroup.orders.filter(order => order.status === 'resolved');
+        const denyOrders = this._orderGroup.orders.filter(order => order.status === 'rejected');
+        this.loading$.next('Обработка заказа');
+
+        Promise.all([
+            successOrders.map(order => this.completeOrder(order)),
+            denyOrders.map(order => this.removeOrder(order))
+        ]).then(() => this.refresh.next(null))
+            .finally(() => this.loading$.next(null));
+    }
+
+    abort(): void {
+        if (!confirm('вы уверены что хотите произвести это действие?')) { return; }
+
+        this.loading$.next('Обработка заказа');
+
+        Promise.all([
+            this._orderGroup.orders.map(order => this.removeOrder(order)),
+        ]).then(() => this.refresh.next(null))
+            .finally(() => this.loading$.next(null));
     }
 
 }

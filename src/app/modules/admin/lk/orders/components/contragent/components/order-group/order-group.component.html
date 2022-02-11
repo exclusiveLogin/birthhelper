@@ -43,9 +43,9 @@
                 <div class="user_price_block">
                     <p class="user_price__ttl">Общая сумма заказа</p>
                     <p class="user_price__price">{{getGroupPrice()}} рублей</p>
-                    <div class="btn-group muted" role="group" aria-label="Действия">
-                        <button type="button" class="btn btn-outline-success">Завершить</button>
-                        <button type="button" class="btn btn-danger">Отменить</button>
+                    <div class="btn-group" role="group" aria-label="Действия" *ngIf="inWorkMode$ | async">
+                        <button type="button" class="btn btn-outline-success" [ngClass]="{muted: canComplete$ | async}" (click)="complete()">Завершить</button>
+                        <button type="button" class="btn btn-danger" (click)="abort()">Отменить</button>
                     </div>
                 </div>
                 <div class="btn_close" (click)="unwrap()"></div>
