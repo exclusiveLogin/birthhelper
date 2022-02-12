@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Order} from 'app/models/order.interface';
+import {Order, StatusRusMap, StatusType} from 'app/models/order.interface';
 import {SelectionOrderSlot} from 'app/modules/configurator/configurator.model';
 import {ConfiguratorService} from 'app/modules/configurator/configurator.service';
 import {ImageService} from '../../../../services/image.service';
@@ -34,6 +34,10 @@ export class OrderBlockComponent implements OnInit {
         };
 
         this.configurator.deselectItemFromCart(seletion);
+    }
+
+    getStatusTitle(status: StatusType): string {
+        return StatusRusMap[status] ?? 'Неопределен';
     }
 
 }

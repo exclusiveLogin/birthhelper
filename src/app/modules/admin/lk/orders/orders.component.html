@@ -1,0 +1,3 @@
+<h4 class="lk_ttl">Стол заказов</h4>
+<app-orders-filter></app-orders-filter>
+<app-contragent *ngFor="let ctg of selectedCTG$ | async" [contragent]="ctg"></app-contragent>

@@ -5,6 +5,7 @@ import {CartModuleRouting} from './cart.module.routing';
 import { OrderBlockComponent } from './components/order-block/order-block.component';
 import { ContragentComponent } from './components/contragent/contragent.component';
 import {PipeModule} from 'app/pipes/pipe.module';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -13,10 +14,14 @@ import {PipeModule} from 'app/pipes/pipe.module';
         OrderBlockComponent,
         ContragentComponent
     ],
+    exports: [
+        ContragentComponent
+    ],
     imports: [
         CommonModule,
         CartModuleRouting,
         PipeModule,
+        ReactiveFormsModule,
     ]
 })
 export class CartModule {

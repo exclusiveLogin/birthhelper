@@ -1,7 +1,7 @@
-import {Injectable, SecurityContext} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {RestService} from './rest.service';
 import {BehaviorSubject, Observable, of} from 'rxjs';
-import {IImage} from '../Admin/Dashboard/Editor/components/image/image.component';
+import {IImage} from '../modules/admin/Dashboard/Editor/components/image/image.component';
 import {catchError, map, shareReplay, switchMap, tap} from 'rxjs/operators';
 import {environment} from '@environments/environment';
 import {MetaPhoto} from '../models/map-object.interface';

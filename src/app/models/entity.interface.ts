@@ -1,6 +1,10 @@
-import {Summary} from 'app/models/summary.interface';
-import {Contragent} from 'app/models/contragent.interface';
-import {MetaInterface} from 'app/models/meta.interface';
+import {Summary} from '@models/summary.interface';
+import {Contragent} from '@models/contragent.interface';
+import {MetaInterface} from '@models/meta.interface';
+import {SectionType} from '@services/search.service';
+import {Sectioned, TitledList} from '@models/core';
+import {ConfiguratorConfigSrc} from '@modules/configurator/configurator.model';
+import {SlotEntityUtility} from '@models/order.interface';
 
 export interface Entity extends Summarized, MetaInterface {
     [key: string]: any;
@@ -25,6 +29,19 @@ export interface SlotEntity<T = Entity, K = Contragent> extends Entity {
     _entity_key: string;
     _contragent_id_key: string;
     _entity_id_key: string;
+    _section: SectionType;
 }
+
+export type UtilizedFloorOfSlotEntity = ({utility: SlotEntityUtility} & TitledList<SlotEntity>);
+export interface TabedSlots {
+    key: string;
+    title: string;
+    floors: UtilizedFloorOfSlotEntity[];
+}
+export interface ContragentSlots {
+    tabs: TabedSlots[];
+}
+
+export type SectionedContragentSlots = Sectioned<ContragentSlots>;
 
 export type PriceEntitySlot = SlotEntity & Price & Benefits;

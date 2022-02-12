@@ -1,14 +1,14 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Observable} from 'rxjs';
-import {DictService, IDictItem} from '../../Admin/dict.service';
+import {DictService, IDictItem} from '../admin/dict.service';
 import {AuthService} from '../auth-module/auth.service';
 import {FormControl, FormGroup} from '@angular/forms';
-import {IFileAdditionalData} from '../../Admin/rest.service';
+import {IFileAdditionalData} from '../admin/rest.service';
 import {ISettingsParams, RestService} from '../../services/rest.service';
 import {filter, map, shareReplay, switchMap, take, tap} from 'rxjs/operators';
 import {User} from '../../models/user.interface';
 import {ImageService} from '../../services/image.service';
-import {IImage} from '../../Admin/Dashboard/Editor/components/image/image.component';
+import {IImage} from '../admin/Dashboard/Editor/components/image/image.component';
 
 @Component({
     selector: 'app-profile',

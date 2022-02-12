@@ -24,7 +24,7 @@ export class DialogService {
             action: 'show',
             dialogKey: cfg?.idDialog,
             form: null,
-            data: cfg.data ?? {},
+            data: cfg?.data ?? {},
         });
     }
     showDialogByTemplateKey(templateKey: string, cfg?: Partial<DialogServiceConfig>): void {
@@ -35,13 +35,15 @@ export class DialogService {
             action: 'show',
             dialogKey: cfg?.idDialog,
             form: null,
-            data: cfg.data ?? {},
+            data: cfg?.data ?? {},
         });
     }
 
-    closeOpenedDialog(dialogId?: string): void {
+    closeOpenedDialog(dialogKey?: string): void {
         this.sendAction({
             action: 'close',
+            mode: 'dialog',
+            dialogKey,
         });
     }
     validateAndSend(action: DialogAction): void {
@@ -57,17 +59,13 @@ export class DialogService {
 
         const validOptions = _action.action && _action.dialogKey && _action.mode && _action.data;
         const validTemplate = _action.template || _action.templateKey;
-        const validIfForm = _action.mode === 'dialog'
-            ? _action.form
-            : true;
 
-        if (validOptions && validTemplate && validIfForm) {
+        if (validOptions && validTemplate) {
             this.sendAction(_action);
         } else {
             console.log('Dialog ERROR', 'valid: opt, tpl, form',
                 validOptions,
-                validTemplate,
-                validIfForm);
+                validTemplate);
         }
     }
     sendAction(action: Partial<DialogAction>): void {

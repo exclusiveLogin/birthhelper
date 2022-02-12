@@ -31,7 +31,13 @@ export interface ValidationTreeContragent {
     _orders: Order[];
     isInvalid: boolean;
 }
-
+export interface ValidationTreeSimple {
+    tabs: ValidationTreeItem[];
+    floors: ValidationTreeItem[];
+    orders: Order[];
+    isInvalid: boolean;
+    config: ConfiguratorConfigSrc;
+}
 
 @Injectable({
     providedIn: 'root'
@@ -50,13 +56,17 @@ export class OrderService {
 
     onOrderListChanged$ = this.doListRefresh$.pipe(
         switchMap(() => this.fetchCurrentOrders()),
-        switchMap(list => this.smartRefresher(list)),
+        tap(list => this.smartRefresher(list)),
         map(() => this.userOrdersStore),
         shareReplay(1),
     );
 
-    onOrderListChanged_Pending$ = this.onOrderListChanged$.pipe(
-        map(list => list.filter((o) => o.status === 'pending')),
+    onOrderListChanged_inCart$ = this.onOrderListChanged$.pipe(
+        map(list => list.filter((o) =>
+            o.status === 'pending'  ||
+            o.status === 'resolved' ||
+            o.status === 'rejected' ||
+            o.status === 'waiting')),
         shareReplay(1),
     );
 
@@ -66,11 +76,6 @@ export class OrderService {
                 .filter( _ => !!_ ),
         ),
         shareReplay(1),
-    );
-
-    onSummaryPriceChanged$ = this.onSlots$.pipe(
-        map((slots: PriceEntitySlot[]) => slots.map(slot => slot?.price ?? 0)),
-        summatorPipe,
     );
 
     onValidationTreeCompleted$ = this.onOrderListChanged$.pipe(
@@ -89,17 +94,14 @@ export class OrderService {
         this.userOrdersStore = [];
         this.onValidationTreeCompleted$
             .subscribe((tree) => console.log('onValidationTreeCompleted$ data:', tree, this.contragentHashMap) );
-
-        this.onSummaryPriceChanged$.subscribe();
         this.updateOrderList();
     }
 
     private refreshValidationConfigsHashes(orders: Order[]): void {
         // собираем уникальные констрагенты по которым будем группировать заказы (позиции)
         this.contragentHashMap = {};
-        const c_hashes = orders.filter(o => !!o?.slot).map(o => {
-            const {_contragent_entity_key: contragentEntityKey, _contragent_id_key: contragentId} = o.slot;
-            const body = {id: o.slot[contragentId], entKey: contragentEntityKey};
+        const c_hashes = orders.filter(o => !!o?.contragent_entity_key && !!o?.contragent_entity_id).map(o => {
+            const body = {id: o.contragent_entity_id, entKey: o.contragent_entity_key};
             const hash = hasher(body);
             this.contragentHashMap[hash] = body;
             return hash;
@@ -130,8 +132,7 @@ export class OrderService {
     private updateValidationTreeStructure(orders: Order[]): void {
         this.validationTree = this.uniqContragentHashes.map(hash => {
             const currentContragentOrders = orders.filter(o => {
-                const {_contragent_entity_key: contragentEntityKey, _contragent_id_key: contragentId} = o.slot;
-                const body = {id: o.slot[contragentId], entKey: contragentEntityKey};
+                const body = { id: o.contragent_entity_id, entKey: o.contragent_entity_key };
                 return hasher(body) === hash;
             });
             if (!currentContragentOrders.length) { return ; }
@@ -143,10 +144,6 @@ export class OrderService {
             const contragentTabs = targetCfgs.reduce((tabs, cfg) => ([...tabs, ...cfg.tabs]) , [] as TabConfig[]);
             const contragentFloors = (contragentTabs.reduce(
                 (floors, tab) => ([...floors, ...tab.floors]), [] as TabFloorSetting[]) ?? []) as TabFloorSetting[];
-            currentContragentOrders.forEach(order => {
-                const o_type = contragentFloors?.find(f => f.key === order.floor_key)?.entityType;
-                order.setUtility(o_type);
-            });
             return {
                 contragentHash: hash,
                 _tabs: contragentTabs.map(tab => {
@@ -252,7 +249,7 @@ export class OrderService {
             map(tree => tree.find(t => t.contragentHash === hash)));
     }
 
-    async smartRefresher(ordersList: OrderSrc[]): Promise<void> {
+    smartRefresher(ordersList: OrderSrc[]): void {
         const hash = hasher(ordersList);
         if (hash === this.storeHash) {
             return;
@@ -269,14 +266,16 @@ export class OrderService {
         this.userOrdersStore = this.userOrdersStore.filter(o => o._status !== 'refreshing');
         const forUpdateOrders = this.userOrdersStore.filter(o => o._status === 'loading');
         if (forUpdateOrders.length) {
-            for (const o of forUpdateOrders) {
-                try {
-                    o.setSlot(await this.productFetcher(o.slot_entity_key, o.slot_entity_id).toPromise());
-                } catch (e) {
-                    o._status = 'error';
-                    console.error('fetch slot ERROR: ', e);
-                }
-            }
+            forkJoin(forUpdateOrders
+                .filter(o => o.slot_entity_key && o.slot_entity_id)
+                .map(o => this.productFetcher(o.slot_entity_key, o.slot_entity_id).pipe(
+                    tap(
+                        (slot) => o.setSlot(slot),
+                        (e) => {
+                            o._status = 'error';
+                            console.error('fetch slot ERROR: ', e);
+                    }))))
+                .subscribe(_ => this.doPriceRecalculate$.next());
         }
         this.storeHash = hasher(this.userOrdersStore.map(o => o.raw));
         this.doPriceRecalculate$.next();
@@ -284,6 +283,11 @@ export class OrderService {
 
     addIntoCart(selection: SelectionOrderSlot): void {
         this.orderApiAction(ODRER_ACTIONS.ADD, selection)
+            .subscribe(() => this.doListRefresh$.next());
+    }
+
+    submitCart(payload: SelectionOrderSlot): void {
+        this.orderApiAction(ODRER_ACTIONS.SUBMIT, payload)
             .subscribe(() => this.doListRefresh$.next());
     }
 
@@ -302,9 +306,9 @@ export class OrderService {
             case ODRER_ACTIONS.ADD:
                 return this.restService.createOrder(selection);
             case ODRER_ACTIONS.CLEAR:
-                return this.restService.changeOrder(action);
+                return this.restService.changeOrderBySelection(action);
             default:
-                return this.restService.changeOrder(action, selection);
+                return this.restService.changeOrderBySelection(action, selection);
 
         }
     }

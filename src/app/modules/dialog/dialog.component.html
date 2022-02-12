@@ -1,5 +1,13 @@
 <div class="popup-wrapper" *ngIf="_showed$ | async" @dialogWrapper>
+    <ng-container *ngIf="!tpl_custom">
         <ng-container *ngTemplateOutlet="template; context: tpl_context"></ng-container>
+    </ng-container>
+
+    <ng-container *ngIf="tpl_custom">
+        <div class="popup popup--large" @dialogState>
+            <ng-container *ngTemplateOutlet="template; context: tpl_context"></ng-container>
+        </div>
+    </ng-container>
 </div>
 
 <!--Оставить отзыв-->
@@ -169,7 +177,6 @@
     </div>
 </div> -->
 <!--Смена пароля-end-->
-
 
 <!--О палате-->
 <ng-template #tpl_popup_placement let-data>

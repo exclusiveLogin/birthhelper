@@ -3,7 +3,7 @@ import {PriceEntitySlot, SlotEntity} from './entity.interface';
 import {SelectionOrderSlot, TabFloorSetting} from '../modules/configurator/configurator.model';
 import {SectionType} from '../services/search.service';
 import {MetaPhoto} from 'app/models/map-object.interface';
-import {environment} from '@environments/environment';
+import {User} from './user.interface';
 
 export interface OrderSrc {
     id: number;
@@ -16,22 +16,63 @@ export interface OrderSrc {
     section_key: string;
     refferer: number;
     status: StatusType;
+    contragent_entity_key?: string;
+    contragent_entity_id?: number;
     group_token: string;
     datetime_update: string;
     datetime_create: string;
+}
+
+export interface OrderRequest {
+    action: ODRER_ACTIONS;
+    ent_key?: string;
+    ent_id?: number;
+    tab_key?: string;
+    floor_key?: string;
+    section_key?: string;
+    contragent_entity_key?: string;
+    contragent_entity_id?: number;
+    contacts?: OrderContacts;
+    id?: number;
+    status?: StatusType;
+    groupMode?: OrderGroupMode;
+    group_token?: string;
+    utility?: SlotEntityUtility;
 }
 
 export interface OrderResponse {
     context: 'orders';
     result: OrderSrc[];
 }
+
+export interface OrderGroup {
+    group_id: string;
+    groupMode: OrderGroupMode;
+    user: User;
+    contacts: OrderContacts;
+    orders: Order[];
+}
+
 export interface IOrder extends OrderSrc {
     raw: OrderSrc;
     hash: string;
     slot: PriceEntitySlot;
 }
 
+export interface OrderContacts {
+    phone: string;
+    email: string;
+    skype: string;
+    ch_email: boolean;
+    ch_phone: boolean;
+    ch_skype: boolean;
+    ch_viber: boolean;
+    ch_telegram: boolean;
+    ch_whatsapp: boolean;
+}
+
 export enum ODRER_ACTIONS {
+    GET = 'GET',
     ADD = 'ADD',
     REMOVE = 'REMOVE',
     CLEAR = 'CLEAR',
@@ -52,8 +93,30 @@ export enum ORDER_STATUSES {
     rejected = 'rejected',
     completed = 'completed',
     canceled = 'canceled',
-    inprogress = 'inprogress',
+    progressing = 'progressing',
+    inwork = 'inwork',
+    incomplete = 'incomplete',
+    inplan = 'inplan',
 }
+export type StatusTypeMap = {
+    [key in StatusType]: string;
+};
+
+export const StatusRusMap: StatusTypeMap = {
+    pending: 'Выбран',
+    waiting: 'Ожидает',
+    canceled: 'Отменен',
+    completed: 'Завершен',
+    deleted: 'Удален',
+    rejected: 'Отклонен',
+    resolved: 'Одобрен',
+    progressing: 'Обрабатывается',
+    incomplete: 'Завершенные',
+    inplan: 'Планируемые',
+    inwork: 'В работе',
+};
+
+export type OrderGroupMode = 'order' | 'session';
 
 export type StatusType = keyof typeof ORDER_STATUSES;
 
@@ -80,6 +143,8 @@ export class Order implements IOrder {
     cartTitle: string;
     cartTitleAccent: string;
     cartPhoto: MetaPhoto;
+    contragent_entity_key: string;
+    contragent_entity_id: number;
     _status: 'pending' | 'error' | 'refreshing' | 'loading' | 'stable' = 'pending';
 
     constructor(src: OrderSrc) {
@@ -118,11 +183,6 @@ export class Order implements IOrder {
         this.refreshCartRenderData();
     }
 
-    setUtility(value: SlotEntityUtility): void {
-        this.utility = value;
-        this.refreshCartRenderData();
-    }
-
     private refreshCartRenderData(): void {
         let ph: MetaPhoto = this.slot?.meta?.image_id as MetaPhoto;
         ph = ph ?? this.slot?._entity?.meta?.image_id as MetaPhoto;
@@ -144,17 +204,11 @@ export class Order implements IOrder {
         if (this.utility === 'other') {
             this.cartTitle = this.slot?.title ?? this.slot?._entity?.title;
         }
+
+        this._status = 'stable';
     }
 }
 
-export interface OrderRequest {
-    action: ODRER_ACTIONS;
-    ent_key?: string;
-    ent_id?: number;
-    tab_key?: string;
-    floor_key?: string;
-    section_key?: string;
-}
 export function orderRestMapper(selection: SelectionOrderSlot, action: ODRER_ACTIONS): OrderRequest {
     return selection
         ? {
@@ -163,7 +217,14 @@ export function orderRestMapper(selection: SelectionOrderSlot, action: ODRER_ACT
             tab_key: selection.tabKey,
             floor_key: selection.floorKey,
             section_key: selection.sectionKey,
+            contragent_entity_key: selection.contragent_entity_key,
+            contragent_entity_id: selection.contragent_entity_id,
             action,
+            id: selection.id,
+            contacts: selection.contacts,
+            status: selection.status,
+            group_token: selection.group_token,
+            utility: selection.utility,
         }
         : {
             action

@@ -3,7 +3,7 @@ import {Observable} from 'rxjs';
 import {ApiService} from './api.service';
 import {filter, map, shareReplay, switchMap, take} from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {IDictItem} from 'app/Admin/dict.service';
+import {IDictItem} from 'app/modules/admin/dict.service';
 import {SectionType} from './search.service';
 import {SearchFilterConfig, SearchSection} from '../models/filter.interface';
 import {FilterResult} from '../modules/search/search/components/filter/filter.component';
@@ -11,9 +11,15 @@ import {SessionResponse, UserRole} from '../modules/auth-module/auth.service';
 import {UserExit, UserSrc} from '../models/user.interface';
 import {InterceptorService} from '../modules/auth-module/interceptor.service';
 import {ConfiguratorConfigSrc, Restrictor, SelectionOrderSlot} from 'app/modules/configurator/configurator.model';
-import {Entity} from 'app/models/entity.interface';
+import {Entity, SectionedContragentSlots} from 'app/models/entity.interface';
 import md5 from 'md5';
-import {ODRER_ACTIONS, OrderResponse, orderRestMapper, OrderSrc} from '../models/order.interface';
+import {
+    ODRER_ACTIONS,
+    OrderRequest,
+    OrderResponse,
+    orderRestMapper,
+    OrderSrc,
+} from '../models/order.interface';
 
 export interface ISettingsParams {
     mode: string;
@@ -194,6 +200,17 @@ export class RestService {
         return this.getEntityList(key, null, filters);
     }
 
+    public getSlotListByContragent(id: number): Observable<SectionedContragentSlots> {
+        const entSetting: ISettingsParams = {
+            mode: 'api',
+            segment: 'slots',
+            resource: 'contragent',
+            script: id.toString(),
+        };
+
+        return this.getData<SectionedContragentSlots>(entSetting);
+    }
+
     public getEntityList<T = Entity>(key: string, page?: number, qp?: IRestParams): Observable<T[]> {
         const entSetting: ISettingsParams = {
             mode: 'api',
@@ -257,27 +274,25 @@ export class RestService {
         return this.postData<SessionResponse>(ep_config, data, insecure);
     }
 
-    public createOrder(selection): Observable<any> {
-        const data = orderRestMapper(selection, ODRER_ACTIONS.ADD);
+    requestOrdersPost<T = any>(payload: OrderRequest): Observable<T> {
         const ep_config: ISettingsParams = {
             mode: 'order',
             segment: null,
         };
-
-        return this.postData<OrderSrc>(ep_config, data);
+        return this.postData<T>(ep_config, payload).pipe(map(data => data?.['result']));
     }
 
-    public changeOrder(
+    public createOrder(selection): Observable<any> {
+        const data = orderRestMapper(selection, ODRER_ACTIONS.ADD);
+        return this.requestOrdersPost(data);
+    }
+
+    public changeOrderBySelection(
         action: ODRER_ACTIONS,
         selection?: SelectionOrderSlot,
     ): Observable<OrderSrc> {
         const data = orderRestMapper(selection, action);
-        const ep_config: ISettingsParams = {
-            mode: 'order',
-            segment: null,
-        };
-
-        return this.postData<OrderSrc>(ep_config, data ?? {});
+        return this.requestOrdersPost(data);
     }
 
     public getUserRole(): Observable<UserRoleSrc> {

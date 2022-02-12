@@ -1,7 +1,6 @@
 import { RouterModule, Routes } from '@angular/router';
 import {NotFoundComponent} from '../NotFound/NotFound.component';
 import {WrapperComponent} from './wrapper.component';
-import {AuthAdminGuard} from '../guards/auth.admin.guard';
 import {AuthUserGuard} from '../guards/user.guard';
 
 

@@ -1,0 +1,51 @@
+<div class="header_led" [ngStyle]="{ backgroundColor: bgColor }"></div>
+<ng-container *ngTemplateOutlet="tpl"></ng-container>
+
+<ng-template #ctg_ent_clinics>
+    <div class="ctg_info" *ngIf="contragent$ | async as ctg">
+        <div class="cart-pack__body-title">
+            <p class="cart-pack__body-title-text">
+                {{ctg.title}}
+            </p>
+        </div>
+        <div class="ctg_features">
+            <div class="ctg_features__item">
+                <span class="cart-pack-options__item-name">Посещение мамы и малыша в палате</span>
+                <span class="cart-pack-options__item-value answer"
+                      [ngClass]="!!ctg.free_meets ? 'yes' : 'no'">
+                {{!!ctg.free_meets ? 'Да' : 'Нет'}}
+                </span>
+            </div>
+            <div class="ctg_features__item">
+                <span class="cart-pack-options__item-name">Наличие детской реанимации</span>
+                <span class="cart-pack-options__item-value answer"
+                      [ngClass]="!!ctg.has_reanimation ? 'yes' : 'no'">
+                {{!!ctg.has_reanimation ? 'Да' : 'Нет'}}
+                </span>
+            </div>
+            <div class="ctg_features__item">
+                <span class="cart-pack-options__item-name">Женская консультация при роддоме</span>
+                <span class="cart-pack-options__item-value answer"
+                      [ngClass]="!!ctg.has_consultation ? 'yes' : 'no'">
+                {{!!ctg.has_consultation ? 'Да' : 'Нет'}}
+                </span>
+            </div>
+            <div class="ctg_features__item">
+                <span class="cart-pack-options__item-name">В палате с малышом</span>
+                <span class="cart-pack-options__item-value answer"
+                      [ngClass]="!!ctg.mom_with_baby ? 'yes' : 'no'">
+                {{!!ctg.mom_with_baby ? 'Да' : 'Нет'}}
+                </span>
+            </div>
+        </div>
+        <div class="ctg_phone">
+            <p class="ctg_phone__ttl">Телефон связи с менеджером</p>
+            <p class="ctg_phone__number">{{ctg.manager_phone || 'Номер не указан'}}</p>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #default>
+    <div class="default">Шаблон контрагента не опознан <br> Сообщите об ошибке администратору системы</div>
+</ng-template>
+

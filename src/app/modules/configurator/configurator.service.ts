@@ -34,7 +34,7 @@ export class ConfiguratorService {
         private restService: RestService,
         private orderService: OrderService,
     ) {
-        this.orderService.onOrderListChanged_Pending$.subscribe(list => this.syncOrders(list));
+        this.orderService.onOrderListChanged_inCart$.subscribe(list => this.syncOrders(list));
     }
 
     private _config: ConfiguratorConfigSrc;
@@ -117,6 +117,10 @@ export class ConfiguratorService {
             const hash = hasher({entId: selection.entId, entKey: selection.entKey});
             const targetSelection = this.selectionStore[hash];
             const operation = targetSelection ? 'remove' : 'add';
+            if (operation === 'add') {
+                selection.contragent_entity_id = this.currentContragentID$.value;
+                selection.contragent_entity_key = this.currentContragentEntityKey$.value;
+            }
             operation === 'remove'
                 ? targetSelection._status = 'selected'
                 : this.selectionStore[hash] = selection;
