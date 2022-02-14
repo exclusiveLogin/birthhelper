@@ -5,6 +5,18 @@
   /* justify-content: center; */
   align-items: center;
 }
+.small {
+    width: 50px;
+}
+.mid {
+    width: 90px;
+}
+.long {
+    width: 150px;
+}
+.extra {
+    width: 210px;
+}
 .cart__columns {
     display: flex;
     width: 100%;
@@ -69,4 +81,38 @@ $viber-color: #59267c;
 }
 .fa-telegram-plane {
     color: $telegram-color;
+}
+.order_table {
+    .order_tbl__head {
+        ._row {
+            background-color: whitesmoke;
+            display: flex;
+            flex: 1;
+            .order_tbl__head__item {
+                margin: 15px;
+            }
+        }
+    }
+    .order_tbl__body {
+        ._row {
+            background-color: #ffffff;
+            display: flex;
+            flex: 1;
+            &:nth-child(odd) {
+                background-color: #DBE9FF;
+            }
+        }
+    }
+}
+.order_container {
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    .order_container_head {
+        display: flex;
+        flex-grow: 1;
+        width: 100%;
+        flex-wrap: wrap;
+        background-color: #F3F3F3;
+    }
 }

@@ -1,0 +1,84 @@
+<ng-container *ngTemplateOutlet="wrapMode ? tpl_wrap : tpl_unwrap"></ng-container>
+
+<ng-template #tpl_wrap>
+    <div class="order_container cart-pack cart-pack--clinic">
+        <div class="order_container_head">
+            <div class="header_bar">
+                <div>ID: {{_orderGroup.group_id}}</div>
+                <div>Заказан: {{getLastDate()}}</div>
+            </div>
+            <div class="user_info">
+                <div class="user_price_block">
+                    <p class="user_price__ttl">Общая сумма заказа</p>
+                    <p class="user_price__price">{{getGroupPrice()}} рублей</p>
+                </div>
+                <div class="btn_close" (click)="unwrap()"></div>
+            </div>
+        </div>
+        <div class="ctg_orders" *ngIf="{repoMode: repoMode$ | async} as state">
+            <ng-container *ngFor="let section of sections">
+                    <p class="cart-pack-item__title section__title">{{sectionsDict[section]}}</p>
+                    <ng-container *ngIf="getConfigBySection(section) | async as config">
+                        <ng-container *ngFor="let tab of config.tabs">
+                            <p class="cart-pack-item__title tab_ttl">{{tab.title}}</p>
+                            <ng-container *ngFor="let floor of tab.floors">
+                                <p class="cart-pack-item__title floor_ttl">{{floor.title}}</p>
+                                <!--Selection by floors-->
+                                <ng-container *ngIf="getOrdersBySelection(section, tab.key, floor.key) | async as orders">
+                                    <div class="order" [ngClass]="{muted: order._status !== 'stable'}" *ngFor="let order of orders">
+                                        <div class="cart-pack-item__inner-avatar" *ngIf="getPhoto(order?.cartPhoto) as imageData">
+                                            <ng-container *ngIf="{image: imageData[0] | async, signal: imageData[1]} as image">
+                                                <img [src]="image.image" (error)="image.signal.next(null)">
+                                            </ng-container>
+                                        </div>
+                                        <p class="cart-pack-item__inner-name">{{order.cartTitle}}</p>
+                                        <div class="cart-pack-item__inner-value">
+                                            <p class="cart-pack-item__inner-value-text">{{order.cartTitleAccent}}</p>
+                                        </div>
+                                        <p class="cart-pack-item__inner-price">{{order?.slot?.price | digitalSeparator}} руб.</p>
+                                        <div class="cart-pack-item__inner-value">
+                                            <p class="cart-pack-item__inner-value-text" *ngIf="order.status">
+                                            <span class="badge"
+                                                  [ngClass]="{
+                                                                'badge-info': order.status === 'waiting',
+                                                                'badge-success': order.status === 'resolved',
+                                                                'badge-danger': order.status === 'rejected',
+                                                                'badge-default': order.status === 'completed'
+                                            }">{{getStatusTitleForOrder(order)}}</span>
+                                            </p>
+                                            <!--                                <p class="cart-pack-item__inner-value-text">Категория - А</p>-->
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
+                        </ng-container>
+                    </ng-container>
+                </ng-container>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #loading>
+    <div class="loading_container">
+        <img src="assets/loading_1.gif" class="loading">
+    </div>
+</ng-template>
+
+<ng-template #tpl_unwrap>
+    <ng-container *ngIf="data$ | async as data">
+        <div class="tbl_row" (click)="wrap()">
+            <!--        ID      -->
+            <div class="order_tbl__item extra" [title]="data.group_id">{{data.group_id}}</div>
+            <!--        дата оформления      -->
+            <div class="order_tbl__item long">{{getLastDate()}}</div>
+            <!--        статус      -->
+            <div class="order_tbl__item mid">{{getStatusTitle()}}</div>
+            <!--        цена      -->
+            <div class="order_tbl__item mid">{{getGroupPrice()}}</div>
+            <!--        кнопка открыть      -->
+            <!--            <div class="order_tbl__item open_btn" (click)="wrap()">-->
+            <!--                <i class="fas fa-eye fa-lg"></i>-->
+            <!--            </div>-->
+        </div>
+    </ng-container>
+</ng-template>
