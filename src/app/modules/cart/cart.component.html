@@ -27,7 +27,7 @@
         <ng-container *ngIf="archive$ | async as archive">
             <div class="cart__header cart-header">
                 <h3 class="cart-header__title">
-                    <img src="img/icons/cart.svg" class="cart-header__title-img"/>
+                    <i src="img/icons/archive.svg" class="cart-archive_header__title-img"></i>
                     Архив заказов</h3>
             </div>
 
@@ -35,7 +35,7 @@
                 <div class="empty_cart">Ваша архив заказов пуст</div>
             </ng-template>
 
-            <div class="order_table">
+            <div class="order_table cart-pack__body">
                 <div class="order_tbl__head" *ngIf="true else empty">
                     <div class="_row">
                         <div class="order_tbl__head__item extra">ID</div>

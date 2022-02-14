@@ -98,7 +98,7 @@ $viber-color: #59267c;
             background-color: #ffffff;
             display: flex;
             flex: 1;
-            &:nth-child(odd) {
+            &:nth-child(even) {
                 background-color: #DBE9FF;
             }
         }
@@ -115,4 +115,11 @@ $viber-color: #59267c;
         flex-wrap: wrap;
         background-color: #F3F3F3;
     }
+}
+.cart-archive_header__title-img {
+    mask-image: url("../../../img/icons/archive.svg");
+    background-color: #487ff1;
+    width: 36px;
+    height: 36px;
+    margin-right: 15px;
 }
