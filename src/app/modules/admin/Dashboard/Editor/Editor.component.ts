@@ -163,7 +163,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
                     .subscribe((dict: IDictItem[]) => {
                         field.dctItems = dict;
                         if (field.required && !field.canBeNull && !field.initData && dict[0]) {
-                            field.control.setValue(dict[0]['id']);
+                            field.control.setValue(dict[0][field.valueKey ?? 'id']);
                         }
                         this.checkConditionFields();
                     });
@@ -270,7 +270,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         if (!!changes.menu && !!changes.menu.currentValue) {
             this.ent.getEntSet(this.menu.name).subscribe(set => {
                 this.fields = set.fields && set.fields.map(f => {
-                    if (f.type === 'id' && !!f.useDict) {
+                    if (!!f.useDict) {
                         f.type = 'select';
                     }
                     f.id = f['key'];

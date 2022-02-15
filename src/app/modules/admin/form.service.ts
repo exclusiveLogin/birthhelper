@@ -28,6 +28,7 @@ export interface IFieldSetting {
   image?: { urlType: string, urlKey: string };
   refresher?: Function;
   showOnTable?: boolean;
+  valueKey?: string;
 }
 
 export interface ILinkFieldSetting {

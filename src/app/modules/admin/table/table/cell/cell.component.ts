@@ -12,6 +12,7 @@ export interface IRowSetting {
     dctKey?: string;
     titleFn?: (any) => Observable<string>;
     titleDictKey?: string;
+    valueKey?: string;
 }
 
 @Component({
@@ -53,7 +54,7 @@ export class CellComponent implements OnInit, OnChanges {
                             return null;
                         }
 
-                        const targetDI = dictItems.find(i => i.id === itemId);
+                        const targetDI = dictItems.find(i => i?.[rs.valueKey ?? 'id'] === itemId);
                         return targetDI ? (rs.titleDictKey ? targetDI[rs.titleDictKey] : targetDI.title) : null;
                     })
                 );
