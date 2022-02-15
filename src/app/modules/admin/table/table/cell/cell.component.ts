@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange, SimpleChanges, ChangeDetectorRef} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef} from '@angular/core';
 import {DictService} from '../../../dict.service';
 import {Observable, of, forkJoin} from 'rxjs';
 import {map} from 'rxjs/operators';
