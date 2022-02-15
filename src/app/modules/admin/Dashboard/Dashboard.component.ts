@@ -33,6 +33,19 @@ export class DashboardComponent implements OnInit {
 
     public readonly menuRepo: IMenuRepo[] = [
         {
+            name: 'ent_contragents',
+            title: 'Контрагенты',
+            titleVoc: 'Контрагента',
+            titleVocs: 'Контрагентов',
+            type: 'entity',
+            modes: [
+                EMENUMODE.VIEW,
+                EMENUMODE.CREATE,
+                EMENUMODE.EDIT,
+                EMENUMODE.DELETE,
+            ]
+        },
+        {
             name: 'ent_doctor',
             title: 'Специалисты',
             titleVoc: 'специалиста',

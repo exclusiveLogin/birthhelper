@@ -35,12 +35,14 @@ export class CellComponent implements OnInit, OnChanges {
     }
 
     private converter(data): Observable<string[]> {
-        const rows$ = this.rs.map(rs => rs.titleFn ? rs.titleFn(data[rs.key]) : of(data[rs.key]));
+        if (!this.rs) { return ; }
+        const rows$ = this.rs?.map(rs => rs.titleFn ? rs.titleFn(data[rs.key]) : of(data[rs.key]));
         const obs = forkJoin(...rows$);
         return obs;
     }
 
     ngOnInit() {
+        if (!this.rs) { return ; }
         this.rs
             .filter(rs => rs.useDict && rs.dctKey)
             .forEach(rs => {
@@ -65,7 +67,7 @@ export class CellComponent implements OnInit, OnChanges {
     }
 
     public rerender() {
-        this.cols = this.converter(this?.data?.data ?? {});
+        this.cols = this.converter(this?.data?.data ?? {}) ?? of([]);
         this.cdr.markForCheck();
     }
 
