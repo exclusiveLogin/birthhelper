@@ -35,7 +35,5 @@ export interface ISlot {
 
 export interface IContainerData {
     id: number;
-    items: {
-        entity: IEntityItem,
-    }[];
+    items: IEntityItem[];
 }

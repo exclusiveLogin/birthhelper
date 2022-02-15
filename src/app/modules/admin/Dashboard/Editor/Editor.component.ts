@@ -341,8 +341,8 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
                     return;
                 }
                 const dummyItems = containerData.items.map(itemsEnt => <ITableItem>({
-                    data: itemsEnt.entity,
-                    text: '' + itemsEnt.entity.id,
+                    data: itemsEnt,
+                    text: itemsEnt?.title ?? 'Без описания',
                     selected: true,
                 }));
 
