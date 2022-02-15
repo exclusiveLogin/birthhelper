@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {RestService} from './rest.service';
-import {ODRER_ACTIONS, Order, OrderSrc} from '../models/order.interface';
+import {ODRER_ACTIONS, Order, OrderGroup, OrderSrc} from '../models/order.interface';
 import {PriceEntitySlot} from '../models/entity.interface';
 import {map, mapTo, shareReplay, switchMap, tap} from 'rxjs/operators';
 import {hasher} from '../modules/utils/hasher';
@@ -45,6 +45,7 @@ export interface ValidationTreeSimple {
 export class OrderService {
 
     validationTree: ValidationTreeContragent[] = [];
+    ordersArchive: OrderGroup[] = [];
     uniqContragentHashes: string[] = [];
     contragentHashMap: {[hash: string]: {id: number, entKey: string}};
     uniqSectionKeys: SectionType[] = [];
@@ -70,6 +71,27 @@ export class OrderService {
         shareReplay(1),
     );
 
+    onOrderListChanged_inArchive$ = this.onOrderListChanged$.pipe(
+        map(list => list.filter((o) =>
+            o.status === 'completed'  ||
+            o.status === 'canceled' ||
+            o.status === 'progressing')),
+        shareReplay(1),
+    );
+
+    orderArchiveGroups$: Observable<OrderGroup[]> = this.onOrderListChanged_inArchive$.pipe(
+        map(orders => {
+            const uniqGroupIds = uniq(orders.map(o => o.group_token));
+            return uniqGroupIds.map(gid => ({
+                orders: orders.filter(o => o.group_token === gid),
+                group_id: gid,
+                groupMode: 'order',
+                contacts: null,
+                user: null,
+            } as OrderGroup));
+        }),
+    );
+
     onSlots$ = this.doPriceRecalculate$.pipe(
         map(() => this.userOrdersStore
                 .map(order => order?.slot)
@@ -78,7 +100,7 @@ export class OrderService {
         shareReplay(1),
     );
 
-    onValidationTreeCompleted$ = this.onOrderListChanged$.pipe(
+    onValidationTreeCompleted$ = this.onOrderListChanged_inCart$.pipe(
         tap((orders => this.refreshValidationConfigsHashes(orders))),
         switchMap((orders) => this.updateConfigsBySections().pipe(mapTo(orders))),
         tap(orders => this.updateValidationTreeStructure(orders)),

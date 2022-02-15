@@ -68,6 +68,8 @@ export class CartComponent implements OnInit {
         ch_skype: new FormControl(),
     }, [requiredOneOfList(['phone', 'email', 'skype'])]);
 
+    archive$ = this.orderService.orderArchiveGroups$;
+
     constructor(
         private orderService: OrderService,
         private configurator: ConfiguratorService,

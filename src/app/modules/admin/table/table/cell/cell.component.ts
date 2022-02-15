@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange, SimpleChanges, ChangeDetectorRef} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef} from '@angular/core';
 import {DictService} from '../../../dict.service';
 import {Observable, of, forkJoin} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -12,6 +12,7 @@ export interface IRowSetting {
     dctKey?: string;
     titleFn?: (any) => Observable<string>;
     titleDictKey?: string;
+    valueKey?: string;
 }
 
 @Component({
@@ -35,12 +36,14 @@ export class CellComponent implements OnInit, OnChanges {
     }
 
     private converter(data): Observable<string[]> {
-        const rows$ = this.rs.map(rs => rs.titleFn ? rs.titleFn(data[rs.key]) : of(data[rs.key]));
+        if (!this.rs) { return ; }
+        const rows$ = this.rs?.map(rs => rs.titleFn ? rs.titleFn(data[rs.key]) : of(data[rs.key]));
         const obs = forkJoin(...rows$);
         return obs;
     }
 
     ngOnInit() {
+        if (!this.rs) { return ; }
         this.rs
             .filter(rs => rs.useDict && rs.dctKey)
             .forEach(rs => {
@@ -51,7 +54,7 @@ export class CellComponent implements OnInit, OnChanges {
                             return null;
                         }
 
-                        const targetDI = dictItems.find(i => i.id === itemId);
+                        const targetDI = dictItems.find(i => i?.[rs.valueKey ?? 'id'] === itemId);
                         return targetDI ? (rs.titleDictKey ? targetDI[rs.titleDictKey] : targetDI.title) : null;
                     })
                 );
@@ -65,7 +68,7 @@ export class CellComponent implements OnInit, OnChanges {
     }
 
     public rerender() {
-        this.cols = this.converter(this?.data?.data ?? {});
+        this.cols = this.converter(this?.data?.data ?? {}) ?? of([]);
         this.cdr.markForCheck();
     }
 

@@ -141,7 +141,7 @@
                             <select [name]="field.id" [id]="field.id" [disabled]="field.readonly" *ngIf="field.dctItems"
                                     [formControl]="field.control" (change)="selectControl(field, $event)">
                                 <option *ngIf="field.canBeNull" [value]="null">Не выбран</option>
-                                <option *ngFor="let item of field.dctItems" [value]="item.id">{{item.title}}</option>
+                                <option *ngFor="let item of field.dctItems" [value]="field.valueKey ? item[field.valueKey] : item.id">{{item.title}}</option>
                             </select>
                         </ng-container>
 

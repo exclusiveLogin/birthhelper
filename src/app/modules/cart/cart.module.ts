@@ -6,13 +6,15 @@ import { OrderBlockComponent } from './components/order-block/order-block.compon
 import { ContragentComponent } from './components/contragent/contragent.component';
 import {PipeModule} from 'app/pipes/pipe.module';
 import {ReactiveFormsModule} from '@angular/forms';
+import { ArchiveOrderGroupComponent } from './components/archive-order-group/archive-order-group.component';
 
 
 @NgModule({
     declarations: [
         CartComponent,
         OrderBlockComponent,
-        ContragentComponent
+        ContragentComponent,
+        ArchiveOrderGroupComponent
     ],
     exports: [
         ContragentComponent
