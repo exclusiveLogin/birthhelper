@@ -94,6 +94,11 @@ export class OrderService {
 
     onSlots$ = merge(this.doPriceRecalculate$, of(null)).pipe(
         map(() => this.userOrdersStore
+            .filter(o =>
+                o.status === 'pending'  ||
+                o.status === 'resolved' ||
+                o.status === 'rejected' ||
+                o.status === 'waiting')
                 .map(order => order?.slot)
                 .filter( _ => !!_ ),
         ),
@@ -340,14 +345,12 @@ export class OrderService {
     }
 
     getPriceByContragent(contragentId: number): Observable<number> {
-        console.log('getPriceByContragent fire id', contragentId);
         return this.onSlots$.pipe(
             map(slots => slots.filter(slot => slot._contragent.id === contragentId)),
             map((slots: PriceEntitySlot[]) => slots.map(slot => slot?.price ?? 0)),
             map((prices: number[]) => prices.map(price => +price)),
             map((prices: number[]) => prices.filter(price => !!price && !isNaN(price))),
             summatorPipe,
-            tap(_ => console.log('getPriceByContragent id', contragentId, _)),
         );
     }
 
