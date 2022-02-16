@@ -4,7 +4,7 @@ import {ODRER_ACTIONS, Order, OrderGroup, OrderSrc} from '../models/order.interf
 import {PriceEntitySlot} from '../models/entity.interface';
 import {map, mapTo, shareReplay, switchMap, tap} from 'rxjs/operators';
 import {hasher} from '../modules/utils/hasher';
-import {forkJoin, Observable, of, Subject} from 'rxjs';
+import {forkJoin, merge, Observable, of, Subject} from 'rxjs';
 import {summatorPipe} from '../modules/utils/price-summator';
 import {ConfiguratorConfigSrc, SelectionOrderSlot, TabConfig, TabFloorSetting} from '../modules/configurator/configurator.model';
 import {uniq} from '../modules/utils/uniq';
@@ -92,7 +92,7 @@ export class OrderService {
         }),
     );
 
-    onSlots$ = this.doPriceRecalculate$.pipe(
+    onSlots$ = merge(this.doPriceRecalculate$, of(null)).pipe(
         map(() => this.userOrdersStore
                 .map(order => order?.slot)
                 .filter( _ => !!_ ),
@@ -340,12 +340,14 @@ export class OrderService {
     }
 
     getPriceByContragent(contragentId: number): Observable<number> {
+        console.log('getPriceByContragent fire id', contragentId);
         return this.onSlots$.pipe(
             map(slots => slots.filter(slot => slot._contragent.id === contragentId)),
             map((slots: PriceEntitySlot[]) => slots.map(slot => slot?.price ?? 0)),
             map((prices: number[]) => prices.map(price => +price)),
             map((prices: number[]) => prices.filter(price => !!price && !isNaN(price))),
             summatorPipe,
+            tap(_ => console.log('getPriceByContragent id', contragentId, _)),
         );
     }
 
