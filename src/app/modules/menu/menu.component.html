@@ -141,7 +141,7 @@
             </ng-container>
 
             <ng-container *ngFor="let ctg of availableContragents$ | async; trackBy: trackByIdentity" >
-                <div class="ctg" *ngIf="getContragent(ctg.entKey, ctg.entId) | async as contragent">
+                <div class="ctg" *ngIf="getContragent(ctg.entId) | async as contragent">
                     <div class="ctg_head" [style]="{background: ctg.color}">
                         <input type="checkbox" [id]="'ctg_' + contragent.id" [checked]="isSelectedCTG(ctg)" (change)="selectCTG(ctg)">
                     </div>

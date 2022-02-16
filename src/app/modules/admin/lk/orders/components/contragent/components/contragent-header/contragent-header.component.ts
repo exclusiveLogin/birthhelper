@@ -27,9 +27,9 @@ export class ContragentHeaderComponent implements OnInit {
 
     ngOnInit(): void {
         if (!!this.contragent) {
-            this.contragent$ = this.restService.getEntity(this.contragent.entKey, this.contragent.entId);
+            this.contragent$ = this.restService.getEntity('ent_contragents', this.contragent.entId);
             this.bgColor = this.contragent.color ?? '#ffffff';
-            this.tpl = this['tpl_' + this.contragent?.entKey] ?? this.tpl_default;
+            this.tpl = this.tpl_ent_contragents ?? this.tpl_default;
         } else {
             this.tpl = this.tpl_default;
         }

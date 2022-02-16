@@ -3,7 +3,6 @@ import {IDictItem} from '../modules/admin/dict.service';
 export interface Permission {
     id: number;
     user_id: number;
-    contragent_entity_key: string;
     contragent_entity_id: number;
     permission_id: number;
     meta: {

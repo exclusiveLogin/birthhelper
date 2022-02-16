@@ -1,10 +1,6 @@
 <div class="order_table">
 
-    <div class="order_container cart-pack cart-pack--clinic"
-         [ngClass]="{
-            'cart-pack--clinic': ctg.entKey === 'ent_clinics',
-            'cart-pack--contragent': ctg.entKey === 'ent_contragents'
-           }">
+    <div class="order_container cart-pack cart-pack--contragent">
         <div class="order_container_head">
             <app-contragent-header *ngIf="ctg" [contragent]="ctg"></app-contragent-header>
         </div>

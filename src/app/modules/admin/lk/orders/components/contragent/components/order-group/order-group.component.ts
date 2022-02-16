@@ -321,7 +321,6 @@ export class OrderGroupComponent implements OnInit {
             floorKey: floor.key,
             entKey: this.filters?.slotEntityKey ?? slot?.__entity_key,
             entId: slot.id,
-            contragent_entity_key: this.ctg.entKey,
             contragent_entity_id: this.ctg.entId,
             status: 'waiting',
             group_token: this.filters?.order?.group_token ?? this._orderGroup.groupMode === 'order' ? this._orderGroup.group_id : null,

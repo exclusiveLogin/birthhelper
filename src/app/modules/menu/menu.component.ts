@@ -69,7 +69,7 @@ export class MenuComponent implements OnInit {
         map(([permissions, mode]) =>
             permissions
                 .filter(p => p?.meta?.permission_id?.slug === mode)
-                .map(p => ({entId: p.contragent_entity_id, entKey: p.contragent_entity_key, color: this.getRandomColor()}))),
+                .map(p => ({entId: p.contragent_entity_id, color: this.getRandomColor()}))),
         tap(data => console.log('availableContragents$: ', data)),
         tap(av => this.lkService.setAvailableContragents(av)),
         shareReplay(1),
@@ -131,15 +131,15 @@ export class MenuComponent implements OnInit {
         return PermissionMap[perm];
     }
 
-    getContragent(key: string, id: number): Observable<Contragent> {
-        return this.restService.getEntity(key, id);
+    getContragent(id: number): Observable<Contragent> {
+        return this.restService.getEntity('ent_contragents', id);
     }
 
     getRandomColor(): string {
         return randomColor();
     }
 
-    trackByIdentity(index: number, item: { entKey: string, entId: number }) {
+    trackByIdentity(index: number, item: { entId: number }) {
         return item.entId;
     }
 

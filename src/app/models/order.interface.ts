@@ -16,7 +16,6 @@ export interface OrderSrc {
     section_key: string;
     refferer: number;
     status: StatusType;
-    contragent_entity_key?: string;
     contragent_entity_id?: number;
     group_token: string;
     datetime_update: string;
@@ -30,7 +29,6 @@ export interface OrderRequest {
     tab_key?: string;
     floor_key?: string;
     section_key?: string;
-    contragent_entity_key?: string;
     contragent_entity_id?: number;
     contacts?: OrderContacts;
     id?: number;
@@ -143,7 +141,6 @@ export class Order implements IOrder {
     cartTitle: string;
     cartTitleAccent: string;
     cartPhoto: MetaPhoto;
-    contragent_entity_key: string;
     contragent_entity_id: number;
     _status: 'pending' | 'error' | 'refreshing' | 'loading' | 'stable' = 'pending';
 
@@ -217,7 +214,6 @@ export function orderRestMapper(selection: SelectionOrderSlot, action: ODRER_ACT
             tab_key: selection.tabKey,
             floor_key: selection.floorKey,
             section_key: selection.sectionKey,
-            contragent_entity_key: selection.contragent_entity_key,
             contragent_entity_id: selection.contragent_entity_id,
             action,
             id: selection.id,

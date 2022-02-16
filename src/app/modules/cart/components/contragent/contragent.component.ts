@@ -61,7 +61,7 @@ export class ContragentComponent implements OnInit {
 
         const contragentData = this.ordersService.contragentHashMap[this._validationTreeByContragent.contragentHash];
         this.contragent$ = contragentData
-            ? this.restService.getEntity<IClinicSrc>(contragentData.entKey, contragentData.id)
+            ? this.restService.getEntity<IClinicSrc>('ent_contragents', contragentData.id)
                 .pipe(map(c => Clinic.createClinicMini(c)))
             : of(null);
     }

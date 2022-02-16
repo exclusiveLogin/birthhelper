@@ -84,7 +84,6 @@ export interface SelectionOrderSlot {
     floorKey?: string;
     sectionKey?: string;
     id?: number;
-    contragent_entity_key?: string;
     contragent_entity_id?: number;
     contacts?: OrderContacts;
     status?: StatusType;

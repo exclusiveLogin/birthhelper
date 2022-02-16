@@ -7,7 +7,6 @@ import {shareReplay, tap} from 'rxjs/operators';
 
 export interface CTG {
     entId: number;
-    entKey: string;
     color: string;
 }
 

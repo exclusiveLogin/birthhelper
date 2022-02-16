@@ -83,10 +83,7 @@ export class ConfiguratorService {
     onSynced$: Observable<null> = this._syncOrders$.pipe();
 
     onValidationTreeChanged$ = combineLatest([this.onContragent$, this.onConfigLoad$]).pipe(
-        switchMap(() => this.orderService.getValidationTreeByContragent(
-            this.currentContragentID$.value,
-            this.currentContragentEntityKey$.value),
-        ),
+        switchMap(() => this.orderService.getValidationTreeByContragent(this.currentContragentID$.value)),
     );
 
     onValidationStateByContragentChanged$ = this.onValidationTreeChanged$.pipe(
@@ -119,7 +116,6 @@ export class ConfiguratorService {
             const operation = targetSelection ? 'remove' : 'add';
             if (operation === 'add') {
                 selection.contragent_entity_id = this.currentContragentID$.value;
-                selection.contragent_entity_key = this.currentContragentEntityKey$.value;
             }
             operation === 'remove'
                 ? targetSelection._status = 'selected'

@@ -47,7 +47,7 @@ export class OrderService {
     validationTree: ValidationTreeContragent[] = [];
     ordersArchive: OrderGroup[] = [];
     uniqContragentHashes: string[] = [];
-    contragentHashMap: {[hash: string]: {id: number, entKey: string}};
+    contragentHashMap: {[hash: string]: {id: number}};
     uniqSectionKeys: SectionType[] = [];
     sectionConfigs: { [id in SectionType]?: ConfiguratorConfigSrc} = {};
     userOrdersStore: Order[];
@@ -122,8 +122,8 @@ export class OrderService {
     private refreshValidationConfigsHashes(orders: Order[]): void {
         // собираем уникальные констрагенты по которым будем группировать заказы (позиции)
         this.contragentHashMap = {};
-        const c_hashes = orders.filter(o => !!o?.contragent_entity_key && !!o?.contragent_entity_id).map(o => {
-            const body = {id: o.contragent_entity_id, entKey: o.contragent_entity_key};
+        const c_hashes = orders.filter(o => !!o?.contragent_entity_id).map(o => {
+            const body = {id: o.contragent_entity_id};
             const hash = hasher(body);
             this.contragentHashMap[hash] = body;
             return hash;
@@ -154,7 +154,7 @@ export class OrderService {
     private updateValidationTreeStructure(orders: Order[]): void {
         this.validationTree = this.uniqContragentHashes.map(hash => {
             const currentContragentOrders = orders.filter(o => {
-                const body = { id: o.contragent_entity_id, entKey: o.contragent_entity_key };
+                const body = { id: o.contragent_entity_id };
                 return hasher(body) === hash;
             });
             if (!currentContragentOrders.length) { return ; }
@@ -265,8 +265,8 @@ export class OrderService {
         }
     }
 
-    getValidationTreeByContragent(contragentId: number, contragentEntityKey: string): Observable<ValidationTreeContragent> {
-        const hash =  hasher({id: contragentId, entKey: contragentEntityKey});
+    getValidationTreeByContragent(contragentId: number): Observable<ValidationTreeContragent> {
+        const hash =  hasher({id: contragentId});
         return this.onValidationTreeCompleted$.pipe(
             map(tree => tree.find(t => t.contragentHash === hash)));
     }

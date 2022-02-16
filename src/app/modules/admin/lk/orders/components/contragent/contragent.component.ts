@@ -21,10 +21,10 @@ export class ContragentComponent implements OnInit {
     public ctg: CTG;
     @Input()
     private set contragent(value: CTG) {
-        if (value?.entId && value?.entKey) {
+        if (value?.entId) {
             this.isLoading = true;
             this.ctg = value;
-            this.contragent$ = this.restService.getEntity<Contragent>(value.entKey, value.entId);
+            this.contragent$ = this.restService.getEntity<Contragent>('ent_contragents', value.entId);
         }
     }
 
@@ -34,7 +34,6 @@ export class ContragentComponent implements OnInit {
             action: ODRER_ACTIONS.GET,
             groupMode: filters.group_mode,
             contragent_entity_id: this.ctg.entId,
-            contragent_entity_key: this.ctg.entKey,
             status: filters.status,
             section_key: filters.section_key,
         }) as OrderRequest),
