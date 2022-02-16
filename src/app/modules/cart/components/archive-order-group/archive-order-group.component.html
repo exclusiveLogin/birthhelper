@@ -68,7 +68,7 @@
     <ng-container *ngIf="data$ | async as data">
         <div class="tbl_row" (click)="wrap()">
             <!--        ID      -->
-            <div class="order_tbl__item extra" [title]="data.group_id">{{data.group_id}}</div>
+            <div class="order_tbl__item extra ellipsis" [title]="data.group_id">{{data.group_id}}</div>
             <!--        дата оформления      -->
             <div class="order_tbl__item long">{{getLastDate()}}</div>
             <!--        статус      -->
