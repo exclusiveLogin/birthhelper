@@ -18,6 +18,7 @@ export class ContragentHeaderComponent implements OnInit {
     }
 
     @ViewChild('ctg_ent_clinics', {static: true}) public tpl_ent_clinics: TemplateRef<any>;
+    @ViewChild('ctg_ent_contragents', {static: true}) public tpl_ent_contragents: TemplateRef<any>;
     @ViewChild('default', {static: true}) public tpl_default: TemplateRef<any>;
     tpl: TemplateRef<any>;
 

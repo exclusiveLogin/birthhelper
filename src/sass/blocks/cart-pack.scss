@@ -2,6 +2,13 @@
     &--clinic {
         .cart-pack__body-title {
             background: url("/img/icons/doctor.svg") no-repeat 30px center;
+            background-size: 36px;
+        }
+    }
+    &--contragent {
+        .cart-pack__body-title {
+            background: url("/img/icons/handshake.svg") no-repeat 30px center;
+            background-size: 36px;
         }
     }
     &--insurance {
@@ -10,6 +17,7 @@
         }
         .cart-pack__body-title {
             background: url("/img/icons/Insurance.svg") no-repeat 30px center;
+            background-size: 36px;
         }
     }
 }
