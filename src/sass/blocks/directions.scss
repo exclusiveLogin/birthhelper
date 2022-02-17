@@ -17,17 +17,19 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-width: 235px;
+    min-width: 248px;
     height: 110px;
     border-radius: 5px;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: 50%;
     background-size: 100%;
     text-decoration: none;
     overflow: hidden;
-    transition: 0.4s;
+    transition: .4s;
     margin: 0 0 15px;
     flex: 1;
+    font-size: 1.6rem;
+    text-shadow: 3px 3px 5px rgb(0 0 0 / 30%);
 
     &::after {
         position: absolute;
@@ -36,7 +38,7 @@
         right: 0;
         bottom: 0;
         left: 0;
-        opacity: 0.65;
+        opacity: 0.7;
         z-index: 0;
     }
 
@@ -53,7 +55,6 @@
 
         &::after {
             background-color: #f87937;
-            opacity: 0.5;
         }
     }
 
@@ -111,8 +112,6 @@
 }
 
 .directions__txt {
-    font-size: 16px;
-    font-weight: 500;
     line-height: 1.19;
     color: $white;
     margin: 0;
