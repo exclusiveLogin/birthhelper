@@ -9,8 +9,6 @@
 
 .steps__item {
     position: relative;
-    display: inline-block;
-    vertical-align: middle;
     padding: 35px 37px 35px 30px;
     background-color: #fff;
     border-radius: 5px;
@@ -18,11 +16,18 @@
     background-repeat: no-repeat;
     margin: 32px;
     flex: 1;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 
 
     &-first {
         background-image: url(../../img/notepad-bg.svg);
         background-position: calc(100% - 7px) 45px;
+
+        .steps__icon {
+            padding-top: 16px;
+        }
     }
 
     &-second {
@@ -55,14 +60,18 @@
 }
 
 .steps__txt {
-    font-size: 16px;
+    font-size: 1.4rem;
     line-height: 1.25;
     color: #7d828a;
     margin: 26px 0 0;
     max-width: 220px;
+    text-align: center;
 }
 
 .steps__link {
     font-weight: 500;
     color: #7d828a;
+}
+.steps__icon{
+    width: 96px;
 }
