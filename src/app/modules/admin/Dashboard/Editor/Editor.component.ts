@@ -360,14 +360,9 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
     }
 
     public linkFromTableSelected(selected: ITableItem, field: ILinkFieldSetting) {
-        let value = null;
-        if (!!selected && !!selected.data && selected.data.id) {
-            value = selected.data.id;
-        }
+        const value = field.proxyKey ? selected?.data?.[field.proxyKey] : selected?.data?.id;
         const key = field.proxyTo || field.entKey;
-        if (this.form.get(key)) {
-            this.form.get(key).setValue(value);
-        }
+        this.form.get(key)?.setValue(value);
     }
 
     public removeEntity() {

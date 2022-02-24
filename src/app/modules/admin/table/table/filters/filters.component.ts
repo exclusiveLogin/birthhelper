@@ -45,10 +45,11 @@ export class FiltersComponent implements OnInit, OnDestroy {
                 })),
                 switchMap(fields => {
                     const flp = this.fields.filter(f => !!f.formLink).map(f => ({...f.formLink, key: f.name}));
-                    return merge(...fields.map(f => f.type === 'string' ?
-                        f.control.valueChanges.pipe(debounceTime(1000), map(val => [f.name, val])) :
-                        f.control.valueChanges.pipe(map(val => [f.name, val]))
-                    ),
+                    return merge(
+                        ...fields.map(f => f.type === 'string' ?
+                            f.control.valueChanges.pipe(debounceTime(1000), map(val => [f.name, val])) :
+                            f.control.valueChanges.pipe(map(val => [f.name, val]))
+                        ),
                         ...flp.map(_ => this.forms.getFormFieldVC$(_.formKey, _.formFieldKey)
                             .pipe(
                                 map(value => [_.key, value]))),

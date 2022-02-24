@@ -51,7 +51,11 @@
           class="form-control"
         >
           <option value>Не выбран</option>
-          <option *ngFor="let item of field.items$ | async" [value]="item.id">{{item.title}}</option>
+          <option
+              *ngFor="let item of field.items$ | async"
+              [value]="field?.valueKey ? item[field.valueKey] : item.id">
+              {{item.title}}
+          </option>
         </select>
       </ng-container>
 

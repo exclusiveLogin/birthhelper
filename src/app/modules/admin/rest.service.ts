@@ -6,7 +6,7 @@ import {IEntityItem, ISet} from './entity.model';
 import {ITableFilter} from './table/table/table.component';
 import {IContainerData} from './container.model';
 import {LoaderService} from './loader.service';
-import {switchMap, take, tap} from 'rxjs/operators';
+import {map, switchMap, take, tap} from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {InterceptorService} from '../auth-module/interceptor.service';
 
@@ -274,7 +274,7 @@ export class RestService {
                 this.interceptor.interceptor(),
             );
 
-        const req = this.createTokenizeRequest(http);
+        const req = this.createTokenizeRequest(http).pipe(map(_ => _.body));
 
         this.loader.show();
 

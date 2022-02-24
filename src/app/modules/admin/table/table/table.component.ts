@@ -38,6 +38,7 @@ export interface ITableFilter {
     items$: Observable<IDictItem[]>;
     control: FormControl;
     value?: any;
+    valueKey?: string;
     override?: boolean;
     formLink?: {
         formKey?: string,

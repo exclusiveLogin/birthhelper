@@ -25,6 +25,7 @@ export interface IFieldSetting {
   readonly?: boolean;
   hide?: boolean;
   proxyTo?: string;
+  proxyKey?: string;
   image?: { urlType: string, urlKey: string };
   refresher?: Function;
   showOnTable?: boolean;
@@ -44,6 +45,7 @@ export interface ILinkFieldSetting {
   dummyTitle?: string;
   entType?: string;
   proxyTo?: string;
+  proxyKey?: string;
   readonly?: boolean;
   filters?: ITableFilter[];
   image?: { urlType: string, urlKey: string };
