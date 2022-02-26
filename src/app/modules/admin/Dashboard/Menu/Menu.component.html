@@ -1,13 +1,35 @@
 <div class="bh_admin_menu_title">Главное меню</div>
+<div class="accordion">
+    <div class="menu_group"
+         *ngFor="let menuGroup of menuRepo"
+    >
+        <div class="card-header">
+            <h2 class="mb-0" [id]="menuGroup.key">
+                <button
+                    data-toggle="collapse"
+                    data-target="#collapseOne"
+                    class="btn btn-link btn-block text-left"
+                    type="button"
+                    (click)="toggleGroup(menuGroup.key)"
+                    [attr.aria-controls]="menuGroup.key">
+                    {{ menuGroup.title }}
+                </button>
+            </h2>
+        </div>
 
-<!-- <div class="bh_admin_menu_item">Услуги сайта</div>
-<div class="bh_admin_menu_item">Пользователи</div>
-<div class="bh_admin_menu_item">Рассылка</div>
-<div class="bh_admin_menu_item">Подписки</div>
-<div class="bh_admin_menu_item">Галереи</div>
-<div class="bh_admin_menu_item">Настройки</div> -->
+        <div [id]="menuGroup.key"
+             class="collapse"
+             [ngClass]="{show: showed(menuGroup.key)}"
+        >
+            <div class="accordion-body">
+                <div class="bh_admin_menu_item"
+                     *ngFor="let menuItem of menuGroup.list"
+                     (click)="selectMenuItem(menuItem)"
+                >
+                    {{ menuItem.title }}
+                </div>
+            </div>
+        </div>
+    </div>
 
-
-<div class="bh_admin_menu_item"
-    *ngFor="let menuItem of menu"
-    (click)="selectMenuItem( menuItem )">{{ menuItem.title }}</div>
+</div>

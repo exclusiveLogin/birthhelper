@@ -2,7 +2,7 @@ import {AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleCha
 import {FormService, IFieldSetting, ILinkFieldSetting} from '../../form.service';
 import {DictService, IDictItem} from '../../dict.service';
 import {IImageOptions, ITableItem} from '../../table/table/table.component';
-import {EMENUMODE, IMenuRepo} from '../Dashboard.component';
+import {EMENUMODE, IMenuRepoItem} from '../Dashboard.component';
 import {IEntityItem} from '../../entity.model';
 import {FormGroup} from '@angular/forms';
 import {ContainerService} from '../../container.service';
@@ -47,7 +47,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
     }
 
     @Input() mode: EMENUMODE;
-    @Input() menu: IMenuRepo;
+    @Input() menu: IMenuRepoItem;
 
     public stable = false;
 

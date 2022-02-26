@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {MenuService} from '../menu.service';
-import {IMenuRepo, EMENUMODE} from '../Dashboard.component';
+import {IMenuRepoItem, EMENUMODE} from '../Dashboard.component';
 
 @Component({
     selector: 'app-submenu',
@@ -12,7 +12,7 @@ export class SubmenuComponent implements OnInit {
     constructor(private menuService: MenuService) {
     }
 
-    public menuSelected: IMenuRepo;
+    public menuSelected: IMenuRepoItem;
     public _mode: EMENUMODE.CREATE | EMENUMODE.DELETE | EMENUMODE.EDIT;
 
     ngOnInit() {
