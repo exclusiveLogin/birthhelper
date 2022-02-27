@@ -322,6 +322,20 @@
                 <p class="popup__dop-desc" *ngIf="!data?.description_ext1">{{data.description}}</p>
                 <p class="popup__dop-desc">{{data.description_ext1}}</p>
                 <p class="popup__dop-desc">{{data.description_ext2}}</p>
+                <ng-container *ngIf="data?._entity?.advantage">
+                    <div class="popup__mention">
+                        <i class="fa-solid fa-thumbs-up fa-lg"></i>
+                        <strong>Преимущества:</strong>
+                        <span>{{data?._entity?.advantage}}</span>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="data?._entity?.lack">
+                    <div class="popup__mention">
+                        <i class="fa-solid fa-thumbs-down fa-lg"></i>
+                        <strong>Недостатки:</strong>
+                        <span>{{data?._entity?.lack}}</span>
+                    </div>
+                </ng-container>
             </div>
         </div>
     </div>

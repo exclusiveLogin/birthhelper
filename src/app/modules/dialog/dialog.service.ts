@@ -6,12 +6,17 @@ import {Observable, Subject} from 'rxjs';
     providedIn: 'root'
 })
 export class DialogService {
+
     default_id_dialog = 'main_app_dialog';
+
     default_mode: DialogType = 'popup';
+
     constructor() {
     }
+
     _sender$ = new Subject<Partial<DialogAction>>();
     dialogBus$: Observable<Partial<DialogAction>> = this._sender$.pipe();
+
     configDefault(config: Partial<DialogServiceConfig>): void {
         this.default_id_dialog = config.idDialog ?? this.default_id_dialog;
         this.default_mode = config.mode ?? this.default_mode;

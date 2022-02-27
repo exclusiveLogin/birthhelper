@@ -91,6 +91,7 @@ export class CartComponent implements OnInit {
         this.configurator.clearAllSelections();
         this.orderService.clearCart();
     }
+
     attemptSubmitCart(): void {
         this.authService.onUserAccess$.pipe(
             take(1),
@@ -98,8 +99,9 @@ export class CartComponent implements OnInit {
     }
 
     openDialogSuggestion(): void {
-        this.dialogService.showDialogByTemplate(this.tpl_suggestion, {data: {hw: ''}, mode: 'dialog'});
+        this.dialogService.showDialogByTemplate(this.tpl_suggestion, {mode: 'dialog'});
     }
+
     openDialogContacts(): void {
         this.authService.user$.pipe(take(1))
             .subscribe(user => {
@@ -114,13 +116,15 @@ export class CartComponent implements OnInit {
                     ch_email: user.ch_email,
                     ch_skype: user.ch_skype,
                 });
-                this.dialogService.showDialogByTemplate(this.tpl_contacts, {data: {hw: ''}, mode: 'dialog'});
+                this.dialogService.showDialogByTemplate(this.tpl_contacts, {mode: 'dialog'});
             });
     }
+
     closeDialog(ev: MouseEvent): void {
         ev.preventDefault();
         this.dialogService.closeOpenedDialog('main_app_dialog');
     }
+
     submitDialog(ev: MouseEvent): void {
         ev.preventDefault();
         this.dialogService.closeOpenedDialog('main_app_dialog');
@@ -130,6 +134,7 @@ export class CartComponent implements OnInit {
         };
         this.orderService.submitCart(payload);
     }
+
     gotoRegistration(): void {
         this.dialogService.closeOpenedDialog('main_app_dialog');
         this.router.navigate(['/auth']).then();
