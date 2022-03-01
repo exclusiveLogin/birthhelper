@@ -42,18 +42,31 @@ export class DashboardComponent implements OnInit {
             title: 'Общее',
             list: [
                 {
-                name: 'ent_contragents',
-                title: 'Контрагенты',
-                titleVoc: 'Контрагента',
-                titleVocs: 'Контрагентов',
-                type: 'entity',
-                modes: [
-                    EMENUMODE.VIEW,
-                    EMENUMODE.CREATE,
-                    EMENUMODE.EDIT,
-                    EMENUMODE.DELETE,
-                ]
-            },
+                    name: 'ent_addresses',
+                    title: 'Адреса системы',
+                    titleVoc: 'адреса',
+                    titleVocs: 'адресов',
+                    type: 'entity',
+                    modes: [
+                        EMENUMODE.VIEW,
+                        EMENUMODE.CREATE,
+                        EMENUMODE.EDIT,
+                        EMENUMODE.DELETE,
+                    ]
+                },
+                {
+                    name: 'ent_contragents',
+                    title: 'Контрагенты',
+                    titleVoc: 'Контрагента',
+                    titleVocs: 'Контрагентов',
+                    type: 'entity',
+                    modes: [
+                        EMENUMODE.VIEW,
+                        EMENUMODE.CREATE,
+                        EMENUMODE.EDIT,
+                        EMENUMODE.DELETE,
+                    ]
+                },
                 {
                     name: 'ent_doctor',
                     title: 'Специалисты',
