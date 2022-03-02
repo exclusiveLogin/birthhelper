@@ -10,4 +10,6 @@ export const environment = {
     fileServer: env['fileServer'] || 'http://localhost:3000',
     backend: env['backend'] || 'http://localhost:3000',
     static: env['static'] || 'http://localhost:3000/static',
+    datataSecretKey: '91180214b5687e1ee89069789b440a28f1c638d6',
+    dadataAuthorizationKey: 'a778bc907289afb630ad4e6a14d99e6f58ba8e47',
 };

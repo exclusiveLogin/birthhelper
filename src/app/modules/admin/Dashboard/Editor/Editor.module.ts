@@ -6,6 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AutocompleteComponent } from '../../autocomplete/autocomplete.component';
 import { ImageComponent } from './components/image/image.component';
 import {ToastrService} from 'ngx-toastr';
+import { MapComponent } from './components/map/map.component';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import {ToastrService} from 'ngx-toastr';
   declarations: [
     EditorComponent,
     AutocompleteComponent,
-    ImageComponent
+    ImageComponent,
+    MapComponent
   ],
   exports: [
     EditorComponent
