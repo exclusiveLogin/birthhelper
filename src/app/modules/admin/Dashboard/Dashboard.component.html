@@ -1,12 +1,13 @@
 <div class="container-fluid">
-  <div class="row" style="display: flex; flex-grow: 1">
+    <div class="row" style="display: flex; flex-grow: 1">
 
-    <app-menu class="col-md-4 col-12 pl-0 pr-0" [menuRepo]="menuRepo"></app-menu>
-    <div class="bh_admin_dashboard col-md-8 col-12">
-      <app-submenu></app-submenu>
-      <app-editor *ngIf="selectedMenu && selectedMode !== null" [mode]="selectedMode" [menu]="selectedMenu"></app-editor>
+        <app-menu class="col-md-4 col-12 pl-0 pr-0" [menuRepo]="menuRepo"></app-menu>
+        <div class="bh_admin_dashboard col-md-8 col-12">
+            <app-submenu></app-submenu>
+            <app-editor *ngIf="selectedMenu && selectedMode !== null" [mode]="selectedMode"
+                        [menu]="selectedMenu"></app-editor>
+        </div>
+
     </div>
-
-  </div>
 </div>
 

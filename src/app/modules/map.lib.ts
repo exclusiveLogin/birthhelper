@@ -7,7 +7,7 @@ const MAP_COPYRIGHT = '© Birthhelper since 2019';
 export enum TilesType { scheme }
 
 export const TILES_URL: { readonly [key in TilesType]: string } = {
-    [TilesType.scheme]: 'https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png',
+    [TilesType.scheme]: 'https://{s}.tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=ioqyVljKKo8WJGvNkdUvcSTcBs75TruAiIkQ2OAaWUZ1p6Z1Mh1VljBSDuh4wfCT',
 };
 
 const TILE_OPTIONS = {
@@ -43,9 +43,9 @@ export class LLMap {
     constructor() {
     }
 
-    build(element: string, options: L.MapOptions = {}, tileType: TilesType = TilesType.scheme): this {
+    build(element: string | HTMLElement, options: L.MapOptions = {}, tileType: TilesType = TilesType.scheme): this {
         options.tap = false;
-        this.map = L.map(document.getElementById(element), options);
+        this.map = L.map(typeof element === 'string' ? document.getElementById(element) : element, options);
         this.tileLayer = L.tileLayer(TILES_URL[tileType], TILE_OPTIONS).addTo(this.map);
         return this;
     }

@@ -25,7 +25,12 @@
                             "src/favicon.ico",
                             "src/favicon.png",
                             "src/img",
-                            "src/icons"
+                            "src/icons",
+                            {
+                                "glob": "**/*",
+                                "input": "node_modules/leaflet/dist/images/",
+                                "output": "src/assets"
+                            }
                         ],
                         "styles": [
                             "src/styles.scss",
