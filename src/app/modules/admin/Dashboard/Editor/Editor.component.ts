@@ -11,6 +11,7 @@ import {BehaviorSubject, Subject, Subscription} from 'rxjs';
 import {distinct, filter} from 'rxjs/operators';
 import {ToastrService} from 'ngx-toastr';
 import {EntityService} from '../../entity.service';
+import {LatLng} from 'leaflet';
 
 @Component({
     selector: 'app-editor',
@@ -68,6 +69,19 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         urlType: 'simple',
         urlKey: 'filename',
     };
+
+    setPosition(position: LatLng, field: IFieldSetting): void {
+        const mapSetting = field.mapMeta;
+        if (!mapSetting) { return; }
+
+        if (position?.lat && mapSetting?.geocoder?.latFieldKey) {
+            this.form.get(mapSetting.geocoder.latFieldKey)?.setValue(position?.lat.toFixed(4));
+        }
+
+        if (position?.lng && mapSetting?.geocoder?.lonFieldKey) {
+            this.form.get(mapSetting.geocoder.lonFieldKey)?.setValue(position?.lng.toFixed(4));
+        }
+    }
 
     registerConditionStream() {
         // складываем эмиттеров событий(без повторений)

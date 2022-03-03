@@ -106,7 +106,7 @@
                         <ng-container *ngSwitchCase="'map'">
                             <label [for]="field.id"
                                    class="bh_label">{{ field.title }}{{field.required ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull ? '*' : ''}}</label>
-                            <app-map [id]="field.id" [ngStyle]="{height: field?.mapMeta?.height ?  field?.mapMeta?.height + 'px' : '250px', width: '90%'}"></app-map>
+                            <app-map (position)="setPosition($event, field)" [id]="field.id" [ngStyle]="{height: field?.mapMeta?.height ?  field?.mapMeta?.height + 'px' : '250px', width: '90%'}"></app-map>
                         </ng-container>
 
                         <ng-container *ngSwitchCase="'string'">
