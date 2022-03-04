@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {FormService, IFieldSetting, ILinkFieldSetting} from '../../form.service';
 import {DictService, IDictItem} from '../../dict.service';
 import {IImageOptions, ITableItem} from '../../table/table/table.component';
@@ -7,11 +7,12 @@ import {IEntityItem} from '../../entity.model';
 import {FormGroup} from '@angular/forms';
 import {ContainerService} from '../../container.service';
 import {IFileAdditionalData, IRestBody} from '../../rest.service';
-import {BehaviorSubject, Subject, Subscription} from 'rxjs';
-import {distinct, filter} from 'rxjs/operators';
+import {BehaviorSubject, combineLatest, merge, NEVER, of, Subject, Subscription} from 'rxjs';
+import {distinct, filter, map, mapTo, tap} from 'rxjs/operators';
 import {ToastrService} from 'ngx-toastr';
 import {EntityService} from '../../entity.service';
 import {LatLng} from 'leaflet';
+import {DadataService} from '@services/dadata.service';
 
 @Component({
     selector: 'app-editor',
@@ -26,6 +27,8 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         private ent: EntityService,
         private cont: ContainerService,
         private toastr: ToastrService,
+        private dadata: DadataService,
+        private cdr: ChangeDetectorRef,
     ) {
     }
 
@@ -70,9 +73,14 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         urlKey: 'filename',
     };
 
+    clearField(field: IFieldSetting): void {
+        field.control.reset();
+        this.currentService[field.id] = null;
+    }
     setPosition(position: LatLng, field: IFieldSetting): void {
         const mapSetting = field.mapMeta;
-        if (!mapSetting) { return; }
+        const positionValid = position?.lat && position.lng;
+        if (!mapSetting || !positionValid) { return; }
 
         if (position?.lat && mapSetting?.geocoder?.latFieldKey) {
             this.form.get(mapSetting.geocoder.latFieldKey)?.setValue(position?.lat.toFixed(4));
@@ -80,6 +88,22 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
 
         if (position?.lng && mapSetting?.geocoder?.lonFieldKey) {
             this.form.get(mapSetting.geocoder.lonFieldKey)?.setValue(position?.lng.toFixed(4));
+        }
+
+        if (field?.mapMeta?.geocoder?.provider === 'dadata' && field?.mapMeta?.geocoder?.addressFieldKey) {
+            const _field = this.form.get(mapSetting.geocoder.addressFieldKey);
+            if (!_field) { return; }
+            this.dadata.getDadataResponseByPosition(position.lat, position.lng).pipe(
+                map(data => data?.suggestions?.[0]?.value),
+                filter(_ => !!_),
+                tap(data => {
+                    if (
+                        this.currentService?.[field?.mapMeta?.geocoder?.addressFieldKey] &&
+                        field?.mapMeta?.geocoder?.addressRewriteOnlyEmpty
+                    ) { return; }
+                    _field?.setValue(data);
+                }))
+                .toPromise();
         }
     }
 
@@ -181,6 +205,29 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
                         }
                         this.checkConditionFields();
                     });
+            }
+        });
+
+        // after init all fields
+        this.fields.forEach(field => {
+            if (field.type === 'map') {
+                const fieldLatValueControl = this.fields.find(f => f.id === field?.mapMeta?.geocoder?.latFieldKey)?.control;
+                const fieldLonValueControl = this.fields.find(f => f.id === field?.mapMeta?.geocoder?.lonFieldKey)?.control;
+                if (fieldLatValueControl && fieldLonValueControl) {
+                    field.mapPosition$ =
+                        merge(fieldLatValueControl.valueChanges, fieldLonValueControl.valueChanges, of(null)).pipe(
+                            mapTo([fieldLatValueControl, fieldLonValueControl]),
+                            map(([la, ln]) => [la.value, ln.value]),
+                            tap(_ => console.log('new position raw, ', _)),
+                            filter(([lat, lng]) =>
+                                !!lat
+                                && !!lng
+                                && Number.isFinite(lat)
+                                && Number.isFinite(lng)),
+                            map(([lat, lng]) => new LatLng(lat, lng)),
+                            tap(_ => console.log('new position, ', _)),
+                        );
+                }
             }
         });
 
@@ -295,6 +342,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
 
                 this.registerConditionStream();
                 this.rerenderFields();
+                this.cdr.markForCheck();
             }, (err) => this.currentError = err.message ? err.message : err);
         }
     }

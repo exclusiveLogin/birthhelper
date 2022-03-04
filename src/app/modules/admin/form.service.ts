@@ -4,6 +4,7 @@ import {MenuService} from './Dashboard/menu.service';
 import {Observable, of} from 'rxjs';
 import {distinctUntilChanged, filter, map, pluck, tap} from 'rxjs/operators';
 import {ITableFilter} from './table/table/table.component';
+import {LatLng} from 'leaflet';
 
 export interface MapMeta {
     geocoder?: {
@@ -43,6 +44,7 @@ export interface IFieldSetting {
     showOnTable?: boolean;
     valueKey?: string;
     mapMeta?: MapMeta;
+    mapPosition$?: Observable<LatLng>;
 }
 
 export interface ILinkFieldSetting {

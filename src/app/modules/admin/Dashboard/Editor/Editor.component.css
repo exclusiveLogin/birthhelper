@@ -4,6 +4,9 @@
     flex-grow: 1;
     background-color: antiquewhite;
 }
+.field_btn {
+    cursor: pointer;
+}
 
 .bh_block {
     display: flex;
