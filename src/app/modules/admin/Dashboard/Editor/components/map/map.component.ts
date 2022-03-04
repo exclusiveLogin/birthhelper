@@ -68,6 +68,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
     renderPoint(_marker: Marker): void {
         this.lfgMarker.clearLayers();
         _marker.addTo(this.lfgMarker);
+        this.map.fitByBounds(this.lfgMarker.getBounds());
     }
 
 }
