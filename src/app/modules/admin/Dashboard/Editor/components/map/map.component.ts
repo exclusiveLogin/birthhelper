@@ -33,10 +33,10 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         switchMap(q => this.dadata.getDadataResponseBySearch(q)),
         map(response => response?.suggestions ?? []),
     );
-
     @ViewChild('map') mapRef: ElementRef;
     @Input() position$: Observable<LatLng>;
     @Output() position = new EventEmitter<LatLng>();
+    filterFn = (items: IDadataSuggestion<IDadataSearchData>[], query: string) => !!query && query.length > 2 ? items : [];
 
     constructor(
         private dadata: DadataService,

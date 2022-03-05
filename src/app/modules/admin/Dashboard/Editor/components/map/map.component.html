@@ -11,7 +11,9 @@
             (selected)='selectAddress($event)'
             (inputChanged)='searchAddress($event)'
             [itemTemplate]="itemTemplate"
-            [notFoundTemplate]="notFoundTemplate">
+            [notFoundTemplate]="notFoundTemplate"
+            [customFilter]="filterFn"
+        >
         </ng-autocomplete>
 
         <ng-template #itemTemplate let-item>
