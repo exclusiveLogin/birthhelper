@@ -11,7 +11,7 @@ export interface IDadataPositionRequest {
     language?:	string; // 		ru	На каком языке вернуть результат (ru / en)
 }
 
-interface IDadataData {
+export interface IDadataPositionData {
     country: string; // 	Страна
     country_iso_code: string; // 	ISO-код страны (двухсимвольный)
     federal_district: string; // 	Федеральный округ
@@ -87,100 +87,108 @@ interface IDadataData {
     history_values: string; // [ ]	Список исторических названий объекта нижнего уровня.
 }
 
-interface IDadataSuggestion {
+export interface IDadataSearchData {
+    postal_code: string;
+    country: string;
+    country_iso_code: string;
+    federal_district: string;
+    region_fias_id: string;
+    region_kladr_id: string;
+    region_iso_code: string;
+    region_with_type: string;
+    region_type: string;
+    region_type_full: string;
+    region: string;
+    area_fias_id: string;
+    area_kladr_id: string;
+    area_with_type: string;
+    area_type: string;
+    area_type_full: string;
+    area: string;
+    city_fias_id: string;
+    city_kladr_id: string;
+    city_with_type: string;
+    city_type: string;
+    city_type_full: string;
+    city: string;
+    city_area: string;
+    city_district_fias_id: string;
+    city_district_kladr_id: string;
+    city_district_with_type: string;
+    city_district_type: string;
+    city_district_type_full: string;
+    city_district: string;
+    settlement_fias_id: string;
+    settlement_kladr_id: string;
+    settlement_with_type: string;
+    settlement_type: string;
+    settlement_type_full: string;
+    settlement: string;
+    street_fias_id: string;
+    street_kladr_id: string;
+    street_with_type: string;
+    street_type: string;
+    street_type_full: string;
+    street: string;
+    stead_fias_id: string;
+    stead_cadnum: string;
+    stead_type: string;
+    stead_type_full: string;
+    stead: string;
+    house_fias_id: string;
+    house_kladr_id: string;
+    house_cadnum: string;
+    house_type: string;
+    house_type_full: string;
+    house: string;
+    block_type: string;
+    block_type_full: string;
+    block: string;
+    entrance: string;
+    floor: string;
+    flat_fias_id: string;
+    flat_cadnum: string;
+    flat_type: string;
+    flat_type_full: string;
+    flat: string;
+    flat_area: string;
+    square_meter_price: string;
+    flat_price: string;
+    postal_box: string;
+    fias_id: string;
+    fias_code: string;
+    fias_level: string;
+    fias_actuality_state: string;
+    kladr_id: string;
+    geoname_id: string;
+    capital_marker: string;
+    okato: string;
+    oktmo: string;
+    tax_office: string;
+    tax_office_legal: string;
+    timezone: string;
+    geo_lat: string;
+    geo_lon: string;
+    beltway_hit: string;
+    beltway_distance: string;
+    metro: string;
+    qc_geo: string;
+    qc_complete: string;
+    qc_house: string;
+    history_values: string[];
+    unparsed_parts: any;
+    source: string;
+    qc: number;
+}
+
+export interface IDadataSuggestion<T> {
     value: string;
     unrestricted_value: string;
-    data: IDadataData;
+    data: T;
 }
 
-export interface IDadataPositionResponse {
-    suggestions: IDadataSuggestion[];
-}
-
-export interface IDadataSearchResponse {
-    source: string; // 	250	Исходный адрес одной строкой
-    result: string; // 		500	Стандартизованный адрес одной строкой
-    postal_code: string; // 		6	Индекс
-    country: string; // 		120	Страна
-    country_iso_code: string; // 		2	ISO-код страны
-    federal_district: string; // 		20	Федеральный округ
-    region_fias_id: string; // 		36	ФИАС-код региона
-    region_kladr_id: string; // 		19	КЛАДР-код региона
-    region_iso_code: string; // 		6	ISO-код региона
-    region_with_type: string; // 		131	Регион с типом
-    region_type: string; // 		10	Тип региона (сокращенный)
-    region_type_full: string; // 		50	Тип региона
-    region: string; // 		120	Регион
-    area_fias_id: string; // 		36	ФИАС-код района
-    area_kladr_id: string; // 		19	КЛАДР-код района
-    area_with_type: string; // 		131	Район в регионе с типом
-    area_type: string; // 		10	Тип района в регионе (сокращенный)
-    area_type_full: string; // 		50	Тип района в регионе
-    area: string; // 		120	Район в регионе
-    city_fias_id: string; // 		36	ФИАС-код города
-    city_kladr_id: string; // 		19	КЛАДР-код города
-    city_with_type: string; // 		131	Город с типом
-    city_type: string; // 		10	Тип города (сокращенный)
-    city_type_full: string; // 		50	Тип города
-    city: string; // 		120	Город
-    city_area: string; // 		120	Административный округ (только для Москвы)
-    city_district_fias_id: string; // 		36	ФИАС-код района города (заполняется, только если район есть в ФИАС)
-    city_district_kladr_id: string; // 		19	КЛАДР-код района города (не заполняется)
-    city_district_with_type: string; // 		131	Район города с типом
-    city_district_type: string; // 		10	Тип района города (сокращенный)
-    city_district_type_full: string; // 		50	Тип района города
-    city_district: string; // 		120	Район города
-    settlement_fias_id: string; // 		36	ФИАС-код населенного пункта
-    settlement_kladr_id: string; // 		19	КЛАДР-код населенного пункта
-    settlement_with_type: string; // 		131	Населенный пункт с типом
-    settlement_type: string; // 		10	Тип населенного пункта (сокращенный)
-    settlement_type_full: string; // 		50	Тип населенного пункта
-    settlement: string; // 		120	Населенный пункт
-    street_fias_id: string; // 		36	ФИАС-код улицы
-    street_kladr_id: string; // 		19	КЛАДР-код улицы
-    street_with_type: string; // 		131	Улица с типом
-    street_type: string; // 		10	Тип улицы (сокращенный)
-    street_type_full: string; // 		50	Тип улицы
-    street: string; // 		120	Улица
-    house_fias_id: string; // 		36	ФИАС-код дома
-    house_kladr_id: string; // 		19	КЛАДР-код дома
-    house_type: string; // 		10	Тип дома (сокращенный)
-    house_type_full: string; // 		50	Тип дома
-    house: string; // 		50	Дом
-    block_type: string; // 		10	Тип корпуса/строения (сокращенный)
-    block_type_full: string; // 		50	Тип корпуса/строения
-    block: string; // 		50	Корпус/строение
-    entrance: string; // 		10	Подъезд
-    floor: string; // 		10	Этаж
-    flat_fias_id: string; // 		36	ФИАС-код квартиры
-    flat_type: string; // 		10	Тип квартиры (сокращенный)
-    flat_type_full: string; // 		50	Тип квартиры
-    flat: string; // 		50	Квартира
-    flat_area: string; // 		50	Площадь квартиры
-    square_meter_price: string; // 		50	Рыночная стоимость м²
-    flat_price: string; // 		50	Рыночная стоимость квартиры
-    postal_box: string; // 		50	Абонентский ящик
-    fias_id: string; // 		36	ФИАС-код адреса (идентификатор ФИАС)
-    fias_code: string; // 			Иерархический код адреса в ФИАС (СС+РРР+ГГГ+ППП+СССС+УУУУ+ДДДД)
-    fias_level: string; // 		2	Уровень детализации, до которого адрес найден в ФИАС
-    fias_actuality_state: string; // 			Признак актуальности адреса в ФИАС
-    kladr_id: string; // 		19	КЛАДР-код адреса
-    capital_marker: string; // 		1	Признак центра района или региона
-    okato: string; // 		11	Код ОКАТО
-    oktmo: string; // 		11	Код ОКТМО
-    tax_office: string; // 		4	Код ИФНС для физических лиц
-    tax_office_legal: string; // 		4	Код ИФНС для организаций
-    timezone: string; // 		50	Часовой пояс города для России, часовой пояс страны — для иностранных адресов
-    geo_lat: string; // 		12	Координаты: широта
-    geo_lon: string; // 		12	Координаты: долгота
-    beltway_hit: string; // 	8	Внутри кольцевой
-    beltway_distance: string; // 		3	Расстояние от кольцевой в км
-    qc_geo: string; // 		5	Код точности координат
-    qc_complete: string; // 		5	Код пригодности к рассылке
-    qc_house: string; // 		5	Признак наличия дома в ФИАС
-    qc: string; // 		5	Код проверки адреса
-    unparsed_parts: string; // 		250	Нераспознанная часть адреса.
-    metro: any[]; // Список ближайших станций метро (до трёх штук)
+export interface IDadataResponse<T> {
+    suggestions: IDadataSuggestion<T>[];
 }
 
 @Injectable({
@@ -192,20 +200,24 @@ export class DadataService {
         private http: HttpClient,
     ) {}
 
-    public getDadataResponseByPosition(lat: number, lon: number, radius_meters = 10): Observable<IDadataPositionResponse> {
+    public getDadataResponseByPosition(
+        lat: number,
+        lon: number,
+        radius_meters = 10
+    ): Observable<IDadataResponse<IDadataPositionData>> {
         const data: IDadataPositionRequest = {
             lat, lon, radius_meters
         };
-        return this.http.post<IDadataPositionResponse>(
+        return this.http.post<IDadataResponse<IDadataPositionData>>(
             'https://suggestions.dadata.ru/suggestions/api/4_1/rs/geolocate/address',
             data,
             {headers: this.createAuthDadataHeaders()});
     }
 
-    public getDadataResponseBySearch(search: string): Observable<IDadataSearchResponse> {
-        const data =  [search];
-        return this.http.post<IDadataSearchResponse>(
-            'https://cleaner.dadata.ru/api/v1/clean/address',
+    public getDadataResponseBySearch(search: string): Observable<IDadataResponse<IDadataSearchData>> {
+        const data =  { query: search };
+        return this.http.post<IDadataResponse<IDadataSearchData>>(
+            'https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address',
             data,
             {headers: this.createAuthDadataHeaders(true)});
     }

@@ -12,7 +12,9 @@ import {
 import {LLMap} from '@modules/map.lib';
 import * as L from 'leaflet';
 import {icon, LatLng, LeafletMouseEvent, Marker, marker} from 'leaflet';
-import {Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
+import {DadataService, IDadataResponse, IDadataSearchData, IDadataSuggestion} from '@services/dadata.service';
+import {filter, switchMap, map, debounceTime} from 'rxjs/operators';
 
 @Component({
     selector: 'app-map',
@@ -24,11 +26,21 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
 
     map = new LLMap();
     lfgMarker = L.featureGroup();
+    addressQuery$ = new Subject<string>();
+    addressSuggestions$ = this.addressQuery$.pipe(
+        filter(q => !!q && !!q.length),
+        debounceTime(1000),
+        switchMap(q => this.dadata.getDadataResponseBySearch(q)),
+        map(response => response?.suggestions ?? []),
+    );
 
     @ViewChild('map') mapRef: ElementRef;
     @Input() position$: Observable<LatLng>;
     @Output() position = new EventEmitter<LatLng>();
-    constructor() {
+
+    constructor(
+        private dadata: DadataService,
+    ) {
     }
 
     ngOnInit(): void {
@@ -50,9 +62,25 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         this.map.destroy();
     }
 
+    searchAddress(query): void {
+        this.addressQuery$.next(query);
+    }
+
+    selectAddress(suggestion: IDadataSuggestion<IDadataSearchData>): void {
+        const lat = suggestion?.data?.geo_lat;
+        const lon = suggestion?.data?.geo_lon;
+        if (!lat && !lon) { return; }
+        const position = new LatLng(+lat, +lon);
+        this.selectPosition(position);
+    }
+
     click(e: LeafletMouseEvent): void {
-        this.renderPoint(this.createMarker(e.latlng));
-        this.position.next(e.latlng);
+        this.selectPosition(e.latlng);
+    }
+
+    selectPosition(position: LatLng): void {
+        this.renderPoint(this.createMarker(position));
+        this.position.next(position);
     }
 
     createMarker(position: LatLng): Marker {

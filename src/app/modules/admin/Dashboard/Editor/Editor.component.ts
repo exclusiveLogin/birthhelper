@@ -218,14 +218,12 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
                         merge(fieldLatValueControl.valueChanges, fieldLonValueControl.valueChanges, of(null)).pipe(
                             mapTo([fieldLatValueControl, fieldLonValueControl]),
                             map(([la, ln]) => [la.value, ln.value]),
-                            tap(_ => console.log('new position raw, ', _)),
                             filter(([lat, lng]) =>
                                 !!lat
                                 && !!lng
                                 && Number.isFinite(lat)
                                 && Number.isFinite(lng)),
                             map(([lat, lng]) => new LatLng(lat, lng)),
-                            tap(_ => console.log('new position, ', _)),
                         );
                 }
             }

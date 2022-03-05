@@ -7,12 +7,14 @@ import {AutocompleteComponent} from '../../autocomplete/autocomplete.component';
 import {ImageComponent} from './components/image/image.component';
 import {ToastrService} from 'ngx-toastr';
 import {MapComponent} from '@modules/admin/Dashboard/Editor/components/map/map.component';
+import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 
 @NgModule({
     imports: [
         CommonModule,
         TableModule,
         ReactiveFormsModule,
+        AutocompleteLibModule,
     ],
     declarations: [
         EditorComponent,
