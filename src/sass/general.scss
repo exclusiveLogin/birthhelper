@@ -1,3 +1,5 @@
+@use "sass:math";
+
 @font-face {
   font-family: "Gilroy";
   src:
@@ -33,7 +35,7 @@ body {
   min-width: 320px;
   margin: 0;
   font-size: 14px;
-  line-height: (18 / 14);
+  line-height: math.div(18, 14);
   font-family: "Gilroy", "Arial", sans-serif;
   color: $dark;
   background-color: $main-bg;
