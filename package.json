@@ -35,7 +35,6 @@
         "leaflet": "^1.6.0",
         "md5": "^2.3.0",
         "moment": "^2.29.1",
-        "ngx-angular-autocomplete": "^1.0.7",
         "ngx-toastr": "^13.2.0",
         "rxjs": "^6.6.6",
         "rxjs-compat": "^6.0.0-rc.0",
