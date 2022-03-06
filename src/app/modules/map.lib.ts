@@ -29,7 +29,7 @@ export class LLMap {
     map: L.Map = null;
     tileLayer: L.TileLayer;
     /** Fixed promised Leaflet once method */
-    once: typeof L.Evented.prototype.once = ((type: any, handler: any, context?: any) => this.map.once(
+    once: typeof L.Evented.prototype.once = ((type: any, handler: any, context?: any) => this?.map?.once(
             type, () => Promise.resolve().then(() => handler()), context)
     ) as any;
 
@@ -144,7 +144,7 @@ export class LLMap {
     }
 
     fitByBounds(bounds: L.LatLngBoundsExpression): void {
-        this.waitPrevFit(() => this.map.fitBounds(bounds));
+        this.waitPrevFit(() => this?.map?.fitBounds(bounds));
     }
 
     get mapState(): GeoMapState {
