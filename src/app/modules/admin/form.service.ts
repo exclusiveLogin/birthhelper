@@ -13,6 +13,8 @@ export interface MapMeta {
         latFieldKey?: string,
         lonFieldKey?: string,
         addressFieldKey?: string,
+        cityFieldKey?: string;
+        countryFieldKey?: string;
         addressRewriteOnlyEmpty?: boolean,
     };
     height?: number;

@@ -5,7 +5,6 @@ type MapObjectEntity = IClinicMini;
 export interface MapObject {
     lat: number;
     lon: number;
-    description?: string;
     entity?: MapObjectEntity;
     iconClass?: string;
     color?: string;

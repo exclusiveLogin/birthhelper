@@ -1,13 +1,9 @@
-import {AddressSrc, MapObject, MetaPhoto} from 'app/models/map-object.interface';
-import {MetaInterface} from 'app/models/meta.interface';
-import {Entity} from 'app/models/entity.interface';
+import {MapObject, MetaPhoto} from 'app/models/map-object.interface';
 import {Summarized} from './summary.interface';
-import {environment} from '@environments/environment';
+import {Contragent} from '@models/contragent.interface';
+import {Entity} from '@models/entity.interface';
 
 export interface IClinicMini extends MapObject, Entity {
-    id: number;
-    title: string;
-    description: string;
     address: string;
     price_from: number;
     price_until: number;
@@ -31,14 +27,7 @@ export interface ClinicFeatures {
     free_meets: boolean;
 }
 
-export interface IClinicSrc extends MetaInterface, Summarized {
-    id: string;
-    active: string;
-    address_id: string;
-    phone_container_id: string;
-    title: string;
-    description: string;
-    license: string;
+export interface IClinicSrc extends Contragent, Summarized {
     status_iho: string;
     has_oms: string;
     has_dms: string;
@@ -69,12 +58,11 @@ export class Clinic {
             status_iho: !!src.status_iho || false,
         };
 
-        const addr: AddressSrc = src?.meta?.address_id as AddressSrc;
         const ph: MetaPhoto = src?.meta?.image_id as MetaPhoto;
 
         const clinic: IClinicMini = {
             id: src.id ? Number(src.id) : -1,
-            address: addr?.address_str || 'Адрес не найден',
+            address: src?.address_str || 'Адрес не найден',
             description: src.description,
             title: src.title,
             price_from: src?.summary?.min_price,
@@ -83,8 +71,8 @@ export class Clinic {
             stat_count: 0,
             stat_value: 0,
             features,
-            lat: addr?.position_lat || null,
-            lon: addr?.position_lon || null,
+            lat: src?.position_lat || null,
+            lon: src?.position_lon || null,
         };
 
         return clinic;

@@ -1,13 +1,17 @@
 import {Entity} from 'app/models/entity.interface';
 
 export interface Contragent extends Entity {
-    address_id: number;
     active: boolean;
     image_id: number;
     title: string;
     phone_container_id: number;
     description: string;
     license: null;
+    address_src: string;
+    city: string;
+    country: string;
+    position_lat: number;
+    position_lon: number;
     meta: ExtraMetaContragent;
 }
 
@@ -21,18 +25,5 @@ export interface ExtraMetaContragent {
         datetime_update: string,
         datetime_create: string,
         filename: string,
-    };
-    address_id: {
-        id: number,
-        address_str: string,
-        district: number,
-        country: string,
-        city: string,
-        street: string,
-        building: string,
-        letera: string,
-        block: string,
-        position_lat: number,
-        position_lon: number,
     };
 }

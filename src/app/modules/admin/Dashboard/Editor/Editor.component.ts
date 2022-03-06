@@ -91,17 +91,26 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         }
 
         if (field?.mapMeta?.geocoder?.provider === 'dadata' && field?.mapMeta?.geocoder?.addressFieldKey) {
-            const _field = this.form.get(mapSetting.geocoder.addressFieldKey);
-            if (!_field) { return; }
+            const _fieldAddress = this.form.get(mapSetting.geocoder.addressFieldKey);
+            const _fieldCity = this.form.get(mapSetting.geocoder.cityFieldKey);
+            const _fieldCountry = this.form.get(mapSetting.geocoder.countryFieldKey);
+
             this.dadata.getDadataResponseByPosition(position.lat, position.lng).pipe(
-                map(data => data?.suggestions?.[0]?.value),
+                map(data => data?.suggestions?.[0]),
                 filter(_ => !!_),
                 tap(data => {
-                    if (
+                    if (!(
                         this.currentService?.[field?.mapMeta?.geocoder?.addressFieldKey] &&
                         field?.mapMeta?.geocoder?.addressRewriteOnlyEmpty
-                    ) { return; }
-                    _field?.setValue(data);
+                    )) {
+                        _fieldAddress?.setValue(data.value);
+                    }
+                    if (_fieldCity && data.data.city) {
+                        _fieldCity?.setValue(data.data.city);
+                    }
+                    if (_fieldCountry && data.data.country) {
+                        _fieldCountry?.setValue(data.data.country);
+                    }
                 }))
                 .toPromise();
         }
