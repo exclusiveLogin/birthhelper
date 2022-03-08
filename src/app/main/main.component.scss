@@ -1,3 +1,20 @@
 .btn_container {
     margin-top: 15px;
 }
+._vc {
+    mask-image: url("../../img/icons/vc.png");
+    background-color: #487ff1;
+}
+
+._birth {
+    mask-image: url("../../img/icons/newborn.png");
+    background-color: #487ff1;
+    height: 150px;
+    mask-size: 150px;
+}
+._gym {
+    mask-image: url("../../img/icons/gym.png");
+    background-color: #f148b6;
+    height: 150px;
+    mask-size: 150px;
+}

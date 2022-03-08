@@ -43,32 +43,33 @@
         </div>
 
         <section class="section">
-            <h2 class="title-h2">Запланируй идеальные роды, а мы поможем тебе</h2>
+            <h2 class="title-h2">Запланируй идеальные роды, а мы поможем тебе подобрать:</h2>
 
             <div class="main__nav nav">
                 <ul class="nav__list">
                     <li class="nav__item nav__item-planning muted">
                         <img src="img/icons/planning.svg" class="nav__icon" alt="">
-                        <p class="nav__txt">Подготовиться<br>
-                            к беременности</p>
-                        <a href="javascript:void(0);" class="nav__link">Перейти</a>
+                        <p class="nav__txt">Пренатальный центр</p>
                     </li>
                     <li class="nav__item nav__item-clinic muted">
-                        <img src="img/icons/zoom.svg" class="nav__icon" alt="">
-                        <p class="nav__txt">Подобрать отличную<br> клинику</p>
-                        <a href="javascript:void(0);" class="nav__link">Перейти</a>
+                        <img src="img/icons/vc.png" class="nav__icon" alt="">
+                        <p class="nav__txt">Женскую консультацию</p>
                     </li>
-                    <li class="nav__item nav__item-mhospital">
-                        <img src="img/icons/star.svg" class="nav__icon" alt="">
-                        <p class="nav__txt">Выбрать лучший<br>
-                            роддом</p>
-                        <a [routerLink]="['system', 'search']" href="javascript:void(0);" class="nav__link">Перейти</a>
+                    <li class="nav__item nav__item-mhospital" [routerLink]="['system', 'search']">
+                        <img src="img/icons/newborn.png" class="nav__icon" alt="">
+                        <p class="nav__txt">Роддом</p>
                     </li>
                     <li class="nav__item nav__item-recovery muted">
                         <img src="img/icons/people.svg" class="nav__icon" alt="">
-                        <p class="nav__txt">Восстановиться<br>
-                            после родов</p>
-                        <a href="javascript:void(0);" class="nav__link">Перейти</a>
+                        <p class="nav__txt">Даульский центр</p>
+                    </li>
+                    <li class="nav__item nav__item-recovery muted">
+                        <div class="nav__icon _gym" alt=""></div>
+                        <p class="nav__txt">Центр восстановления</p>
+                    </li>
+                    <li class="nav__item nav__item-recovery muted">
+                        <img src="img/icons/toy.png" class="nav__icon" alt="">
+                        <p class="nav__txt">Товары для малыша</p>
                     </li>
                 </ul>
             </div>
