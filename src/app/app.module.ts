@@ -17,6 +17,7 @@ import {ConfiguratorComponent} from './modules/configurator/configurator.compone
 import {DialogModule} from './modules/dialog/dialog.module';
 import {ToastrModule} from 'ngx-toastr';
 import {MenuModule} from './modules/menu/menu.module';
+import {DmsFormComponent} from './main/components/dms.form/dms.form.component';
 
 const routes: Routes = [
     {path: '', component: MainComponent},
@@ -36,7 +37,8 @@ const routes: Routes = [
         MainComponent,
         WrapperComponent,
         ActivationComponent,
-        BhDoingComponent
+        BhDoingComponent,
+        DmsFormComponent
     ],
     imports: [
         RouterModule.forRoot(routes),
