@@ -7,6 +7,7 @@ import { ContragentComponent } from './components/contragent/contragent.componen
 import {PipeModule} from 'app/pipes/pipe.module';
 import {ReactiveFormsModule} from '@angular/forms';
 import { ArchiveOrderGroupComponent } from './components/archive-order-group/archive-order-group.component';
+import { CartDmsComponent } from './components/cart-dms/cart-dms.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { ArchiveOrderGroupComponent } from './components/archive-order-group/arc
         CartComponent,
         OrderBlockComponent,
         ContragentComponent,
-        ArchiveOrderGroupComponent
+        ArchiveOrderGroupComponent,
+        CartDmsComponent
     ],
     exports: [
         ContragentComponent
