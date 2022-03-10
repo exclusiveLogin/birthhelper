@@ -1,4 +1,4 @@
-<div class="popup-wrapper" *ngIf="_showed$ | async" @dialogWrapper>
+<div class="popup-wrapper" *ngIf="_showed$ | async" @dialogWrapper id="dialog_viewport">
     <ng-container *ngIf="!tpl_custom">
         <ng-container *ngTemplateOutlet="template; context: tpl_context"></ng-container>
     </ng-container>
@@ -342,6 +342,51 @@
     <div class="popup__footer">
         <button class="popup__footer-btn popup__footer-btn--short muted">Выбрать</button>
     </div>
+    </div>
+</ng-template>
+<!--Доп. услуги-end-->
+
+<!--Контрагент-->
+<ng-template #tpl_popup_contragent let-data>
+    <div class="popup popup--xmiddle" @dialogState>
+        <div class="popup__actions">
+            <button class="popup__actions-close" (click)="closeDialog()"></button>
+            <div class="popup__actions-checkbox checkbox-action">
+                <input type="checkbox" class="checkbox-action__input" id="checkbox">
+                <label class="checkbox-action__label" for="checkbox"></label>
+            </div>
+        </div>
+
+        <div class="popup__body">
+            <div class="popup__body-columns">
+                <div class="popup__body-column">
+                    <div class="popup__body-avatar popup__body-avatar--square" *ngIf="photoUrl$ | async as url">
+                        <img [src]="url" (error)="imageSignal$.next(null)" [alt]="data?.title">
+                    </div>
+                    <p class="popup__dop-name">{{data.title}}</p>
+                    <p class="popup__dop-name">Лицензия: {{data.licence || 'Нет данных'}}</p>
+                    <!--                <p class="popup__dop-short-desc">Патронаж новорожденного-->
+                    <!--                    на дому по программе-->
+                    <!--                    «Я РОДИЛСЯ»!</p>-->
+                </div>
+
+                <div class="popup__body-content">
+                    <p class="popup__dop-desc">{{data.address_str || 'Нет данных'}}</p>
+                    <ng-container *ngFor="let phone of (data.phones || [])">
+                        <div class="phone_container">
+                            <p class="popup__dop-desc">{{phone.title}} : </p><p class="popup__dop-short-desc">{{phone.phone}}</p>
+                        </div>
+                    </ng-container>
+
+
+                    <p class="popup__dop-desc" *ngIf="data?.description">{{data.description}}</p>
+                    <div class="map_container"></div>
+                </div>
+            </div>
+        </div>
+        <div class="popup__footer">
+            <button class="popup__footer-btn popup__footer-btn--short muted">Выбрать</button>
+        </div>
     </div>
 </ng-template>
 <!--Доп. услуги-end-->

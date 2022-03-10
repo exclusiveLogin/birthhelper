@@ -50,11 +50,11 @@ export class LLMap {
         return this;
     }
 
-    buildNormal(element: string, tileType: TilesType = TilesType.scheme): this {
+    buildNormal(element: string | HTMLElement, tileType: TilesType = TilesType.scheme): this {
         return this.build(element, {}, tileType);
     }
 
-    buildMini(element: string, tileType: TilesType = TilesType.scheme): this {
+    buildMini(element: string | HTMLElement, tileType: TilesType = TilesType.scheme): this {
         // maxZoom: 16,
         return this.build(element, {
             zoomControl: false,
@@ -64,7 +64,7 @@ export class LLMap {
         }, tileType);
     }
 
-    buildSimple(element: string, tileType: TilesType = TilesType.scheme): this {
+    buildSimple(element: string | HTMLElement, tileType: TilesType = TilesType.scheme): this {
         // maxZoom: 16,
         return this.build(element, {
             tap: false,

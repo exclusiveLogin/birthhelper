@@ -20,6 +20,7 @@ import {
     orderRestMapper,
     OrderSrc,
 } from '../models/order.interface';
+import {IContainerData} from '@modules/admin/container.model';
 
 export interface ISettingsParams {
     mode: string;
@@ -311,6 +312,17 @@ export class RestService {
         };
 
         return this.getData(ep_config);
+    }
+
+    public getContainerFromId(key: string, id: number, qp?: IRestParams): Observable<IContainerData> {
+        const entSetting: ISettingsParams = {
+            mode: 'api',
+            segment: 'containers',
+            resource: `${key}`,
+            script: '' + id,
+        };
+
+        return this.getData<IContainerData>(entSetting, qp);
     }
 
     public logout(everywhere?: boolean): Observable<UserExit> {

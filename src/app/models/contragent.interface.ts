@@ -1,4 +1,5 @@
 import {Entity} from 'app/models/entity.interface';
+import {SectionType} from '@services/search.service';
 
 export interface Contragent extends Entity {
     active: boolean;
@@ -13,6 +14,7 @@ export interface Contragent extends Entity {
     position_lat: number;
     position_lon: number;
     meta: ExtraMetaContragent;
+    phones?: ContragentsPhone[];
 }
 
 export interface ExtraMetaContragent {
@@ -26,4 +28,16 @@ export interface ExtraMetaContragent {
         datetime_create: string,
         filename: string,
     };
+}
+
+export interface ContragentsPhone {
+    id: number;
+    container_id: number;
+    phone_id: number;
+    comment: string;
+    eid: number;
+    phone: string;
+    title: string;
+    description: string;
+    section: SectionType;
 }
