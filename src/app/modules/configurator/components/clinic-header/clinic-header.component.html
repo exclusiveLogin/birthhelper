@@ -1,9 +1,22 @@
 <div class="clinic__header clinic-header" *ngIf="contragent$ | async as CT">
-    <div class="clinic-header__info">
-        <h2 class="clinic-header__ttl">{{CT.title}}</h2>
-        <p class="clinic-header__address">{{CT?.address_str || 'Адрес не определен'}}</p>
-        <p class="clinic-header__license">Лицензия: {{CT.licence || 'нет данных о лицензии'}}</p>
+    <div class="info_container">
+        <div class="clinic-header__info">
+            <h2 class="clinic-header__ttl">{{CT.title}}</h2>
+            <p class="clinic-header__address">{{CT?.address_str || 'Адрес не определен'}}</p>
+            <p class="clinic-header__license">Лицензия: {{CT.licence || 'нет данных о лицензии'}}</p>
+        </div>
+        <div class="phone_container">
+            <div class="phone_item">
+                <span class="phone_ttl">Тестовый телефон</span><br>
+                <span class="phone_number">+7 917 151 1511</span>
+            </div>
+            <div class="phone_item">
+                <span class="phone_ttl">Еще телефон</span><br>
+                <span class="phone_number">+7 917 151 1511</span>
+            </div>
+        </div>
     </div>
+
     <div class="clinic-header__actions clinic-header-actions">
         <p class="clinic-header-actions__review">
 <!--            <img src="img/icons/star-24.svg" width="22" height="22" class="clinic-header-actions__review-icon" alt="">-->

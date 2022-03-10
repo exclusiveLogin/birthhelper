@@ -54,6 +54,7 @@
         background: transparent;
         border-radius: 3px;
         cursor: pointer;
+        transition: all 0.2s ease-in;
 
         &:hover {
             background: rgba(45, 51, 63, 0.05);
