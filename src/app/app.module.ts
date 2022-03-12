@@ -18,6 +18,7 @@ import {DialogModule} from './modules/dialog/dialog.module';
 import {ToastrModule} from 'ngx-toastr';
 import {MenuModule} from './modules/menu/menu.module';
 import {DmsFormComponent} from './main/components/dms.form/dms.form.component';
+import { OurAdvantageComponent } from './main/components/our-advantage/our-advantage.component';
 
 const routes: Routes = [
     {path: '', component: MainComponent},
@@ -38,7 +39,8 @@ const routes: Routes = [
         WrapperComponent,
         ActivationComponent,
         BhDoingComponent,
-        DmsFormComponent
+        DmsFormComponent,
+        OurAdvantageComponent
     ],
     imports: [
         RouterModule.forRoot(routes),

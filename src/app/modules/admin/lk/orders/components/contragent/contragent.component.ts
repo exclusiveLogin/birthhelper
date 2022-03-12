@@ -51,7 +51,6 @@ export class ContragentComponent implements OnInit {
     constructor(
         private restService: RestService,
         private lkService: LkService,
-        private cdr: ChangeDetectorRef,
     ) {
     }
 

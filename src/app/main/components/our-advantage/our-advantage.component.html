@@ -1,0 +1,53 @@
+<div class="main__accordion accordion">
+    <div class="accordion__item"
+         [ngClass]="{'accordion__item--opened': isOpened('individ')}"
+         [@wrapper]="isOpened('individ') ? 'opened' : 'closed'">
+        <div class="accordion__header" (click)="toggleBlockByKey('individ')">
+            <div class="accordion__icon">
+                <img src="img/icons/businessman.svg" class="accordion__icon-img" alt="">
+            </div>
+            <p class="accordion__ttl">Индивидуальный подход</p>
+        </div>
+        <div class="accordion__body" [@content]="isOpened('individ') ? 'opened' : 'closed'">
+            <p class="accordion__txt">Бере́менность челове́ка (лат. graviditas) — особое состояние организма
+                женщины, при котором в её репродуктивных органах находится развивающийся эмбрион или плод.
+                Беременность возникает в результате слияния женской и мужской половых клеток в маточной
+                трубе, после чего происходит образование зиготы, содержащей 46 хромосом. Пол будущего
+                ребёнка зависит от набора половых</p>
+        </div>
+    </div>
+    <div class="accordion__item"
+         [ngClass]="{'accordion__item--opened': isOpened('partners')}"
+         [@wrapper]="isOpened('partners') ? 'opened' : 'closed'">
+        <div class="accordion__header" (click)="toggleBlockByKey('partners')">
+            <div class="accordion__icon">
+                <img src="img/icons/surface.svg" class="accordion__icon-img" alt="">
+            </div>
+            <p class="accordion__ttl">Надежные и проверенные партнеры</p>
+        </div>
+        <div class="accordion__body" [@content]="isOpened('partners') ? 'opened' : 'closed'">
+            <p class="accordion__txt">Бере́менность челове́ка (лат. graviditas) — особое состояние организма
+                женщины, при котором в её репродуктивных органах находится развивающийся эмбрион или плод.
+                Беременность возникает в результате слияния женской и мужской половых клеток в маточной
+                трубе, после чего происходит образование зиготы, содержащей 46 хромосом. Пол будущего
+                ребёнка зависит от набора половых</p>
+        </div>
+    </div>
+    <div class="accordion__item"
+         [ngClass]="{'accordion__item--opened': isOpened('suggestions')}"
+         [@wrapper]="isOpened('suggestions') ? 'opened' : 'closed'">
+        <div class="accordion__header" (click)="toggleBlockByKey('suggestions')">
+            <div class="accordion__icon">
+                <img src="img/icons/hearts.svg" class="accordion__icon-img" alt="">
+            </div>
+            <p class="accordion__ttl">Выгодные предложения</p>
+        </div>
+        <div class="accordion__body" [@content]="isOpened('suggestions') ? 'opened' : 'closed'">
+            <p class="accordion__txt">Бере́менность челове́ка (лат. graviditas) — особое состояние организма
+                женщины, при котором в её репродуктивных органах находится развивающийся эмбрион или плод.
+                Беременность возникает в результате слияния женской и мужской половых клеток в маточной
+                трубе, после чего происходит образование зиготы, содержащей 46 хромосом. Пол будущего
+                ребёнка зависит от набора половых</p>
+        </div>
+    </div>
+</div>
