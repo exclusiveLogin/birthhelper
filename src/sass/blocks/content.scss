@@ -5,6 +5,15 @@
   padding: 0 20px;
 }
 
+.under-construction {
+    padding: 15px 24px;
+    font-size: 2.2rem;
+    color: #487ff1;
+    text-align: center;
+    flex-grow: 1;
+    text-decoration: overline;
+}
+
 .muted {
   opacity: 0.6;
   filter: grayscale(0.8);
