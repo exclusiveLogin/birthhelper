@@ -5,10 +5,15 @@ export interface SliderSettings {
     id: string;
     imageFineName: string;
     backgroundColor: string;
+    backgroundPicture?: string;
     price?: string;
+    priceColor?: string;
     title?: string;
+    titleColor?: string;
     accentTitle?: string;
+    accentTitleColor?: string;
     description?: string;
+    descriptionColor?: string;
     link?: string[];
 }
 
