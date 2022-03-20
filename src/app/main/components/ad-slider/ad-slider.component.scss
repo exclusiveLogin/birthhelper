@@ -1,0 +1,52 @@
+.wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    padding: 16px 8px;
+    border-radius: 19px;
+    box-shadow: 0 12px 24px 0 rgb(0 0 0 / 10%);
+    background: rgba(255, 219, 219, 0.4) url("/img/clinic-cards/clinic-card-active-bg.png") no-repeat 0 0 / 100%;
+}
+
+.image_container {
+    padding: 16px;
+    //background: #862a3f url("/img/clinic/clinic1@3x.jpg") no-repeat center center;
+    min-width: 40%;
+    background-size: cover;
+    border-radius: 8px;
+}
+
+.description_container {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .description_container__ttl{
+        font-size: 3rem;
+    }
+    .description_container__accent_ttl{
+        font-size: 1.2rem;
+        color: darkgrey;
+    }
+    .description_container__txt{
+        font-size: 0.7rem;
+    }
+    .description_container__price{
+        font-size: 2.4rem;
+        color: #487ff1;
+        font-weight: bold;
+    }
+}
+
+@media screen and (max-width: 960px){
+    .image_container {
+        display: none;
+    }
+
+    .description_container {
+        .description_container__txt{
+            display: none;
+        }
+    }
+}
