@@ -18,7 +18,7 @@ export class MainComponent implements OnInit {
         description: 'Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века.',
         price: '15000р',
         imageFileName: 'doctor1.png',
-        backgroundColor: '#ffbcfc',
+        backgroundColor: '#ffb5d6',
         backgroundColorOpacity: 'ee',
         accentTitleColor: '#ff2626',
         priceColor: '#ff4eb8',
