@@ -1,16 +1,16 @@
-<div class="wrapper">
+<div class="wrapper" [ngStyle]="wrapperStyle">
     <ng-container *ngTemplateOutlet="tpl_default"></ng-container>
 </div>
 
 <!--Default-->
 <ng-template #tpl_default let-data>
-    <img src="img/slider/doctor1.png" class="image_container" *ngIf="showPicture$ | async">
+    <div class="image_container" *ngIf="showPicture$ | async" [ngStyle]="pictureStyle"></div>
     <div class="description_container">
-        <p class="description_container__ttl">Тестовый тайтл</p>
-        <p class="description_container__accent_ttl">Акцентный тестовый тайтл для раскрытия смысловой нагрузки первого</p>
-        <p class="description_container__txt">Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века.</p>
+        <p class="description_container__ttl" [ngStyle]="titleStyle" *ngIf="title">{{title}}</p>
+        <p class="description_container__accent_ttl" [ngStyle]="accentStyle" *ngIf="accentTitle">{{accentTitle}}</p>
+        <p class="description_container__txt" [ngStyle]="descriptionStyle" *ngIf="description">{{description}}</p>
 
-        <p class="description_container__price">40000р</p>
-        <p class="description_container__link btn-link">Перейти по ссылке</p>
+        <p class="description_container__price" [ngStyle]="priceStyle">{{price}}</p>
+        <a class="description_container__link btn btn-info" *ngIf="link" [routerLink]="link">Подробнее</a>
     </div>
 </ng-template>
