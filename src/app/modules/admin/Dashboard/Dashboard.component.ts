@@ -272,7 +272,7 @@ export class DashboardComponent implements OnInit {
                 },
                 {
                     name: 'ent_consultation_doctor_slots',
-                    title: 'Специалисты',
+                    title: 'Специалисты женских консультаций',
                     titleVoc: 'специалиста',
                     titleVocs: 'специалистов',
                     type: 'entity',
