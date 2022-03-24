@@ -15,6 +15,8 @@ export interface Contragent extends Entity {
     position_lon: number;
     meta: ExtraMetaContragent;
     phones?: ContragentsPhone[];
+    section_clinic: boolean;
+    section_consultation: boolean;
 }
 
 export interface ExtraMetaContragent {

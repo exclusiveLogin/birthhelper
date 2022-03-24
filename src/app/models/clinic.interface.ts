@@ -32,7 +32,6 @@ export interface IClinicSrc extends Contragent, Summarized {
     has_oms: string;
     has_dms: string;
     has_reanimation: string;
-    has_consultation: string;
     stat_male: string;
     stat_female: string;
     foreign_service: string;
@@ -49,7 +48,7 @@ export class Clinic {
             free_meets: !!src.free_meets,
             has_dms: !!src.has_dms,
             has_oms: !!src.has_oms,
-            has_consultation: !!src.has_consultation,
+            has_consultation: !!src.section_consultation,
             has_reanimation: !!src.has_reanimation,
             license: src.license,
             mom_with_baby: !!src.mom_with_baby,
