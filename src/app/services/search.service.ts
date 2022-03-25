@@ -8,9 +8,9 @@ import {ISet} from '../modules/admin/entity.model';
 import {SearchFilterConfig, SearchSection} from '../models/filter.interface';
 import {FilterResult} from '../modules/search/search/components/filter/filter.component';
 
-export type SectionType = 'clinic';
+export type SectionType = 'clinic' | 'consultation';
 export type FetchersSection<T> = {
-    [key in SectionType]?: (args?: any) => Observable<T>
+    [key in SectionType]: (args?: any) => Observable<T>
 };
 
 @Injectable({
@@ -25,6 +25,7 @@ export class SearchService {
 
     listFetchers: FetchersSection<IClinicMini[]> = {
         clinic: this.clinicFetcherFactory.bind(this),
+        consultation:
     };
 
     setFetchers: FetchersSection<ISet> = {
@@ -72,6 +73,43 @@ export class SearchService {
             qp.hash = hash;
         }
         return this.rest.getEntitySet('ent_clinics', qp).pipe(
+            filter(data => !!data),
+        );
+    }
+
+    consultationFilterConfigFetcherFactory(hash: string): Observable<SearchFilterConfig> {
+        if (!hash) {
+            return of(null);
+        }
+        return this.rest.getFilterConfigByHash('consultation', hash).pipe(
+            filter(data => !!data),
+        );
+    }
+
+    consultationFilterFetcherFactory(): Observable<SearchSection[]> {
+        return this.rest.getFilterConfig('consultation').pipe(
+            filter(data => !!data),
+        );
+    }
+
+    consultationFetcherFactory(page = 1, hash?: string): Observable<IClinicMini[]> {
+        const qp: IRestParams = {active: '1'};
+
+        if (hash) {
+            qp.hash = hash;
+        }
+        return this.rest.getEntityList<IClinicSrc>('ent_consultations', page, qp).pipe(
+            filter(data => !!data),
+            map(list => list.map(ent => Clinic.createClinicMini(ent))),
+        );
+    }
+
+    consultationSetFetcherFactory(hash?: string): Observable<IClinicMini[]> {
+        const qp: IRestParams = {active: '1'};
+        if (hash) {
+            qp.hash = hash;
+        }
+        return this.rest.getEntitySet('ent_consultations', qp).pipe(
             filter(data => !!data),
         );
     }

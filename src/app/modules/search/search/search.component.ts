@@ -1,7 +1,7 @@
 import * as L from 'leaflet';
 import {icon, marker} from 'leaflet';
 import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {merge, Subject, combineLatest, of, timer, asyncScheduler} from 'rxjs';
+import {merge, Subject, combineLatest, of, timer, asyncScheduler, Observable} from 'rxjs';
 import {
     shareReplay,
     switchMap,
@@ -30,11 +30,14 @@ export class SearchComponent implements OnInit, AfterViewInit {
     sectionKey: SectionType = 'clinic';
     hash: string = null;
 
+    onInitSectionType$: Observable<SectionType> = this.ar.data
+        .pipe(map(data => data.section as SectionType));
+
     onPageChange$ = new Subject<null>();
     onFilters$ = new Subject<FilterResult>();
 
-    onHashByFilters$ = this.onFilters$.pipe(
-        switchMap(filters => filters ? this.provider.getFilterHash(this.sectionKey, filters) : of(null)),
+    onHashByFilters$ = combineLatest([this.onFilters$, this.onInitSectionType$]).pipe(
+        switchMap(([filters, sectionKey]) => filters ? this.provider.getFilterHash(sectionKey, filters) : of(null)),
         tap((h) => {
             this.router.navigate([], {queryParams: {hash: h}}).then();
         })
@@ -50,8 +53,13 @@ export class SearchComponent implements OnInit, AfterViewInit {
         shareReplay(1),
     );
 
+    dataProvider$ = this.onInitSectionType$.pipe(map(section => this.provider.getListProvider(section)));
+    setProvider$ = this.onInitSectionType$.pipe(map(section => this.provider.getSetProvider(section)));
+    filterProvider$ = this.onInitSectionType$.pipe(map(section => this.provider.getFilterProvider(section)));
+    filterConfigProvider$ = this.onInitSectionType$.pipe(map(section => this.provider.getFilterConfigProvider(section)));
+
     mainSet$ = this.onHash$.pipe(
-        switchMap(() => this.setProvider$(this.hash)),
+        switchMap((hash) => this.setProvider$.pipe(switchMap(provider => provider(hash)))),
         catchError((err) => {
             console.error('mainSet$', err);
             this.onHashError$.next(null);
@@ -61,7 +69,7 @@ export class SearchComponent implements OnInit, AfterViewInit {
     );
 
     mainList$ = merge(this.onHash$, this.onPageChange$).pipe(
-        switchMap(() => this.dataProvider$(this.currentPage, this.hash)),
+        switchMap(([hash, page]) => this.dataProvider$.pipe(switchMap(provider => provider(page, hash)))),
         retryWhen(errors => errors.pipe(
             tap(() => this.onHashError$.next(null)),
             delayWhen(() => timer(1000)),
@@ -69,15 +77,15 @@ export class SearchComponent implements OnInit, AfterViewInit {
         shareReplay(1),
     );
 
-    dataProvider$ = this.provider.getListProvider(this.sectionKey);
-    setProvider$ = this.provider.getSetProvider(this.sectionKey);
-    filterProvider$ = this.provider.getFilterProvider(this.sectionKey);
-    filterConfigProvider$ = this.provider.getFilterConfigProvider(this.sectionKey);
-    filterList$ = this.filterProvider$().pipe(
+    filterList$ = this.filterProvider$.pipe(
+        switchMap(provider => provider()),
         switchMap((filters) =>
             combineLatest([
                 of(filters),
-                this.filterConfigProvider$(this.hash),
+                this.onHash$.pipe(
+                    switchMap(hash =>
+                        this.filterConfigProvider$.pipe(map(provider => provider(hash)))),
+                ),
             ]),
         ),
         retryWhen(errors => errors.pipe(
@@ -191,7 +199,7 @@ export class SearchComponent implements OnInit, AfterViewInit {
         }
     }
 
-    private renderPoints(points: IClinicMini[], fitlock): void {
+    renderPoints(points: IClinicMini[], fitlock): void {
         this.lfgClinics.clearLayers();
 
         points.forEach(unit => {
