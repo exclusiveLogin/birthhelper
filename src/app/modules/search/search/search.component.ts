@@ -1,29 +1,20 @@
 import * as L from 'leaflet';
-import {icon, marker} from 'leaflet';
-import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {merge, Subject, combineLatest, of, timer, asyncScheduler, Observable} from 'rxjs';
-import {
-    shareReplay,
-    switchMap,
-    tap,
-    map,
-    distinctUntilChanged,
-    catchError,
-    throttleTime,
-    retryWhen,
-    delayWhen,
-} from 'rxjs/operators';
+import {icon, LatLng, marker} from 'leaflet';
+import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {asyncScheduler, combineLatest, merge, Observable, of, Subject, timer} from 'rxjs';
+import {catchError, delayWhen, distinctUntilChanged, map, retryWhen, shareReplay, switchMap, tap, throttleTime, } from 'rxjs/operators';
 import {SearchService, SectionType} from 'app/services/search.service';
 import {LLMap} from 'app/modules/map.lib';
-import {LatLng} from 'leaflet';
 import {IClinicMini} from 'app/models/clinic.interface';
 import {FilterResult} from './components/filter/filter.component';
 import {ActivatedRoute, Router} from '@angular/router';
+import {IConsultationMini} from '@models/consultation.interface';
 
 @Component({
     selector: 'app-search',
     templateUrl: './search.component.html',
-    styleUrls: ['./search.component.scss']
+    styleUrls: ['./search.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Default,
 })
 export class SearchComponent implements OnInit, AfterViewInit {
 
@@ -66,11 +57,13 @@ export class SearchComponent implements OnInit, AfterViewInit {
             return of(null);
         }),
         shareReplay(1),
+        tap(_ => console.log('mainSet$', _)),
     );
 
     mainList$ = merge(this.onHash$, this.onPageChange$).pipe(
-        switchMap(([hash, page]) => this.dataProvider$.pipe(switchMap(provider => provider(page, hash)))),
+        switchMap(() => this.dataProvider$.pipe(switchMap(provider => provider(this.currentPage, this.hash)))),
         retryWhen(errors => errors.pipe(
+            tap(_ => console.log('mainList$ ERROR', _)),
             tap(() => this.onHashError$.next(null)),
             delayWhen(() => timer(1000)),
         )),
@@ -171,7 +164,7 @@ export class SearchComponent implements OnInit, AfterViewInit {
         this.mainList$.subscribe(list => this.renderPoints(list as IClinicMini[], fitlock));
     }
 
-    modeMapSingle(target: IClinicMini): void {
+    modeMapSingle(target: IClinicMini | IConsultationMini): void {
         this.modeMap(true);
         this.map.map.setView({lat: target.lat, lng: target.lon}, 14);
     }

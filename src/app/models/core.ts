@@ -4,6 +4,7 @@ export type SectionTypeDict = {
 };
 export const Sections: SectionTypeDict = {
     clinic: 'Родовспоможение',
+    consultation: 'Ведение беременности',
 };
 
 export interface TitledList<T> {

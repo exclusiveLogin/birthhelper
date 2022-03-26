@@ -7,6 +7,7 @@ import {filter, map} from 'rxjs/operators';
 import {ISet} from '../modules/admin/entity.model';
 import {SearchFilterConfig, SearchSection} from '../models/filter.interface';
 import {FilterResult} from '../modules/search/search/components/filter/filter.component';
+import {Consultation, IConsultationMini, IConsultationSrc} from '@models/consultation.interface';
 
 export type SectionType = 'clinic' | 'consultation';
 export type FetchersSection<T> = {
@@ -25,19 +26,22 @@ export class SearchService {
 
     listFetchers: FetchersSection<IClinicMini[]> = {
         clinic: this.clinicFetcherFactory.bind(this),
-        consultation:
+        consultation: this.consultationFetcherFactory.bind(this),
     };
 
     setFetchers: FetchersSection<ISet> = {
         clinic: this.clinicSetFetcherFactory.bind(this),
+        consultation: this.consultationSetFetcherFactory.bind(this),
     };
 
     filterFetchers: FetchersSection<SearchSection[]> = {
         clinic: this.clinicFilterFetcherFactory.bind(this),
+        consultation: this.consultationFilterFetcherFactory.bind(this),
     };
 
     filterConfigFetchers: FetchersSection<SearchFilterConfig> = {
         clinic: this.clinicFilterConfigFetcherFactory.bind(this),
+        consultation: this.consultationFilterConfigFetcherFactory.bind(this),
     };
 
     clinicFilterConfigFetcherFactory(hash: string): Observable<SearchFilterConfig> {
@@ -92,15 +96,15 @@ export class SearchService {
         );
     }
 
-    consultationFetcherFactory(page = 1, hash?: string): Observable<IClinicMini[]> {
+    consultationFetcherFactory(page = 1, hash?: string): Observable<IConsultationMini[]> {
         const qp: IRestParams = {active: '1'};
 
         if (hash) {
             qp.hash = hash;
         }
-        return this.rest.getEntityList<IClinicSrc>('ent_consultations', page, qp).pipe(
+        return this.rest.getEntityList<IConsultationSrc>('ent_consultations', page, qp).pipe(
             filter(data => !!data),
-            map(list => list.map(ent => Clinic.createClinicMini(ent))),
+            map(list => list.map(ent => Consultation.createConsultationMini(ent))),
         );
     }
 

@@ -10,56 +10,52 @@ export interface IConsultationMini extends MapObject, Entity {
     photo: MetaPhoto;
     stat_count: number;
     stat_value: number;
-    features: ClinicFeatures;
+    features: ConsultationFeatures;
+    pathology: ConsultationPathology;
 }
 
-export interface ClinicFeatures {
-    license: string;
-    status_iho: boolean;
-    has_oms: boolean;
-    has_dms: boolean;
-    has_reanimation: boolean;
-    has_consultation: boolean;
-    stat_male: number;
-    stat_female: number;
+export interface ConsultationFeatures {
+    multi_birth: boolean;
+    eco: boolean;
+    home_visit: boolean;
+}
+
+export interface ConsultationPathology {
+    avo: boolean;
+    anemy: boolean;
+    anomaly_evolution: boolean;
+    gestos: boolean;
+    hypoxy: boolean;
+    mioms: boolean;
+    onko: boolean;
+}
+
+export interface IConsultationSrc extends Contragent, Summarized, ConsultationPathology, ConsultationFeatures {
+    contragent: number;
     foreign_service: string;
-    mom_with_baby: boolean;
-    free_meets: boolean;
 }
 
-export interface IClinicSrc extends Contragent, Summarized {
-    status_iho: string;
-    has_oms: string;
-    has_dms: string;
-    has_reanimation: string;
-    stat_male: string;
-    stat_female: string;
-    foreign_service: string;
-    mom_with_baby: string;
-    free_meets: string;
-    facilities_type: string;
-    specialities_type: string;
-}
+export class Consultation {
+    static createConsultationMini(src: IConsultationSrc): IConsultationMini {
+        const features: ConsultationFeatures = {
+            eco: !!src.eco,
+            home_visit: !!src.home_visit,
+            multi_birth: !!src.multi_birth,
+        };
 
-export class Clinic {
-    static createClinicMini(src: IClinicSrc): IClinicMini {
-        const features: ClinicFeatures = {
-            foreign_service: src.foreign_service,
-            free_meets: !!src.free_meets,
-            has_dms: !!src.has_dms,
-            has_oms: !!src.has_oms,
-            has_consultation: !!src.section_consultation,
-            has_reanimation: !!src.has_reanimation,
-            license: src.license,
-            mom_with_baby: !!src.mom_with_baby,
-            stat_female: src.stat_female ? Number(src.stat_female) : 0,
-            stat_male: src.stat_male ? Number(src.stat_male) : 0,
-            status_iho: !!src.status_iho || false,
+        const pathology: ConsultationPathology = {
+            anemy: !!src.anemy,
+            anomaly_evolution: !!src.anomaly_evolution,
+            avo: !!src.avo,
+            gestos: !!src.gestos,
+            hypoxy: !!src.hypoxy,
+            mioms: !!src.mioms,
+            onko: !!src.onko,
         };
 
         const ph: MetaPhoto = src?.meta?.image_id as MetaPhoto;
 
-        const clinic: IClinicMini = {
+        return  {
             id: src.id ? Number(src.id) : -1,
             address: src?.address_str || 'Адрес не найден',
             description: src.description,
@@ -70,10 +66,9 @@ export class Clinic {
             stat_count: 0,
             stat_value: 0,
             features,
+            pathology,
             lat: src?.position_lat || null,
             lon: src?.position_lon || null,
-        };
-
-        return clinic;
+        } as IConsultationMini;
     }
 }
