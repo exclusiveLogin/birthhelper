@@ -57,8 +57,8 @@
             <div class="card__tags">
                 <span class="card__tags-ttl">Описание:</span>
                 <span class="card__tags-txt" [ngClass]="{txtUnWrap: !wrapped}"
-                      (click)="wrap()">{{viewClinic.description}}</span>
-                <span class="card__tags-txt readmore" *ngIf="!wrapped" (click)="wrap()">Читать далее</span>
+                      (click)="wrap()">{{viewClinic.description  || 'Нет описания'}}</span>
+                <span class="card__tags-txt readmore" *ngIf="!wrapped && viewClinic.description" (click)="wrap()">Читать далее</span>
             </div>
 
             <div class="card__map" (click)="showClinicOnMap()">
