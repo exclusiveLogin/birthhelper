@@ -65,7 +65,7 @@ export class SearchService {
         if (hash) {
             qp.hash = hash;
         }
-        return this.rest.getEntityList<IClinicSrc>('ent_clinics', page, qp).pipe(
+        return this.rest.getEntityList<IClinicSrc>('ent_clinic_contragents', page, qp).pipe(
             filter(data => !!data),
             map(list => list.map(ent => Clinic.createClinicMini(ent))),
         );
@@ -76,7 +76,7 @@ export class SearchService {
         if (hash) {
             qp.hash = hash;
         }
-        return this.rest.getEntitySet('ent_clinics', qp).pipe(
+        return this.rest.getEntitySet('ent_clinic_contragents', qp).pipe(
             filter(data => !!data),
         );
     }
@@ -102,7 +102,7 @@ export class SearchService {
         if (hash) {
             qp.hash = hash;
         }
-        return this.rest.getEntityList<IConsultationSrc>('ent_consultations', page, qp).pipe(
+        return this.rest.getEntityList<IConsultationSrc>('ent_consultation_contragents', page, qp).pipe(
             filter(data => !!data),
             map(list => list.map(ent => Consultation.createConsultationMini(ent))),
         );
@@ -113,7 +113,7 @@ export class SearchService {
         if (hash) {
             qp.hash = hash;
         }
-        return this.rest.getEntitySet('ent_consultations', qp).pipe(
+        return this.rest.getEntitySet('ent_consultation_contragents', qp).pipe(
             filter(data => !!data),
         );
     }

@@ -8,7 +8,7 @@ const routes: Routes = [
         path: 'clinic',
         data: {
             section: 'clinic',
-            entity_key: 'ent_clinics'
+            entity_key: 'ent_clinic_contragents'
         },
         children: [
             {path: '', redirectTo: '/system/search/clinics', pathMatch: 'full'},
@@ -18,7 +18,7 @@ const routes: Routes = [
         path: 'consultation',
         data: {
             section: 'consultation',
-            entity_key: 'ent_consultations'
+            entity_key: 'ent_consultation_contragents'
         },
         children: [
             {path: '', redirectTo: '/system/search/consultations', pathMatch: 'full'},
