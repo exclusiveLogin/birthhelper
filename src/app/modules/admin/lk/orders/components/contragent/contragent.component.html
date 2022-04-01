@@ -20,13 +20,17 @@
         </div>
     </div>
 
-    <div class="order_tbl__body">
+    <div class="order_tbl__body" [ngClass]="{muted: isLoading}">
         <app-order-group class="_row"
-                         *ngFor="let group of onOrdersGroups$ | async; trackBy: trackIt"
+                         *ngFor="let group of onOrdersGroupResult$ | async; trackBy: trackIt"
                          [orderGroup]="group"
                          [contragent]="ctg"
                          (refresh)="updater$.next(null)"
         ></app-order-group>
+        <ng-container *ngIf="{ total: onOrdersTotal$ | async, pages: onOrderGroupPages$ | async} as summary">
+            <app-paginator *ngIf="summary.total" [pages]="summary.pages" (vc)="pageChange($event)"></app-paginator>
+        </ng-container>
+
     </div>
 
 </div>

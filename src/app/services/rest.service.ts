@@ -16,7 +16,7 @@ import md5 from 'md5';
 import {
     ODRER_ACTIONS,
     OrderRequest,
-    OrderResponse,
+    OrderResponse, OrderResponseAction,
     orderRestMapper,
     OrderSrc,
 } from '../models/order.interface';
@@ -142,16 +142,6 @@ export class RestService {
         return this.getData<T>(entSetting).pipe(map(d => d?.[0]));
     }
 
-    public getOrdersByCurrentSession(): Observable<OrderSrc[]> {
-        const entSetting: ISettingsParams = {
-            mode: 'order',
-            segment: null,
-        };
-
-        return this.getData<OrderResponse>(entSetting, null, true).pipe(
-            map(response => response?.result ?? []));
-    }
-
     public activateUser(url: string): Observable<any> {
         const config: ISettingsParams = {
             mode: 'auth',
@@ -275,12 +265,22 @@ export class RestService {
         return this.postData<SessionResponse>(ep_config, data, insecure);
     }
 
-    requestOrdersPost<T = any>(payload: OrderRequest): Observable<T> {
+    public getOrdersByCurrentSession(): Observable<OrderSrc[]> {
+        const entSetting: ISettingsParams = {
+            mode: 'order',
+            segment: null,
+        };
+
+        return this.getData<OrderResponse>(entSetting, null, true).pipe(
+            map(response => response?.result ?? []));
+    }
+
+    requestOrdersPost<T = OrderResponseAction>(payload: OrderRequest): Observable<T> {
         const ep_config: ISettingsParams = {
             mode: 'order',
             segment: null,
         };
-        return this.postData<T>(ep_config, payload).pipe(map(data => data?.['result']));
+        return this.postData<T>(ep_config, payload);
     }
 
     public createOrder(selection): Observable<any> {

@@ -23,6 +23,7 @@ import {ConsultationCardComponent} from '@modules/search/search/components/consu
         ReactiveFormsModule,
     ],
     exports: [
+        PaginatorComponent
 
     ]
 })
