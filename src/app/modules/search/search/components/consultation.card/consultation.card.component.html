@@ -74,7 +74,7 @@
                     <span class="card__price-cnt card__price-cnt--green"
                           *ngIf="viewConsultation.price_from else noslots">{{viewConsultation.price_from}}</span>
                     <ng-template #noslots>
-                        <span class="card__price-cnt">Нет оказываемых услуг</span>
+                        <span class="card__price-cnt no-slot">Нет оказываемых услуг</span>
                     </ng-template>
                 </p>
                 <div class="card__btn-group">

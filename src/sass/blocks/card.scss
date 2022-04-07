@@ -141,6 +141,10 @@
     &--green {
         color: $green;
     }
+
+    &.no-slot {
+        font-size: 0.8rem;
+    }
 }
 
 .card__btn {
