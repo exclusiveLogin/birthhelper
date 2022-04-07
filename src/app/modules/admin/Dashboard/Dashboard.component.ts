@@ -142,7 +142,7 @@ export class DashboardComponent implements OnInit {
             title: 'Роддома',
             list: [
                 {
-                    name: 'ent_clinics',
+                    name: 'ent_clinic_contragents',
                     title: 'Роддома',
                     titleVoc: 'роддом',
                     titleVocs: 'роддома',
@@ -258,7 +258,7 @@ export class DashboardComponent implements OnInit {
             title: 'Женские консультации',
             list: [
                 {
-                    name: 'ent_consultations',
+                    name: 'ent_consultation_contragents',
                     title: 'Женские консультации',
                     titleVoc: 'консультацию',
                     titleVocs: 'консультаций',

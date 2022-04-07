@@ -9,7 +9,17 @@ const routes: Routes = [{
 }, {
   path: 'clinics',
   component: SearchComponent,
+    data: {
+      section: 'clinic'
+    }
 }, {
+    path: 'consultations',
+    component: SearchComponent,
+    data: {
+        section: 'consultation'
+    }
+},
+    {
   path: '**', component: NotFoundComponent,
 }];
 

@@ -51,11 +51,11 @@
                         <img src="img/icons/planning.svg" class="nav__icon" alt="">
                         <p class="nav__txt">Пренатальный центр</p>
                     </li>
-                    <li class="nav__item nav__item-clinic muted">
+                    <li class="nav__item nav__item-clinic" [routerLink]="['system', 'search', 'consultations']">
                         <img src="img/icons/vc.png" class="nav__icon" alt="">
                         <p class="nav__txt">Женскую консультацию</p>
                     </li>
-                    <li class="nav__item nav__item-mhospital" [routerLink]="['system', 'search']">
+                    <li class="nav__item nav__item-mhospital" [routerLink]="['system', 'search', 'clinics']">
                         <img src="img/icons/newborn.png" class="nav__icon" alt="">
                         <p class="nav__txt">Роддом</p>
                     </li>

@@ -38,12 +38,27 @@
             </div>
             <div class="result__body map__mode" [ngClass]="{map__mode: mode === 'map'}">
                 <div class="clinics__list" *ngIf="mainList$ | async as list">
-                    <app-clinic-card
-                            *ngFor="let item of list"
-                            [clinic]="item"
-                            (gotoMap)="modeMapSingle($event)"
-                            [id]="'clinic_' + item.id"
-                    ></app-clinic-card>
+                    <ng-container *ngIf="onInitSectionType$ | async as sectionType">
+                        <ng-container [ngSwitch]="sectionType">
+                            <ng-container *ngSwitchCase="'clinic'">
+                                <app-clinic-card
+                                    *ngFor="let item of list"
+                                    [clinic]="item"
+                                    (gotoMap)="modeMapSingle($event)"
+                                    [id]="'clinic_' + item.id"
+                                ></app-clinic-card>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'consultation'">
+                                <app-consultation-card
+                                    *ngFor="let item of list"
+                                    [clinic]="item"
+                                    (gotoMap)="modeMapSingle($event)"
+                                    [id]="'clinic_' + item.id"
+                                ></app-consultation-card>
+                            </ng-container>
+                        </ng-container>
+                    </ng-container>
+
                 </div>
                 <div id="search_map" class="map"></div>
             </div>

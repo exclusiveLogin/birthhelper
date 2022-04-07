@@ -7,7 +7,7 @@ export interface Contragent extends Entity {
     title: string;
     phone_container_id: number;
     description: string;
-    license: null;
+    license: string;
     address_src: string;
     city: string;
     country: string;

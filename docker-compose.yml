@@ -10,10 +10,10 @@ services:
     - "8091:3000"
     volumes:
     - "/var/www/html/bh_files/:/usr/src/app/uploads/"
-  guide:
-    image: "exclusivelogin/birthhelper-guide"
-    ports:
-    - "8090:80"
+#  guide:
+#    image: "exclusivelogin/birthhelper-guide"
+#    ports:
+#    - "8090:80"
 #  hellgame24_back:
 #    image: "exclusivelogin/hellgame24-back"
 #    ports:

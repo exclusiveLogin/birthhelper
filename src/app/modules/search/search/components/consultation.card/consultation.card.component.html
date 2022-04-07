@@ -3,34 +3,34 @@
         <div class="card__photo">
             <img class="img_clinic"
                  [src]="photoUrl$ | async"
-                 [alt]="viewClinic?.title"
+                 [alt]="viewConsultation?.title"
                  (error)="imageSignal$.next(null)"
             >
             <div class="card__photo-mark-block mark-block">
-                <div class="mark-block__item">
-                    <img src="img/icons/person.svg"
-                         class="mark-block__icon"
-                         [ngClass]="{muted: !(viewClinic?.features?.status_iho)}"
-                         alt="">
-                    <div class="mark-block__tooltip">
-                        <span class="mark-block__tooltip-txt">Клиника доброжелательная к ребёнку</span>
-                    </div>
-                </div>
-                <div class="mark-block__item">
-                    <img src="img/icons/hearts.svg"
-                         class="mark-block__icon muted"
-                         [ngClass]="{muted: !(viewClinic?.features?.mom_with_baby)}"
-                         alt="">
-                    <div class="mark-block__tooltip">
-                        <span class="mark-block__tooltip-txt">Совместное пребывание матери и ребенка</span>
-                    </div>
-                </div>
+<!--                <div class="mark-block__item">-->
+<!--                    <img src="img/icons/person.svg"-->
+<!--                         class="mark-block__icon"-->
+<!--                         [ngClass]="{muted: !(viewConsultation?.features?.status_iho)}"-->
+<!--                         alt="">-->
+<!--                    <div class="mark-block__tooltip">-->
+<!--                        <span class="mark-block__tooltip-txt">Клиника доброжелательная к ребёнку</span>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="mark-block__item">-->
+<!--                    <img src="img/icons/hearts.svg"-->
+<!--                         class="mark-block__icon muted"-->
+<!--                         [ngClass]="{muted: !(viewConsultation?.features?.mom_with_baby)}"-->
+<!--                         alt="">-->
+<!--                    <div class="mark-block__tooltip">-->
+<!--                        <span class="mark-block__tooltip-txt">Совместное пребывание матери и ребенка</span>-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
         </div>
         <div class="card__description">
             <div class="card__description-top">
-                <a [routerLink]="['/system/configurator/clinic', viewClinic.id]"
-                   class="card__ttl">{{viewClinic.title}}</a>
+                <a [routerLink]="['/system/configurator/consultation', viewConsultation.id]"
+                   class="card__ttl">{{viewConsultation.title}}</a>
                 <div class="card__controls muted">
                     <div class="card-controls__btn-group">
                         <button class="card-controls__btn card-controls__btn-bookmark">
@@ -47,24 +47,24 @@
                         <button class="card-controls__btn card-controls__btn-other"><img
                             src="img/icons/ic-show-chart-24px.svg" alt=""></button>
                         <button class="card-controls__btn card-controls__btn-rating"><span
-                            class="card-controls__btn-txt">{{viewClinic.stat_value}}</span>
+                            class="card-controls__btn-txt">{{viewConsultation.stat_value}}</span>
                         </button>
                     </div>
                     <div class="card-controls__cnt"><a href="#" class="card-controls__link">Оставить отзыв</a> <span
-                        class="card-controls__txt">Всего {{viewClinic.stat_count}}</span></div>
+                        class="card-controls__txt">Всего {{viewConsultation.stat_count}}</span></div>
                 </div>
             </div>
             <div class="card__tags">
                 <span class="card__tags-ttl">Описание:</span>
                 <span class="card__tags-txt" [ngClass]="{txtUnWrap: !wrapped}"
-                      (click)="wrap()">{{viewClinic.description  || 'Нет описания'}}</span>
-                <span class="card__tags-txt readmore" *ngIf="!wrapped && viewClinic.description" (click)="wrap()">Читать далее</span>
+                      (click)="wrap()">{{viewConsultation.description || 'Нет описания'}}</span>
+                <span class="card__tags-txt readmore" *ngIf="!wrapped && viewConsultation.description" (click)="wrap()">Читать далее</span>
             </div>
 
             <div class="card__map" (click)="showClinicOnMap()">
                 <div class="card__map-icon"><img src="img/icons/place.svg" alt=""></div>
                 <button class="card__map-btn">Показать на карте</button>
-                <p class="card__address">{{viewClinic.address}}</p>
+                <p class="card__address">{{viewConsultation.address}}</p>
             </div>
 
 
@@ -72,9 +72,9 @@
                 <p class="card__price">
                     <span class="card__price-ttl">Пакеты услуг от:</span>
                     <span class="card__price-cnt card__price-cnt--green"
-                          *ngIf="viewClinic.price_from else noslots">{{viewClinic.price_from}}</span>
+                          *ngIf="viewConsultation.price_from else noslots">{{viewConsultation.price_from}}</span>
                     <ng-template #noslots>
-                        <span class="card__price-cnt">Нет оказываемых услуг</span>
+                        <span class="card__price-cnt no-slot">Нет оказываемых услуг</span>
                     </ng-template>
                 </p>
                 <div class="card__btn-group">
