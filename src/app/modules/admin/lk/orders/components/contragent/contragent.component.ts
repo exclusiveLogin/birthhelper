@@ -3,7 +3,7 @@ import {CTG, LkService} from '@services/lk.service';
 import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import {Contragent} from '@models/contragent.interface';
 import {RestService} from '@services/rest.service';
-import {ODRER_ACTIONS, Order, OrderGroup, OrderRequest} from '@models/order.interface';
+import {ODRER_ACTIONS, Order, OrderGroup, OrderRequest, OrderResponse} from '@models/order.interface';
 import {map, shareReplay, switchMap, tap} from 'rxjs/operators';
 import {Sections} from '@models/core';
 import {SectionType} from '@services/search.service';
@@ -19,6 +19,7 @@ export class ContragentComponent implements OnInit {
     public isLoading = true;
     public contragent$: Observable<Contragent>;
     public ctg: CTG;
+    public skip = 0;
     @Input()
     private set contragent(value: CTG) {
         if (value?.entId) {
@@ -36,17 +37,27 @@ export class ContragentComponent implements OnInit {
             contragent_entity_id: this.ctg.entId,
             status: filters.status,
             section_key: filters.section_key,
+            skip: this.skip,
         }) as OrderRequest),
     );
 
     onOrdersGroups$ = combineLatest([this.updater$, this.onRequest$]).pipe(
         map(([_, data]) => data),
-        switchMap(request => this.restService.requestOrdersPost<OrderGroup[]>(request)),
+        tap(data => data.skip = this.skip),
+        switchMap(request => this.restService.requestOrdersPost<OrderResponse<OrderGroup>>(request)),
         tap(_ => this.isLoading = false),
-        tap(grp => grp?.forEach(g => g.orders = g.orders.map(o => new Order(o)))),
-        tap(grp => grp?.forEach(g => g.user = new User(g.user as unknown as UserSrc))),
         shareReplay(1),
     );
+
+    onOrdersGroupResult$ = this.onOrdersGroups$.pipe(
+        map(data => data.result),
+        tap(grp => grp?.forEach(g => g.orders = g.orders.map(o => new Order(o)))),
+        tap(grp => grp?.forEach(g => g.user = new User(g.user as unknown as UserSrc))),
+    );
+
+    onOrdersTotal$ = this.onOrdersGroups$.pipe(map(list => list?.total ?? 0 ));
+
+    onOrderGroupPages$ = this.onOrdersTotal$.pipe(map(_ => _ ? Math.ceil(_ / 20) || 1 : 1));
 
     constructor(
         private restService: RestService,
@@ -63,6 +74,12 @@ export class ContragentComponent implements OnInit {
 
     getTitleSection(section: SectionType): string {
         return Sections[section];
+    }
+
+    pageChange(page = 1): void {
+        this.skip = 20 * (page - 1);
+        this.isLoading = true;
+        this.updater$.next(null);
     }
 
     // getGroupsBySection(section: SectionType): Observable<OrderGroup[]> {
