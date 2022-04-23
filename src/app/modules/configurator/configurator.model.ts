@@ -66,6 +66,7 @@ export interface TabRxInput {
     title: string;
     inEnabled$: Observable<boolean>;
     inCount$: Observable<number>;
+    isRequired: boolean;
     // inSelected$: Observable<number>;
     // selectedHashes: string[];
 }

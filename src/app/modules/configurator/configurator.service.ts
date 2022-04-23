@@ -191,6 +191,7 @@ export class ConfiguratorService {
                     map(data => data.reduce((keys, cur) => [...keys, ...cur], [])),
                     map(ents => ents.length),
                 ),
+                isRequired: tc.required || tc.floors.some(f => f.required),
                 // inSelected$: this.onSelection$.pipe(map(() => this.tabsStore[tc.key].selectedHashes.length)),
                 // selectedHashes: [],
             };
