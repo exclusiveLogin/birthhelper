@@ -45,7 +45,6 @@ export interface ValidationTreeSimple {
 export class OrderService {
 
     validationTree: ValidationTreeContragent[] = [];
-    ordersArchive: OrderGroup[] = [];
     uniqContragentHashes: string[] = [];
     contragentHashMap: {[hash: string]: {id: number}};
     uniqSectionKeys: SectionType[] = [];
@@ -344,9 +343,10 @@ export class OrderService {
         return this.restService.getEntity(key, id);
     }
 
-    getPriceByContragent(contragentId: number): Observable<number> {
+    getPriceByContragent(contragentId: number, section: SectionType): Observable<number> {
         return this.onSlots$.pipe(
             map(slots => slots.filter(slot => slot._contragent.id === contragentId)),
+            map(slots => slots.filter(slot => slot._section === section)),
             map((slots: PriceEntitySlot[]) => slots.map(slot => slot?.price ?? 0)),
             map((prices: number[]) => prices.map(price => +price)),
             map((prices: number[]) => prices.filter(price => !!price && !isNaN(price))),

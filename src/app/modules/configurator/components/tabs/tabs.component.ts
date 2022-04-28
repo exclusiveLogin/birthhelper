@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {TabRxInput} from 'app/modules/configurator/configurator.model';
-import {Observable} from 'rxjs';
+import {Observable, combineLatest} from 'rxjs';
 import {map, switchMap, tap} from 'rxjs/operators';
 import {OrderService, StatusValidation} from 'app/services/order.service';
 import {ConfiguratorService} from '../../configurator.service';
@@ -18,19 +18,24 @@ export class TabsComponent implements OnInit {
 
     activeTab: string;
 
-    price$: Observable<number> = this.configuratorService.currentContragentID$.pipe(
-        switchMap(id => {
-            return this.orderService.getPriceByContragent(id);
+    constructor(
+        private orderService: OrderService,
+        private configuratorService: ConfiguratorService,
+        private router: Router,
+    ) {
+    }
+
+    price$: Observable<number> = combineLatest([
+        this.configuratorService.currentContragentID$,
+        this.configuratorService.currentSectionKey$,
+    ]).pipe(
+        switchMap(([id, section]) => {
+            return this.orderService.getPriceByContragent(id, section);
         }),
     );
 
     onValidationState$ = this.configuratorService.onValidationStateByContragentChanged$;
 
-    constructor(
-        private orderService: OrderService,
-        private configuratorService: ConfiguratorService,
-        private router: Router,
-    ) {}
 
     async gotoCart() {
         await this.router.navigate(['/system', 'cart']);
