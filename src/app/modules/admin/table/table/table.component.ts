@@ -39,6 +39,7 @@ export interface ITableFilter {
     control: FormControl;
     value?: any;
     valueKey?: string;
+    valueItems?: IDictItem[];
     override?: boolean;
     formLink?: {
         formKey?: string,
@@ -182,6 +183,9 @@ export class TableComponent implements OnInit {
                         if (f.dictKey) {
                             f.items$ = this.provider.getFullDict(f.dictKey).pipe(filter(d => !!d));
                         }
+                        if (f.valueItems) {
+                            f.items$ = of(f.valueItems);
+                        }
                     });
                 })
             )
@@ -191,6 +195,9 @@ export class TableComponent implements OnInit {
                         f.control = new FormControl({value: f.value || '', disabled: f.readonly});
                         if (f.dictKey) {
                             f.items$ = this.provider.getFullDict(f.dictKey).pipe(filter(d => !!d));
+                        }
+                        if (f.valueItems) {
+                            f.items$ = of(f.valueItems);
                         }
                     });
                 }),
