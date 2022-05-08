@@ -33,7 +33,7 @@ export interface ITableFilter {
     name: string;
     title: string;
     type: string;
-    db_name: string;
+    dictKey: string;
     readonly?: boolean;
     items$: Observable<IDictItem[]>;
     control: FormControl;
@@ -179,8 +179,8 @@ export class TableComponent implements OnInit {
                 tap(filters => {
                     filters.forEach(f => {
                         f.control = new FormControl({value: f.value || '', disabled: f.readonly});
-                        if (f.db_name) {
-                            f.items$ = this.provider.getFullDict(f.db_name).pipe(filter(d => !!d));
+                        if (f.dictKey) {
+                            f.items$ = this.provider.getFullDict(f.dictKey).pipe(filter(d => !!d));
                         }
                     });
                 })
@@ -189,8 +189,8 @@ export class TableComponent implements OnInit {
                 tap(filters => {
                     filters.forEach(f => {
                         f.control = new FormControl({value: f.value || '', disabled: f.readonly});
-                        if (f.db_name) {
-                            f.items$ = this.provider.getFullDict(f.db_name).pipe(filter(d => !!d));
+                        if (f.dictKey) {
+                            f.items$ = this.provider.getFullDict(f.dictKey).pipe(filter(d => !!d));
                         }
                     });
                 }),

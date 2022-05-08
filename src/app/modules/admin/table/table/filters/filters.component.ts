@@ -2,7 +2,7 @@ import {Component, OnInit, Input, Output, EventEmitter, OnDestroy} from '@angula
 import {ITableFilter} from '../table.component';
 import {FormService} from '../../../form.service';
 import {Observable, merge, Subscription} from 'rxjs';
-import {debounceTime, filter, map, mergeAll, mergeMap, startWith, switchMap, tap} from 'rxjs/operators';
+import {debounceTime, filter, map, switchMap, tap} from 'rxjs/operators';
 import {FormGroup} from '@angular/forms';
 
 export interface IFiltersParams {
