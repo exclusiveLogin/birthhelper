@@ -257,6 +257,7 @@ export class TableComponent implements OnInit {
     }
 
     public refreshTable(filters: IFiltersParams) {
+        this.currentPage = 1;
         this.currentItem = null;
         this.qp = filters ? filters : this.qp;
         this.pageChanged(this.currentPage, filters as IRestParams);
