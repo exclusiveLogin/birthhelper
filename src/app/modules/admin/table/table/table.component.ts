@@ -125,7 +125,7 @@ export class TableComponent implements OnInit {
 
     private setStats(set: ISet) {
         this.total = set && set.total && Number(set.total);
-        this.allPages = this.total ? Math.floor(this.total / 20) || 1 : 1;
+        this.allPages = this.total ? Math.ceil(this.total / 20) || 1 : 1;
         this.rowSettings = set.fields && set.fields.filter(f => !f.hide && !!f.showOnTable);
     }
 
