@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {TabRxInput} from 'app/modules/configurator/configurator.model';
 import {Observable, combineLatest} from 'rxjs';
-import {map, switchMap, tap} from 'rxjs/operators';
+import {delay, map, switchMap, tap} from 'rxjs/operators';
 import {OrderService, StatusValidation} from 'app/services/order.service';
 import {ConfiguratorService} from '../../configurator.service';
 import {Router} from '@angular/router';
@@ -49,6 +49,7 @@ export class TabsComponent implements OnInit {
     ngOnInit(): void {
         this.tabs$ = this.tabs$
             ? this.tabs$.pipe(
+                delay(100),
                 tap(tabs => tabs[0]?.key
                     ? this.selectTab(tabs[0]?.key)
                     : null

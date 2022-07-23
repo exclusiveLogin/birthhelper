@@ -101,8 +101,13 @@ export class ConfiguratorService {
     onBusesReady$ = this.onProvidersReady$.pipe(tap(() => this.busLayerFactory()));
     onConsumersReady$ = this.onBusesReady$.pipe(tap(() => this.consumerLayerFactory()));
     onViewReady$ = this.onConsumersReady$.pipe(tap(() => this.viewLayerFactory()));
-    onTabsReady$: Observable<TabRxInput[]> =
-        this.onViewReady$.pipe(
+
+    onTabsReady$: Observable<TabRxInput[]> = this.onViewReady$.pipe(
+            tap(() => {
+                this.tabsStore = {};
+                this.selectionStore = {};
+                this.viewsStore = {};
+            }),
             tap(() => this.tabLayerFactory()),
             map(() => Object.values(this.tabsStore)),
         );
@@ -183,6 +188,7 @@ export class ConfiguratorService {
 
     tabLayerFactory(): void {
         this._config.tabs.forEach(tc => {
+            debugger;
             const tabConsumersKeys = tc.floors.map(f => f.consumerKeys).reduce((keys, cur) => [...keys, ...cur], []);
             const consumers: Observable<SlotEntity[]>[] = tabConsumersKeys.map(k => this.consumers[k]);
             this.tabsStore[tc.key] = {
