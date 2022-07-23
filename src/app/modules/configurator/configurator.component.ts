@@ -3,7 +3,7 @@ import {ConfiguratorService} from 'app/modules/configurator/configurator.service
 import {ActivatedRoute, Router} from '@angular/router';
 import {SectionType} from 'app/services/search.service';
 import {combineLatest, forkJoin, Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 import {SlotEntity} from 'app/models/entity.interface';
 import {ValidationTreeItem} from '../../services/order.service';
 import {TabFloorSetting} from 'app/modules/configurator/configurator.model';
@@ -31,7 +31,7 @@ export class ConfiguratorComponent implements OnInit {
         combineLatest([this.onInitContragentID$, this.onInitSectionType$, this.onInitContragentEntityKey$]);
 
     onContragentLoad$ = this.configuratorService.onContragent$;
-    onTabsLoad$ = this.configuratorService.onTabsReady$;
+    onTabsLoad$ = this.configuratorService.onTabsReady$.pipe(tap(tabs => console.log('TABS: ', tabs)));
     onView$ = this.configuratorService.onViewChanged$;
 
     getConsumerByID(key: string): Observable<SlotEntity[]> {

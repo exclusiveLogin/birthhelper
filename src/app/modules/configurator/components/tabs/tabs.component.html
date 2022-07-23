@@ -34,7 +34,7 @@
                 (click)="gotoCart()"
                 *ngIf="state?.invalid !== null"
                 [class.muted]="state.invalid">
-            <span class="clinic-cart-btn__txt" title="В корзину">{{ price$ | async}}&nbsp;&#x20bd;</span>
+            <span class="clinic-cart-btn__txt" title="В корзину"><span class="price_from">от</span>{{ price$ | async}}&nbsp;&#x20bd;</span>
         </button>
     </ng-container>
 

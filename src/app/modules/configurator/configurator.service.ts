@@ -60,6 +60,11 @@ export class ConfiguratorService {
             map(([id, cid, sid]) => ({contragentId: id, contragentEntityKey: cid, contragentSectionKey: sid})));
 
     onSectionChanged$ = this.onContragentDataLoad$.pipe(
+        tap(() => {
+            this.tabsStore = {};
+            this.selectionStore = {};
+            this.viewsStore = {};
+        }),
         map(data => data.contragentSectionKey),
         distinctUntilChanged(),
         shareReplay(1),
