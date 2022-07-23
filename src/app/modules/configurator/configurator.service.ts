@@ -105,8 +105,6 @@ export class ConfiguratorService {
     onTabsReady$: Observable<TabRxInput[]> = this.onViewReady$.pipe(
             tap(() => {
                 this.tabsStore = {};
-                this.selectionStore = {};
-                this.viewsStore = {};
             }),
             tap(() => this.tabLayerFactory()),
             map(() => Object.values(this.tabsStore)),
