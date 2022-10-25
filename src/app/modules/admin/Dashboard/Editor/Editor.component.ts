@@ -196,14 +196,13 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
                 field.descriptionControl = this.forms.createFormControl(null);
             }
 
-            if (field.readonly && this.mode === EMENUMODE.VIEW) {
+            if (field.readonly || this.mode === EMENUMODE.VIEW) {
                 field.control.disable();
             }
             // готовим словари
             if (!!field.useDict && !!field.dctKey) {
-                field.initData ?
-                    field.control.setValue(field.initData) :
-                    field.control.setValue(null);
+                field.control.setValue(
+                    field.initData ?? null, {emitEvent: false});
                 field.loaded = false;
                 this.dict.getDict(field.dctKey)
                     .pipe(filter(data => !!data))
@@ -306,10 +305,10 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
     private rerenderValueOfFields() {
         this.fields.forEach(field => {
             field.initData && field.control ?
-                field.control.setValue(field.initData) :
-                field.control.setValue(null);
+                field.control.setValue(field.initData, {emitEvent: false}) :
+                field.control.setValue(null, {emitEvent: false});
             if (field.required && !field.canBeNull && !field.initData && !!field.dctItems && !!field.dctItems.length) {
-                field.control.setValue(field.dctItems[0]['id']);
+                field.control.setValue(field.dctItems[0]['id'], {emitEvent: false});
             }
         });
     }
@@ -372,7 +371,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
     public selectServiceFromTable(service: ITableItem) {
         if (!service) {
             this.currentService = null;
-            this.form.reset();
+            this.form.reset({}, {emitEvent: false});
             this.rerenderValueOfFields();
             return;
         }

@@ -6,6 +6,7 @@ services:
     - "8092:80"
   back:
     image: "exclusivelogin/birthhelper-back"
+    stop_signal: SIGINT
     ports:
     - "8091:3000"
     volumes:

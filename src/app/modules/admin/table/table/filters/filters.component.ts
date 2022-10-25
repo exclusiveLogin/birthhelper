@@ -4,11 +4,13 @@ import {FormService} from '../../../form.service';
 import {Observable, merge, Subscription} from 'rxjs';
 import {debounceTime, filter, map, switchMap, tap} from 'rxjs/operators';
 import {FormGroup} from '@angular/forms';
+import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
 
 export interface IFiltersParams {
     [name: string]: string;
 }
 
+@UntilDestroy()
 @Component({
     selector: 'app-filters',
     templateUrl: './filters.component.html',
@@ -55,6 +57,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
                                 map(value => [_.key, value]))),
                     );
                 }),
+                untilDestroyed(this),
             ).subscribe((data) => {
                 const d = data as any as [string, string];
                 const [name, value] = d;

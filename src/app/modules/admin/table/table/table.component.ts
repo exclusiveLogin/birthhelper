@@ -187,7 +187,8 @@ export class TableComponent implements OnInit {
                             f.items$ = of(f.valueItems);
                         }
                     });
-                })
+                }),
+                untilDestroyed(this),
             )
             : this.provider.getFilters(this.key, this.type).pipe(
                 tap(filters => {
@@ -205,6 +206,7 @@ export class TableComponent implements OnInit {
                     this.currentError = err.message ? err.message : err;
                     return of([]);
                 }),
+                untilDestroyed(this),
             );
 
         if (this.key && this.type) {
