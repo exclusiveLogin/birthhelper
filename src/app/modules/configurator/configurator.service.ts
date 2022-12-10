@@ -62,7 +62,6 @@ export class ConfiguratorService {
     onSectionChanged$ = this.onContragentDataLoad$.pipe(
         tap(() => {
             this.tabsStore = {};
-            this.selectionStore = {};
             this.viewsStore = {};
         }),
         map(data => data.contragentSectionKey),
@@ -186,7 +185,6 @@ export class ConfiguratorService {
 
     tabLayerFactory(): void {
         this._config.tabs.forEach(tc => {
-            debugger;
             const tabConsumersKeys = tc.floors.map(f => f.consumerKeys).reduce((keys, cur) => [...keys, ...cur], []);
             const consumers: Observable<SlotEntity[]>[] = tabConsumersKeys.map(k => this.consumers[k]);
             this.tabsStore[tc.key] = {
