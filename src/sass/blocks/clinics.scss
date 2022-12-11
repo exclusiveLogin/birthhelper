@@ -2,6 +2,16 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.emptylist{
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
 }
 
 .map__mode .clinics__list{

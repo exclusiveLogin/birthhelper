@@ -14,7 +14,7 @@ import {IConsultationMini} from '@models/consultation.interface';
     selector: 'app-search',
     templateUrl: './search.component.html',
     styleUrls: ['./search.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Default,
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent implements OnInit, AfterViewInit {
 
@@ -44,6 +44,8 @@ export class SearchComponent implements OnInit, AfterViewInit {
         shareReplay(1),
     );
 
+    presetFilters$ = this.onHashByRoute$.pipe();
+
     dataProvider$ = this.onInitSectionType$.pipe(map(section => this.provider.getListProvider(section)));
     setProvider$ = this.onInitSectionType$.pipe(map(section => this.provider.getSetProvider(section)));
     filterProvider$ = this.onInitSectionType$.pipe(map(section => this.provider.getFilterProvider(section)));
@@ -57,13 +59,12 @@ export class SearchComponent implements OnInit, AfterViewInit {
             return of(null);
         }),
         shareReplay(1),
-        tap(_ => console.log('mainSet$', _)),
     );
 
     mainList$ = merge(this.onHash$, this.onPageChange$).pipe(
         switchMap(() => this.dataProvider$.pipe(switchMap(provider => provider(this.currentPage, this.hash)))),
         retryWhen(errors => errors.pipe(
-            tap(_ => console.log('mainList$ ERROR', _)),
+            tap(_ => console.error('mainList$ ERROR', _)),
             tap(() => this.onHashError$.next(null)),
             delayWhen(() => timer(1000)),
         )),
@@ -77,7 +78,7 @@ export class SearchComponent implements OnInit, AfterViewInit {
                 of(filters),
                 this.onHash$.pipe(
                     switchMap(hash =>
-                        this.filterConfigProvider$.pipe(map(provider => provider(hash)))),
+                        this.filterConfigProvider$.pipe(switchMap(provider => provider(hash)))),
                 ),
             ]),
         ),

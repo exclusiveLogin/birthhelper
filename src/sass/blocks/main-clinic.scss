@@ -10,11 +10,11 @@
 
 .main-clinic__columns {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  align-items: stretch;
   margin: 35px 0 0;
-  max-width: 1180px;
+  //max-width: 1180px;
   width: 100%;
+  flex-grow: 1;
 }
 
 .main-clinic__filter {
