@@ -1,7 +1,7 @@
 import * as L from 'leaflet';
 import {icon, LatLng, marker} from 'leaflet';
 import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {asyncScheduler, combineLatest, merge, Observable, of, Subject, timer} from 'rxjs';
+import {asyncScheduler, combineLatest, merge, Observable, of, Subject, timer, zip} from 'rxjs';
 import {catchError, delayWhen, distinctUntilChanged, map, retryWhen, shareReplay, switchMap, tap, throttleTime, } from 'rxjs/operators';
 import {SearchService, SectionType} from 'app/services/search.service';
 import {LLMap} from 'app/modules/map.lib';
@@ -74,13 +74,13 @@ export class SearchComponent implements OnInit, AfterViewInit {
     filterList$ = this.filterProvider$.pipe(
         switchMap(provider => provider()),
         switchMap((filters) =>
-            combineLatest([
+            zip(
                 of(filters),
                 this.onHash$.pipe(
                     switchMap(hash =>
                         this.filterConfigProvider$.pipe(switchMap(provider => provider(hash)))),
                 ),
-            ]),
+            ),
         ),
         retryWhen(errors => errors.pipe(
             tap(() => this.onHashError$.next(null)),

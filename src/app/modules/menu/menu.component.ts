@@ -27,7 +27,6 @@ export class MenuComponent implements OnInit {
     mode$: Observable<MenuMode> = this.routingService.routeData$.pipe(
         pluck('main_menu_mode'),
         map(mode => mode ?? 'default'),
-        tap(data => console.log('mode$: ', data)),
         shareReplay(1),
     );
 

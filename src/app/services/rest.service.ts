@@ -160,7 +160,7 @@ export class RestService {
             script: hash,
         };
 
-        return this.getData<SearchFilterConfig>(entSetting);
+        return this.getData<SearchFilterConfig>(entSetting, null, true);
     }
 
     public getFilterConfig(key: SectionType): Observable<SearchSection[]> {
