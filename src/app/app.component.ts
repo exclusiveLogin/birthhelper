@@ -8,7 +8,7 @@ import {DialogService} from '@modules/dialog/dialog.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
     constructor(
         private auth: AuthService,
         private orders: OrderService,
@@ -18,8 +18,9 @@ export class AppComponent implements OnInit{
     }
 
     ngOnInit(): void {
+        console.log('INIT');
         setTimeout(() =>
-        this.modal.showDialogByTemplateKey('feedback_form'), 1000);
+        this.modal.showDialogByTemplateKey('feedback_form', {data: {votes: [{slug: 'test', 'title': 'Первый пункт'}, {slug: 'test2', 'title': 'Второй пункт'}, {slug: 'test3', 'title': 'Третий пункт'}, ]}}), 1000);
     }
 
 }

@@ -9,6 +9,7 @@ import {ImageService} from '../../services/image.service';
 import {SafeUrl} from '@angular/platform-browser';
 import {LLMap} from '@modules/map.lib';
 import {icon, LatLng, marker, Marker} from 'leaflet';
+import {Form} from '@angular/forms';
 
 @UntilDestroy()
 @Component({
@@ -163,5 +164,10 @@ export class DialogComponent implements OnInit {
     setTabIdx(idx: number): void {
         this.tabIdx = idx;
         this.cdr.markForCheck();
+    }
+
+    sendFeedback(r: Record<string, string>): void {
+        console.log('test', r);
+        this.closeDialog();
     }
 }
