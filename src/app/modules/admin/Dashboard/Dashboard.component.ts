@@ -442,6 +442,21 @@ export class DashboardComponent implements OnInit {
                     modes: [
                         EMENUMODE.VIEW,
                     ]
+                },
+                {
+                    name: 'ent_vote_type',
+                    title: 'Оценка (словарь)',
+                    titleVoc: 'оценка',
+                    titleVocs: 'оценки',
+                    type: 'entity',
+                    isDict: true,
+                    // mime: 'image',
+                    modes: [
+                        EMENUMODE.VIEW,
+                        EMENUMODE.CREATE,
+                        EMENUMODE.DELETE,
+                        EMENUMODE.EDIT,
+                    ]
                 }
             ],
         },
