@@ -45,6 +45,7 @@ export class DialogComponent implements OnInit {
     @ViewChild('tpl_popup_person', { static: true }) tpl_person: TemplateRef<any>;
     @ViewChild('tpl_popup_other', { static: true }) tpl_other: TemplateRef<any>;
     @ViewChild('tpl_popup_contragent', { static: true }) tpl_contragent: TemplateRef<any>;
+    @ViewChild('tpl_popup_feedback_form', { static: true }) tpl_feedback_form: TemplateRef<any>;
     @ViewChild('tpl_popup_blank', { static: true }) tpl_default: TemplateRef<any>;
 
     mapsExistTplKeys = [
