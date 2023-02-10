@@ -73,7 +73,7 @@ export class ClinicCardComponent implements OnInit {
     );
 
     sendFeedback(): void {
-        this.feedbackService.initFeedbackByTarget('clinic', this.viewClinic.id, {section: 'consultation'}).then(r => {
+        this.feedbackService.initFeedbackByTarget('clinic', this.viewClinic.id, {section: 'clinic'}).then(r => {
             console.log('feedback saved', r);
             this.refresher$.next(null);
         } );

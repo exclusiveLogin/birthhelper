@@ -5,6 +5,9 @@ import {ImageService} from '../../../../../services/image.service';
 import {SafeUrl} from '@angular/platform-browser';
 import {IConsultationMini} from '@models/consultation.interface';
 import {Entity} from '@models/entity.interface';
+import {FeedbackService} from '@modules/feedback/feedback.service';
+import {SummaryVotes} from '@modules/feedback/models';
+import {map, shareReplay, switchMap, tap} from 'rxjs/operators';
 
 @Component({
     selector: 'app-consultation-card',
@@ -59,7 +62,23 @@ export class ConsultationCardComponent implements OnInit {
     constructor(
         private router: Router,
         private imageService: ImageService,
+        private feedbackService: FeedbackService,
     ) {}
+
+    refresher$ = new BehaviorSubject<null>(null);
+    rating$: Observable<SummaryVotes> = this.refresher$.pipe(
+        tap(() => console.log('refresher$')),
+        switchMap(() => this.feedbackService.getRatingForTarget('consultation', this.viewConsultation.id)),
+        map(result => result.summary),
+        shareReplay(1)
+    );
+
+    sendFeedback(): void {
+        this.feedbackService.initFeedbackByTarget('consultation', this.viewConsultation.id, {section: 'consultation'}).then(r => {
+            console.log('feedback saved', r);
+            this.refresher$.next(null);
+        } );
+    }
 
     wrap(): void {
         this.wrapped = true;

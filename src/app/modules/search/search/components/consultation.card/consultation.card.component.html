@@ -1,4 +1,4 @@
-<div class="clinics__item">
+<div class="clinics__item" *ngIf="{rating: rating$ | async} as data">
     <div class="card">
         <div class="card__photo">
             <img class="img_clinic"
@@ -31,9 +31,9 @@
             <div class="card__description-top">
                 <a [routerLink]="['/system/configurator/consultation', viewConsultation.id]"
                    class="card__ttl">{{viewConsultation.title}}</a>
-                <div class="card__controls muted">
+                <div class="card__controls">
                     <div class="card-controls__btn-group">
-                        <button class="card-controls__btn card-controls__btn-bookmark">
+                        <button class="card-controls__btn card-controls__btn-bookmark muted">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="36" viewBox="0 0 24 36">
                                 <g id="prefix__bookmark" transform="translate(-80.334)">
                                     <g id="prefix__Group_1923" data-name="Group 1923" transform="translate(80.334)">
@@ -44,14 +44,16 @@
                                 </g>
                             </svg>
                         </button>
-                        <button class="card-controls__btn card-controls__btn-other"><img
-                            src="img/icons/ic-show-chart-24px.svg" alt=""></button>
-                        <button class="card-controls__btn card-controls__btn-rating"><span
-                            class="card-controls__btn-txt">{{viewConsultation.stat_value}}</span>
+                        <button class="card-controls__btn card-controls__btn-other muted">
+                            <img src="img/icons/ic-show-chart-24px.svg" alt="">
+                        </button>
+                        <button class="card-controls__btn card-controls__btn-rating">
+                            <span class="card-controls__btn-txt">{{data?.rating?.avr ?? 0 | number: '1.0-1'}}</span>
                         </button>
                     </div>
-                    <div class="card-controls__cnt"><a href="#" class="card-controls__link">Оставить отзыв</a> <span
-                        class="card-controls__txt">Всего {{viewConsultation.stat_count}}</span></div>
+                    <div class="card-controls__cnt"><a href="javascript:;" (click)="sendFeedback()" class="card-controls__link">Оставить отзыв</a>
+                        <span class="card-controls__txt">Всего {{data?.rating?.total || 0 }}</span>
+                    </div>
                 </div>
             </div>
             <div class="card__tags">
