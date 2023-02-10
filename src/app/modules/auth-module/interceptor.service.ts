@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable, of, pipe, Subject, throwError} from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
+import {catchError, map, shareReplay} from 'rxjs/operators';
 import {MonoTypeOperatorFunction} from 'rxjs/interfaces';
 import {NotifierService} from '../notifier/notifier.service';
 import {ToastrService} from 'ngx-toastr';
@@ -11,15 +11,17 @@ import {ToastrService} from 'ngx-toastr';
 export class InterceptorService {
 
     public reseterToken$: Subject<null>;
-    public token$: Observable<string>;
+    private _token = new Subject<string>();
+    public token$: Observable<string> = this._token.pipe(shareReplay(1));
 
     constructor(private notifier: NotifierService, private toastr: ToastrService) {
-        this.token$ = new Subject<string>();
         this.reseterToken$ = new Subject<null>();
+        console.log('InterceptorService', this);
     }
 
-    tokenInjector(token$: Observable<string>): void {
-        this.token$ = token$;
+    tokenInjector(token: string): void {
+        console.log('tokenInjector', token);
+        this._token.next(token);
     }
 
     interceptor(): MonoTypeOperatorFunction<any> {

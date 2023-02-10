@@ -24,7 +24,6 @@ export class AuthService {
         private rest: RestService,
         private interceptor: InterceptorService,
     ) {
-        this.interceptor.tokenInjector(this.token$);
         this.token$.subscribe();
         this.user$.subscribe();
         this.role$.subscribe();
@@ -56,6 +55,7 @@ export class AuthService {
         switchMap((token) => token ? of(token) : this.createGuestToken$()),
         tap(token => this.saveLSToken(token)),
         tap(token => this.token = token),
+        tap(token => this.interceptor.tokenInjector(token)),
         shareReplay(1),
     );
 

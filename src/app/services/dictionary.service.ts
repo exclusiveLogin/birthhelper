@@ -18,7 +18,9 @@ export class DictionaryService {
 
     constructor(
         private rest: RestService,
-    ) {}
+    ) {
+        console.log('DictionaryService', this);
+    }
 
     private dictRepo: { [key: string]: IDictItem[] } = {};
     private dictStreams$: { [key: string]: Observable<IDictItem[]> } = {};
@@ -36,7 +38,7 @@ export class DictionaryService {
         return (this.dictStreams$[name] = dict$);
     }
     public getDict(name: string, filters: Record<string, string>, page: number = 1): Observable<IDictItem[]> {
-        return this.dictRepo[name] ? of(this.dictRepo[name]) : this.getDictStream(name, filters, page).pipe(take(1));
+        return this.rest.fetchDictionary(name, filters, page);
     }
 
     public resetDict(key?: string): void {

@@ -16,6 +16,10 @@ export class FeedbackService extends StoreService {
 
   constructor(private dialog: DialogService, private rest: RestService, private dict: DictionaryService) {
       super();
+      console.log('Feedback INIT');
+      this.initFeedbackByTarget('consultation', 1, {});
+
+
   }
 
     async initFeedbackByTarget(targetKey: string, targetId: number, context: FeedbackContext) {

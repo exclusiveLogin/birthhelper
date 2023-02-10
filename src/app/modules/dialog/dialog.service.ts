@@ -1,7 +1,10 @@
 import {Injectable, TemplateRef} from '@angular/core';
 import {DialogAction, DialogAnswer, DialogServiceConfig, DialogType} from './dialog.model';
 import {Observable, Subject} from 'rxjs';
+import {shareReplay} from 'rxjs/operators';
+import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Injectable({
     providedIn: 'root'
 })
@@ -12,10 +15,11 @@ export class DialogService {
     default_mode: DialogType = 'popup';
 
     constructor() {
+        this.dialogBus$.subscribe(test => console.log('test:', test));
     }
 
     _sender$ = new Subject<Partial<DialogAction>>();
-    dialogBus$: Observable<Partial<DialogAction>> = this._sender$.pipe();
+    dialogBus$: Observable<Partial<DialogAction>> = this._sender$.pipe(untilDestroyed(this), shareReplay(1));
 
     configDefault(config: Partial<DialogServiceConfig>): void {
         this.default_id_dialog = config.idDialog ?? this.default_id_dialog;

@@ -97,6 +97,7 @@ export class RestService {
         private api: ApiService,
         private interceptor: InterceptorService,
     ) {
+        console.log('RestService', this);
     }
 
     cacheStore = {};
