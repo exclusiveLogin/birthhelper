@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {DialogType} from './dialog.model';
+import {DialogAnswer, DialogType} from './dialog.model';
 import {DialogService} from './dialog.service';
 import {filter, tap} from 'rxjs/operators';
 import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
@@ -8,8 +8,7 @@ import {dialogAnimation, dialogWrapperAnimation} from './dialog.animation';
 import {ImageService} from '../../services/image.service';
 import {SafeUrl} from '@angular/platform-browser';
 import {LLMap} from '@modules/map.lib';
-import {icon, LatLng, marker, Marker} from 'leaflet';
-import {Form} from '@angular/forms';
+import {icon, LatLng, marker} from 'leaflet';
 
 @UntilDestroy()
 @Component({
@@ -46,7 +45,7 @@ export class DialogComponent implements OnInit {
     @ViewChild('tpl_popup_person', { static: true }) tpl_person: TemplateRef<any>;
     @ViewChild('tpl_popup_other', { static: true }) tpl_other: TemplateRef<any>;
     @ViewChild('tpl_popup_contragent', { static: true }) tpl_contragent: TemplateRef<any>;
-    @ViewChild('tpl_popup_feedback_form', { static: true }) tpl_feedback_form: TemplateRef<any>;
+    @ViewChild('tpl_dialog_feedback_form', { static: true }) tpl_feedback_form: TemplateRef<any>;
     @ViewChild('tpl_popup_blank', { static: true }) tpl_default: TemplateRef<any>;
 
     mapsExistTplKeys = [
@@ -55,6 +54,7 @@ export class DialogComponent implements OnInit {
 
     photoUrl$: Observable<SafeUrl>;
     imageSignal$: BehaviorSubject<null>;
+    dialogAnswer$: Subject<DialogAnswer>;
 
     hasMapTpl(key: string): boolean {
         return this.mapsExistTplKeys.includes(key) ?? null;
@@ -71,6 +71,7 @@ export class DialogComponent implements OnInit {
                 untilDestroyed(this),
             ).subscribe(action => {
                 if (action.action === 'show') {
+                    this.dialogAnswer$ = action.dialogAnswerPipe$ ?? new Subject<DialogAnswer>();
                     this.tpl_custom = !!action.template;
                     const _tpl = action.template || this[`tpl_${action.templateKey}`];
                     this.tpl_context.$implicit = action.data;
@@ -130,6 +131,8 @@ export class DialogComponent implements OnInit {
         this._showed$.next(false);
     }
     uninstallDialog(): void {
+        this.dialogAnswer$.complete();
+        this.dialogAnswer$ = null;
         this.template = null;
         this.tpl_context.$implicit = this.tplData;
         this._mode = 'popup';
@@ -166,8 +169,18 @@ export class DialogComponent implements OnInit {
         this.cdr.markForCheck();
     }
 
-    sendFeedback(r: Record<string, string>): void {
-        console.log('test', r);
-        this.closeDialog();
+    sendFeedback(data: Record<string, any>): void {
+        console.log('sendFeedback', data);
+        const votes = data?.votes ?? {};
+        const answer: DialogAnswer = {
+            action: 'submit',
+            templateKey: 'tpl_feedback_form',
+            data: {
+                votes: Object.keys(votes).map(k => ({slug: k, rate: Number(votes[k])})),
+                comment: data.comment
+            },
+        };
+        this.dialogAnswer$.next(answer);
+        this.uninstallDialog();
     }
 }

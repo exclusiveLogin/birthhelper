@@ -85,7 +85,6 @@
             <div class="form-group half">
                 <label for="status_type">Статус</label>
                 <select class="form-control" id="status_type" formControlName="status_type">
-                    {{statuses$ | async | json}}
                     <option value="null">Не выбрано</option>
                     <option *ngFor="let item of statuses$ | async" [value]="item.id">{{item.title}}</option>
                 </select>

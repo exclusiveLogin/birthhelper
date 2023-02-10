@@ -11,7 +11,7 @@
 </div>
 
 <!--Оставить отзыв-->
-<ng-template #tpl_popup_feedback_form let-data >
+<ng-template #tpl_dialog_feedback_form let-data >
         <div class="popup popup--middle" @dialogState>
 
                 <button class="popup__close" (click)="closeDialog()"></button>
@@ -20,10 +20,9 @@
                 </div>
                 <div class="popup__body">
                     <form #t="ngForm">
-                        <div class="popup__rating-list rating-list">
+                        <div class="popup__rating-list rating-list" ngModelGroup="votes">
 
                             <div class="popup__rating-item rating" *ngFor="let vote of data.votes">
-
                                 <p class="rating__title">{{vote.title}}</p>
 
                                 <div class="rating__value">

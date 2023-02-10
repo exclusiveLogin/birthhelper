@@ -1,5 +1,5 @@
 import {Injectable, TemplateRef} from '@angular/core';
-import {DialogAction, DialogServiceConfig, DialogType} from './dialog.model';
+import {DialogAction, DialogAnswer, DialogServiceConfig, DialogType} from './dialog.model';
 import {Observable, Subject} from 'rxjs';
 
 @Injectable({
@@ -21,7 +21,8 @@ export class DialogService {
         this.default_id_dialog = config.idDialog ?? this.default_id_dialog;
         this.default_mode = config.mode ?? this.default_mode;
     }
-    showDialogByTemplate(template: TemplateRef<any>, cfg?: Partial<DialogServiceConfig>): void {
+    showDialogByTemplate(template: TemplateRef<any>, cfg?: Partial<DialogServiceConfig>): Promise<DialogAnswer> {
+        const dialogAnswerPipe$ = new Subject<DialogAnswer>();
         this.validateAndSend({
             template,
             templateKey: null,
@@ -30,9 +31,13 @@ export class DialogService {
             dialogKey: cfg?.idDialog,
             form: null,
             data: cfg?.data ?? {},
+            dialogAnswerPipe$
         });
+
+        return dialogAnswerPipe$.toPromise();
     }
-    showDialogByTemplateKey(templateKey: string, cfg?: Partial<DialogServiceConfig>): void {
+    showDialogByTemplateKey(templateKey: string, cfg?: Partial<DialogServiceConfig>): Promise<DialogAnswer> {
+        const dialogAnswerPipe$ = new Subject<DialogAnswer>();
         this.validateAndSend({
             template: null,
             templateKey,
@@ -41,7 +46,10 @@ export class DialogService {
             dialogKey: cfg?.idDialog,
             form: null,
             data: cfg?.data ?? {},
+            dialogAnswerPipe$
         });
+
+        return dialogAnswerPipe$.toPromise();
     }
 
     closeOpenedDialog(dialogKey?: string): void {
@@ -60,6 +68,7 @@ export class DialogService {
             mode: action.mode ?? this.default_mode,
             data: action.data,
             form: action.form,
+            dialogAnswerPipe$: action.dialogAnswerPipe$,
         };
 
         const validOptions = _action.action && _action.dialogKey && _action.mode && _action.data;

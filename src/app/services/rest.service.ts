@@ -125,7 +125,7 @@ export class RestService {
             resource: section,
         };
 
-        return this.getData(entSetting);
+        return this.fetchData(entSetting);
     }
 
     public getRaw(url: string): Observable<any> {
@@ -139,7 +139,7 @@ export class RestService {
             resource: id.toString(),
         };
 
-        return this.getData<T>(entSetting).pipe(map(d => d?.[0]));
+        return this.fetchData<T>(entSetting).pipe(map(d => d?.[0]));
     }
 
     public activateUser(url: string): Observable<any> {
@@ -149,7 +149,7 @@ export class RestService {
             resource: url,
         };
 
-        return this.getData(config);
+        return this.fetchData(config);
     }
 
     public getFilterConfigByHash(key: SectionType, hash: string): Observable<SearchFilterConfig> {
@@ -160,7 +160,7 @@ export class RestService {
             script: hash,
         };
 
-        return this.getData<SearchFilterConfig>(entSetting, null, true);
+        return this.fetchData<SearchFilterConfig>(entSetting, null, true);
     }
 
     public getFilterConfig(key: SectionType): Observable<SearchSection[]> {
@@ -169,7 +169,7 @@ export class RestService {
             segment: key,
         };
 
-        return this.getData<SearchSectionSrc>(entSetting)
+        return this.fetchData<SearchSectionSrc>(entSetting)
             .pipe(map(data => data.results));
     }
 
@@ -199,7 +199,7 @@ export class RestService {
             script: id.toString(),
         };
 
-        return this.getData<SectionedContragentSlots>(entSetting);
+        return this.fetchData<SectionedContragentSlots>(entSetting);
     }
 
     public getEntityList<T = Entity>(key: string, page?: number, qp?: IRestParams): Observable<T[]> {
@@ -214,7 +214,7 @@ export class RestService {
             Object.assign(data, qp);
         }
 
-        return this.getData<T[]>(entSetting, data);
+        return this.fetchData<T[]>(entSetting, data);
     }
 
     public getEntitySet(key: string, qp?: IRestParams): Observable<any[]> {
@@ -224,7 +224,7 @@ export class RestService {
             script: 'set'
         };
 
-        return this.getData<any[]>(entSetting, qp);
+        return this.fetchData<any[]>(entSetting, qp);
     }
 
     public createGuestToken(): Observable<string> {
@@ -271,7 +271,7 @@ export class RestService {
             segment: null,
         };
 
-        return this.getData<OrderResponse>(entSetting, null, true).pipe(
+        return this.fetchData<OrderResponse>(entSetting, null, true).pipe(
             map(response => response?.result ?? []));
     }
 
@@ -302,7 +302,7 @@ export class RestService {
             segment: 'role',
         };
 
-        return this.getData(ep_config);
+        return this.fetchData(ep_config);
     }
 
     public getUser(): Observable<UserSrc> {
@@ -311,7 +311,7 @@ export class RestService {
             segment: 'user',
         };
 
-        return this.getData(ep_config);
+        return this.fetchData(ep_config);
     }
 
     public getContainerFromId(key: string, id: number, qp?: IRestParams): Observable<IContainerData> {
@@ -322,7 +322,7 @@ export class RestService {
             script: '' + id,
         };
 
-        return this.getData<IContainerData>(entSetting, qp);
+        return this.fetchData<IContainerData>(entSetting, qp);
     }
 
     public logout(everywhere?: boolean): Observable<UserExit> {
@@ -338,16 +338,17 @@ export class RestService {
         return this.remData(ep_config);
     }
 
-    public getDict(name: string, page?: number): Observable<IDictItem[]> {
+    public fetchDictionary(name: string, filters?: Record<string, string>, page?: number): Observable<IDictItem[]> {
         const dictSetting: ISettingsParams = {
             mode: 'api',
             segment: 'dict',
             resource: name
         };
 
-        const data: IRestParams = page ? {skip: (20 * (page - 1)).toString()} : null;
+        let data: IRestParams = page ? {skip: (20 * (page - 1)).toString()} : {};
+        if (filters) { data = {...data, ...filters}; }
 
-        return this.getData<IDictItem[]>(dictSetting, data);
+        return this.fetchData<IDictItem[]>(dictSetting, data);
     }
 
     pathGen(path: ISettingsParams): void {
@@ -358,7 +359,7 @@ export class RestService {
         return `${this.api.getApiPath()}${path.mode ?? ''}${path.segment ?? ''}${path.resource ?? ''}${path.script ?? ''}`;
     }
 
-    public getData<T>(path: ISettingsParams, data?: IRestParams, nocache = false): Observable<T> {
+    public fetchData<T>(path: ISettingsParams, data?: IRestParams, nocache = false): Observable<T> {
         if (path?.mode === 'auth') {
             nocache = true;
         }

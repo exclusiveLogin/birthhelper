@@ -20,6 +20,7 @@ import {MenuModule} from './modules/menu/menu.module';
 import {DmsFormComponent} from './main/components/dms.form/dms.form.component';
 import { OurAdvantageComponent } from './main/components/our-advantage/our-advantage.component';
 import { AdSliderComponent } from './main/components/ad-slider/ad-slider.component';
+import {FeedbackModule} from '@modules/feedback/feedback.module';
 
 const routes: Routes = [
     {path: '', component: MainComponent},
@@ -53,6 +54,7 @@ const routes: Routes = [
         DialogModule,
         ToastrModule.forRoot(),
         MenuModule,
+        FeedbackModule,
     ],
     bootstrap: [
         AppComponent
