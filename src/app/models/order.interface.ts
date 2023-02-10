@@ -1,4 +1,4 @@
-import {hasher} from '../modules/utils/hasher';
+import {hasher} from '@modules/utils/hasher';
 import {PriceEntitySlot, SlotEntity} from './entity.interface';
 import {SelectionOrderSlot, TabFloorSetting} from '../modules/configurator/configurator.model';
 import {SectionType} from '../services/search.service';

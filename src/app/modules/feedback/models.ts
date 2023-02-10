@@ -26,3 +26,23 @@ export interface CreateFeedbackRequest {
     votes: VoteResponse[];
     comment: string;
 }
+
+export interface SummaryVotes {
+    avr: number;
+    min: number;
+    max: number;
+    total: number;
+}
+
+export interface RateByVote extends SummaryVotes{
+    slug: string;
+}
+
+export interface SummaryRateByTargetResponse {
+    summary: SummaryVotes;
+    summary_by_votes: Array<RateByVote>;
+}
+
+export interface RateStore {
+    [key: string]: SummaryRateByTargetResponse;
+}

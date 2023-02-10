@@ -1,17 +1,22 @@
 import { Injectable } from '@angular/core';
 import {DialogService} from '@modules/dialog/dialog.service';
 import {FeedbackContext} from '@models/context';
-import {RestService} from '@services/rest.service';
+import {ISettingsParams, RestService} from '@services/rest.service';
 import {DictionaryService} from '@services/dictionary.service';
-import {CreateFeedbackRequest, FeedbackFormDataAnswer, Vote, VoteResponse} from '@modules/feedback/models';
+import {CreateFeedbackRequest, FeedbackFormDataAnswer, SummaryRateByTargetResponse, Vote, VoteResponse} from '@modules/feedback/models';
 import {DialogServiceConfig} from '@modules/dialog/dialog.model';
+import {StoreService} from '@modules/feedback/store.service';
+import {Observable, of} from 'rxjs';
+import {tap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class FeedbackService {
+export class FeedbackService extends StoreService {
 
-  constructor(private dialog: DialogService, private rest: RestService, private dict: DictionaryService) { }
+  constructor(private dialog: DialogService, private rest: RestService, private dict: DictionaryService) {
+      super();
+  }
 
     async initFeedbackByTarget(targetKey: string, targetId: number, context: FeedbackContext) {
       const filters: Record<string, string> = {
@@ -48,6 +53,30 @@ export class FeedbackService {
     }
 
     sendFeedback(feedback: CreateFeedbackRequest): void {
+      const restSetting: ISettingsParams = {
+          mode: 'api',
+          segment: 'feedback',
+      };
 
+      this.rest.postData(restSetting, feedback).toPromise();
+    }
+
+
+    fetchRatingForTarget(targetKey: string, targetId: number): Observable<SummaryRateByTargetResponse>  {
+        const restSetting: ISettingsParams = {
+            mode: 'api',
+            segment: 'feedback',
+            script: 'stats'
+        };
+
+        const data = {key: targetKey, id: targetId.toString()};
+        return this.rest.fetchData(restSetting, data);
+    }
+
+    getRatingForTarget(targetKey: string, targetId: number): Observable<SummaryRateByTargetResponse>  {
+      const rating = this.loadFromStore(targetKey, targetId);
+      return rating ? of(rating) : this.fetchRatingForTarget(targetKey, targetId)
+          .pipe(
+              tap(data => this.saveToStore(targetKey, targetId, data)));
     }
 }
