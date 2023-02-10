@@ -17,5 +17,14 @@ export class StoreService {
         return this.rateStore[hash];
     }
 
+    clearStoreByTarget(targetKey: string, targetId: number): void {
+        const hash = hasher({targetKey, targetId});
+        delete this.rateStore[hash];
+    }
+
+    clearStore(): void {
+        this.rateStore = {};
+    }
+
 
 }

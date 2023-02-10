@@ -361,6 +361,7 @@ export class RestService {
     }
 
     public fetchData<T>(path: ISettingsParams, data?: IRestParams, nocache = false): Observable<T> {
+        console.log('fetchData', path);
         if (path?.mode === 'auth') {
             nocache = true;
         }

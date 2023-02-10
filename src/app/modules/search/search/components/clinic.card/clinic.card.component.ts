@@ -1,10 +1,13 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {IClinicMini} from 'app/models/clinic.interface';
 import {Router} from '@angular/router';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {ImageService} from '../../../../../services/image.service';
 import {SafeUrl} from '@angular/platform-browser';
 import {Entity} from '@models/entity.interface';
+import {FeedbackService} from '@modules/feedback/feedback.service';
+import {map, shareReplay, switchMap, tap} from 'rxjs/operators';
+import {SummaryVotes} from '@modules/feedback/models';
 
 @Component({
     selector: 'app-clinic-card',
@@ -58,8 +61,23 @@ export class ClinicCardComponent implements OnInit {
     constructor(
         private router: Router,
         private imageService: ImageService,
+        private feedbackService: FeedbackService,
     ) {}
 
+    refresher$ = new BehaviorSubject<null>(null);
+    rating$: Observable<SummaryVotes> = this.refresher$.pipe(
+        tap(() => console.log('refresher$')),
+        switchMap(() => this.feedbackService.getRatingForTarget('clinic', this.viewClinic.id)),
+        map(result => result.summary),
+        shareReplay(1)
+    );
+
+    sendFeedback(): void {
+        this.feedbackService.initFeedbackByTarget('clinic', this.viewClinic.id, {section: 'consultation'}).then(r => {
+            console.log('feedback saved', r);
+            this.refresher$.next(null);
+        } );
+    }
     wrap(): void {
         this.wrapped = true;
     }

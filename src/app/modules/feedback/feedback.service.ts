@@ -16,10 +16,6 @@ export class FeedbackService extends StoreService {
 
   constructor(private dialog: DialogService, private rest: RestService, private dict: DictionaryService) {
       super();
-      console.log('Feedback INIT');
-      this.initFeedbackByTarget('consultation', 1, {});
-
-
   }
 
     async initFeedbackByTarget(targetKey: string, targetId: number, context: FeedbackContext) {
@@ -39,10 +35,8 @@ export class FeedbackService extends StoreService {
               comment: feedbackData?.comment ?? '',
               action: 'CREATE',
           };
-
-          this.sendFeedback(feedbackSaveResponse);
           console.log('feedback success', feedbackSaveResponse);
-
+          return this.sendFeedback(feedbackSaveResponse);
       } catch (e) {
           console.log('feedback failed', e);
       }
@@ -56,13 +50,16 @@ export class FeedbackService extends StoreService {
 
     }
 
-    sendFeedback(feedback: CreateFeedbackRequest): void {
+    sendFeedback(feedback: CreateFeedbackRequest): Promise<unknown> {
       const restSetting: ISettingsParams = {
           mode: 'api',
           segment: 'feedback',
       };
 
-      this.rest.postData(restSetting, feedback).toPromise();
+      return this.rest.postData(restSetting, feedback)
+          .pipe(
+              tap(_ => this.clearStoreByTarget(feedback.target_entity_key, feedback.target_entity_id))
+          ).toPromise();
     }
 
 
@@ -74,7 +71,7 @@ export class FeedbackService extends StoreService {
         };
 
         const data = {key: targetKey, id: targetId.toString()};
-        return this.rest.fetchData(restSetting, data);
+        return this.rest.fetchData(restSetting, data, true);
     }
 
     getRatingForTarget(targetKey: string, targetId: number): Observable<SummaryRateByTargetResponse>  {

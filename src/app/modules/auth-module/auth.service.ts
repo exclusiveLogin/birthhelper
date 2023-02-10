@@ -24,9 +24,7 @@ export class AuthService {
         private rest: RestService,
         private interceptor: InterceptorService,
     ) {
-        this.token$.subscribe();
-        this.user$.subscribe();
-        this.role$.subscribe();
+        console.log('AuthService', this);
     }
 
 
