@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FeedbackService} from '@modules/feedback/feedback.service';
+import {AuthService} from '@modules/auth-module/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +8,7 @@ import {FeedbackService} from '@modules/feedback/feedback.service';
 })
 export class AppComponent implements OnInit {
 
-    constructor(private fb: FeedbackService) {
+    constructor(private auth: AuthService) {
     }
     ngOnInit(): void {
     }

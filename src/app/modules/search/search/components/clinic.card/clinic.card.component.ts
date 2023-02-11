@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {IClinicMini} from 'app/models/clinic.interface';
 import {Router} from '@angular/router';
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {ImageService} from '../../../../../services/image.service';
 import {SafeUrl} from '@angular/platform-browser';
 import {Entity} from '@models/entity.interface';

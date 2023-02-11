@@ -13,12 +13,16 @@
         </div>
     </div>
 
-    <div class="clinic-header__actions clinic-header-actions">
+    <div class="clinic-header__actions clinic-header-actions" *ngIf="rating$ | async as rate">
         <p class="clinic-header-actions__review">
-<!--            <img src="img/icons/star-24.svg" width="22" height="22" class="clinic-header-actions__review-icon" alt="">-->
-<!--            <span>4,54 (285)</span>-->
+            <img [src]="rate.avr > 1 ? 'img/icons/ic-star-24px.svg' : 'img/icons/ic-star-border-24px.svg'" width="22" height="22" class="clinic-header-actions__review-icon" alt="">
+            <img [src]="rate.avr > 2 ? 'img/icons/ic-star-24px.svg' : 'img/icons/ic-star-border-24px.svg'" width="22" height="22" class="clinic-header-actions__review-icon" alt="">
+            <img [src]="rate.avr > 3 ? 'img/icons/ic-star-24px.svg' : 'img/icons/ic-star-border-24px.svg'" width="22" height="22" class="clinic-header-actions__review-icon" alt="">
+            <img [src]="rate.avr > 4 ? 'img/icons/ic-star-24px.svg' : 'img/icons/ic-star-border-24px.svg'" width="22" height="22" class="clinic-header-actions__review-icon" alt="">
+            <img [src]="rate.avr > 4.5 ? 'img/icons/ic-star-24px.svg' : 'img/icons/ic-star-border-24px.svg'" width="22" height="22" class="clinic-header-actions__review-icon" alt="">
+            <span>{{rate.avr | number:'1.0-2'}} ({{rate.total}})</span>
         </p>
-        <a href="#" class="clinic-header-actions-link muted">Оставить отзыв</a>
+        <a href="javascript:;" (click)="sendFeedback()" class="clinic-header-actions-link">Оставить отзыв</a>
         <button class="clinic-header-actions-btn muted">Запланировать посещение</button>
     </div>
 </div>

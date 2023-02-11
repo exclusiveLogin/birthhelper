@@ -1,10 +1,13 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {Contragent, ContragentsPhone} from '../../../../models/contragent.interface';
-import {Observable, of} from 'rxjs';
+import {BehaviorSubject, Observable, of, zip} from 'rxjs';
 import {DialogServiceConfig} from '@modules/dialog/dialog.model';
 import {DialogService} from '@modules/dialog/dialog.service';
-import {map, mapTo, switchMap} from 'rxjs/operators';
+import {map, mapTo, mergeMap, pluck, switchMap, tap} from 'rxjs/operators';
 import {RestService} from '@services/rest.service';
+import {FeedbackService} from '@modules/feedback/feedback.service';
+import {SummaryVotes} from '@modules/feedback/models';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
     selector: 'app-clinic-header',
@@ -15,6 +18,8 @@ import {RestService} from '@services/rest.service';
 export class ClinicHeaderComponent implements OnInit {
 
     _ctg: Observable<Contragent>;
+    rating$: Observable<SummaryVotes>;
+    refresher$ = new BehaviorSubject<null>(null);
     @Input() set contragent$(value: Observable<Contragent>) {
         this._ctg = value.pipe(
             switchMap(ctg => ctg.phone_container_id
@@ -25,11 +30,30 @@ export class ClinicHeaderComponent implements OnInit {
                 : of(ctg)
             )
         );
+
+        this.rating$ = this.refresher$.pipe(
+            mergeMap(() => zip(this.ar.data.pipe(pluck('section')), this.ar.paramMap)
+                .pipe(
+                    map(([section, params]) => ({section, id: params.get('id')})),
+                    switchMap(({section, id}) => this.feedbackService.getRatingForTarget(section, Number(id))),
+                    map(({summary}) => (summary)),
+                ))
+        );
     }
 
+    sendFeedback() {
+        zip(this.ar.data.pipe(pluck('section')), this.ar.paramMap)
+            .pipe(
+                map(([section, params]) => ({section, id: Number(params.get('id'))})),
+                switchMap(({section, id}) => this.feedbackService.initFeedbackByTarget(section, id, {})),
+                tap(_ => this.refresher$.next(null)),
+            ).toPromise();
+    }
     constructor(
         private dialogService: DialogService,
         private restService: RestService,
+        private feedbackService: FeedbackService,
+        private ar: ActivatedRoute,
     ) {
     }
 
