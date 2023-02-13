@@ -9,8 +9,10 @@
          *ngIf="{
             data: data$ | async,
             photo: userPhoto$ | async,
-            signal: userPhotoSignal$ | async
-         } as data">
+            signal: userPhotoSignal$ | async,
+            loading: isLoading | async
+         } as data"
+         [ngClass]="{'muted': !!data?.loading}">
         <div class="order_container_head">
             <div class="header_bar">
                 <div>ID: {{_orderGroup.group_id}}</div>

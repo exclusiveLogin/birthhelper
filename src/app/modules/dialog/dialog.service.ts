@@ -14,9 +14,7 @@ export class DialogService {
 
     default_mode: DialogType = 'popup';
 
-    constructor() {
-        this.dialogBus$.subscribe(test => console.log('test:', test));
-    }
+    constructor() {}
 
     _sender$ = new Subject<Partial<DialogAction>>();
     dialogBus$: Observable<Partial<DialogAction>> = this._sender$.pipe(untilDestroyed(this), shareReplay(1));

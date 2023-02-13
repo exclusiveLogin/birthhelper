@@ -145,7 +145,8 @@ export class OrderGroupComponent implements OnInit {
     isLoading = this.loading$.pipe(
         tap(state => (state !== null)
             ? this.toastr.info(state.length ? state : 'Пожалуйста ожидайте', 'Выполняется действие')
-            : this.toastr.clear())
+            : this.toastr.clear()),
+        map(state => (state !== null)),
     );
     updater$ = new BehaviorSubject<null>(null);
     data$ = this.updater$.pipe(map(_ => this._orderGroup));
@@ -164,9 +165,7 @@ export class OrderGroupComponent implements OnInit {
     userPhoto$ = this.userPhotoData$.pipe(map(d => d[0]));
     userPhotoSignal$ = this.userPhotoData$.pipe(map(d => d[1]));
 
-    ngOnInit(): void {
-        this.isLoading.subscribe();
-    }
+    ngOnInit(): void {}
 
     getOrdersBySelection(section: SectionType, tabKey: string, floorKey: string): Observable<Order[]> {
         return this.data$.pipe(
@@ -367,8 +366,9 @@ export class OrderGroupComponent implements OnInit {
         this.loading$.next('Обработка заказа');
 
         Promise.all([
-            this._orderGroup.orders.map(order => this.removeOrder(order)),
-        ]).then(() => this.refresh.next(null))
+            ...this._orderGroup.orders.map(order => this.removeOrder(order)),
+        ])
+            .then((_) => this.refresh.next(null))
             .finally(() => this.loading$.next(null));
     }
 

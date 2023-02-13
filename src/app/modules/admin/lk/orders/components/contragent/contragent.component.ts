@@ -54,6 +54,7 @@ export class ContragentComponent implements OnInit {
         map(data => data.result),
         tap(grp => grp?.forEach(g => g.orders = g.orders.map(o => new Order(o)))),
         tap(grp => grp?.forEach(g => g.user = new User(g.user as unknown as UserSrc))),
+        tap(_ => this.cdr.markForCheck()),
     );
 
     onOrdersTotal$ = this.onOrdersGroups$.pipe(map(list => list?.total ?? 0 ));
@@ -63,6 +64,7 @@ export class ContragentComponent implements OnInit {
     constructor(
         private restService: RestService,
         private lkService: LkService,
+        private cdr: ChangeDetectorRef,
     ) {
     }
 

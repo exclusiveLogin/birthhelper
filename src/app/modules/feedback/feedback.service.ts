@@ -42,7 +42,6 @@ export class FeedbackService extends StoreService {
               comment: feedbackData?.comment ?? '',
               action: 'CREATE',
           };
-          console.log('feedback success', feedbackSaveResponse);
           return this.sendFeedback(feedbackSaveResponse);
       } catch (e) {
           console.log('feedback failed', e);

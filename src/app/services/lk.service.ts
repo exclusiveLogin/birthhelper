@@ -54,7 +54,6 @@ export class LkService {
     }
 
     setFilters(filters: any): void {
-        console.log('setFilters');
         this._ordersFilters$.next(filters);
     }
 }

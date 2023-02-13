@@ -67,7 +67,6 @@ export class ConsultationCardComponent implements OnInit {
 
     refresher$ = new BehaviorSubject<null>(null);
     rating$: Observable<SummaryVotes> = this.refresher$.pipe(
-        tap(() => console.log('refresher$')),
         switchMap(() => this.feedbackService.getRatingForTarget('consultation', this.viewConsultation.id)),
         map(result => result.summary),
         shareReplay(1)

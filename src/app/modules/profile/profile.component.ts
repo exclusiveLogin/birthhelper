@@ -35,9 +35,7 @@ export class ProfileComponent implements OnInit {
     );
     userPhoto$ = this.userPhotoData$.pipe(map(d => d[0]));
     userPhotoSignal$ = this.userPhotoData$.pipe(map(d => d[1]));
-
-    statuses$: Observable<IDictItem[]> = this.dictService.getDict('dict_user_status_type')
-        .pipe(tap(dict => console.log('statuses$:', dict)));
+    statuses$: Observable<IDictItem[]> = this.dictService.getDict('dict_user_status_type');
     formGroup = new FormGroup({
         login: new FormControl(),
         first_name: new FormControl(),
