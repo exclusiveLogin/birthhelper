@@ -8,23 +8,30 @@ import {DialogServiceConfig} from '@modules/dialog/dialog.model';
 import {StoreService} from '@modules/feedback/store.service';
 import {Observable, of} from 'rxjs';
 import {tap} from 'rxjs/operators';
+import {AuthService} from '@modules/auth-module/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FeedbackService extends StoreService {
 
-  constructor(private dialog: DialogService, private rest: RestService, private dict: DictionaryService) {
+  constructor(private dialog: DialogService, private rest: RestService, private dict: DictionaryService, private authService: AuthService) {
       super();
   }
 
     async initFeedbackByTarget(targetKey: string, targetId: number, context: FeedbackContext) {
+      const role = await this.authService.getCurrentRole().toPromise();
+
       const filters: Record<string, string> = {
           ...(context.feedbackEntityType ? { feedback_entity_type: context.feedbackEntityType} : {}),
           ...(context.section ? { section: context.section} : {}),
           ...(context.slotCategoryType ? { slot_category_type: context.slotCategoryType.toString()} : {}),
       };
       try {
+          if (role.slug === 'guest') {
+              await this.dialog.showDialogByTemplateKey('registration_suggestion', {data: {subtitle: 'Оставлять отзывы могут только авторизованные пользователи сайта'}});
+              return ;
+          }
           const votes = await this.dict.getDict('dict_votes', filters).toPromise();
           const result = await this.openFeedbackDialog(votes as unknown as Vote[]);
           const feedbackData = result.data as FeedbackFormDataAnswer;

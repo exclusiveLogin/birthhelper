@@ -6,7 +6,7 @@
         </div>
     </div>
 
-    <div class="order_tbl__head" *ngIf="(onOrdersGroups$ | async)?.length else empty">
+    <div class="order_tbl__head" *ngIf="(onOrdersGroups$ | async)?.total else empty">
         <div class="_row">
             <div class="order_tbl__head__item small">ID</div>
             <div class="order_tbl__head__item mid">Пользователь</div>

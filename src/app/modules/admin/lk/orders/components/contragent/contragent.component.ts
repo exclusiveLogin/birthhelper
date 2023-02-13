@@ -46,6 +46,7 @@ export class ContragentComponent implements OnInit {
         tap(data => data.skip = this.skip),
         switchMap(request => this.restService.requestOrdersPost<OrderResponse<OrderGroup>>(request)),
         tap(_ => this.isLoading = false),
+        tap(_ => console.log('onOrdersGroups$', _)),
         shareReplay(1),
     );
 

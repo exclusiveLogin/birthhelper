@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {Contragent, ContragentsPhone} from '../../../../models/contragent.interface';
-import {BehaviorSubject, Observable, of, zip} from 'rxjs';
+import {BehaviorSubject, from, Observable, of, zip} from 'rxjs';
 import {DialogServiceConfig} from '@modules/dialog/dialog.model';
 import {DialogService} from '@modules/dialog/dialog.service';
 import {map, mapTo, mergeMap, pluck, switchMap, tap} from 'rxjs/operators';

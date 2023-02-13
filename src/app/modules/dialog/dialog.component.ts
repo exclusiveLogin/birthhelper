@@ -9,6 +9,7 @@ import {ImageService} from '../../services/image.service';
 import {SafeUrl} from '@angular/platform-browser';
 import {LLMap} from '@modules/map.lib';
 import {icon, LatLng, marker} from 'leaflet';
+import {Router} from '@angular/router';
 
 @UntilDestroy()
 @Component({
@@ -29,6 +30,7 @@ export class DialogComponent implements OnInit {
         private cdr: ChangeDetectorRef,
         private dialogService: DialogService,
         private imageService: ImageService,
+        private router: Router,
     ) {}
     @Input() id_dialog = 'main_app_dialog';
 
@@ -46,6 +48,7 @@ export class DialogComponent implements OnInit {
     @ViewChild('tpl_popup_other', { static: true }) tpl_other: TemplateRef<any>;
     @ViewChild('tpl_popup_contragent', { static: true }) tpl_contragent: TemplateRef<any>;
     @ViewChild('tpl_dialog_feedback_form', { static: true }) tpl_feedback_form: TemplateRef<any>;
+    @ViewChild('tpl_suggestion', { static: true }) tpl_registration_suggestion: TemplateRef<any>;
     @ViewChild('tpl_popup_blank', { static: true }) tpl_default: TemplateRef<any>;
 
     mapsExistTplKeys = [
@@ -182,5 +185,10 @@ export class DialogComponent implements OnInit {
         };
         this.dialogAnswer$.next(answer);
         this.uninstallDialog();
+    }
+
+    gotoRegistration(): void {
+        this.dialogService.closeOpenedDialog('main_app_dialog');
+        this.router.navigate(['/auth']).then();
     }
 }
