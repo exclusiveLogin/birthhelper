@@ -1,0 +1,26 @@
+<div class="lk-view-block__head" *ngIf="onOrdersTotal$ | async else empty">
+    <div class="_row">
+        <div class="lk-view-block__head__item small">ID</div>
+        <div class="lk-view-block__head__item mid">Пользователь</div>
+        <div class="lk-view-block__head__item extra">ФИО</div>
+        <div class="lk-view-block__head__item extra">email</div>
+        <div class="lk-view-block__head__item long">Телефон</div>
+        <div class="lk-view-block__head__item long">Предпочитаемый канал связи</div>
+        <div class="lk-view-block__head__item long">Дата оформления</div>
+        <div class="lk-view-block__head__item mid">Статус</div>
+        <div class="lk-view-block__head__item mid">Сумма</div>
+    </div>
+</div>
+<app-order-group class="_row"
+                 *ngFor="let group of onOrdersGroupResult$ | async; trackBy: trackIt"
+                 [orderGroup]="group"
+                 [contragent]="ctg"
+                 (refresh)="updater$.next(null)"
+></app-order-group>
+<ng-container *ngIf="{ total: onOrdersTotal$ | async, pages: onOrderGroupPages$ | async} as summary">
+    <app-paginator *ngIf="summary.total" [pages]="summary.pages" (vc)="pageChange($event)"></app-paginator>
+</ng-container>
+
+<ng-template #empty>
+    <div class="default" *ngIf="!isLoading">У данного контрагента нет заказов <br> удовлетворяющих критериям поиска</div>
+</ng-template>

@@ -23,18 +23,18 @@
 .extra {
     width: 210px;
 }
-.order_table {
-    .order_tbl__head {
+.lk-view-block {
+    .lk-view-block__head {
         ._row {
             background-color: whitesmoke;
             display: flex;
             flex: 1;
-            .order_tbl__head__item {
+            .lk-view-block__head__item {
                 margin: 15px;
             }
         }
     }
-    .order_tbl__body {
+    .lk-view-block__body {
         ._row {
             background-color: #ffffff;
             display: flex;

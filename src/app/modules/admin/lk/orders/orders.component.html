@@ -1,3 +1,9 @@
 <h4 class="lk_ttl">Стол заказов</h4>
 <app-orders-filter></app-orders-filter>
-<app-contragent *ngFor="let ctg of selectedCTG$ | async" [contragent]="ctg"></app-contragent>
+<app-lk-view-block *ngFor="let ctg of selectedCTG$ | async">
+    {{ctg | json}}
+    <app-contragent-header *ngIf="ctg" [contragent]="ctg" data-header></app-contragent-header>
+    <div class="lk-view-block__body" data-list>
+        <app-order-list [contragent]="ctg"></app-order-list>
+    </div>
+</app-lk-view-block>

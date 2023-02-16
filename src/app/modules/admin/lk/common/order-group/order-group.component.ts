@@ -6,7 +6,6 @@ import {uniq} from '@modules/utils/uniq';
 import {RestService} from '@services/rest.service';
 import {ContragentSlots, PriceEntitySlot, SlotEntity, TabedSlots, UtilizedFloorOfSlotEntity} from '@models/entity.interface';
 import * as moment from 'moment';
-import {IImage} from '../../../../../../Dashboard/Editor/components/image/image.component';
 import {User} from '@models/user.interface';
 import {ImageService} from '@services/image.service';
 import {Sections} from '@models/core';
@@ -18,6 +17,7 @@ import {CardSlot, ConfiguratorCardBuilder} from '@models/cardbuilder.interface';
 import {ToastrService} from 'ngx-toastr';
 import {ConfiguratorConfigSrc, Restrictor, SelectionOrderSlot} from '@modules/configurator/configurator.model';
 import {CTG, LkService} from '@services/lk.service';
+import {IImage} from '@modules/admin/Dashboard/Editor/components/image/image.component';
 
 interface OrderGroupFilters {
     contragentId: number;
@@ -354,8 +354,8 @@ export class OrderGroupComponent implements OnInit {
         this.loading$.next('Обработка заказа');
 
         Promise.all([
-            successOrders.map(order => this.completeOrder(order)),
-            denyOrders.map(order => this.removeOrder(order))
+            ...successOrders.map(order => this.completeOrder(order)),
+            ...denyOrders.map(order => this.removeOrder(order))
         ]).then(() => this.refresh.next(null))
             .finally(() => this.loading$.next(null));
     }

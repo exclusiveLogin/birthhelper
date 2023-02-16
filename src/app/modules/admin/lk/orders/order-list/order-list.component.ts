@@ -1,21 +1,18 @@
-import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
-import {CTG, LkService} from '@services/lk.service';
+import {ChangeDetectorRef, Component, EventEmitter, Input,  Output} from '@angular/core';
 import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import {Contragent} from '@models/contragent.interface';
-import {RestService} from '@services/rest.service';
-import {ODRER_ACTIONS, Order, OrderGroup, OrderRequest, OrderResponse} from '@models/order.interface';
+import {CTG, LkService} from '@services/lk.service';
 import {map, shareReplay, switchMap, tap} from 'rxjs/operators';
-import {Sections} from '@models/core';
-import {SectionType} from '@services/search.service';
+import {ODRER_ACTIONS, Order, OrderGroup, OrderRequest, OrderResponse} from '@models/order.interface';
 import {User, UserSrc} from '@models/user.interface';
+import {RestService} from '@services/rest.service';
 
 @Component({
-    selector: 'app-contragent',
-    templateUrl: './contragent.component.html',
-    styleUrls: ['./contragent.component.scss']
+  selector: 'app-order-list',
+  templateUrl: './order-list.component.html',
+  styleUrls: ['./order-list.component.scss']
 })
-export class ContragentComponent implements OnInit {
-
+export class OrderListComponent {
     public isLoading = true;
     public contragent$: Observable<Contragent>;
     public ctg: CTG;
@@ -28,6 +25,11 @@ export class ContragentComponent implements OnInit {
             this.contragent$ = this.restService.getEntity<Contragent>('ent_contragents', value.entId);
         }
     }
+
+    @Output()
+    public loading = new EventEmitter<boolean>();
+    @Output()
+    public empty = new EventEmitter<boolean>();
 
     updater$ = new BehaviorSubject(null);
     onRequest$ = this.lkService.ordersFilters$.pipe(
@@ -57,7 +59,10 @@ export class ContragentComponent implements OnInit {
         tap(_ => this.cdr.markForCheck()),
     );
 
-    onOrdersTotal$ = this.onOrdersGroups$.pipe(map(list => list?.total ?? 0 ));
+    onOrdersTotal$ = this.onOrdersGroups$.pipe(
+        map(list => list?.total ?? 0 ),
+        tap(total => this.empty.next(!total)),
+    );
 
     onOrderGroupPages$ = this.onOrdersTotal$.pipe(map(_ => _ ? Math.ceil(_ / 20) || 1 : 1));
 
@@ -68,15 +73,8 @@ export class ContragentComponent implements OnInit {
     ) {
     }
 
-    ngOnInit(): void {
-    }
-
     trackIt(idx: number, og: OrderGroup): string {
         return og.group_id;
-    }
-
-    getTitleSection(section: SectionType): string {
-        return Sections[section];
     }
 
     pageChange(page = 1): void {
@@ -85,9 +83,4 @@ export class ContragentComponent implements OnInit {
         this.updater$.next(null);
     }
 
-    // getGroupsBySection(section: SectionType): Observable<OrderGroup[]> {
-    //     return this.onOrdersGroups$.pipe(
-    //         map(groups => groups.filter(grp => grp.))
-    //     );
-    // }
 }
