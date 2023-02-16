@@ -11,7 +11,7 @@ import {TableModule} from '@modules/admin/table/table.module';
 import {LKViewBlocComponent} from '@modules/admin/lk/common/view-block/lk-view-block.component';
 import {OrdersFilterComponent} from '@modules/admin/lk/orders/orders-filter/orders-filter.component';
 import {ContragentHeaderComponent} from '@modules/admin/lk/common/contragent-header/contragent-header.component';
-import {OrderGroupComponent} from '@modules/admin/lk/common/order-group/order-group.component';
+import {OrderGroupComponent} from '@modules/admin/lk/orders/order-group/order-group.component';
 import { OrderListComponent } from './orders/order-list/order-list.component';
 
 @NgModule({

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OrderGroupComponent } from './order-group.component';
+import { OrderGroupComponent } from 'app/modules/admin/lk/orders/order-group/order-group.component';
 
 describe('OrderGroupComponent', () => {
   let component: OrderGroupComponent;
