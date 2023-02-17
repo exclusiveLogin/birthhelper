@@ -38,7 +38,7 @@ const routes: Routes = [
                 component: LkFeedbackComponent,
                 data: {
                     main_menu_mode: "contragents",
-                    permission_mode: "orders",
+                    permission_mode: "feedbacks",
                 },
             },
         ],

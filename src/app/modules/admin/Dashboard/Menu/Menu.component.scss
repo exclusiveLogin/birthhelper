@@ -1,3 +1,5 @@
+@import "~sass/variables";
+
 :host {
     box-shadow: 0 0 30px 0 #2d333f;
 }
@@ -24,9 +26,9 @@
 .bh_admin_menu_title {
     font-size: 1.4rem;
     color: #333;
-    margin-bottom: 12px;
     text-align: center;
     font-weight: bold;
+    flex-grow: 1;
 }
 .menu_group {
     position: relative;
@@ -38,4 +40,29 @@
     background-clip: border-box;
     border: 1px solid rgba(0, 0, 0, 0.125);
     border-radius: 0.25rem;
+}
+.menu_header {
+  display: flex;
+  align-items: center;
+}
+
+.lk__btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 270px;
+    height: 54px;
+    font-size: 16px;
+    font-weight: 500;
+    color: $white;
+    border-radius: 3px;
+    border: none;
+
+  &--blue {
+       background: $blue;
+
+    &:hover {
+         background: $light-blue;
+     }
+  }
 }

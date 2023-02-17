@@ -3,28 +3,28 @@ import {
     ChangeDetectorRef,
     Component,
     Input,
-    OnInit,
 } from "@angular/core";
 import { IMenuGroupItem, IMenuRepoItem } from "../Dashboard.component";
 import { MenuService } from "../menu.service";
+import { LkService } from "@services/lk.service";
 
 @Component({
     selector: "app-menu",
     templateUrl: "./Menu.component.html",
-    styleUrls: ["./Menu.component.css"],
+    styleUrls: ["./Menu.component.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent {
     expanded: string[] = [];
     @Input() public menuRepo: IMenuGroupItem[];
 
     constructor(
         private menuServive: MenuService,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        private lkService: LkService
     ) {}
 
-    ngOnInit() {}
-
+    userHasLkPermission$ = this.lkService.userHasLkPermissions$;
     toggleGroup(key: string): void {
         const idx = this.expanded.indexOf(key);
         // eslint-disable-next-line no-bitwise

@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { AuthService } from "../auth-module/auth.service";
 import { BehaviorSubject, combineLatest, Observable } from "rxjs";
-import { User } from "../../models/user.interface";
+import { User } from "@models/user.interface";
 import {
     filter,
     map,
@@ -11,19 +11,19 @@ import {
     tap,
 } from "rxjs/operators";
 import { IImage } from "../admin/Dashboard/Editor/components/image/image.component";
-import { RestService } from "../../services/rest.service";
-import { ImageService } from "../../services/image.service";
-import { CTG, LkService } from "../../services/lk.service";
+import { RestService } from "@services/rest.service";
+import { ImageService } from "@services/image.service";
+import { CTG, LkService } from "@services/lk.service";
 import {
     Permission,
     PermissionLKType,
     PermissionMap,
     PermissionSetting,
-} from "../../models/lk.permission.interface";
-import { Contragent } from "../../models/contragent.interface";
+} from "@models/lk.permission.interface";
+import { Contragent } from "@models/contragent.interface";
 import { randomColor } from "../utils/random";
 import { uniq } from "../utils/uniq";
-import { RoutingService } from "../../services/routing.service";
+import { RoutingService } from "@services/routing.service";
 
 type MenuMode = "default" | "lk" | "contragents";
 
@@ -33,7 +33,7 @@ type MenuMode = "default" | "lk" | "contragents";
     styleUrls: ["./menu.component.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent {
     // Modes
     mode$: Observable<MenuMode> = this.routingService.routeData$.pipe(
         pluck("main_menu_mode"),
@@ -65,15 +65,8 @@ export class MenuComponent implements OnInit {
     );
     userPhoto$ = this.userPhotoData$.pipe(map((d) => d[0]));
     userPhotoSignal$ = this.userPhotoData$.pipe(map((d) => d[1]));
-    permissionsRaw$: Observable<Permission[]> = this.user$.pipe(
-        switchMap((user) => this.lkService.getPermissionsByUser(user)),
-        tap((data) => console.log("getPermissionsByUser: ", data))
-    );
-    permSections$: Observable<string[]> = this.permissionsRaw$.pipe(
-        map((permissions) =>
-            uniq(permissions.map((p) => p?.meta?.permission_id?.slug))
-        )
-    );
+    permissionsRaw$: Observable<Permission[]> = this.lkService.permissionsRaw$;
+    permSections$: Observable<string[]> = this.lkService.permSections$;
     availableContragents$: Observable<CTG[]> = combineLatest([
         this.permissionsRaw$,
         this.permissionMode$,
@@ -160,7 +153,6 @@ export class MenuComponent implements OnInit {
     getUserName(user: User): string {
         return `${user.first_name || ""} ${user.last_name || ""}`;
     }
-    ngOnInit(): void {}
 
     getPoint(perm: string): PermissionSetting {
         return PermissionMap[perm];

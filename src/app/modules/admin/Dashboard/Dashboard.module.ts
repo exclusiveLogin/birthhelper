@@ -5,9 +5,10 @@ import { MenuComponent } from "./Menu/Menu.component";
 import { SubmenuComponent } from "./Submenu/Submenu.component";
 import { SubmenuItemComponent } from "./Submenu/SubmenuItem/SubmenuItem.component";
 import { EditorModule } from "./Editor/Editor.module";
+import { RouterModule } from "@angular/router";
 
 @NgModule({
-    imports: [CommonModule, EditorModule],
+    imports: [CommonModule, EditorModule, RouterModule],
     declarations: [
         DashboardComponent,
         MenuComponent,

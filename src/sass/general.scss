@@ -64,3 +64,20 @@ body {
 :-ms-input-placeholder {
     color: rgba(45, 51, 63, 0.5);
 }
+
+.button-close {
+   position: absolute;
+   top: -30px;
+   right: 30px;
+   z-index: 10;
+   border: none;
+   width: 26px;
+   height: 26px;
+   padding: 0;
+   background: transparent;
+ }
+
+.button-close__img {
+  width: 100%;
+  height: 100%;
+}
