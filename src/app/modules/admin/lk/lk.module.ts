@@ -13,6 +13,7 @@ import {OrdersFilterComponent} from '@modules/admin/lk/orders/orders-filter/orde
 import {ContragentHeaderComponent} from '@modules/admin/lk/common/contragent-header/contragent-header.component';
 import {OrderGroupComponent} from '@modules/admin/lk/orders/order-group/order-group.component';
 import { OrderListComponent } from './orders/order-list/order-list.component';
+import { LkFeedbackComponent } from './feedback/lk-feedback/lk-feedback.component';
 
 @NgModule({
     declarations: [
@@ -27,6 +28,7 @@ import { OrderListComponent } from './orders/order-list/order-list.component';
         ContragentHeaderComponent,
         OrderGroupComponent,
         OrderListComponent,
+        LkFeedbackComponent,
     ],
     imports: [
         CommonModule,
