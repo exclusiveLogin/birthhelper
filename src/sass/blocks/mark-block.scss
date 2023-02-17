@@ -1,55 +1,55 @@
 .mark-block {
-  position: absolute;
-  top: 5px;
-  justify-content: flex-end;
+    position: absolute;
+    top: 5px;
+    justify-content: flex-end;
 }
 
 .mark-block__item {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 30px;
-  height: 30px;
-  background: $white;
-  cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    background: $white;
+    cursor: pointer;
 
-  &:first-child {
-    border-radius: 0 0 0 3px;
-  }
-
-  &:hover {
-    .mark-block__tooltip {
-      display: block;
+    &:first-child {
+        border-radius: 0 0 0 3px;
     }
-  }
+
+    &:hover {
+        .mark-block__tooltip {
+            display: block;
+        }
+    }
 }
 
 .mark-block__tooltip {
-  display: none;
-  position: absolute;
-  top: -60px;
-  width: 247px;
-  padding: 15px;
-  border-radius: 4px;
-  box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.15);
-  background-color: $white;
-
-  &::after {
+    display: none;
     position: absolute;
-    content: "";
-    bottom: -20px;
-    right: 50%;
-    margin-right: -10px;
-    border-top: 10px solid $white;
-    border-bottom: 10px solid transparent;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-  }
+    top: -60px;
+    width: 247px;
+    padding: 15px;
+    border-radius: 4px;
+    box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.15);
+    background-color: $white;
+
+    &::after {
+        position: absolute;
+        content: "";
+        bottom: -20px;
+        right: 50%;
+        margin-right: -10px;
+        border-top: 10px solid $white;
+        border-bottom: 10px solid transparent;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+    }
 }
 
 .mark-block__tooltip-txt {
-  margin: 0;
-  font-size: 12px;
-  line-height: 1.33;
-  color: $black;
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.33;
+    color: $black;
 }

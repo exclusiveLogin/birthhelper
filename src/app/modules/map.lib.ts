@@ -1,13 +1,16 @@
-import * as L from 'leaflet';
-import {GeoLatLon, GeoMapPosition, GeoMapState} from 'app/modules/map.models';
-import {extendedBounds} from 'app/modules/map.helper';
+import * as L from "leaflet";
+import { GeoLatLon, GeoMapPosition, GeoMapState } from "app/modules/map.models";
+import { extendedBounds } from "app/modules/map.helper";
 
-const MAP_COPYRIGHT = '© Birthhelper since 2019';
+const MAP_COPYRIGHT = "© Birthhelper since 2019";
 
-export enum TilesType { scheme }
+export enum TilesType {
+    scheme,
+}
 
 export const TILES_URL: { readonly [key in TilesType]: string } = {
-    [TilesType.scheme]: 'https://{s}.tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=ioqyVljKKo8WJGvNkdUvcSTcBs75TruAiIkQ2OAaWUZ1p6Z1Mh1VljBSDuh4wfCT',
+    [TilesType.scheme]:
+        "https://{s}.tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=ioqyVljKKo8WJGvNkdUvcSTcBs75TruAiIkQ2OAaWUZ1p6Z1Mh1VljBSDuh4wfCT",
 };
 
 const TILE_OPTIONS = {
@@ -24,14 +27,20 @@ const RUSSIA_BOUNDS = {
 };
 
 export class LLMap {
-
     maxZoom = TILE_OPTIONS.maxZoom;
     map: L.Map = null;
     tileLayer: L.TileLayer;
     /** Fixed promised Leaflet once method */
-    once: typeof L.Evented.prototype.once = ((type: any, handler: any, context?: any) => this?.map?.once(
-            type, () => Promise.resolve().then(() => handler()), context)
-    ) as any;
+    once: typeof L.Evented.prototype.once = ((
+        type: any,
+        handler: any,
+        context?: any
+    ) =>
+        this?.map?.once(
+            type,
+            () => Promise.resolve().then(() => handler()),
+            context
+        )) as any;
 
     /**
      * - Если функция - это следующий на очереди fit
@@ -40,36 +49,63 @@ export class LLMap {
      */
     waitingFit: () => void;
 
-    constructor() {
-    }
+    constructor() {}
 
-    build(element: string | HTMLElement, options: L.MapOptions = {}, tileType: TilesType = TilesType.scheme): this {
+    build(
+        element: string | HTMLElement,
+        options: L.MapOptions = {},
+        tileType: TilesType = TilesType.scheme
+    ): this {
         options.tap = false;
-        this.map = L.map(typeof element === 'string' ? document.getElementById(element) : element, options);
-        this.tileLayer = L.tileLayer(TILES_URL[tileType], TILE_OPTIONS).addTo(this.map);
+        this.map = L.map(
+            typeof element === "string"
+                ? document.getElementById(element)
+                : element,
+            options
+        );
+        this.tileLayer = L.tileLayer(TILES_URL[tileType], TILE_OPTIONS).addTo(
+            this.map
+        );
         return this;
     }
 
-    buildNormal(element: string | HTMLElement, tileType: TilesType = TilesType.scheme): this {
+    buildNormal(
+        element: string | HTMLElement,
+        tileType: TilesType = TilesType.scheme
+    ): this {
         return this.build(element, {}, tileType);
     }
 
-    buildMini(element: string | HTMLElement, tileType: TilesType = TilesType.scheme): this {
+    buildMini(
+        element: string | HTMLElement,
+        tileType: TilesType = TilesType.scheme
+    ): this {
         // maxZoom: 16,
-        return this.build(element, {
-            zoomControl: false,
-            dragging: false,
-            scrollWheelZoom: false,
-            doubleClickZoom: false,
-        }, tileType);
+        return this.build(
+            element,
+            {
+                zoomControl: false,
+                dragging: false,
+                scrollWheelZoom: false,
+                doubleClickZoom: false,
+            },
+            tileType
+        );
     }
 
-    buildSimple(element: string | HTMLElement, tileType: TilesType = TilesType.scheme): this {
+    buildSimple(
+        element: string | HTMLElement,
+        tileType: TilesType = TilesType.scheme
+    ): this {
         // maxZoom: 16,
-        return this.build(element, {
-            tap: false,
-            doubleClickZoom: false,
-        }, tileType);
+        return this.build(
+            element,
+            {
+                tap: false,
+                doubleClickZoom: false,
+            },
+            tileType
+        );
     }
 
     destroy(): void {
@@ -88,7 +124,8 @@ export class LLMap {
      * Измененение слоя тайлов
      */
     toggleTile(tileType: TilesType = TilesType.scheme): TilesType {
-        tileType = tileType === TilesType.scheme ? TilesType.scheme : TilesType.scheme;
+        tileType =
+            tileType === TilesType.scheme ? TilesType.scheme : TilesType.scheme;
         this.tileLayer.setUrl(TILES_URL[tileType]);
         return tileType;
     }
@@ -102,13 +139,14 @@ export class LLMap {
      * пока не выполнится предыдущее, т. е. пока не будет вызвано событие modeend.
      */
     waitPrevFit(currentFit: () => void): void {
-        if (this.waitingFit !== void 0) { // если выполняется предыдущий fit
+        if (this.waitingFit !== void 0) {
+            // если выполняется предыдущий fit
             this.waitingFit = currentFit;
             return;
         }
 
         this.waitingFit = null;
-        this.once('moveend', () => {
+        this.once("moveend", () => {
             if (this.waitingFit) {
                 const fit = this.waitingFit;
                 this.waitingFit = void 0;
@@ -127,16 +165,27 @@ export class LLMap {
     }
 
     fitByLatLon(geoLatLngObject: GeoLatLon): void {
-        const latLon: L.LatLngTuple = [geoLatLngObject.lat, geoLatLngObject.lon];
+        const latLon: L.LatLngTuple = [
+            geoLatLngObject.lat,
+            geoLatLngObject.lon,
+        ];
         this.waitPrevFit(() => this.map.setView(latLon, 16));
     }
 
-    fitByLatLonAnimate(geoLatLngObject: GeoLatLon, animateDuration: number): void {
-        const latLon: L.LatLngTuple = [geoLatLngObject.lat, geoLatLngObject.lon];
-        this.waitPrevFit(() => this.map.setView(latLon, 16, {
-            duration: animateDuration / 1000,
-            animate: true,
-        }));
+    fitByLatLonAnimate(
+        geoLatLngObject: GeoLatLon,
+        animateDuration: number
+    ): void {
+        const latLon: L.LatLngTuple = [
+            geoLatLngObject.lat,
+            geoLatLngObject.lon,
+        ];
+        this.waitPrevFit(() =>
+            this.map.setView(latLon, 16, {
+                duration: animateDuration / 1000,
+                animate: true,
+            })
+        );
     }
 
     fitByObject(object: L.FeatureGroup | L.Polygon): void {
@@ -164,5 +213,4 @@ export class LLMap {
             },
         };
     }
-
 }

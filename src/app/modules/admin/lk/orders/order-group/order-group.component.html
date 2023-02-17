@@ -1,148 +1,406 @@
-<ng-container *ngTemplateOutlet="wrapMode ? tpl_wrap : tpl_unwrap"></ng-container>
+<ng-container
+    *ngTemplateOutlet="wrapMode ? tpl_wrap : tpl_unwrap"
+></ng-container>
 
 <ng-template #blankuser>
-    <img class="user_avatar" src="img/blank-user.jpg">
+    <img class="user_avatar" src="img/blank-user.jpg" />
 </ng-template>
 
 <ng-template #tpl_wrap>
-    <div class="order_container cart-pack cart-pack--clinic"
-         *ngIf="{
+    <div
+        class="order_container cart-pack cart-pack--clinic"
+        *ngIf="{
             data: data$ | async,
             photo: userPhoto$ | async,
             signal: userPhotoSignal$ | async,
             loading: isLoading | async
-         } as data"
-         [ngClass]="{'muted': !!data?.loading}">
+        } as data"
+        [ngClass]="{ muted: !!data?.loading }"
+    >
         <div class="order_container_head">
             <div class="header_bar">
-                <div>ID: {{_orderGroup.group_id}}</div>
-                <div>Заказан: {{getLastDate()}}</div>
+                <div>ID: {{ _orderGroup.group_id }}</div>
+                <div>Заказан: {{ getLastDate() }}</div>
             </div>
             <div class="user_info" *ngIf="data.data.user as user">
-                <ng-container *ngIf="data.photo | async as image else blankuser">
-                    <img class="user_avatar" [src]="image" (error)="data.signal.next(null)">
+                <ng-container
+                    *ngIf="data.photo | async as image; else blankuser"
+                >
+                    <img
+                        class="user_avatar"
+                        [src]="image"
+                        (error)="data.signal.next(null)"
+                    />
                 </ng-container>
                 <div class="user_info_block">
                     <p class="user_info__fio">
-                        {{user.first_name}}&nbsp;
-                        {{user.last_name}}&nbsp;
-                        {{user.patronymic}}</p>
-                    <p class="user_info__login">{{user.login || '---'}}</p>
+                        {{ user.first_name }}&nbsp; {{ user.last_name }}&nbsp;
+                        {{ user.patronymic }}
+                    </p>
+                    <p class="user_info__login">{{ user.login || "---" }}</p>
                 </div>
-                <div class="user_contacts" *ngIf="(data?.data?.contacts) as contacts">
-                    <div class="user_contacts__phone">{{contacts?.phone}}</div>
-                    <div class="user_contacts__email">{{contacts?.email}}</div>
-                    <div class="user_contacts__ttl">Предпочитаемый канал связи</div>
+                <div
+                    class="user_contacts"
+                    *ngIf="data?.data?.contacts as contacts"
+                >
+                    <div class="user_contacts__phone">
+                        {{ contacts?.phone }}
+                    </div>
+                    <div class="user_contacts__email">
+                        {{ contacts?.email }}
+                    </div>
+                    <div class="user_contacts__ttl">
+                        Предпочитаемый канал связи
+                    </div>
                     <div class="user_contacts__ch">
-                        <i class="fas fa-phone fa-2x" aria-hidden="true" title="Телефон" *ngIf="contacts?.ch_phone"></i>
-                        <i class="fab fa-viber fa-2x" aria-hidden="true" title="Viber" *ngIf="contacts?.ch_viber"></i>
-                        <i class="fab fa-whatsapp fa-2x" aria-hidden="true" title="WhatsApp" *ngIf="contacts?.ch_whatsapp"></i>
-                        <i class="fab fa-telegram-plane fa-2x" aria-hidden="true" title="Telegram" *ngIf="contacts?.ch_telegram"></i>
-                        <i class="fa fa-envelope fa-2x" aria-hidden="true" title="E-mail" *ngIf="contacts?.ch_email"></i>
-                        <i class="fab fa-skype fa-2x" aria-hidden="true" title="Skype" *ngIf="contacts?.ch_skype"></i>
+                        <i
+                            class="fas fa-phone fa-2x"
+                            aria-hidden="true"
+                            title="Телефон"
+                            *ngIf="contacts?.ch_phone"
+                        ></i>
+                        <i
+                            class="fab fa-viber fa-2x"
+                            aria-hidden="true"
+                            title="Viber"
+                            *ngIf="contacts?.ch_viber"
+                        ></i>
+                        <i
+                            class="fab fa-whatsapp fa-2x"
+                            aria-hidden="true"
+                            title="WhatsApp"
+                            *ngIf="contacts?.ch_whatsapp"
+                        ></i>
+                        <i
+                            class="fab fa-telegram-plane fa-2x"
+                            aria-hidden="true"
+                            title="Telegram"
+                            *ngIf="contacts?.ch_telegram"
+                        ></i>
+                        <i
+                            class="fa fa-envelope fa-2x"
+                            aria-hidden="true"
+                            title="E-mail"
+                            *ngIf="contacts?.ch_email"
+                        ></i>
+                        <i
+                            class="fab fa-skype fa-2x"
+                            aria-hidden="true"
+                            title="Skype"
+                            *ngIf="contacts?.ch_skype"
+                        ></i>
                     </div>
                 </div>
                 <div class="user_price_block">
                     <p class="user_price__ttl">Общая сумма заказа</p>
-                    <p class="user_price__price">{{getGroupPrice()}} рублей</p>
-                    <div class="btn-group" role="group" aria-label="Действия" *ngIf="inWorkMode$ | async">
-                        <button type="button" class="btn btn-outline-success" [ngClass]="{muted: canComplete$ | async}" (click)="complete()">Завершить</button>
-                        <button type="button" class="btn btn-danger" (click)="abort()">Отменить</button>
+                    <p class="user_price__price">
+                        {{ getGroupPrice() }} рублей
+                    </p>
+                    <div
+                        class="btn-group"
+                        role="group"
+                        aria-label="Действия"
+                        *ngIf="inWorkMode$ | async"
+                    >
+                        <button
+                            type="button"
+                            class="btn btn-outline-success"
+                            [ngClass]="{ muted: canComplete$ | async }"
+                            (click)="complete()"
+                        >
+                            Завершить
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-danger"
+                            (click)="abort()"
+                        >
+                            Отменить
+                        </button>
                     </div>
                 </div>
                 <div class="btn_close" (click)="unwrap()"></div>
             </div>
         </div>
-        <div class="ctg_orders" *ngIf="{repoMode: repoMode$ | async} as state">
-            <ng-container *ngTemplateOutlet="state.repoMode ? repoModeTpl : cartModeTpl"></ng-container>
+        <div
+            class="ctg_orders"
+            *ngIf="{ repoMode: repoMode$ | async } as state"
+        >
+            <ng-container
+                *ngTemplateOutlet="state.repoMode ? repoModeTpl : cartModeTpl"
+            ></ng-container>
 
             <ng-template #cartModeTpl>
                 <ng-container *ngFor="let section of sections">
-                    <p class="cart-pack-item__title section__title">{{sectionsDict[section]}}</p>
-                    <ng-container *ngIf="getConfigBySection(section) | async as config">
+                    <p class="cart-pack-item__title section__title">
+                        {{ sectionsDict[section] }}
+                    </p>
+                    <ng-container
+                        *ngIf="getConfigBySection(section) | async as config"
+                    >
                         <ng-container *ngFor="let tab of config.tabs">
-                            <p class="cart-pack-item__title tab_ttl">{{tab.title}}</p>
+                            <p class="cart-pack-item__title tab_ttl">
+                                {{ tab.title }}
+                            </p>
                             <ng-container *ngFor="let floor of tab.floors">
-                                <p class="cart-pack-item__title floor_ttl">{{floor.title}}</p>
+                                <p class="cart-pack-item__title floor_ttl">
+                                    {{ floor.title }}
+                                </p>
                                 <!--Selection by floors-->
-                                <ng-container *ngIf="getOrdersBySelection(section, tab.key, floor.key) | async as orders">
-                                    <div class="order" [ngClass]="{muted: order._status !== 'stable'}" *ngFor="let order of orders">
-                                        <div class="cart-pack-item__inner-avatar" *ngIf="getPhoto(order?.cartPhoto) as imageData">
-                                            <ng-container *ngIf="{image: imageData[0] | async, signal: imageData[1]} as image">
-                                                <img [src]="image.image" (error)="image.signal.next(null)">
+                                <ng-container
+                                    *ngIf="
+                                        getOrdersBySelection(
+                                            section,
+                                            tab.key,
+                                            floor.key
+                                        ) | async as orders
+                                    "
+                                >
+                                    <div
+                                        class="order"
+                                        [ngClass]="{
+                                            muted: order._status !== 'stable'
+                                        }"
+                                        *ngFor="let order of orders"
+                                    >
+                                        <div
+                                            class="cart-pack-item__inner-avatar"
+                                            *ngIf="
+                                                getPhoto(
+                                                    order?.cartPhoto
+                                                ) as imageData
+                                            "
+                                        >
+                                            <ng-container
+                                                *ngIf="{
+                                                    image: imageData[0] | async,
+                                                    signal: imageData[1]
+                                                } as image"
+                                            >
+                                                <img
+                                                    [src]="image.image"
+                                                    (error)="
+                                                        image.signal.next(null)
+                                                    "
+                                                />
                                             </ng-container>
                                         </div>
-                                        <p class="cart-pack-item__inner-name">{{order.cartTitle}}</p>
-                                        <div class="cart-pack-item__inner-value">
-                                            <p class="cart-pack-item__inner-value-text">{{order.cartTitleAccent}}</p>
+                                        <p class="cart-pack-item__inner-name">
+                                            {{ order.cartTitle }}
+                                        </p>
+                                        <div
+                                            class="cart-pack-item__inner-value"
+                                        >
+                                            <p
+                                                class="cart-pack-item__inner-value-text"
+                                            >
+                                                {{ order.cartTitleAccent }}
+                                            </p>
                                         </div>
-                                        <p class="cart-pack-item__inner-price">{{order?.slot?.price | digitalSeparator}} руб.</p>
-                                        <div class="cart-pack-item__inner-value">
-                                            <p class="cart-pack-item__inner-value-text" *ngIf="order.status">
-                                            <span class="badge"
-                                                  [ngClass]="{
-                                                                'badge-info': order.status === 'waiting',
-                                                                'badge-success': order.status === 'resolved',
-                                                                'badge-danger': order.status === 'rejected',
-                                                                'badge-default': order.status === 'completed'
-                                            }">{{getStatusTitleForOrder(order)}}</span>
+                                        <p class="cart-pack-item__inner-price">
+                                            {{
+                                                order?.slot?.price
+                                                    | digitalSeparator
+                                            }}
+                                            руб.
+                                        </p>
+                                        <div
+                                            class="cart-pack-item__inner-value"
+                                        >
+                                            <p
+                                                class="cart-pack-item__inner-value-text"
+                                                *ngIf="order.status"
+                                            >
+                                                <span
+                                                    class="badge"
+                                                    [ngClass]="{
+                                                        'badge-info':
+                                                            order.status ===
+                                                            'waiting',
+                                                        'badge-success':
+                                                            order.status ===
+                                                            'resolved',
+                                                        'badge-danger':
+                                                            order.status ===
+                                                            'rejected',
+                                                        'badge-default':
+                                                            order.status ===
+                                                            'completed'
+                                                    }"
+                                                    >{{
+                                                        getStatusTitleForOrder(
+                                                            order
+                                                        )
+                                                    }}</span
+                                                >
                                             </p>
                                             <!--                                <p class="cart-pack-item__inner-value-text">Категория - А</p>-->
                                         </div>
                                         <div class="order_actions">
-                                            <div class="order_btn order_resolve" [ngClass]="{inactive: order.status === 'resolved'}" (click)="orderAction(order, 'resolve')"></div>
-                                            <div class="order_btn order_reject" [ngClass]="{inactive: order.status === 'rejected'}" (click)="orderAction(order, 'reject')"></div>
-                                            <div class="order_btn order_edit" (click)="orderAction(order, 'edit')"></div>
-                                            <div class="order_btn order_remove" (click)="orderAction(order, 'remove')"></div>
+                                            <div
+                                                class="order_btn order_resolve"
+                                                [ngClass]="{
+                                                    inactive:
+                                                        order.status ===
+                                                        'resolved'
+                                                }"
+                                                (click)="
+                                                    orderAction(
+                                                        order,
+                                                        'resolve'
+                                                    )
+                                                "
+                                            ></div>
+                                            <div
+                                                class="order_btn order_reject"
+                                                [ngClass]="{
+                                                    inactive:
+                                                        order.status ===
+                                                        'rejected'
+                                                }"
+                                                (click)="
+                                                    orderAction(order, 'reject')
+                                                "
+                                            ></div>
+                                            <div
+                                                class="order_btn order_edit"
+                                                (click)="
+                                                    orderAction(order, 'edit')
+                                                "
+                                            ></div>
+                                            <div
+                                                class="order_btn order_remove"
+                                                (click)="
+                                                    orderAction(order, 'remove')
+                                                "
+                                            ></div>
                                         </div>
                                     </div>
                                 </ng-container>
                             </ng-container>
                         </ng-container>
                     </ng-container>
-                    <button class="filter__btn filter__btn--blue order_status_btn"
-                            (click)="addSlotIntoOrders()">Добавить услугу</button>
+                    <button
+                        class="filter__btn filter__btn--blue order_status_btn"
+                        (click)="addSlotIntoOrders()"
+                    >
+                        Добавить услугу
+                    </button>
                 </ng-container>
             </ng-template>
             <ng-template #repoModeTpl>
-                <ng-container *ngIf="onRepoData$ | async as orders else loading">
+                <ng-container
+                    *ngIf="onRepoData$ | async as orders; else loading"
+                >
                     <ng-container *ngFor="let section of sections">
-                        <p class="cart-pack-item__title section__title">{{sectionsDict[section]}}</p>
+                        <p class="cart-pack-item__title section__title">
+                            {{ sectionsDict[section] }}
+                        </p>
 
-                        <ng-container *ngIf="getSlotsBySection(section) | async as slots">
+                        <ng-container
+                            *ngIf="getSlotsBySection(section) | async as slots"
+                        >
                             <ng-container *ngFor="let tab of slots.tabs">
-                                <p class="cart-pack-item__title tab_ttl">{{tab.title}}</p>
+                                <p class="cart-pack-item__title tab_ttl">
+                                    {{ tab.title }}
+                                </p>
                                 <ng-container *ngFor="let floor of tab.floors">
-                                    <p class="cart-pack-item__title floor_ttl">{{floor.title}}</p>
-                                    <div class="order" *ngFor="let slot of floor.list">
-                                        <div class="cart-pack-item__inner-avatar" *ngIf="getPhoto(slot?.photo) as imageData">
-                                            <ng-container *ngIf="{image: imageData[0] | async, signal: imageData[1]} as image">
-                                                <img [src]="image.image" (error)="image.signal.next(null)">
+                                    <p class="cart-pack-item__title floor_ttl">
+                                        {{ floor.title }}
+                                    </p>
+                                    <div
+                                        class="order"
+                                        *ngFor="let slot of floor.list"
+                                    >
+                                        <div
+                                            class="cart-pack-item__inner-avatar"
+                                            *ngIf="
+                                                getPhoto(
+                                                    slot?.photo
+                                                ) as imageData
+                                            "
+                                        >
+                                            <ng-container
+                                                *ngIf="{
+                                                    image: imageData[0] | async,
+                                                    signal: imageData[1]
+                                                } as image"
+                                            >
+                                                <img
+                                                    [src]="image.image"
+                                                    (error)="
+                                                        image.signal.next(null)
+                                                    "
+                                                />
                                             </ng-container>
                                         </div>
 
-                                        <p class="cart-pack-item__inner-name">{{slot.title}}</p>
+                                        <p class="cart-pack-item__inner-name">
+                                            {{ slot.title }}
+                                        </p>
 
-                                        <div class="cart-pack-item__inner-value">
-                                            <p class="cart-pack-item__inner-value-text" *ngIf="floor.utility === 'person'">{{slot.description}}</p>
-                                            <p class="cart-pack-item__inner-value-text" *ngIf="floor.utility === 'placement'"></p>
-                                            <p class="cart-pack-item__inner-value-text" *ngIf="floor.utility === 'other'"></p>
+                                        <div
+                                            class="cart-pack-item__inner-value"
+                                        >
+                                            <p
+                                                class="cart-pack-item__inner-value-text"
+                                                *ngIf="
+                                                    floor.utility === 'person'
+                                                "
+                                            >
+                                                {{ slot.description }}
+                                            </p>
+                                            <p
+                                                class="cart-pack-item__inner-value-text"
+                                                *ngIf="
+                                                    floor.utility ===
+                                                    'placement'
+                                                "
+                                            ></p>
+                                            <p
+                                                class="cart-pack-item__inner-value-text"
+                                                *ngIf="
+                                                    floor.utility === 'other'
+                                                "
+                                            ></p>
                                         </div>
 
-                                        <p class="cart-pack-item__inner-price">{{slot?.price | digitalSeparator}} руб.</p>
+                                        <p class="cart-pack-item__inner-price">
+                                            {{
+                                                slot?.price | digitalSeparator
+                                            }}
+                                            руб.
+                                        </p>
 
-                                        <div class="cart-pack-item__inner-value"></div>
+                                        <div
+                                            class="cart-pack-item__inner-value"
+                                        ></div>
                                         <div class="order_actions">
-                                            <button class="filter__btn filter__btn--blue" (click)="selectSlot(section, tab, floor, slot)">Выбрать услугу</button>
+                                            <button
+                                                class="filter__btn filter__btn--blue"
+                                                (click)="
+                                                    selectSlot(
+                                                        section,
+                                                        tab,
+                                                        floor,
+                                                        slot
+                                                    )
+                                                "
+                                            >
+                                                Выбрать услугу
+                                            </button>
                                         </div>
                                     </div>
                                 </ng-container>
-
                             </ng-container>
                         </ng-container>
                     </ng-container>
-                    <button class="filter__btn filter__btn--blue order_status_btn"
-                            (click)="gotoCartMode()">Отменить добавление</button>
+                    <button
+                        class="filter__btn filter__btn--blue order_status_btn"
+                        (click)="gotoCartMode()"
+                    >
+                        Отменить добавление
+                    </button>
                 </ng-container>
             </ng-template>
         </div>
@@ -151,7 +409,7 @@
 
 <ng-template #loading>
     <div class="loading_container">
-        <img src="assets/loading_1.gif" class="loading">
+        <img src="assets/loading_1.gif" class="loading" />
     </div>
 </ng-template>
 
@@ -159,38 +417,75 @@
     <ng-container *ngIf="data$ | async as data">
         <div class="tbl_row" (click)="wrap()">
             <!--        ID      -->
-            <div class="order_tbl__item small ellipsis" [title]="data.group_id">{{data.group_id}}</div>
+            <div class="order_tbl__item small ellipsis" [title]="data.group_id">
+                {{ data.group_id }}
+            </div>
             <!--        login      -->
-            <div class="order_tbl__item mid">{{data.user.login || '---'}}</div>
+            <div class="order_tbl__item mid">
+                {{ data.user.login || "---" }}
+            </div>
             <!--        ФИО      -->
             <div class="order_tbl__item extra">
-                {{data.user.first_name}}&nbsp;
-                {{data.user.last_name}}&nbsp;
-                {{data.user.patronymic}}
+                {{ data.user.first_name }}&nbsp; {{ data.user.last_name }}&nbsp;
+                {{ data.user.patronymic }}
             </div>
             <!--        email      -->
-            <div class="order_tbl__item extra">{{data?.contacts?.email || 'email не указан'}}</div>
+            <div class="order_tbl__item extra">
+                {{ data?.contacts?.email || "email не указан" }}
+            </div>
             <!--        телефон      -->
-            <div class="order_tbl__item long">{{data?.contacts?.phone || 'телефон не указан'}}</div>
-            <!--        предпочитаемый канал связи      -->
             <div class="order_tbl__item long">
-                <i class="fas fa-phone" aria-hidden="true" title="Телефон" *ngIf="data?.contacts?.ch_phone"></i>
-                <i class="fab fa-viber" aria-hidden="true" title="Viber" *ngIf="data?.contacts?.ch_viber"></i>
-                <i class="fab fa-whatsapp" aria-hidden="true" title="WhatsApp" *ngIf="data?.contacts?.ch_whatsapp"></i>
-                <i class="fab fa-telegram-plane" aria-hidden="true" title="Telegram" *ngIf="data?.contacts?.ch_telegram"></i>
-                <i class="fa fa-envelope" aria-hidden="true" title="E-mail" *ngIf="data?.contacts?.ch_email"></i>
-                <i class="fab fa-skype" aria-hidden="true" title="Skype" *ngIf="data?.contacts?.ch_skype"></i>
+                {{ data?.contacts?.phone || "телефон не указан" }}
             </div>
             <!--        предпочитаемый канал связи      -->
-            <div class="order_tbl__item long">{{getLastDate()}}</div>
+            <div class="order_tbl__item long">
+                <i
+                    class="fas fa-phone"
+                    aria-hidden="true"
+                    title="Телефон"
+                    *ngIf="data?.contacts?.ch_phone"
+                ></i>
+                <i
+                    class="fab fa-viber"
+                    aria-hidden="true"
+                    title="Viber"
+                    *ngIf="data?.contacts?.ch_viber"
+                ></i>
+                <i
+                    class="fab fa-whatsapp"
+                    aria-hidden="true"
+                    title="WhatsApp"
+                    *ngIf="data?.contacts?.ch_whatsapp"
+                ></i>
+                <i
+                    class="fab fa-telegram-plane"
+                    aria-hidden="true"
+                    title="Telegram"
+                    *ngIf="data?.contacts?.ch_telegram"
+                ></i>
+                <i
+                    class="fa fa-envelope"
+                    aria-hidden="true"
+                    title="E-mail"
+                    *ngIf="data?.contacts?.ch_email"
+                ></i>
+                <i
+                    class="fab fa-skype"
+                    aria-hidden="true"
+                    title="Skype"
+                    *ngIf="data?.contacts?.ch_skype"
+                ></i>
+            </div>
+            <!--        предпочитаемый канал связи      -->
+            <div class="order_tbl__item long">{{ getLastDate() }}</div>
             <!--        статус      -->
-            <div class="order_tbl__item mid">{{getStatusTitle()}}</div>
+            <div class="order_tbl__item mid">{{ getStatusTitle() }}</div>
             <!--        цена      -->
-            <div class="order_tbl__item mid">{{getGroupPrice()}}</div>
+            <div class="order_tbl__item mid">{{ getGroupPrice() }}</div>
             <!--        кнопка открыть      -->
-<!--            <div class="order_tbl__item open_btn" (click)="wrap()">-->
-<!--                <i class="fas fa-eye fa-lg"></i>-->
-<!--            </div>-->
+            <!--            <div class="order_tbl__item open_btn" (click)="wrap()">-->
+            <!--                <i class="fas fa-eye fa-lg"></i>-->
+            <!--            </div>-->
         </div>
     </ng-container>
 </ng-template>

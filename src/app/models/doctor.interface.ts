@@ -1,8 +1,8 @@
-import {MetaPhoto} from 'app/models/map-object.interface';
-import {MetaInterface} from 'app/models/meta.interface';
-import {SlotEntity} from 'app/models/entity.interface';
-import {ServiceSlot} from 'app/models/slot';
-import {environment} from '@environments/environment';
+import { MetaPhoto } from "app/models/map-object.interface";
+import { MetaInterface } from "app/models/meta.interface";
+import { SlotEntity } from "app/models/entity.interface";
+import { ServiceSlot } from "app/models/slot";
+import { environment } from "@environments/environment";
 
 export interface PersonDoctorSlot extends ServiceSlot, SlotEntity<DoctorSrc> {
     photo: MetaPhoto;
@@ -42,11 +42,11 @@ export class PersonBuilder {
     static serialize(src: PersonDoctorSlot): PersonDoctorSlot {
         // photo
         let ph: MetaPhoto = src?.meta?.image_id as MetaPhoto;
-        ph = ph ?? src?._entity?.meta?.image_id as MetaPhoto;
+        ph = ph ?? (src?._entity?.meta?.image_id as MetaPhoto);
 
-        const position: string =  src?._entity?.meta?.position?.title ?? '';
-        const cat: string =  src?._entity?.meta?.category?.title ?? '';
-        const cat_lettera: string =  src?._entity?.meta?.category?.lettera ?? '';
+        const position: string = src?._entity?.meta?.position?.title ?? "";
+        const cat: string = src?._entity?.meta?.category?.title ?? "";
+        const cat_lettera: string = src?._entity?.meta?.category?.lettera ?? "";
         const count_birth = src?._entity?.count;
         const exp = src?._entity?.experience;
 
@@ -54,11 +54,14 @@ export class PersonBuilder {
             ...src,
             photo: ph,
             category_lettera: cat_lettera,
-            first_name: src?._entity?.full_name ?? 'Без имени',
-            last_name: src?._entity?.short_name ?? '',
+            first_name: src?._entity?.full_name ?? "Без имени",
+            last_name: src?._entity?.short_name ?? "",
             full_name: src?._entity?.full_name
-                ? `${src?._entity?.full_name ?? ''} ${src?._entity?.short_name ?? ''}` : 'Без имени',
-            description: `${position ? position + ', ' : ''}${cat ?? ''}`,
+                ? `${src?._entity?.full_name ?? ""} ${
+                      src?._entity?.short_name ?? ""
+                  }`
+                : "Без имени",
+            description: `${position ? position + ", " : ""}${cat ?? ""}`,
             description_education: src?._entity?.description_education,
             description_experience: src?._entity?.description_experience,
             description_pro: src?._entity?.description_pro,

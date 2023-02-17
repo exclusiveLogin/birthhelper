@@ -1,15 +1,14 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 
 @Component({
-    selector: 'app-paginator',
-    templateUrl: './paginator.component.html',
-    styleUrls: ['./paginator.component.css']
+    selector: "app-paginator",
+    templateUrl: "./paginator.component.html",
+    styleUrls: ["./paginator.component.css"],
 })
 export class PaginatorComponent implements OnInit {
-
     pages = 1;
 
-    @Input('pages')
+    @Input("pages")
     private set _(value) {
         this.pages = Math.floor(value) + 1;
         if (this.currentPage > this.pages) {
@@ -21,12 +20,9 @@ export class PaginatorComponent implements OnInit {
 
     public currentPage = 1;
 
-    constructor() {
-    }
+    constructor() {}
 
-    ngOnInit() {
-
-    }
+    ngOnInit() {}
 
     private emitPage() {
         this.vc.emit(this.currentPage);
@@ -60,5 +56,4 @@ export class PaginatorComponent implements OnInit {
             this.emitPage();
         }
     }
-
 }

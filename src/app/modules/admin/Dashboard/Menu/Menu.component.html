@@ -1,8 +1,6 @@
 <div class="bh_admin_menu_title">Главное меню</div>
 <div class="accordion">
-    <div class="menu_group"
-         *ngFor="let menuGroup of menuRepo"
-    >
+    <div class="menu_group" *ngFor="let menuGroup of menuRepo">
         <div class="card-header">
             <h2 class="mb-0" [id]="menuGroup.key">
                 <button
@@ -11,25 +9,27 @@
                     class="btn btn-link btn-block text-left"
                     type="button"
                     (click)="toggleGroup(menuGroup.key)"
-                    [attr.aria-controls]="menuGroup.key">
+                    [attr.aria-controls]="menuGroup.key"
+                >
                     {{ menuGroup.title }}
                 </button>
             </h2>
         </div>
 
-        <div [id]="menuGroup.key"
-             class="collapse"
-             [ngClass]="{show: showed(menuGroup.key)}"
+        <div
+            [id]="menuGroup.key"
+            class="collapse"
+            [ngClass]="{ show: showed(menuGroup.key) }"
         >
             <div class="accordion-body">
-                <div class="bh_admin_menu_item"
-                     *ngFor="let menuItem of menuGroup.list"
-                     (click)="selectMenuItem(menuItem)"
+                <div
+                    class="bh_admin_menu_item"
+                    *ngFor="let menuItem of menuGroup.list"
+                    (click)="selectMenuItem(menuItem)"
                 >
                     {{ menuItem.title }}
                 </div>
             </div>
         </div>
     </div>
-
 </div>

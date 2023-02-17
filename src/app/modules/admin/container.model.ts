@@ -1,5 +1,5 @@
-import {IEntityItem} from './entity.model';
-import {SectionType} from '@services/search.service';
+import { IEntityItem } from "./entity.model";
+import { SectionType } from "@services/search.service";
 
 export interface IContainer {
     container_id_key: string;
@@ -24,7 +24,7 @@ export interface ISlot {
     override_fields: string[]; // поля доступные для перекрытия
     required_fields: string[]; // поля обязательные для слота
     required_fields_type: {
-        [name: string]: string,
+        [name: string]: string;
     }; // поля обязательные для слота
     section: SectionType;
     db_links: string; // БД связей

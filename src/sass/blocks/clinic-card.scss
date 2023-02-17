@@ -14,12 +14,15 @@
     height: 100%;
     padding: 20px 26px;
     border-radius: 5px;
-    background: #fff url("../../img/clinic-cards/clinic-card-bg.png") no-repeat 0 0 / 100%;
+    background: #fff url("../../img/clinic-cards/clinic-card-bg.png") no-repeat
+        0 0 / 100%;
     box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.06);
     overflow: hidden;
 
     &.active {
-        background: #487ff1 url("../../img/clinic-cards/clinic-card-active-bg.png") no-repeat 0 0 / 100%;
+        background: #487ff1
+            url("../../img/clinic-cards/clinic-card-active-bg.png") no-repeat 0
+            0 / 100%;
 
         &.invalid {
             background-color: #862a3f;
@@ -28,14 +31,17 @@
                 background: #487ff1;
 
                 &-check {
-                    background: #862a3f url("../../img/icons/close-solid-white.svg") no-repeat center center;
+                    background: #862a3f
+                        url("../../img/icons/close-solid-white.svg") no-repeat
+                        center center;
                     border-radius: 0 5px 0 0;
                     background-size: 44.5px;
                     margin-top: -1px;
                 }
 
                 &-favorites {
-                    background: #862a3f url("../../img/icons/heart-solid-white.svg") no-repeat;
+                    background: #862a3f
+                        url("../../img/icons/heart-solid-white.svg") no-repeat;
                 }
             }
         }
@@ -48,7 +54,7 @@
             }
 
             &:after {
-                background: rgba(255,255,255,0.5);
+                background: rgba(255, 255, 255, 0.5);
             }
         }
 
@@ -60,11 +66,13 @@
         .clinic-card-controls__btn {
             background: #487ff1;
             &-check {
-                background: #487ff1 url("../../img/icons/close-solid-white.svg") no-repeat ;
+                background: #487ff1 url("../../img/icons/close-solid-white.svg")
+                    no-repeat;
             }
 
             &-favorites {
-                background: #487ff1 url("../../img/icons/heart-solid-white.svg") no-repeat ;
+                background: #487ff1 url("../../img/icons/heart-solid-white.svg")
+                    no-repeat;
             }
         }
     }
@@ -88,34 +96,34 @@
     font-size: 15px;
     font-weight: bold;
     line-height: 1.2;
-    color: rgba(45,51,63,0.7);
+    color: rgba(45, 51, 63, 0.7);
     text-align: center;
     text-decoration: none;
     cursor: pointer;
 
     &:before {
         position: absolute;
-        content: '';
+        content: "";
         bottom: -1px;
         left: 0;
         right: 0;
         height: 1px;
-        background: rgba(45,51,63,0.7);
+        background: rgba(45, 51, 63, 0.7);
     }
 
     &:after {
         position: absolute;
-        content: '';
+        content: "";
         bottom: -11px;
         left: 50%;
         width: 100px;
         height: 1px;
         margin-left: -50px;
-        background: rgba(45,51,63,0.2);
+        background: rgba(45, 51, 63, 0.2);
     }
 
     &:hover {
-        color: rgba(45,51,63,0.7);
+        color: rgba(45, 51, 63, 0.7);
         text-decoration: none;
     }
 }
@@ -125,7 +133,7 @@
     max-height: 42px;
     font-size: 12px;
     line-height: 1.17;
-    color: rgba(45,51,63,0.7);
+    color: rgba(45, 51, 63, 0.7);
     text-align: center;
     overflow: hidden;
     cursor: pointer;
@@ -136,7 +144,7 @@
     font-size: 15px;
     font-weight: bold;
     line-height: 1.2;
-    color: rgba(45,51,63,0.7);
+    color: rgba(45, 51, 63, 0.7);
     text-align: center;
 }
 
@@ -157,13 +165,14 @@
     border: none;
 
     &-check {
-        background: #fff url("../../img/icons/check-solid.svg") no-repeat center center;
+        background: #fff url("../../img/icons/check-solid.svg") no-repeat center
+            center;
         border-radius: 0 5px 0 0;
         background-size: 44.5px;
         margin-top: -1px;
     }
 
     &-favorites {
-        background: #fff url("../../img/icons/heart-solid.svg") no-repeat ;
+        background: #fff url("../../img/icons/heart-solid.svg") no-repeat;
     }
 }

@@ -1,4 +1,4 @@
-export type Summary = Partial<SummaryPrice & SummaryRate> & {id: number};
+export type Summary = Partial<SummaryPrice & SummaryRate> & { id: number };
 
 export interface SummaryPrice {
     min_price: number;

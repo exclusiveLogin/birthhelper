@@ -1,16 +1,28 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input,  Output} from '@angular/core';
-import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
-import {Contragent} from '@models/contragent.interface';
-import {CTG, LkService} from '@services/lk.service';
-import {map, shareReplay, switchMap, tap} from 'rxjs/operators';
-import {ODRER_ACTIONS, Order, OrderGroup, OrderRequest, OrderResponse} from '@models/order.interface';
-import {User, UserSrc} from '@models/user.interface';
-import {RestService} from '@services/rest.service';
+import {
+    ChangeDetectorRef,
+    Component,
+    EventEmitter,
+    Input,
+    Output,
+} from "@angular/core";
+import { BehaviorSubject, combineLatest, Observable } from "rxjs";
+import { Contragent } from "@models/contragent.interface";
+import { CTG, LkService } from "@services/lk.service";
+import { map, shareReplay, switchMap, tap } from "rxjs/operators";
+import {
+    ODRER_ACTIONS,
+    Order,
+    OrderGroup,
+    OrderRequest,
+    OrderResponse,
+} from "@models/order.interface";
+import { User, UserSrc } from "@models/user.interface";
+import { RestService } from "@services/rest.service";
 
 @Component({
-  selector: 'app-order-list',
-  templateUrl: './order-list.component.html',
-  styleUrls: ['./order-list.component.scss']
+    selector: "app-order-list",
+    templateUrl: "./order-list.component.html",
+    styleUrls: ["./order-list.component.scss"],
 })
 export class OrderListComponent {
     public isLoading = true;
@@ -22,7 +34,10 @@ export class OrderListComponent {
         if (value?.entId) {
             this.isLoading = true;
             this.ctg = value;
-            this.contragent$ = this.restService.getEntity<Contragent>('ent_contragents', value.entId);
+            this.contragent$ = this.restService.getEntity<Contragent>(
+                "ent_contragents",
+                value.entId
+            );
         }
     }
 
@@ -33,45 +48,59 @@ export class OrderListComponent {
 
     updater$ = new BehaviorSubject(null);
     onRequest$ = this.lkService.ordersFilters$.pipe(
-        map((filters) => ({
-            action: ODRER_ACTIONS.GET,
-            groupMode: filters.group_mode,
-            contragent_entity_id: this.ctg.entId,
-            status: filters.status,
-            section_key: filters.section_key,
-            skip: this.skip,
-        }) as OrderRequest),
+        map(
+            (filters) =>
+                ({
+                    action: ODRER_ACTIONS.GET,
+                    groupMode: filters.group_mode,
+                    contragent_entity_id: this.ctg.entId,
+                    status: filters.status,
+                    section_key: filters.section_key,
+                    skip: this.skip,
+                } as OrderRequest)
+        )
     );
 
     onOrdersGroups$ = combineLatest([this.updater$, this.onRequest$]).pipe(
         map(([_, data]) => data),
-        tap(data => data.skip = this.skip),
-        switchMap(request => this.restService.requestOrdersPost<OrderResponse<OrderGroup>>(request)),
-        tap(_ => this.isLoading = false),
-        tap(_ => console.log('onOrdersGroups$', _)),
-        shareReplay(1),
+        tap((data) => (data.skip = this.skip)),
+        switchMap((request) =>
+            this.restService.requestOrdersPost<OrderResponse<OrderGroup>>(
+                request
+            )
+        ),
+        tap((_) => (this.isLoading = false)),
+        tap((_) => console.log("onOrdersGroups$", _)),
+        shareReplay(1)
     );
 
     onOrdersGroupResult$ = this.onOrdersGroups$.pipe(
-        map(data => data.result),
-        tap(grp => grp?.forEach(g => g.orders = g.orders.map(o => new Order(o)))),
-        tap(grp => grp?.forEach(g => g.user = new User(g.user as unknown as UserSrc))),
-        tap(_ => this.cdr.markForCheck()),
+        map((data) => data.result),
+        tap((grp) =>
+            grp?.forEach((g) => (g.orders = g.orders.map((o) => new Order(o))))
+        ),
+        tap((grp) =>
+            grp?.forEach(
+                (g) => (g.user = new User(g.user as unknown as UserSrc))
+            )
+        ),
+        tap((_) => this.cdr.markForCheck())
     );
 
     onOrdersTotal$ = this.onOrdersGroups$.pipe(
-        map(list => list?.total ?? 0 ),
-        tap(total => this.empty.next(!total)),
+        map((list) => list?.total ?? 0),
+        tap((total) => this.empty.next(!total))
     );
 
-    onOrderGroupPages$ = this.onOrdersTotal$.pipe(map(_ => _ ? Math.ceil(_ / 20) || 1 : 1));
+    onOrderGroupPages$ = this.onOrdersTotal$.pipe(
+        map((_) => (_ ? Math.ceil(_ / 20) || 1 : 1))
+    );
 
     constructor(
         private restService: RestService,
         private lkService: LkService,
-        private cdr: ChangeDetectorRef,
-    ) {
-    }
+        private cdr: ChangeDetectorRef
+    ) {}
 
     trackIt(idx: number, og: OrderGroup): string {
         return og.group_id;
@@ -82,5 +111,4 @@ export class OrderListComponent {
         this.isLoading = true;
         this.updater$.next(null);
     }
-
 }

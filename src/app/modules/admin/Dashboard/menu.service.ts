@@ -1,12 +1,15 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { IMenuRepoItem, EMENUMODE } from './Dashboard.component';
+import { Injectable } from "@angular/core";
+import { BehaviorSubject } from "rxjs";
+import { IMenuRepoItem, EMENUMODE } from "./Dashboard.component";
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: "root" })
 export class MenuService {
-
-    private menuEventBus: BehaviorSubject<IMenuRepoItem> = new BehaviorSubject(null);
-    private submenuEventBus: BehaviorSubject<EMENUMODE> = new BehaviorSubject(null);
+    private menuEventBus: BehaviorSubject<IMenuRepoItem> = new BehaviorSubject(
+        null
+    );
+    private submenuEventBus: BehaviorSubject<EMENUMODE> = new BehaviorSubject(
+        null
+    );
 
     public get menuStream$(): BehaviorSubject<IMenuRepoItem> {
         return this.menuEventBus;
@@ -16,6 +19,5 @@ export class MenuService {
         return this.submenuEventBus;
     }
 
-constructor() { }
-
+    constructor() {}
 }

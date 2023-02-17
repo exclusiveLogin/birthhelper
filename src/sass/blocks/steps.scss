@@ -20,7 +20,6 @@
     justify-content: center;
     flex-wrap: wrap;
 
-
     &-first {
         background-image: url(../../img/notepad-bg.svg);
         background-position: calc(100% - 7px) 45px;
@@ -72,6 +71,6 @@
     font-weight: 500;
     color: #7d828a;
 }
-.steps__icon{
+.steps__icon {
     width: 96px;
 }

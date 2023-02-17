@@ -40,7 +40,7 @@
             display: flex;
             flex: 1;
             &:nth-child(odd) {
-                background-color: #DBE9FF;
+                background-color: #dbe9ff;
             }
         }
     }
@@ -54,11 +54,11 @@
         flex-grow: 1;
         width: 100%;
         flex-wrap: wrap;
-        background-color: #F3F3F3;
+        background-color: #f3f3f3;
     }
 }
 $skype-color: #00aff0;
-$whatsapp-color: #128C7E;
+$whatsapp-color: #128c7e;
 $telegram-color: #0088cc;
 $viber-color: #59267c;
 .fa-viber {

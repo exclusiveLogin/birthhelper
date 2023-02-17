@@ -18,8 +18,14 @@
     flex-direction: column;
     align-items: center;
     cursor: pointer;
-    background: rgb(255,255,255);
-    background: linear-gradient(0deg, white 0%, #e9e9e9 20%, #efefef 23%, white 70%);
+    background: rgb(255, 255, 255);
+    background: linear-gradient(
+        0deg,
+        white 0%,
+        #e9e9e9 20%,
+        #efefef 23%,
+        white 70%
+    );
     box-shadow: 0 12px 24px 0 rgb(0 0 0 / 5%);
     transition: all 0.2s ease-in;
 

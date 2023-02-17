@@ -1,13 +1,20 @@
 <div class="header_container container-fluid">
-  <div class="col-12"><span class="bh_admin_header">BirthHelper админка</span><span class="exit" (click)="exit()">Выход</span></div>
+    <div class="col-12">
+        <span class="bh_admin_header">BirthHelper админка</span
+        ><span class="exit" (click)="exit()">Выход</span>
+    </div>
 </div>
 
-<div id="loader" class="row" [ngClass]="{'hide': !isLoading, 'error_text': hasErrorText}">
-  <div style="display:flex; justify-content: center; flex-grow: 1;">
-    <div id="loader_line" [ngClass]="{'play':true, 'error': isError}"></div>
-  </div>
+<div
+    id="loader"
+    class="row"
+    [ngClass]="{ hide: !isLoading, error_text: hasErrorText }"
+>
+    <div style="display: flex; justify-content: center; flex-grow: 1">
+        <div id="loader_line" [ngClass]="{ play: true, error: isError }"></div>
+    </div>
 
-  <span *ngIf="hasErrorText" >{{errorText}}</span>
+    <span *ngIf="hasErrorText">{{ errorText }}</span>
 </div>
 
 <app-dashboard class="bh_admin_dashboard"></app-dashboard>

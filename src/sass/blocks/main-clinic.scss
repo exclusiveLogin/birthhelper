@@ -1,22 +1,22 @@
 .main-clinic {
-  display: flex;
+    display: flex;
 }
 
 .main-clinic__messages {
-  position: absolute;
-  right: 20px;
-  top: 0;
+    position: absolute;
+    right: 20px;
+    top: 0;
 }
 
 .main-clinic__columns {
-  display: flex;
-  align-items: stretch;
-  margin: 35px 0 0;
-  //max-width: 1180px;
-  width: 100%;
-  flex-grow: 1;
+    display: flex;
+    align-items: stretch;
+    margin: 35px 0 0;
+    //max-width: 1180px;
+    width: 100%;
+    flex-grow: 1;
 }
 
 .main-clinic__filter {
-  margin: 0 24px 0 0;
+    margin: 0 24px 0 0;
 }

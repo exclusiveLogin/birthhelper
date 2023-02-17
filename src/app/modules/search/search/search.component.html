@@ -1,72 +1,92 @@
 <!--<div class="container">-->
-    <div class="search muted">
-        <input class="search__input" type="text" placeholder="Где рожать">
-        <button class="search__btn">Роддома</button>
-    </div>
-    <div class="main-clinic__columns">
-        <aside class="main-clinic__filter filter">
-            <app-filter
-                *ngIf="filterList$ | async as list"
-                [filterConfig]="list"
-                (filterChange)="selectFilters($event)"
-            ></app-filter>
-        </aside>
-        <div class="result">
-            <div class="result__header">
-                <div class="result__selector selector"><span class="selector__txt">Вид:</span>
-                    <div class="selector__item">
-                        <input
-                                type="radio"
-                                name="cbx"
-                                class="selector__input"
-                                id="listShownBtn"
-                                checked="checked">
-                        <label class="selector__label" for="listShownBtn">
-                            <img src="img/icons/burger.svg" class="selector__label-img" alt="" (click)="modeList()">
-                        </label>
-                    </div>
-                    <div class="selector__item">
-                        <input
-                                type="radio"
-                                name="cbx"
-                                class="selector__input"
-                                id="mapShownBtn">
-                        <label class="selector__label" for="mapShownBtn">
-                            <img src="img/icons/map.svg" class="selector__label-img" alt="" (click)="modeMap()"></label>
-                    </div>
+<div class="search muted">
+    <input class="search__input" type="text" placeholder="Где рожать" />
+    <button class="search__btn">Роддома</button>
+</div>
+<div class="main-clinic__columns">
+    <aside class="main-clinic__filter filter">
+        <app-filter
+            *ngIf="filterList$ | async as list"
+            [filterConfig]="list"
+            (filterChange)="selectFilters($event)"
+        ></app-filter>
+    </aside>
+    <div class="result">
+        <div class="result__header">
+            <div class="result__selector selector">
+                <span class="selector__txt">Вид:</span>
+                <div class="selector__item">
+                    <input
+                        type="radio"
+                        name="cbx"
+                        class="selector__input"
+                        id="listShownBtn"
+                        checked="checked"
+                    />
+                    <label class="selector__label" for="listShownBtn">
+                        <img
+                            src="img/icons/burger.svg"
+                            class="selector__label-img"
+                            alt=""
+                            (click)="modeList()"
+                        />
+                    </label>
+                </div>
+                <div class="selector__item">
+                    <input
+                        type="radio"
+                        name="cbx"
+                        class="selector__input"
+                        id="mapShownBtn"
+                    />
+                    <label class="selector__label" for="mapShownBtn">
+                        <img
+                            src="img/icons/map.svg"
+                            class="selector__label-img"
+                            alt=""
+                            (click)="modeMap()"
+                    /></label>
                 </div>
             </div>
-            <div class="result__body map__mode" [ngClass]="{map__mode: mode === 'map'}">
-                <div class="clinics__list" *ngIf="mainList$ | async as list">
-                    <div class="emptylist" *ngIf="!list?.length">Нет результатов отвечающих кретериям поиска</div>
-                    <ng-container *ngIf="onInitSectionType$ | async as sectionType">
-                        <ng-container [ngSwitch]="sectionType">
-                            <ng-container *ngSwitchCase="'clinic'">
-                                <app-clinic-card
-                                    *ngFor="let item of list"
-                                    [clinic]="item"
-                                    (gotoMap)="modeMapSingle($event)"
-                                    [id]="'clinic_' + item.id"
-                                ></app-clinic-card>
-                            </ng-container>
-                            <ng-container *ngSwitchCase="'consultation'">
-                                <app-consultation-card
-                                    *ngFor="let item of list"
-                                    [clinic]="item"
-                                    (gotoMap)="modeMapSingle($event)"
-                                    [id]="'clinic_' + item.id"
-                                ></app-consultation-card>
-                            </ng-container>
+        </div>
+        <div
+            class="result__body map__mode"
+            [ngClass]="{ map__mode: mode === 'map' }"
+        >
+            <div class="clinics__list" *ngIf="mainList$ | async as list">
+                <div class="emptylist" *ngIf="!list?.length">
+                    Нет результатов отвечающих кретериям поиска
+                </div>
+                <ng-container *ngIf="onInitSectionType$ | async as sectionType">
+                    <ng-container [ngSwitch]="sectionType">
+                        <ng-container *ngSwitchCase="'clinic'">
+                            <app-clinic-card
+                                *ngFor="let item of list"
+                                [clinic]="item"
+                                (gotoMap)="modeMapSingle($event)"
+                                [id]="'clinic_' + item.id"
+                            ></app-clinic-card>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'consultation'">
+                            <app-consultation-card
+                                *ngFor="let item of list"
+                                [clinic]="item"
+                                (gotoMap)="modeMapSingle($event)"
+                                [id]="'clinic_' + item.id"
+                            ></app-consultation-card>
                         </ng-container>
                     </ng-container>
-
-                </div>
-                <div id="search_map" class="map"></div>
+                </ng-container>
             </div>
-            <ng-container *ngIf="mainSet$ | async as set">
-                <app-paginator *ngIf="set.total" (vc)="pageChange($event)" [pages]="set.total / 20"></app-paginator>
-            </ng-container>
-
+            <div id="search_map" class="map"></div>
         </div>
+        <ng-container *ngIf="mainSet$ | async as set">
+            <app-paginator
+                *ngIf="set.total"
+                (vc)="pageChange($event)"
+                [pages]="set.total / 20"
+            ></app-paginator>
+        </ng-container>
     </div>
+</div>
 <!--</div>-->

@@ -3,91 +3,186 @@
         <div class="wrap-login100">
             <div class="login100-form validate-form">
                 <a href="/">
-                    <img src="img/logo.png" srcset="img/logo@2x.png 2x, img/logo@3x.png 3x" alt="" class="logo__icon">
+                    <img
+                        src="img/logo.png"
+                        srcset="img/logo@2x.png 2x, img/logo@3x.png 3x"
+                        alt=""
+                        class="logo__icon"
+                    />
                 </a>
 
                 <!-- авторизация-->
                 <ng-container *ngIf="mode === 'auth'">
                     <span class="login100-form-title p-b-34">
-						Вход по логину
-					</span>
+                        Вход по логину
+                    </span>
 
-                    <form #loginForm = "ngForm" novalidate (submit)="signin()" style="flex-grow: 1">
-                        <div class="wrap-input100 rs1-wrap-input100 validate-input m-b-20" data-validate="Type user name">
-                            <input id="first-name" class="input100" type="text" name="username" placeholder="Логин" required [(ngModel)]="login">
+                    <form
+                        #loginForm="ngForm"
+                        novalidate
+                        (submit)="signin()"
+                        style="flex-grow: 1"
+                    >
+                        <div
+                            class="wrap-input100 rs1-wrap-input100 validate-input m-b-20"
+                            data-validate="Type user name"
+                        >
+                            <input
+                                id="first-name"
+                                class="input100"
+                                type="text"
+                                name="username"
+                                placeholder="Логин"
+                                required
+                                [(ngModel)]="login"
+                            />
                             <span class="focus-input100"></span>
                         </div>
-                        <div class="wrap-input100 rs2-wrap-input100 validate-input m-b-20" data-validate="Type password">
-                            <input class="input100" type="password" name="pass" placeholder="Пароль" required [(ngModel)]="password" >
+                        <div
+                            class="wrap-input100 rs2-wrap-input100 validate-input m-b-20"
+                            data-validate="Type password"
+                        >
+                            <input
+                                class="input100"
+                                type="password"
+                                name="pass"
+                                placeholder="Пароль"
+                                required
+                                [(ngModel)]="password"
+                            />
                             <span class="focus-input100"></span>
                         </div>
 
-                        <div class="container-login100-form-btn" [ngClass]="{muted: loginForm.invalid}">
-                            <button class="login100-form-btn" type="submit" >
+                        <div
+                            class="container-login100-form-btn"
+                            [ngClass]="{ muted: loginForm.invalid }"
+                        >
+                            <button class="login100-form-btn" type="submit">
                                 Войти
                             </button>
                         </div>
                     </form>
 
-                    <div class="msg_error" *ngIf="notifier.getMessageStream('authStr') | async as msg">{{msg}} </div>
+                    <div
+                        class="msg_error"
+                        *ngIf="
+                            notifier.getMessageStream('authStr') | async as msg
+                        "
+                    >
+                        {{ msg }}
+                    </div>
 
                     <div class="w-full text-center p-t-27 p-b-239">
-						<span class="txt1">
-							Забыли
-						</span>
+                        <span class="txt1"> Забыли </span>
 
-                        <a href="#" class="txt2">
-                            логин или пароль?
-                        </a>
+                        <a href="#" class="txt2"> логин или пароль? </a>
                     </div>
                 </ng-container>
                 <!-- Регистрация-->
                 <ng-container *ngIf="mode === 'registration'">
                     <span class="login100-form-title">
-						Регистрация учетной записи
-					</span>
+                        Регистрация учетной записи
+                    </span>
 
-                    <form #regForm = "ngForm" novalidate (submit)="signup()" style="flex-grow: 1">
-                        <div class="wrap-input100 rs1-wrap-input100 validate-input m-b-20" data-validate="Type user name">
-                            <input class="input100" name="reg_login" type="text" placeholder="Логин" required [(ngModel)]="login">
+                    <form
+                        #regForm="ngForm"
+                        novalidate
+                        (submit)="signup()"
+                        style="flex-grow: 1"
+                    >
+                        <div
+                            class="wrap-input100 rs1-wrap-input100 validate-input m-b-20"
+                            data-validate="Type user name"
+                        >
+                            <input
+                                class="input100"
+                                name="reg_login"
+                                type="text"
+                                placeholder="Логин"
+                                required
+                                [(ngModel)]="login"
+                            />
                             <span class="focus-input100"></span>
                         </div>
 
-                        <div class="wrap-input100 rs2-wrap-input100 validate-input m-b-20" data-validate="Type password">
-                            <input class="input100" name="reg_pass1" type="password" placeholder="Пароль" required [(ngModel)]="password">
+                        <div
+                            class="wrap-input100 rs2-wrap-input100 validate-input m-b-20"
+                            data-validate="Type password"
+                        >
+                            <input
+                                class="input100"
+                                name="reg_pass1"
+                                type="password"
+                                placeholder="Пароль"
+                                required
+                                [(ngModel)]="password"
+                            />
                             <span class="focus-input100"></span>
                         </div>
 
-                        <div class="wrap-input100 rs2-wrap-input100 validate-input m-b-20" data-validate="Type password">
-                            <input class="input100" name="reg_pass2" type="password" placeholder="Повторить пароль" required [(ngModel)]="password2">
+                        <div
+                            class="wrap-input100 rs2-wrap-input100 validate-input m-b-20"
+                            data-validate="Type password"
+                        >
+                            <input
+                                class="input100"
+                                name="reg_pass2"
+                                type="password"
+                                placeholder="Повторить пароль"
+                                required
+                                [(ngModel)]="password2"
+                            />
                             <span class="focus-input100"></span>
                         </div>
 
-                        <div class="container-login100-form-btn" [ngClass]="{muted: regForm.invalid || isPassNotEquals}">
-                            <button class="login100-form-btn" type="submit" >
+                        <div
+                            class="container-login100-form-btn"
+                            [ngClass]="{
+                                muted: regForm.invalid || isPassNotEquals
+                            }"
+                        >
+                            <button class="login100-form-btn" type="submit">
                                 Зарегистрироваться
                             </button>
                         </div>
 
-                        <div class="msg_error" *ngIf="isPassNotEquals">Пароли не совпадают</div>
-
+                        <div class="msg_error" *ngIf="isPassNotEquals">
+                            Пароли не совпадают
+                        </div>
                     </form>
 
-                    <div class="msg_error" *ngIf="notifier.getMessageStream('authStr') | async as msg">{{msg}} </div>
-
+                    <div
+                        class="msg_error"
+                        *ngIf="
+                            notifier.getMessageStream('authStr') | async as msg
+                        "
+                    >
+                        {{ msg }}
+                    </div>
                 </ng-container>
 
                 <div class="w-full text-center toggle_btn">
-                    <a class="txt3"  *ngIf="mode === 'auth'" (click)="toggleToRegistrationMode()">
+                    <a
+                        class="txt3"
+                        *ngIf="mode === 'auth'"
+                        (click)="toggleToRegistrationMode()"
+                    >
                         Зарегистрироваться
                     </a>
-                    <a class="txt3" *ngIf="mode === 'registration'" (click)="toggleToAuthMode()">
+                    <a
+                        class="txt3"
+                        *ngIf="mode === 'registration'"
+                        (click)="toggleToAuthMode()"
+                    >
                         Войти с логином
                     </a>
                 </div>
             </div>
 
-            <div class="login100-more" style="background-image: url('/img/auth_logo.jpg');"></div>
+            <div
+                class="login100-more"
+                style="background-image: url('/img/auth_logo.jpg')"
+            ></div>
         </div>
     </div>
 </div>

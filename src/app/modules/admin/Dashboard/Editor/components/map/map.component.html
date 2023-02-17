@@ -1,15 +1,17 @@
 <div class="map_container" #map id="test_map"></div>
 
-<ng-container *ngIf="{
-                        suggestion: addressSuggestions$ | async
-                    } as data">
+<ng-container
+    *ngIf="{
+        suggestion: addressSuggestions$ | async
+    } as data"
+>
     <div class="address_container">
         <ng-autocomplete
             [data]="data.suggestion || []"
             [searchKeyword]="'value'"
             placeholder="Начните вводить адрес"
-            (selected)='selectAddress($event)'
-            (inputChanged)='searchAddress($event)'
+            (selected)="selectAddress($event)"
+            (inputChanged)="searchAddress($event)"
             [itemTemplate]="itemTemplate"
             [notFoundTemplate]="notFoundTemplate"
             [customFilter]="filterFn"
@@ -24,6 +26,4 @@
             <div [innerHTML]="notFound"></div>
         </ng-template>
     </div>
-
 </ng-container>
-

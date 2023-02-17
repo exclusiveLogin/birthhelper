@@ -45,7 +45,7 @@
         flex-grow: 1;
         width: 100%;
         flex-wrap: wrap;
-        background-color: #F3F3F3;
+        background-color: #f3f3f3;
         .header_led {
             height: 8px;
             width: 100%;
@@ -130,7 +130,7 @@
         display: flex;
         flex-direction: column;
         padding: 24px;
-        .section__title{
+        .section__title {
             width: 100%;
             font-size: 16px;
             border-bottom: 2px solid grey;
@@ -148,7 +148,7 @@
     margin-right: 15px;
     cursor: pointer;
 }
-.order_actions{
+.order_actions {
     display: flex;
     margin-left: auto;
     margin-right: 16px;
@@ -212,7 +212,7 @@
     }
 }
 $skype-color: #00aff0;
-$whatsapp-color: #128C7E;
+$whatsapp-color: #128c7e;
 $telegram-color: #0088cc;
 $viber-color: #59267c;
 .fa-viber {
@@ -234,7 +234,7 @@ $viber-color: #59267c;
         opacity: 60%;
     }
 }
-.floor_ttl{
+.floor_ttl {
     font-weight: lighter;
     text-decoration: underline;
     margin: 16px 5px;

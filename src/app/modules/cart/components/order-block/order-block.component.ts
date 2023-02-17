@@ -1,30 +1,27 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Order, StatusRusMap, StatusType} from 'app/models/order.interface';
-import {SelectionOrderSlot} from 'app/modules/configurator/configurator.model';
-import {ConfiguratorService} from 'app/modules/configurator/configurator.service';
-import {ImageService} from '../../../../services/image.service';
+import { Component, Input, OnInit } from "@angular/core";
+import { Order, StatusRusMap, StatusType } from "app/models/order.interface";
+import { SelectionOrderSlot } from "app/modules/configurator/configurator.model";
+import { ConfiguratorService } from "app/modules/configurator/configurator.service";
+import { ImageService } from "../../../../services/image.service";
 
 @Component({
-    selector: 'app-order-block',
-    templateUrl: './order-block.component.html',
-    styleUrls: ['./order-block.component.scss']
+    selector: "app-order-block",
+    templateUrl: "./order-block.component.html",
+    styleUrls: ["./order-block.component.scss"],
 })
 export class OrderBlockComponent implements OnInit {
-
     @Input() public orders: Order[];
 
     constructor(
         private configurator: ConfiguratorService,
-        public imageService: ImageService,
-    ) {
-    }
+        public imageService: ImageService
+    ) {}
 
-    ngOnInit(): void {
-    }
+    ngOnInit(): void {}
 
     removeOrder(order: Order): void {
         const seletion: SelectionOrderSlot = {
-            _status: 'selected',
+            _status: "selected",
             entKey: order.slot_entity_key,
             entId: order.slot_entity_id,
             id: order.id,
@@ -37,7 +34,6 @@ export class OrderBlockComponent implements OnInit {
     }
 
     getStatusTitle(status: StatusType): string {
-        return StatusRusMap[status] ?? 'Неопределен';
+        return StatusRusMap[status] ?? "Неопределен";
     }
-
 }

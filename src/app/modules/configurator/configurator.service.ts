@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {SectionType} from 'app/services/search.service';
+import { Injectable } from "@angular/core";
+import { SectionType } from "app/services/search.service";
 import {
     BehaviorSubject,
     Observable,
@@ -7,34 +7,47 @@ import {
     combineLatest,
     zip,
     NEVER,
-    merge
-} from 'rxjs';
+    merge,
+} from "rxjs";
 import {
     ConfiguratorConfigSrc,
-    DataStore, SelectedState, SelectionOrderSlot,
+    DataStore,
+    SelectedState,
+    SelectionOrderSlot,
     SelectionStore,
-    TabConfig, TabRxInput,
+    TabConfig,
+    TabRxInput,
     TabsStore,
-    ViewStore
-} from 'app/modules/configurator/configurator.model';
+    ViewStore,
+} from "app/modules/configurator/configurator.model";
 
-import {RestService} from 'app/services/rest.service';
-import {Entity, SlotEntity} from 'app/models/entity.interface';
-import {distinctUntilChanged, filter, map, mapTo, shareReplay, switchMap, take, tap} from 'rxjs/operators';
-import {hasher} from '../utils/hasher';
-import {OrderService, ValidationTreeItem} from '../../services/order.service';
-import {Order} from '../../models/order.interface';
+import { RestService } from "app/services/rest.service";
+import { Entity, SlotEntity } from "app/models/entity.interface";
+import {
+    distinctUntilChanged,
+    filter,
+    map,
+    mapTo,
+    shareReplay,
+    switchMap,
+    take,
+    tap,
+} from "rxjs/operators";
+import { hasher } from "../utils/hasher";
+import { OrderService, ValidationTreeItem } from "../../services/order.service";
+import { Order } from "../../models/order.interface";
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: "root",
 })
 export class ConfiguratorService {
-
     constructor(
         private restService: RestService,
-        private orderService: OrderService,
+        private orderService: OrderService
     ) {
-        this.orderService.onOrderListChanged_inCart$.subscribe(list => this.syncOrders(list));
+        this.orderService.onOrderListChanged_inCart$.subscribe((list) =>
+            this.syncOrders(list)
+        );
     }
 
     private _config: ConfiguratorConfigSrc;
@@ -55,87 +68,130 @@ export class ConfiguratorService {
     private _selection$ = new Subject<SelectionOrderSlot>();
     private _syncOrders$ = new Subject<null>();
 
-    onContragentDataLoad$ = combineLatest([this.currentContragentID$, this.currentContragentEntityKey$, this.currentSectionKey$])
-        .pipe(
-            map(([id, cid, sid]) => ({contragentId: id, contragentEntityKey: cid, contragentSectionKey: sid})));
+    onContragentDataLoad$ = combineLatest([
+        this.currentContragentID$,
+        this.currentContragentEntityKey$,
+        this.currentSectionKey$,
+    ]).pipe(
+        map(([id, cid, sid]) => ({
+            contragentId: id,
+            contragentEntityKey: cid,
+            contragentSectionKey: sid,
+        }))
+    );
 
     onSectionChanged$ = this.onContragentDataLoad$.pipe(
         tap(() => {
             this.tabsStore = {};
             this.viewsStore = {};
         }),
-        map(data => data.contragentSectionKey),
+        map((data) => data.contragentSectionKey),
         distinctUntilChanged(),
-        shareReplay(1),
+        shareReplay(1)
     );
 
     onContragent$ = this.onContragentDataLoad$.pipe(
         filter((cfg) => !!cfg?.contragentId && !!cfg?.contragentEntityKey),
-        switchMap((cfg) => this.restService.getEntity(cfg.contragentEntityKey, cfg.contragentId)),
-        shareReplay(1),
+        switchMap((cfg) =>
+            this.restService.getEntity(
+                cfg.contragentEntityKey,
+                cfg.contragentId
+            )
+        ),
+        shareReplay(1)
     );
 
-    onConfigLoad$: Observable<ConfiguratorConfigSrc> = this.onSectionChanged$.pipe(
-        filter((section) => !!section),
-        distinctUntilChanged((pre, cur) => pre === cur),
-        switchMap(section => this.restService.getConfiguratorSettings(section)),
-        tap(config => this._config = config),
-        tap((config) => this._currentTab$.next(config?.tabs[0]?.key)),
-        shareReplay(1),
-    );
+    onConfigLoad$: Observable<ConfiguratorConfigSrc> =
+        this.onSectionChanged$.pipe(
+            filter((section) => !!section),
+            distinctUntilChanged((pre, cur) => pre === cur),
+            switchMap((section) =>
+                this.restService.getConfiguratorSettings(section)
+            ),
+            tap((config) => (this._config = config)),
+            tap((config) => this._currentTab$.next(config?.tabs[0]?.key)),
+            shareReplay(1)
+        );
 
     onSynced$: Observable<null> = this._syncOrders$.pipe();
 
-    onValidationTreeChanged$ = combineLatest([this.onContragent$, this.onConfigLoad$]).pipe(
-        switchMap(() => this.orderService.getValidationTreeByContragent(this.currentContragentID$.value)),
+    onValidationTreeChanged$ = combineLatest([
+        this.onContragent$,
+        this.onConfigLoad$,
+    ]).pipe(
+        switchMap(() =>
+            this.orderService.getValidationTreeByContragent(
+                this.currentContragentID$.value
+            )
+        )
     );
 
     onValidationStateByContragentChanged$ = this.onValidationTreeChanged$.pipe(
-        map(tree => tree?.isInvalid ?? true));
+        map((tree) => tree?.isInvalid ?? true)
+    );
 
-    onValidationTabsChanged$ = this.onValidationTreeChanged$.pipe(map(tree => tree?._tabs ?? []));
-    onValidationFloorsChanged$ = this.onValidationTreeChanged$.pipe(map(tree => tree?._floors ?? []));
+    onValidationTabsChanged$ = this.onValidationTreeChanged$.pipe(
+        map((tree) => tree?._tabs ?? [])
+    );
+    onValidationFloorsChanged$ = this.onValidationTreeChanged$.pipe(
+        map((tree) => tree?._floors ?? [])
+    );
 
-    onProvidersReady$ = this.onConfigLoad$.pipe(tap(() => this.providerLayerFactory()));
-    onBusesReady$ = this.onProvidersReady$.pipe(tap(() => this.busLayerFactory()));
-    onConsumersReady$ = this.onBusesReady$.pipe(tap(() => this.consumerLayerFactory()));
-    onViewReady$ = this.onConsumersReady$.pipe(tap(() => this.viewLayerFactory()));
+    onProvidersReady$ = this.onConfigLoad$.pipe(
+        tap(() => this.providerLayerFactory())
+    );
+    onBusesReady$ = this.onProvidersReady$.pipe(
+        tap(() => this.busLayerFactory())
+    );
+    onConsumersReady$ = this.onBusesReady$.pipe(
+        tap(() => this.consumerLayerFactory())
+    );
+    onViewReady$ = this.onConsumersReady$.pipe(
+        tap(() => this.viewLayerFactory())
+    );
 
     onTabsReady$: Observable<TabRxInput[]> = this.onViewReady$.pipe(
-            tap(() => {
-                this.tabsStore = {};
-            }),
-            tap(() => this.tabLayerFactory()),
-            map(() => Object.values(this.tabsStore)),
-        );
+        tap(() => {
+            this.tabsStore = {};
+        }),
+        tap(() => this.tabLayerFactory()),
+        map(() => Object.values(this.tabsStore))
+    );
 
     onViewChanged$: Observable<TabConfig> = this._currentTab$.pipe(
-        filter(key => !!this.viewsStore[key]),
-        map(key => this.viewsStore[key]),
-        shareReplay(1),
+        filter((key) => !!this.viewsStore[key]),
+        map((key) => this.viewsStore[key]),
+        shareReplay(1)
     );
 
     onSelectionByUser$: Observable<null> = this._selection$.pipe(
         tap((selection) => {
             // store
-            const hash = hasher({entId: selection.entId, entKey: selection.entKey});
+            const hash = hasher({
+                entId: selection.entId,
+                entKey: selection.entKey,
+            });
             const targetSelection = this.selectionStore[hash];
-            const operation = targetSelection ? 'remove' : 'add';
-            if (operation === 'add') {
-                selection.contragent_entity_id = this.currentContragentID$.value;
+            const operation = targetSelection ? "remove" : "add";
+            if (operation === "add") {
+                selection.contragent_entity_id =
+                    this.currentContragentID$.value;
             }
-            operation === 'remove'
-                ? targetSelection._status = 'selected'
-                : this.selectionStore[hash] = selection;
+            operation === "remove"
+                ? (targetSelection._status = "selected")
+                : (this.selectionStore[hash] = selection);
 
-            operation === 'add'
+            operation === "add"
                 ? this.orderService.addIntoCart(selection)
                 : this.orderService.removeOrderFromCart(selection);
         }),
-        mapTo(null),
+        mapTo(null)
     );
 
-    onSelection$: Observable<SelectionStore> = merge(this.onSynced$, this.onSelectionByUser$).pipe(
+    onSelection$: Observable<SelectionStore> = merge(
+        this.onSynced$,
+        this.onSelectionByUser$
+    ).pipe(
         map(() => this.selectionStore),
         shareReplay(1)
     );
@@ -143,13 +199,16 @@ export class ConfiguratorService {
     syncOrders(list: Order[]): void {
         let needRefresh = false;
         for (const order of list) {
-            const hash = hasher({entId: order.slot_entity_id, entKey: order.slot_entity_key});
+            const hash = hasher({
+                entId: order.slot_entity_id,
+                entKey: order.slot_entity_key,
+            });
             const selection = this.selectionStore[hash];
             if (selection) {
                 // если товар есть в корзине и в выбранном
-                if (selection._status === 'selected') {
+                if (selection._status === "selected") {
                     needRefresh = true;
-                    selection._status = 'confirmed';
+                    selection._status = "confirmed";
                 }
             } else {
                 // если товар не выбран но есть в корзине
@@ -157,7 +216,7 @@ export class ConfiguratorService {
                 this.selectionStore[hash] = {
                     entId: order.slot_entity_id,
                     entKey: order.slot_entity_key,
-                    _status: 'confirmed',
+                    _status: "confirmed",
                     tabKey: order.tab_key,
                     floorKey: order.floor_key,
                     sectionKey: order.section_key,
@@ -166,7 +225,7 @@ export class ConfiguratorService {
         }
         // проверяем если товара нет в корзине но он почему то выбран
         Object.entries(this.selectionStore).forEach(([__hash, __selection]) => {
-            if (__selection?._status === 'selected') {
+            if (__selection?._status === "selected") {
                 needRefresh = true;
                 this.selectionStore[__hash] = null;
             }
@@ -177,28 +236,33 @@ export class ConfiguratorService {
     }
 
     getConsumerByID(key: string): Observable<SlotEntity[]> {
-        return this.consumers[key].pipe(
-            take(1),
-            shareReplay(1),
-        ) ?? NEVER;
+        return this.consumers[key].pipe(take(1), shareReplay(1)) ?? NEVER;
     }
 
     tabLayerFactory(): void {
-        this._config.tabs.forEach(tc => {
-            const tabConsumersKeys = tc.floors.map(f => f.consumerKeys).reduce((keys, cur) => [...keys, ...cur], []);
-            const consumers: Observable<SlotEntity[]>[] = tabConsumersKeys.map(k => this.consumers[k]);
+        this._config.tabs.forEach((tc) => {
+            const tabConsumersKeys = tc.floors
+                .map((f) => f.consumerKeys)
+                .reduce((keys, cur) => [...keys, ...cur], []);
+            const consumers: Observable<SlotEntity[]>[] = tabConsumersKeys.map(
+                (k) => this.consumers[k]
+            );
             this.tabsStore[tc.key] = {
                 key: tc.key,
                 title: tc.title,
                 inEnabled$: zip(...consumers).pipe(
-                    map(data => data.reduce((keys, cur) => [...keys, ...cur], [])),
-                    map(ents => !!ents.length),
+                    map((data) =>
+                        data.reduce((keys, cur) => [...keys, ...cur], [])
+                    ),
+                    map((ents) => !!ents.length)
                 ),
                 inCount$: zip(...consumers).pipe(
-                    map(data => data.reduce((keys, cur) => [...keys, ...cur], [])),
-                    map(ents => ents.length),
+                    map((data) =>
+                        data.reduce((keys, cur) => [...keys, ...cur], [])
+                    ),
+                    map((ents) => ents.length)
                 ),
-                isRequired: tc.required || tc.floors.some(f => f.required),
+                isRequired: tc.required || tc.floors.some((f) => f.required),
                 // inSelected$: this.onSelection$.pipe(map(() => this.tabsStore[tc.key].selectedHashes.length)),
                 // selectedHashes: [],
             };
@@ -206,19 +270,22 @@ export class ConfiguratorService {
     }
 
     viewLayerFactory(): void {
-        this._config.tabs.forEach(tcfg => this.viewsStore[tcfg.key] = tcfg);
+        this._config.tabs.forEach((tcfg) => (this.viewsStore[tcfg.key] = tcfg));
     }
 
     providerLayerFactory(): void {
         const config = this._config;
         const providerConfigs = config?.providers ?? [];
-        providerConfigs.forEach(_ => {
+        providerConfigs.forEach((_) => {
             this.providers[_.key] = this.currentContragentID$.pipe(
-                switchMap(id => this.restService.getSlotsByContragent<SlotEntity>(
-                    _.entityKey,
-                    id,
-                    _.restrictors ?? []
-            )));
+                switchMap((id) =>
+                    this.restService.getSlotsByContragent<SlotEntity>(
+                        _.entityKey,
+                        id,
+                        _.restrictors ?? []
+                    )
+                )
+            );
         });
     }
 
@@ -228,11 +295,11 @@ export class ConfiguratorService {
             .map((providerConfig) => providerConfig.busKey)
             .filter((value, index, _arr) => _arr.indexOf(value) === index);
 
-        uniqBusKeys.forEach(key => {
-            const t_configs = config.providers.filter(c => c.busKey === key);
-            const t_providers = t_configs.map(cfg => this.providers[cfg.key]);
+        uniqBusKeys.forEach((key) => {
+            const t_configs = config.providers.filter((c) => c.busKey === key);
+            const t_providers = t_configs.map((cfg) => this.providers[cfg.key]);
             this.buses[key] = combineLatest(...[t_providers]).pipe(
-                map(data => data.reduce((e, acc) => ([...acc, ...e]), [])),
+                map((data) => data.reduce((e, acc) => [...acc, ...e], []))
             );
         });
     }
@@ -240,16 +307,28 @@ export class ConfiguratorService {
     consumerLayerFactory(): void {
         const config = this._config;
 
-        config.consumers.forEach(cfg => {
+        config.consumers.forEach((cfg) => {
             const t_bus = this.buses[cfg.busKey];
             this.consumers[cfg.key] = t_bus.pipe(
-                map(list =>
-                    list.map(ent => ({...ent, _entity_key: cfg.entityKey} as SlotEntity))
-                        .filter(ent => cfg.restrictors.length ? cfg.restrictors.every(r => ent._entity[r.key] === r.value) : true),
-                ),
+                map((list) =>
+                    list
+                        .map(
+                            (ent) =>
+                                ({
+                                    ...ent,
+                                    _entity_key: cfg.entityKey,
+                                } as SlotEntity)
+                        )
+                        .filter((ent) =>
+                            cfg.restrictors.length
+                                ? cfg.restrictors.every(
+                                      (r) => ent._entity[r.key] === r.value
+                                  )
+                                : true
+                        )
+                )
             );
         });
-
     }
 
     selectTab(tabKey: string): void {
@@ -257,23 +336,25 @@ export class ConfiguratorService {
     }
 
     selectFirstTab(): void {
-        this.onConfigLoad$.pipe(
-            take(1),
-            map(data => data.tabs?.[0]?.key),
-            filter(data => !!data),
-        ).subscribe((tab ) => {
-            this.selectTab(tab);
-        });
+        this.onConfigLoad$
+            .pipe(
+                take(1),
+                map((data) => data.tabs?.[0]?.key),
+                filter((data) => !!data)
+            )
+            .subscribe((tab) => {
+                this.selectTab(tab);
+            });
     }
 
     selectItem(
         entity: Entity,
         tabKey: string,
         floorKey: string,
-        sectionKey: string,
+        sectionKey: string
     ): void {
         const data: SelectionOrderSlot = {
-            _status: 'selected',
+            _status: "selected",
             entKey: entity._entity_key,
             entId: entity.id,
             tabKey,
@@ -294,14 +375,20 @@ export class ConfiguratorService {
     getSelectedStateByEntity(entity: Entity): SelectedState {
         const hash = hasher({ entId: entity.id, entKey: entity._entity_key });
         const target = this.selectionStore[hash];
-        return target?._status ?? 'unselected';
+        return target?._status ?? "unselected";
     }
 
     getValidationStateTabByKey(tabKey: string): Observable<ValidationTreeItem> {
-        return this.onValidationTabsChanged$.pipe(map(tabs => tabs.find(t => t.key === tabKey)));
+        return this.onValidationTabsChanged$.pipe(
+            map((tabs) => tabs.find((t) => t.key === tabKey))
+        );
     }
 
-    getValidationStateFloorByKey(floorKey: string): Observable<ValidationTreeItem> {
-        return this.onValidationFloorsChanged$.pipe(map(floors => floors.find(f => f.key === floorKey)));
+    getValidationStateFloorByKey(
+        floorKey: string
+    ): Observable<ValidationTreeItem> {
+        return this.onValidationFloorsChanged$.pipe(
+            map((floors) => floors.find((f) => f.key === floorKey))
+        );
     }
 }

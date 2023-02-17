@@ -1,13 +1,17 @@
-import {Observable} from 'rxjs';
-import {SlotEntity} from 'app/models/entity.interface';
-import {OrderContacts, SlotEntityUtility, StatusType} from '../../models/order.interface';
+import { Observable } from "rxjs";
+import { SlotEntity } from "app/models/entity.interface";
+import {
+    OrderContacts,
+    SlotEntityUtility,
+    StatusType,
+} from "../../models/order.interface";
 
-export type PriorityFloor = 'high' | 'mid' | 'low';
+export type PriorityFloor = "high" | "mid" | "low";
 
 export interface Restrictor {
     key: string;
     value: number | string;
-    mode?: 'positive' | 'negative';
+    mode?: "positive" | "negative";
 }
 
 export interface Provider {
@@ -26,7 +30,7 @@ export interface Consumer {
     priority?: PriorityFloor;
 }
 
-export type SelectMode = 'multi' | 'single';
+export type SelectMode = "multi" | "single";
 
 export interface TabConfig {
     key: string;
@@ -75,7 +79,7 @@ export interface DataStore {
     // sectionKey_tabKey_floorKey_entId: Entity
     [key: string]: Observable<SlotEntity[]>;
 }
-export type SelectedState = 'selected' | 'confirmed' | 'unselected';
+export type SelectedState = "selected" | "confirmed" | "unselected";
 
 export interface SelectionOrderSlot {
     _status?: SelectedState;

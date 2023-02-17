@@ -1,14 +1,17 @@
-import {RouterModule, Routes} from '@angular/router';
-import {NotFoundComponent} from '../../NotFound/NotFound.component';
-import {ProfileComponent} from 'app/modules/profile/profile.component';
+import { RouterModule, Routes } from "@angular/router";
+import { NotFoundComponent } from "@static/not-found/not-found.component";
+import { ProfileComponent } from "app/modules/profile/profile.component";
 
-const routes: Routes = [{
-    path: '',
-    component: ProfileComponent,
-}, {
-    path: '**', component: NotFoundComponent,
-}];
+const routes: Routes = [
+    {
+        path: "",
+        component: ProfileComponent,
+    },
+    {
+        path: "**",
+        component: NotFoundComponent,
+    },
+];
 
-
-// tslint:disable-next-line: variable-name
+// eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
 export const ProfileModuleRouting = RouterModule.forChild(routes);

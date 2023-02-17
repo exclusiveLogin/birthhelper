@@ -1,5 +1,5 @@
-import {Entity} from 'app/models/entity.interface';
-import {SectionType} from '@services/search.service';
+import { Entity } from "app/models/entity.interface";
+import { SectionType } from "@services/search.service";
 
 export interface Contragent extends Entity {
     active: boolean;
@@ -22,13 +22,13 @@ export interface Contragent extends Entity {
 export interface ExtraMetaContragent {
     [key: string]: any;
     image_id: {
-        id: number,
-        file_id: number,
-        title: string,
-        description: string,
-        datetime_update: string,
-        datetime_create: string,
-        filename: string,
+        id: number;
+        file_id: number;
+        title: string;
+        description: string;
+        datetime_update: string;
+        datetime_create: string;
+        filename: string;
     };
 }
 

@@ -1,21 +1,21 @@
-import {Injectable} from '@angular/core';
-import {FormControl, Validators, FormGroup} from '@angular/forms';
-import {MenuService} from './Dashboard/menu.service';
-import {Observable, of} from 'rxjs';
-import {distinctUntilChanged, filter, map, pluck, tap} from 'rxjs/operators';
-import {ITableFilter} from './table/table/table.component';
-import {LatLng} from 'leaflet';
+import { Injectable } from "@angular/core";
+import { FormControl, Validators, FormGroup } from "@angular/forms";
+import { MenuService } from "./Dashboard/menu.service";
+import { Observable, of } from "rxjs";
+import { distinctUntilChanged, filter, map, pluck, tap } from "rxjs/operators";
+import { ITableFilter } from "./table/table/table.component";
+import { LatLng } from "leaflet";
 
 export interface MapMeta {
     geocoder?: {
-        provider?: 'dadata',
-        enabled?: boolean,
-        latFieldKey?: string,
-        lonFieldKey?: string,
-        addressFieldKey?: string,
+        provider?: "dadata";
+        enabled?: boolean;
+        latFieldKey?: string;
+        lonFieldKey?: string;
+        addressFieldKey?: string;
         cityFieldKey?: string;
         countryFieldKey?: string;
-        addressRewriteOnlyEmpty?: boolean,
+        addressRewriteOnlyEmpty?: boolean;
     };
     height?: number;
 }
@@ -41,7 +41,7 @@ export interface IFieldSetting {
     hide?: boolean;
     proxyTo?: string;
     proxyKey?: string;
-    image?: { urlType: string, urlKey: string };
+    image?: { urlType: string; urlKey: string };
     refresher?: Function;
     showOnTable?: boolean;
     valueKey?: string;
@@ -65,7 +65,7 @@ export interface ILinkFieldSetting {
     proxyKey?: string;
     readonly?: boolean;
     filters?: ITableFilter[];
-    image?: { urlType: string, urlKey: string };
+    image?: { urlType: string; urlKey: string };
     conditionField: string;
     conditionKey: string;
     conditionValue: number | string;
@@ -83,24 +83,20 @@ export interface IFilterLink {
     formFieldKey: string;
 }
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: "root" })
 export class FormService {
-
     formsRepo: { [key: string]: FormGroup };
 
-    constructor(private menuService: MenuService) {
-    }
+    constructor(private menuService: MenuService) {}
 
     public createFormControl(init?: any, required?: boolean): FormControl {
         return new FormControl(init, required ? [Validators.required] : null);
     }
 
     public registerFields(fields: IFieldSetting[], form: FormGroup): void {
-
-        fields.forEach(field => {
+        fields.forEach((field) => {
             form.registerControl(field.id, field.control);
         });
-
     }
 
     public closeForm() {
@@ -119,18 +115,26 @@ export class FormService {
         delete this.formsRepo[key];
     }
 
-    getFormFieldVC$(formKey: string, fieldKey: string): Observable<string | number> {
+    getFormFieldVC$(
+        formKey: string,
+        fieldKey: string
+    ): Observable<string | number> {
         if (this.formsRepo && this.formsRepo[formKey]) {
             return this.formsRepo[formKey].valueChanges.pipe(
                 map(() => this.formsRepo[formKey].getRawValue()),
-                filter(data => !!data),
-                distinctUntilChanged((prev, next) => prev[fieldKey] === next[fieldKey]),
-                pluck(fieldKey),
+                filter((data) => !!data),
+                distinctUntilChanged(
+                    (prev, next) => prev[fieldKey] === next[fieldKey]
+                ),
+                pluck(fieldKey)
             );
         } else {
-            console.error('Форма или поле не зарегестрированы', formKey, fieldKey);
+            console.error(
+                "Форма или поле не зарегестрированы",
+                formKey,
+                fieldKey
+            );
             return of(null);
         }
     }
-
 }

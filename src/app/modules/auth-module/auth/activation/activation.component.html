@@ -4,20 +4,28 @@
     </div>
 
     <ng-container *ngIf="stream$ | async as result; else activation_tpl">
-        <p class="activation_scs" >Результат: {{result?.msg || 'Активация прошла успешно'}}</p>
-        <p class="activation_scs" >Переход на главную через 5 секунд...</p>
+        <p class="activation_scs">
+            Результат: {{ result?.msg || "Активация прошла успешно" }}
+        </p>
+        <p class="activation_scs">Переход на главную через 5 секунд...</p>
     </ng-container>
-
 </div>
 
 <ng-template #activation_tpl>
     <div class="activation_body" *ngIf="url && code; else nourl">
-        <p class="activation_body_ttl_txt">Чтобы закончить активацию нажмите эту кнопку</p>
-        <button class="activation_btn" (click)="activate()">Активировать</button>
-        <span>Или перейдите по этой ссылке: </span> <a [href]="url">{{url}}</a>
+        <p class="activation_body_ttl_txt">
+            Чтобы закончить активацию нажмите эту кнопку
+        </p>
+        <button class="activation_btn" (click)="activate()">
+            Активировать
+        </button>
+        <span>Или перейдите по этой ссылке: </span>
+        <a [href]="url">{{ url }}</a>
     </div>
 </ng-template>
 
 <ng-template #nourl>
-    <p class="activation_err">Ошибка: Нет ссылки для активашии учетной записи.</p>
+    <p class="activation_err">
+        Ошибка: Нет ссылки для активашии учетной записи.
+    </p>
 </ng-template>

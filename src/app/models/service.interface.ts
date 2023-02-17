@@ -1,4 +1,4 @@
-import {Entity} from 'app/models/entity.interface';
+import { Entity } from "app/models/entity.interface";
 
 export interface ServiceEntity extends Entity {
     id: number;

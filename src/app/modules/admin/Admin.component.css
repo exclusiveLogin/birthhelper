@@ -1,4 +1,4 @@
-:host{
+:host {
     display: flex;
     justify-content: stretch;
     flex-direction: column;
@@ -9,71 +9,75 @@
     overflow-y: auto;
 }
 
-.hfull{
-  height: 100%;
+.hfull {
+    height: 100%;
 }
 
-.bh_admin_header{
+.bh_admin_header {
     font-size: 18pt;
     display: inline;
 }
-.header_container{
-  background-color: #333333;
-  color: bisque;
+.header_container {
+    background-color: #333333;
+    color: bisque;
 }
 
-.bh_admin_dashboard{
-  flex-grow: 1;
-  display: flex;
+.bh_admin_dashboard {
+    flex-grow: 1;
+    display: flex;
 }
 
-.exit{
-  float: right;
-  /* right: 20px; */
-  position: relative;
-  font-size: 1em;
-  cursor: pointer;
-  padding: 7px;
+.exit {
+    float: right;
+    /* right: 20px; */
+    position: relative;
+    font-size: 1em;
+    cursor: pointer;
+    padding: 7px;
 }
 
-.bh_admin_panel{
+.bh_admin_panel {
     background-color: #ccc;
 }
-#loader{
+#loader {
     width: 100%;
     height: 2px;
     background: #333;
-    transition: all .5s ease;
+    transition: all 0.5s ease;
 }
-#loader_line{
+#loader_line {
     height: 2px;
     box-shadow: 0 0 3px 0px orange;
     background: orange;
-    transition: all .5s ease;
+    transition: all 0.5s ease;
 }
-@keyframes loader{
-    from{width: 0;}
-    to{width: 100%;}
+@keyframes loader {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
 }
-#loader.hide{
+#loader.hide {
     opacity: 0;
 }
-#loader_line.play{
+#loader_line.play {
     opacity: 1;
     animation-name: loader;
-    animation-duration: .75s;
+    animation-duration: 0.75s;
     animation-direction: alternate;
     animation-iteration-count: infinite;
     animation-play-state: running;
 }
-#loader_line.error{
+#loader_line.error {
     background-color: red;
     box-shadow: 0 0 3px 0px red;
     animation-fill-mode: both;
     animation-iteration-count: 1;
 }
 
-#loader.error_text:hover{
+#loader.error_text:hover {
     height: 50px;
     color: #ccc;
 }

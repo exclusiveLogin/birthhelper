@@ -1,15 +1,14 @@
-import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
+import { Injectable } from "@angular/core";
+import { environment } from "../../environments/environment";
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: "root" })
 export class ApiService {
-
-constructor() { }
+    constructor() {}
 
     private apiBase = environment.baseUrl;
 
-    private iconPath = 'icons';
-    private filePath = 'uploads';
+    private iconPath = "icons";
+    private filePath = "uploads";
 
     public getApiPath(): string {
         return this.apiBase;

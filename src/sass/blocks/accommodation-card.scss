@@ -13,10 +13,14 @@
     border-radius: 5px;
     box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.03);
     overflow: hidden;
-    background: #fff url("../../img/accommodation-cards/accommodation-cards-bg.png") no-repeat 100% 100% /contain;
+    background: #fff
+        url("../../img/accommodation-cards/accommodation-cards-bg.png")
+        no-repeat 100% 100% / contain;
 
     &.active {
-        background: #487ff1 url("../../img/accommodation-cards/accommodation-cards-active-bg.png") no-repeat 100% 100% /contain;
+        background: #487ff1
+            url("../../img/accommodation-cards/accommodation-cards-active-bg.png")
+            no-repeat 100% 100% / contain;
         color: #fff;
 
         &.invalid {
@@ -26,14 +30,17 @@
                 background: #487ff1;
 
                 &-check {
-                    background: #862a3f url("../../img/icons/close-solid-white.svg") no-repeat center center;
+                    background: #862a3f
+                        url("../../img/icons/close-solid-white.svg") no-repeat
+                        center center;
                     border-radius: 0 5px 0 0;
                     background-size: 44.5px;
                     margin-top: -1px;
                 }
 
                 &-favorites {
-                    background: #862a3f url("../../img/icons/heart-solid-white.svg") no-repeat;
+                    background: #862a3f
+                        url("../../img/icons/heart-solid-white.svg") no-repeat;
                 }
             }
         }
@@ -54,14 +61,16 @@
             background: #487ff1;
 
             &-check {
-                background: #487ff1 url("../../img/icons/close-solid-white.svg") no-repeat center center;
+                background: #487ff1 url("../../img/icons/close-solid-white.svg")
+                    no-repeat center center;
                 border-radius: 0 5px 0 0;
                 background-size: 44.5px;
                 margin-top: -1px;
             }
 
             &-favorites {
-                background: #487ff1 url("../../img/icons/heart-solid-white.svg") no-repeat;
+                background: #487ff1 url("../../img/icons/heart-solid-white.svg")
+                    no-repeat;
             }
         }
 
@@ -240,4 +249,3 @@
         font-size: 12px;
     }
 }
-

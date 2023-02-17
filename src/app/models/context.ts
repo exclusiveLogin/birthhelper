@@ -1,4 +1,4 @@
-import {SectionType} from '@services/search.service';
+import { SectionType } from "@services/search.service";
 
 export interface FeedbackContext {
     section?: SectionType;

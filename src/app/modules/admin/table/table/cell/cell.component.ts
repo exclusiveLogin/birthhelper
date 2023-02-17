@@ -1,8 +1,17 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef} from '@angular/core';
-import {DictService} from '../../../dict.service';
-import {Observable, of, forkJoin} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {ITableItem} from '@modules/admin/table/table/table.component';
+import {
+    Component,
+    OnInit,
+    Input,
+    Output,
+    EventEmitter,
+    OnChanges,
+    SimpleChanges,
+    ChangeDetectorRef,
+} from "@angular/core";
+import { DictService } from "../../../dict.service";
+import { Observable, of, forkJoin } from "rxjs";
+import { map } from "rxjs/operators";
+import { ITableItem } from "@modules/admin/table/table/table.component";
 
 export interface IRowSetting {
     key: string;
@@ -16,12 +25,11 @@ export interface IRowSetting {
 }
 
 @Component({
-    selector: 'app-cell',
-    templateUrl: './cell.component.html',
-    styleUrls: ['./cell.component.css']
+    selector: "app-cell",
+    templateUrl: "./cell.component.html",
+    styleUrls: ["./cell.component.css"],
 })
 export class CellComponent implements OnInit, OnChanges {
-
     @Input() rs: IRowSetting[] = [];
     @Input() data: ITableItem;
     @Input() modes: string[];
@@ -31,34 +39,45 @@ export class CellComponent implements OnInit, OnChanges {
 
     constructor(
         private dictService: DictService,
-        private cdr: ChangeDetectorRef,
-    ) {
-    }
+        private cdr: ChangeDetectorRef
+    ) {}
 
     private converter(data): Observable<string[]> {
-        if (!this.rs) { return ; }
-        const rows$ = this.rs?.map(rs => rs.titleFn ? rs.titleFn(data[rs.key]) : of(data[rs.key]));
+        if (!this.rs) {
+            return;
+        }
+        const rows$ = this.rs?.map((rs) =>
+            rs.titleFn ? rs.titleFn(data[rs.key]) : of(data[rs.key])
+        );
         const obs = forkJoin(...rows$);
         return obs;
     }
 
     ngOnInit() {
-        if (!this.rs) { return ; }
+        if (!this.rs) {
+            return;
+        }
         this.rs
-            .filter(rs => rs.useDict && rs.dctKey)
-            .forEach(rs => {
-                const fn = (itemId) => this.dictService.getDict(rs.dctKey).pipe(
-                    map(dictItems => {
+            .filter((rs) => rs.useDict && rs.dctKey)
+            .forEach((rs) => {
+                const fn = (itemId) =>
+                    this.dictService.getDict(rs.dctKey).pipe(
+                        map((dictItems) => {
+                            if (!dictItems) {
+                                return null;
+                            }
 
-                        if (!dictItems) {
-                            return null;
-                        }
-
-                        const targetDI = dictItems.find(i => i?.[rs.valueKey ?? 'id'] === itemId);
-                        return targetDI ? (rs.titleDictKey ? targetDI[rs.titleDictKey] : targetDI.title) : null;
-                    })
-                );
-                rs.titleFn = rs.titleFn ?? (fn);
+                            const targetDI = dictItems.find(
+                                (i) => i?.[rs.valueKey ?? "id"] === itemId
+                            );
+                            return targetDI
+                                ? rs.titleDictKey
+                                    ? targetDI[rs.titleDictKey]
+                                    : targetDI.title
+                                : null;
+                        })
+                    );
+                rs.titleFn = rs.titleFn ?? fn;
             });
         this.rerender();
     }
@@ -77,7 +96,6 @@ export class CellComponent implements OnInit, OnChanges {
     }
 
     public get hasRemoveMode() {
-        return this.modes && this.modes.some(m => m === 'remove');
+        return this.modes && this.modes.some((m) => m === "remove");
     }
-
 }

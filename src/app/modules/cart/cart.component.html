@@ -1,34 +1,55 @@
-<div class="cart__columns" *ngIf="{contragentTree: validationTree$ | async} as data">
+<div
+    class="cart__columns"
+    *ngIf="{ contragentTree: validationTree$ | async } as data"
+>
     <div class="cart__columns-left">
         <div class="cart__header cart-header">
             <h3 class="cart-header__title">
-                <img src="img/icons/cart.svg" class="cart-header__title-img"/>
-                Корзина</h3>
+                <img src="img/icons/cart.svg" class="cart-header__title-img" />
+                Корзина
+            </h3>
             <button
                 class="cart-header__btn-link muted"
                 [class.muted]="!data?.contragentTree?.length"
                 (click)="clearCart()"
-            >Очистить корзину
+            >
+                Очистить корзину
             </button>
         </div>
 
         <ng-container>
-            <ng-container *ngIf="data?.contragentTree?.length else empty">
-                <ng-container *ngFor="let c of data.contragentTree; let idx = index; trackBy:trackIt">
-                    <app-contragent [validationTreeByContragent]="c" [show]="idx === 0"></app-contragent>
+            <ng-container *ngIf="data?.contragentTree?.length; else empty">
+                <ng-container
+                    *ngFor="
+                        let c of data.contragentTree;
+                        let idx = index;
+                        trackBy: trackIt
+                    "
+                >
+                    <app-contragent
+                        [validationTreeByContragent]="c"
+                        [show]="idx === 0"
+                    ></app-contragent>
                 </ng-container>
             </ng-container>
 
             <ng-template #empty>
-                <div class="empty_cart">Ваша корзина пуста <br> Выберите услуги чтобы оформить заказ</div>
+                <div class="empty_cart">
+                    Ваша корзина пуста <br />
+                    Выберите услуги чтобы оформить заказ
+                </div>
             </ng-template>
         </ng-container>
 
         <ng-container *ngIf="archive$ | async as archive">
             <div class="cart__header cart-header">
                 <h3 class="cart-header__title">
-                    <i src="img/icons/archive.svg" class="cart-archive_header__title-img"></i>
-                    Архив заказов</h3>
+                    <i
+                        src="img/icons/archive.svg"
+                        class="cart-archive_header__title-img"
+                    ></i>
+                    Архив заказов
+                </h3>
             </div>
 
             <ng-template #empty>
@@ -36,35 +57,36 @@
             </ng-template>
 
             <div class="order_table cart-pack__body">
-                <div class="order_tbl__head" *ngIf="true else empty">
+                <div class="order_tbl__head" *ngIf="true; else empty">
                     <div class="_row">
                         <div class="order_tbl__head__item extra">ID</div>
-                        <div class="order_tbl__head__item long">Дата оформления</div>
+                        <div class="order_tbl__head__item long">
+                            Дата оформления
+                        </div>
                         <div class="order_tbl__head__item mid">Статус</div>
                         <div class="order_tbl__head__item mid">Сумма</div>
                     </div>
                 </div>
 
                 <div class="order_tbl__body">
-                    <app-archive-order-group class="_row"
-                         *ngFor="let group of archive"
-                         [orderGroup]="group"
+                    <app-archive-order-group
+                        class="_row"
+                        *ngFor="let group of archive"
+                        [orderGroup]="group"
                     ></app-archive-order-group>
                 </div>
             </div>
         </ng-container>
-
     </div>
-
 
     <div class="cart__sidebar">
         <app-cart-dms></app-cart-dms>
-<!--        <div class="cart__sidebar-widget cart-widget muted">-->
-<!--            <p class="cart-widget__title">А можно <span>БЕСПЛАТНО</span></p>-->
-<!--            <p class="cart-widget__desc">Единоразовое пособие молодым-->
-<!--                родителям* <span>100 000</span> рублей-->
-<!--                при рождении ребенка</p>-->
-<!--        </div>-->
+        <!--        <div class="cart__sidebar-widget cart-widget muted">-->
+        <!--            <p class="cart-widget__title">А можно <span>БЕСПЛАТНО</span></p>-->
+        <!--            <p class="cart-widget__desc">Единоразовое пособие молодым-->
+        <!--                родителям* <span>100 000</span> рублей-->
+        <!--                при рождении ребенка</p>-->
+        <!--        </div>-->
 
         <div class="cart__sidebar-prise cart-price">
             <!--            <div class="cart-price__item">-->
@@ -82,23 +104,40 @@
             <!--            </div>-->
             <div class="cart-price__item">
                 <p class="cart-price__item-title">Итого к оплате:</p>
-                <p class="cart-price__item-value cart-price__item-value--green"><span class="price_from">от</span>{{(totalPriceValid$ | async) || 0 | digitalSeparator}}
-                    руб.</p>
+                <p class="cart-price__item-value cart-price__item-value--green">
+                    <span class="price_from">от</span
+                    >{{
+                        (totalPriceValid$ | async) || 0 | digitalSeparator
+                    }}
+                    руб.
+                </p>
             </div>
         </div>
 
-        <ng-container *ngIf="{ hasInvalid: hasInvalidTree$ | async, hasPending: hasPendingOrders$ | async } as state">
+        <ng-container
+            *ngIf="{
+                hasInvalid: hasInvalidTree$ | async,
+                hasPending: hasPendingOrders$ | async
+            } as state"
+        >
             <button
                 class="cart-price__btn cart-price__btn--blue"
                 [class.muted]="state.hasInvalid || !state.hasPending"
-                (click)="attemptSubmitCart()">
+                (click)="attemptSubmitCart()"
+            >
                 Отправить запрос менеджеру
             </button>
-            <small class="form-text text-muted" *ngIf="state.hasInvalid">Имеются невалидные пакеты. Удалите или исправьте</small>
-            <small class="form-text text-muted" *ngIf="!state.hasPending">Все пакеты ожидают подтверждения</small>
+            <small class="form-text text-muted" *ngIf="state.hasInvalid"
+                >Имеются невалидные пакеты. Удалите или исправьте</small
+            >
+            <small class="form-text text-muted" *ngIf="!state.hasPending"
+                >Все пакеты ожидают подтверждения</small
+            >
         </ng-container>
 
-        <button class="cart-price__btn cart-price__btn--ghost muted">Оформить кредит или рассрочку</button>
+        <button class="cart-price__btn cart-price__btn--ghost muted">
+            Оформить кредит или рассрочку
+        </button>
     </div>
 </div>
 
@@ -133,81 +172,138 @@
 <ng-template #tpl_contacts let-data>
     <form [formGroup]="formGroup">
         <div class="popup__actions">
-            <button class="popup__actions-close" (click)="closeDialog($event)"></button>
+            <button
+                class="popup__actions-close"
+                (click)="closeDialog($event)"
+            ></button>
         </div>
         <div class="popup__body">
-            <h1>Контактные данные {{data.hw}}</h1>
+            <h1>Контактные данные {{ data.hw }}</h1>
             <h6>Выберите как с Вами лучше связаться нашему менеджеру</h6>
             <div class="form-group">
                 <label for="phone">Телефон</label>
-                <input type="phone"
-                       id="phone"
-                       placeholder="Введите Телефон"
-                       class="form-control"
-                       formControlName="phone">
-                <small class="form-text text-muted">В формате: 8-123-456-7890</small>
+                <input
+                    type="phone"
+                    id="phone"
+                    placeholder="Введите Телефон"
+                    class="form-control"
+                    formControlName="phone"
+                />
+                <small class="form-text text-muted"
+                    >В формате: 8-123-456-7890</small
+                >
             </div>
             <div class="form-group">
                 <label for="email">Эл. почта</label>
-                <input type="email"
-                       id="email"
-                       placeholder="Введите e-mail"
-                       class="form-control"
-                       formControlName="email">
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Введите e-mail"
+                    class="form-control"
+                    formControlName="email"
+                />
             </div>
             <div class="form-group">
                 <label for="skype">Skype</label>
-                <input type="text"
-                       id="skype"
-                       placeholder="Введите skype"
-                       class="form-control"
-                       formControlName="skype">
+                <input
+                    type="text"
+                    id="skype"
+                    placeholder="Введите skype"
+                    class="form-control"
+                    formControlName="skype"
+                />
             </div>
             <p class="filter__ttl">Предпочитаемый канал связи</p>
             <div class="ch_block">
                 <div class="form-group text-center">
-                    <label for="ch_phone"><i class="fas fa-phone fa-2x" aria-hidden="true" title="Телефон"></i></label>
-                    <input type="checkbox"
-                           id="ch_phone"
-                           class="form-control checkbox"
-                           formControlName="ch_phone">
+                    <label for="ch_phone"
+                        ><i
+                            class="fas fa-phone fa-2x"
+                            aria-hidden="true"
+                            title="Телефон"
+                        ></i
+                    ></label>
+                    <input
+                        type="checkbox"
+                        id="ch_phone"
+                        class="form-control checkbox"
+                        formControlName="ch_phone"
+                    />
                 </div>
                 <div class="form-group text-center">
-                    <label for="ch_viber"><i class="fab fa-viber fa-2x" aria-hidden="true" title="Viber"></i></label>
-                    <input type="checkbox"
-                           id="ch_viber"
-                           class="form-control checkbox"
-                           formControlName="ch_viber">
+                    <label for="ch_viber"
+                        ><i
+                            class="fab fa-viber fa-2x"
+                            aria-hidden="true"
+                            title="Viber"
+                        ></i
+                    ></label>
+                    <input
+                        type="checkbox"
+                        id="ch_viber"
+                        class="form-control checkbox"
+                        formControlName="ch_viber"
+                    />
                 </div>
                 <div class="form-group text-center">
-                    <label for="ch_whatsapp"><i class="fab fa-whatsapp fa-2x" aria-hidden="true"
-                                                title="WhatsApp"></i></label>
-                    <input type="checkbox"
-                           id="ch_whatsapp"
-                           class="form-control checkbox"
-                           formControlName="ch_whatsapp">
+                    <label for="ch_whatsapp"
+                        ><i
+                            class="fab fa-whatsapp fa-2x"
+                            aria-hidden="true"
+                            title="WhatsApp"
+                        ></i
+                    ></label>
+                    <input
+                        type="checkbox"
+                        id="ch_whatsapp"
+                        class="form-control checkbox"
+                        formControlName="ch_whatsapp"
+                    />
                 </div>
                 <div class="form-group text-center">
-                    <label for="ch_telegram"><i class="fab fa-telegram-plane fa-2x" aria-hidden="true"
-                                                title="Telegram"></i></label>
-                    <input type="checkbox"
-                           id="ch_telegram"
-                           class="form-control checkbox"
-                           formControlName="ch_telegram">
+                    <label for="ch_telegram"
+                        ><i
+                            class="fab fa-telegram-plane fa-2x"
+                            aria-hidden="true"
+                            title="Telegram"
+                        ></i
+                    ></label>
+                    <input
+                        type="checkbox"
+                        id="ch_telegram"
+                        class="form-control checkbox"
+                        formControlName="ch_telegram"
+                    />
                 </div>
                 <div class="form-group text-center">
-                    <label for="ch_email"><i class="fa fa-envelope fa-2x" aria-hidden="true" title="E-mail"></i></label>
-                    <input type="checkbox"
-                           id="ch_email"
-                           class="form-control checkbox"
-                           formControlName="ch_email">
+                    <label for="ch_email"
+                        ><i
+                            class="fa fa-envelope fa-2x"
+                            aria-hidden="true"
+                            title="E-mail"
+                        ></i
+                    ></label>
+                    <input
+                        type="checkbox"
+                        id="ch_email"
+                        class="form-control checkbox"
+                        formControlName="ch_email"
+                    />
                 </div>
                 <div class="form-group text-center">
-                    <label for="ch_skype"><i class="fab fa-skype fa-2x" aria-hidden="true" title="Skype"></i></label>
-                    <input type="checkbox"
-                           id="ch_skype"
-                           class="form-control checkbox"
-                           formControlName="ch_skype">
+                    <label for="ch_skype"
+                        ><i
+                            class="fab fa-skype fa-2x"
+                            aria-hidden="true"
+                            title="Skype"
+                        ></i
+                    ></label>
+                    <input
+                        type="checkbox"
+                        id="ch_skype"
+                        class="form-control checkbox"
+                        formControlName="ch_skype"
+                    />
                 </div>
             </div>
         </div>
@@ -224,17 +320,28 @@
 </ng-template>
 <ng-template #tpl_suggestion let-data>
     <div class="popup__actions">
-        <button class="popup__actions-close" (click)="closeDialog($event)"></button>
+        <button
+            class="popup__actions-close"
+            (click)="closeDialog($event)"
+        ></button>
     </div>
     <div class="popup__body">
-        <h1>Регистрация в один клик{{data.hw}}</h1>
+        <h1>Регистрация в один клик{{ data.hw }}</h1>
         <h6>
-            Вы не авторизованы.
-            Мы рекомендуем это сделать в один клик.
-            Вам понравится и даст возможность пользоваться многими функциями нашего сервиса недоступные гостям</h6>
+            Вы не авторизованы. Мы рекомендуем это сделать в один клик. Вам
+            понравится и даст возможность пользоваться многими функциями нашего
+            сервиса недоступные гостям
+        </h6>
         <div class="btn-group btn-group-lg">
-            <button class="btn btn-info btn-group-lg" (click)="gotoRegistration()">Авторизоваться</button>&nbsp;
-            <button class="btn btn-link" (click)="openDialogContacts()">продолжить без регистрации</button>
+            <button
+                class="btn btn-info btn-group-lg"
+                (click)="gotoRegistration()"
+            >
+                Авторизоваться</button
+            >&nbsp;
+            <button class="btn btn-link" (click)="openDialogContacts()">
+                продолжить без регистрации
+            </button>
         </div>
     </div>
 </ng-template>

@@ -3,5 +3,8 @@ export function getRandomArbitrary(min, max) {
 }
 
 export function randomColor(): string {
-    return `rgb(${getRandomArbitrary(0, 255)}, ${getRandomArbitrary(0, 255)}, ${getRandomArbitrary(0, 255)})`;
+    return `rgb(${getRandomArbitrary(0, 255)}, ${getRandomArbitrary(
+        0,
+        255
+    )}, ${getRandomArbitrary(0, 255)})`;
 }

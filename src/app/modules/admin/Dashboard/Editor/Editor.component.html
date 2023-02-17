@@ -1,310 +1,507 @@
-<div class="bh_error_block" *ngIf="currentError">{{currentError}}
+<div class="bh_error_block" *ngIf="currentError">
+    {{ currentError }}
     <i class="far fa-times-circle" (click)="closeCurrentError()"></i>
 </div>
 
 <div class="service_head row" *ngIf="stable">
-    <h3 class="bh_service_title" *ngIf="isCreateMode">Добавление {{menu.titleVocs}}</h3>
-    <h3 class="bh_service_title" *ngIf="isEditMode">Редактирование {{menu.titleVocs}}</h3>
-    <h3 class="bh_service_title" *ngIf="isDeleteMode">Удаление {{menu.titleVocs}}</h3>
-    <h3 class="bh_service_title" *ngIf="isViewMode">Просмотр {{menu.titleVocs}}</h3>
+    <h3 class="bh_service_title" *ngIf="isCreateMode">
+        Добавление {{ menu.titleVocs }}
+    </h3>
+    <h3 class="bh_service_title" *ngIf="isEditMode">
+        Редактирование {{ menu.titleVocs }}
+    </h3>
+    <h3 class="bh_service_title" *ngIf="isDeleteMode">
+        Удаление {{ menu.titleVocs }}
+    </h3>
+    <h3 class="bh_service_title" *ngIf="isViewMode">
+        Просмотр {{ menu.titleVocs }}
+    </h3>
 
     <button
-            *ngIf="isEditMode && menu && menu.type === 'container'"
-            [disabled]="!currentService || !!form.invalid"
-            (click)="saveItemsOfContainer()"
-            class="btn btn-outline-dark"
+        *ngIf="isEditMode && menu && menu.type === 'container'"
+        [disabled]="!currentService || !!form.invalid"
+        (click)="saveItemsOfContainer()"
+        class="btn btn-outline-dark"
     >
         <i class="fas fa-lock"></i> Зафиксировать состояние контейнера
     </button>
 
     <button
-            *ngIf="isCreateMode"
-            [disabled]="!!form.invalid"
-            (click)="createEntity()"
-            class="btn btn-outline-dark"
+        *ngIf="isCreateMode"
+        [disabled]="!!form.invalid"
+        (click)="createEntity()"
+        class="btn btn-outline-dark"
     >
-        <i class="fas fa-plus-square"></i>Создать {{menu.titleVoc}}
+        <i class="fas fa-plus-square"></i>Создать {{ menu.titleVoc }}
     </button>
 
     <button
-            *ngIf="isEditMode"
-            [disabled]="!currentService || !!form.invalid"
-            (click)="editEntity()"
-            class="btn btn-outline-dark"
+        *ngIf="isEditMode"
+        [disabled]="!currentService || !!form.invalid"
+        (click)="editEntity()"
+        class="btn btn-outline-dark"
     >
-        <i class="fas fa-edit"></i>Изменить {{menu.titleVoc}}
+        <i class="fas fa-edit"></i>Изменить {{ menu.titleVoc }}
     </button>
 
     <button
-            *ngIf="isDeleteMode"
-            [disabled]="!currentService"
-            (click)="removeEntity()"
-            class="btn btn-outline-danger"
+        *ngIf="isDeleteMode"
+        [disabled]="!currentService"
+        (click)="removeEntity()"
+        class="btn btn-outline-danger"
     >
-        <i class="far fa-trash-alt"></i>Удалить {{menu.titleVoc}}
+        <i class="far fa-trash-alt"></i>Удалить {{ menu.titleVoc }}
     </button>
 
-    <button
-            (click)="close()"
-            class="btn btn-outline-dark"
-    >
+    <button (click)="close()" class="btn btn-outline-dark">
         <i class="fas fa-window-close"></i>Закрыть панель
     </button>
-
 </div>
 
 <app-table
-        *ngIf="!!menu"
-        [key]="menu.name"
-        [type]="menu.type"
-        [imageOptions]="menu.mime === 'image' ? mainImgOpt : null"
-        (select)="selectServiceFromTable( $event )"
-        (refresh)="refreshAssign($event)"
+    *ngIf="!!menu"
+    [key]="menu.name"
+    [type]="menu.type"
+    [imageOptions]="menu.mime === 'image' ? mainImgOpt : null"
+    (select)="selectServiceFromTable($event)"
+    (refresh)="refreshAssign($event)"
 ></app-table>
 
 <div class="bh_block">
-
-    <ng-container *ngIf="(isEditMode && !!currentService) || isCreateMode || isViewMode">
+    <ng-container
+        *ngIf="(isEditMode && !!currentService) || isCreateMode || isViewMode"
+    >
         <form [formGroup]="form">
             <div class="bh_control" *ngFor="let field of fields">
                 <ng-container *ngIf="!field.hide">
-                    <ng-container [ngSwitch]="field.type" *ngIf="!(isCreateMode && menu.mime === 'image')">
+                    <ng-container
+                        [ngSwitch]="field.type"
+                        *ngIf="!(isCreateMode && menu.mime === 'image')"
+                    >
                         <ng-container *ngSwitchCase="'img'">
-                            <label [for]="field.id"
-                                   class="bh_label">{{ field.title }}{{field.required ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull ? '*' : ''}}</label>
-                            <ng-container *ngIf="field.control.value else img_upload_tpl">
+                            <label [for]="field.id" class="bh_label"
+                                >{{ field.title }}{{ field.required ? "*" : ""
+                                }}{{
+                                    field.hasOwnProperty("canBeNull") &&
+                                    !field.canBeNull
+                                        ? "*"
+                                        : ""
+                                }}</label
+                            >
+                            <ng-container
+                                *ngIf="field.control.value; else img_upload_tpl"
+                            >
                                 <app-image
                                     [id]="field.control.value"
                                     [attr.name]="field.id"
-                                    [fieldControl]="field.control"></app-image>
+                                    [fieldControl]="field.control"
+                                ></app-image>
                             </ng-container>
 
                             <ng-template #img_upload_tpl>
                                 <div class="bh_panel_block">
                                     <div class="bh_block">
-                                        <input type="file"
-                                               (change)="setImageForUpload( $event )"
-                                               [name]="field.id"
-                                               [readonly]="field.readonly"
-                                               [id]="field.id"
-                                               [placeholder]="'Введите ' + (field.title ? field.title : 'текст') | lowercase"
-                                               [formControl]="field.mirrorControl"/>
+                                        <input
+                                            type="file"
+                                            (change)="setImageForUpload($event)"
+                                            [name]="field.id"
+                                            [readonly]="field.readonly"
+                                            [id]="field.id"
+                                            [placeholder]="
+                                                'Введите ' +
+                                                    (field.title
+                                                        ? field.title
+                                                        : 'текст') | lowercase
+                                            "
+                                            [formControl]="field.mirrorControl"
+                                        />
 
-                                        <input [formControl]="field.titleControl" type="text" id="file_title"
-                                               placeholder="Введите название картинки">
+                                        <input
+                                            [formControl]="field.titleControl"
+                                            type="text"
+                                            id="file_title"
+                                            placeholder="Введите название картинки"
+                                        />
 
-                                        <input [formControl]="field.descriptionControl" type="text"
-                                               id="file_description" placeholder="Введите описание картинки">
+                                        <input
+                                            [formControl]="
+                                                field.descriptionControl
+                                            "
+                                            type="text"
+                                            id="file_description"
+                                            placeholder="Введите описание картинки"
+                                        />
 
-                                        <button (click)="uploadImage( field )">Загрузить файл</button>
+                                        <button (click)="uploadImage(field)">
+                                            Загрузить файл
+                                        </button>
                                     </div>
                                 </div>
-
                             </ng-template>
                         </ng-container>
 
                         <ng-container *ngSwitchCase="'map'">
-                            <label [for]="field.id"
-                                   class="bh_label">{{ field.title }}{{field.required ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull ? '*' : ''}}</label>
+                            <label [for]="field.id" class="bh_label"
+                                >{{ field.title }}{{ field.required ? "*" : ""
+                                }}{{
+                                    field.hasOwnProperty("canBeNull") &&
+                                    !field.canBeNull
+                                        ? "*"
+                                        : ""
+                                }}</label
+                            >
                             <app-map
                                 *ngIf="field.mapPosition$"
-                                (position)="setPosition($event, field)" [id]="field.id"
+                                (position)="setPosition($event, field)"
+                                [id]="field.id"
                                 [position$]="field.mapPosition$"
-                                [ngStyle]="{height: field?.mapMeta?.height ?  field?.mapMeta?.height + 'px' : '250px', width: '90%'}"></app-map>
+                                [ngStyle]="{
+                                    height: field?.mapMeta?.height
+                                        ? field?.mapMeta?.height + 'px'
+                                        : '250px',
+                                    width: '90%'
+                                }"
+                            ></app-map>
                         </ng-container>
 
                         <ng-container *ngSwitchCase="'string'">
-                            <label [for]="field.id"
-                                   class="bh_label">{{ field.title }}{{field.required ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull ? '*' : ''}}</label>
-                            <input type="text" [name]="field.id" [readonly]="field.readonly" [id]="field.id"
-                                   [placeholder]="'Введите ' + (field.title ? field.title : 'текст') | lowercase"
-                                   [formControl]="field.control"/>
-                            <i class="fa-solid fa-circle-xmark field_btn" *ngIf="field?.control?.value && !field.readonly" (click)="clearField(field)"></i>
+                            <label [for]="field.id" class="bh_label"
+                                >{{ field.title }}{{ field.required ? "*" : ""
+                                }}{{
+                                    field.hasOwnProperty("canBeNull") &&
+                                    !field.canBeNull
+                                        ? "*"
+                                        : ""
+                                }}</label
+                            >
+                            <input
+                                type="text"
+                                [name]="field.id"
+                                [readonly]="field.readonly"
+                                [id]="field.id"
+                                [placeholder]="
+                                    'Введите ' +
+                                        (field.title ? field.title : 'текст')
+                                        | lowercase
+                                "
+                                [formControl]="field.control"
+                            />
+                            <i
+                                class="fa-solid fa-circle-xmark field_btn"
+                                *ngIf="field?.control?.value && !field.readonly"
+                                (click)="clearField(field)"
+                            ></i>
                         </ng-container>
 
                         <ng-container *ngSwitchCase="'number'">
-                            <label [for]="field.id"
-                                   class="bh_label">{{ field.title }}{{field.required ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull ? '*' : ''}}</label>
-                            <input type="number" [name]="field.id" [readonly]="field.readonly" [id]="field.id"
-                                   [placeholder]="'Введите ' + (field.title ? field.title : 'число') | lowercase"
-                                   [formControl]="field.control"/>
-                            <i class="fa-solid fa-circle-xmark field_btn" *ngIf="field?.control?.value && !field.readonly" (click)="clearField(field)"></i>
+                            <label [for]="field.id" class="bh_label"
+                                >{{ field.title }}{{ field.required ? "*" : ""
+                                }}{{
+                                    field.hasOwnProperty("canBeNull") &&
+                                    !field.canBeNull
+                                        ? "*"
+                                        : ""
+                                }}</label
+                            >
+                            <input
+                                type="number"
+                                [name]="field.id"
+                                [readonly]="field.readonly"
+                                [id]="field.id"
+                                [placeholder]="
+                                    'Введите ' +
+                                        (field.title ? field.title : 'число')
+                                        | lowercase
+                                "
+                                [formControl]="field.control"
+                            />
+                            <i
+                                class="fa-solid fa-circle-xmark field_btn"
+                                *ngIf="field?.control?.value && !field.readonly"
+                                (click)="clearField(field)"
+                            ></i>
                         </ng-container>
 
                         <ng-container *ngSwitchCase="'id'">
-                            <label [for]="field.id"
-                                   class="bh_label">{{ field.title }}{{field.required ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull ? '*' : ''}}</label>
-                            <input type="text" [name]="field.id" [readonly]="field.readonly" [id]="field.id"
-                                   [placeholder]="'Введите ' + (field.title ? field.title : 'текст') | lowercase"
-                                   [formControl]="field.control"/>
-                            <i class="fa-solid fa-circle-xmark field_btn" *ngIf="field?.control?.value && !field.readonly" (click)="clearField(field)"></i>
+                            <label [for]="field.id" class="bh_label"
+                                >{{ field.title }}{{ field.required ? "*" : ""
+                                }}{{
+                                    field.hasOwnProperty("canBeNull") &&
+                                    !field.canBeNull
+                                        ? "*"
+                                        : ""
+                                }}</label
+                            >
+                            <input
+                                type="text"
+                                [name]="field.id"
+                                [readonly]="field.readonly"
+                                [id]="field.id"
+                                [placeholder]="
+                                    'Введите ' +
+                                        (field.title ? field.title : 'текст')
+                                        | lowercase
+                                "
+                                [formControl]="field.control"
+                            />
+                            <i
+                                class="fa-solid fa-circle-xmark field_btn"
+                                *ngIf="field?.control?.value && !field.readonly"
+                                (click)="clearField(field)"
+                            ></i>
                         </ng-container>
 
                         <ng-container *ngSwitchCase="'text'">
-                            <label [for]="field.id"
-                                   class="bh_label">{{ field.title }}{{field.required ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull ? '*' : ''}}</label>
-                            <textarea [name]="field.id" [id]="field.id" [readonly]="field.readonly"
-                                      [placeholder]="'Введите ' + field.title | lowercase"
-                                      [formControl]="field.control"></textarea>
-                            <i class="fa-solid fa-circle-xmark field_btn" *ngIf="field?.control?.value && !field.readonly" (click)="clearField(field)"></i>
+                            <label [for]="field.id" class="bh_label"
+                                >{{ field.title }}{{ field.required ? "*" : ""
+                                }}{{
+                                    field.hasOwnProperty("canBeNull") &&
+                                    !field.canBeNull
+                                        ? "*"
+                                        : ""
+                                }}</label
+                            >
+                            <textarea
+                                [name]="field.id"
+                                [id]="field.id"
+                                [readonly]="field.readonly"
+                                [placeholder]="
+                                    'Введите ' + field.title | lowercase
+                                "
+                                [formControl]="field.control"
+                            ></textarea>
+                            <i
+                                class="fa-solid fa-circle-xmark field_btn"
+                                *ngIf="field?.control?.value && !field.readonly"
+                                (click)="clearField(field)"
+                            ></i>
                         </ng-container>
 
                         <ng-container *ngSwitchCase="'select'">
-                            <label [for]="field.id"
-                                   class="bh_label">{{ field.title }}{{field.required ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull ? '*' : ''}}</label>
+                            <label [for]="field.id" class="bh_label"
+                                >{{ field.title }}{{ field.required ? "*" : ""
+                                }}{{
+                                    field.hasOwnProperty("canBeNull") &&
+                                    !field.canBeNull
+                                        ? "*"
+                                        : ""
+                                }}</label
+                            >
 
-                            <select [name]="field.id" [id]="field.id" [disabled]="field.readonly" *ngIf="field.dctItems"
-                                    [formControl]="field.control" (change)="selectControl(field, $event)">
-                                <option *ngIf="field.canBeNull" [value]="null">Не выбран</option>
-                                <option *ngFor="let item of field.dctItems" [value]="field.valueKey ? item[field.valueKey] : item.id">{{item.title}}</option>
+                            <select
+                                [name]="field.id"
+                                [id]="field.id"
+                                [disabled]="field.readonly"
+                                *ngIf="field.dctItems"
+                                [formControl]="field.control"
+                                (change)="selectControl(field, $event)"
+                            >
+                                <option *ngIf="field.canBeNull" [value]="null">
+                                    Не выбран
+                                </option>
+                                <option
+                                    *ngFor="let item of field.dctItems"
+                                    [value]="
+                                        field.valueKey
+                                            ? item[field.valueKey]
+                                            : item.id
+                                    "
+                                >
+                                    {{ item.title }}
+                                </option>
                             </select>
-                            <i class="fa-solid fa-circle-xmark field_btn" *ngIf="field?.control?.value && !field.readonly" (click)="clearField(field)"></i>
+                            <i
+                                class="fa-solid fa-circle-xmark field_btn"
+                                *ngIf="field?.control?.value && !field.readonly"
+                                (click)="clearField(field)"
+                            ></i>
                         </ng-container>
 
                         <ng-container *ngSwitchCase="'autocomplete'">
-                            <label [for]="field.id"
-                                   class="bh_label">{{ field.title }}{{field.required ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull ? '*' : ''}}</label>
+                            <label [for]="field.id" class="bh_label"
+                                >{{ field.title }}{{ field.required ? "*" : ""
+                                }}{{
+                                    field.hasOwnProperty("canBeNull") &&
+                                    !field.canBeNull
+                                        ? "*"
+                                        : ""
+                                }}</label
+                            >
                             <app-autocomplete></app-autocomplete>
-                            <i class="fa-solid fa-circle-xmark field_btn" *ngIf="field?.control?.value && !field.readonly" (click)="clearField(field)"></i>
+                            <i
+                                class="fa-solid fa-circle-xmark field_btn"
+                                *ngIf="field?.control?.value && !field.readonly"
+                                (click)="clearField(field)"
+                            ></i>
                         </ng-container>
 
                         <ng-container *ngSwitchCase="'flag'">
                             <div class="bh_control_half">
-                                <label [for]="field.id"
-                                       class="bh_label">{{ field.title }}{{field.required ? '*' : ''}}{{field.hasOwnProperty('canBeNull') && !field.canBeNull ? '*' : ''}}</label>
-                                <input type="checkbox" [name]="field.id" [id]="field.id" [formControl]="field.control"
-                                       [readonly]="field.readonly">
+                                <label [for]="field.id" class="bh_label"
+                                    >{{ field.title
+                                    }}{{ field.required ? "*" : ""
+                                    }}{{
+                                        field.hasOwnProperty("canBeNull") &&
+                                        !field.canBeNull
+                                            ? "*"
+                                            : ""
+                                    }}</label
+                                >
+                                <input
+                                    type="checkbox"
+                                    [name]="field.id"
+                                    [id]="field.id"
+                                    [formControl]="field.control"
+                                    [readonly]="field.readonly"
+                                />
                             </div>
                         </ng-container>
 
                         <!-- <span>requred: {{ field.required | json }}</span> -->
-
                     </ng-container>
                 </ng-container>
-
             </div>
 
             <div class="bh_link_control" *ngFor="let field of linkFields">
                 <ng-container [ngSwitch]="field.type" *ngIf="!field.hide">
                     <ng-container *ngIf="field.imageLoader && !!isCreateMode">
-
-                        <label [for]="'uploader'" class="bh_label">Загрузчик изображений</label>
+                        <label [for]="'uploader'" class="bh_label"
+                            >Загрузчик изображений</label
+                        >
 
                         <div class="bh_panel_block">
                             <div class="bh_block">
-                                <input type="file"
-                                       (change)="setImageForUpload( $event )"
-                                       [readonly]="field.readonly"
-                                       [id]="'uploader'"
-                                       [placeholder]="'Введите ' + (field.title ? field.title : 'текст') | lowercase"
-                                       [formControl]="field.imageControl"/>
+                                <input
+                                    type="file"
+                                    (change)="setImageForUpload($event)"
+                                    [readonly]="field.readonly"
+                                    [id]="'uploader'"
+                                    [placeholder]="
+                                        'Введите ' +
+                                            (field.title
+                                                ? field.title
+                                                : 'текст') | lowercase
+                                    "
+                                    [formControl]="field.imageControl"
+                                />
 
-                                <input [formControl]="field.titleControl" type="text" id="file_title"
-                                       placeholder="Введите название картинки">
+                                <input
+                                    [formControl]="field.titleControl"
+                                    type="text"
+                                    id="file_title"
+                                    placeholder="Введите название картинки"
+                                />
 
-                                <input [formControl]="field.descriptionControl" type="text" id="file_description"
-                                       placeholder="Введите описание картинки">
+                                <input
+                                    [formControl]="field.descriptionControl"
+                                    type="text"
+                                    id="file_description"
+                                    placeholder="Введите описание картинки"
+                                />
 
-                                <button (click)="uploadImageWithLoader( field )">Загрузить</button>
+                                <button (click)="uploadImageWithLoader(field)">
+                                    Загрузить
+                                </button>
                             </div>
                         </div>
-
                     </ng-container>
                     <ng-container *ngSwitchCase="'repo'">
-                        <ng-container *ngIf="menu && menu.type === 'container' && !!currentService">
-
+                        <ng-container
+                            *ngIf="
+                                menu &&
+                                menu.type === 'container' &&
+                                !!currentService
+                            "
+                        >
                             <app-table
-                                    *ngIf="!!menu && (isEditMode)"
-                                    [linker$]="containerLinker$"
-                                    [title]="field.title"
-                                    [key]="menu.name"
-                                    [type]="field.type"
-                                    [multiselect]="field.multiselect"
-                                    [imageOptions]="field.image"
-                                    [filters]="field.filters"
+                                *ngIf="!!menu && isEditMode"
+                                [linker$]="containerLinker$"
+                                [title]="field.title"
+                                [key]="menu.name"
+                                [type]="field.type"
+                                [multiselect]="field.multiselect"
+                                [imageOptions]="field.image"
+                                [filters]="field.filters"
                             ></app-table>
 
-                            <div class="full" *ngIf="!!menu && (isEditMode)">
+                            <div class="full" *ngIf="!!menu && isEditMode">
                                 <i class="fas fa-chevron-down fa-3x"></i>
                             </div>
 
                             <app-table
-                                    *ngIf="!!menu && (isEditMode) && field.entKey"
-                                    [linker$]="containerLinker$"
-                                    [title]="field.dummyTitle"
-                                    [type]="'dummy'"
-                                    [key]="field.entKey"
-                                    [imageOptions]="field.image"
+                                *ngIf="!!menu && isEditMode && field.entKey"
+                                [linker$]="containerLinker$"
+                                [title]="field.dummyTitle"
+                                [type]="'dummy'"
+                                [key]="field.entKey"
+                                [imageOptions]="field.image"
                             ></app-table>
 
-                            <button class="full" *ngIf="isEditMode" [disabled]="!currentService || !!form.invalid"
-                                    (click)="saveItemsOfContainer()">
-                                <i class="fas fa-lock"></i>Зафиксировать содержимое контейнера
+                            <button
+                                class="full"
+                                *ngIf="isEditMode"
+                                [disabled]="!currentService || !!form.invalid"
+                                (click)="saveItemsOfContainer()"
+                            >
+                                <i class="fas fa-lock"></i>Зафиксировать
+                                содержимое контейнера
                             </button>
-
                         </ng-container>
 
                         <ng-container *ngIf="menu && menu.type === 'slot'">
-
                             <app-table
-                                    *ngIf="!!menu && (isEditMode || isCreateMode)"
-                                    [title]="field.title"
-                                    [type]="field.entType"
-                                    [key]="field.entKey"
-                                    (select)="linkFromTableSelected( $event, field )"
-                                    [imageOptions]="field.image"
-                                    [filters]="field.filters"
+                                *ngIf="!!menu && (isEditMode || isCreateMode)"
+                                [title]="field.title"
+                                [type]="field.entType"
+                                [key]="field.entKey"
+                                (select)="linkFromTableSelected($event, field)"
+                                [imageOptions]="field.image"
+                                [filters]="field.filters"
                             ></app-table>
-
                         </ng-container>
 
                         <ng-container *ngIf="menu && menu.type === 'entity'">
-
                             <app-table
-                                    *ngIf="!!menu && (isEditMode || isCreateMode)"
-                                    [title]="field.title"
-                                    [type]="field.entType"
-                                    [key]="field.entKey"
-                                    (select)="linkFromTableSelected( $event, field )"
-                                    [imageOptions]="field.image"
-                                    (refresh)="refreshAsignByField( field, $event )"
-                                    [filters]="field.filters"
+                                *ngIf="!!menu && (isEditMode || isCreateMode)"
+                                [title]="field.title"
+                                [type]="field.entType"
+                                [key]="field.entKey"
+                                (select)="linkFromTableSelected($event, field)"
+                                [imageOptions]="field.image"
+                                (refresh)="refreshAsignByField(field, $event)"
+                                [filters]="field.filters"
                             ></app-table>
-
                         </ng-container>
                     </ng-container>
                 </ng-container>
             </div>
-
         </form>
-
     </ng-container>
 
     <button
-            *ngIf="isCreateMode"
-            [disabled]="!!form.invalid"
-            (click)="createEntity()"
-            class="btn btn-outline-dark"
+        *ngIf="isCreateMode"
+        [disabled]="!!form.invalid"
+        (click)="createEntity()"
+        class="btn btn-outline-dark"
     >
-        <i class="fas fa-plus-square"></i>Создать {{menu.titleVoc}}
+        <i class="fas fa-plus-square"></i>Создать {{ menu.titleVoc }}
     </button>
 
     <button
-            *ngIf="isEditMode"
-            [disabled]="!currentService || !!form.invalid"
-            (click)="editEntity()"
-            class="btn btn-outline-dark"
+        *ngIf="isEditMode"
+        [disabled]="!currentService || !!form.invalid"
+        (click)="editEntity()"
+        class="btn btn-outline-dark"
     >
-        <i class="fas fa-edit"></i>Изменить {{menu.titleVoc}}
+        <i class="fas fa-edit"></i>Изменить {{ menu.titleVoc }}
     </button>
 
     <button
-            *ngIf="isDeleteMode"
-            [disabled]="!currentService"
-            (click)="removeEntity()"
-            class="btn btn-outline-danger"
+        *ngIf="isDeleteMode"
+        [disabled]="!currentService"
+        (click)="removeEntity()"
+        class="btn btn-outline-danger"
     >
-        <i class="far fa-trash-alt"></i>Удалить {{menu.titleVoc}}
+        <i class="far fa-trash-alt"></i>Удалить {{ menu.titleVoc }}
     </button>
-
 </div>

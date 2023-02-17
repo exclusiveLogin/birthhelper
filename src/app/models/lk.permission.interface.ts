@@ -1,4 +1,4 @@
-import {IDictItem} from '../modules/admin/dict.service';
+import { IDictItem } from "../modules/admin/dict.service";
 
 export interface Permission {
     id: number;
@@ -10,7 +10,12 @@ export interface Permission {
     };
 }
 
-export type PermissionLKType = 'orders' | 'settings' | 'analytics' | 'slots' | 'reviews';
+export type PermissionLKType =
+    | "orders"
+    | "settings"
+    | "analytics"
+    | "slots"
+    | "reviews";
 export interface PermissionSetting {
     slug: string;
     title: string;
@@ -18,17 +23,18 @@ export interface PermissionSetting {
     classes: string[];
 }
 
-export const PermissionMap: { [key in PermissionLKType]?: PermissionSetting } = {
-    orders: {
-        slug: 'orders',
-        title: 'Стол заказов',
-        navigate: ['/admin', 'lk', 'orders'],
-        classes: ['fas', 'fa-shopping-cart']
-    },
-    settings: {
-        slug: 'settings',
-        title: 'Настройки',
-        navigate: ['/admin', 'lk', 'settings'],
-        classes: ['fas', 'fa-cog']
-    }
-};
+export const PermissionMap: { [key in PermissionLKType]?: PermissionSetting } =
+    {
+        orders: {
+            slug: "orders",
+            title: "Стол заказов",
+            navigate: ["/admin", "lk", "orders"],
+            classes: ["fas", "fa-shopping-cart"],
+        },
+        settings: {
+            slug: "settings",
+            title: "Настройки",
+            navigate: ["/admin", "lk", "settings"],
+            classes: ["fas", "fa-cog"],
+        },
+    };

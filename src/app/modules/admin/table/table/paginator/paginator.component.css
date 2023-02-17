@@ -1,12 +1,12 @@
-.bh_page_container{
+.bh_page_container {
     display: flex;
     justify-content: space-around;
 }
-.page_title{
+.page_title {
     padding: 15px;
     font-size: 110%;
 }
 
-.page_title.active{
+.page_title.active {
     font-weight: bold;
 }

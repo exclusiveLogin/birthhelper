@@ -4,13 +4,42 @@
 
 <!--Default-->
 <ng-template #tpl_default let-data>
-    <div class="image_container" *ngIf="showPicture$ | async" [ngStyle]="pictureStyle"></div>
+    <div
+        class="image_container"
+        *ngIf="showPicture$ | async"
+        [ngStyle]="pictureStyle"
+    ></div>
     <div class="description_container">
-        <p class="description_container__ttl" [ngStyle]="titleStyle" *ngIf="title">{{title}}</p>
-        <p class="description_container__accent_ttl" [ngStyle]="accentStyle" *ngIf="accentTitle">{{accentTitle}}</p>
-        <p class="description_container__txt" [ngStyle]="descriptionStyle" *ngIf="description">{{description}}</p>
+        <p
+            class="description_container__ttl"
+            [ngStyle]="titleStyle"
+            *ngIf="title"
+        >
+            {{ title }}
+        </p>
+        <p
+            class="description_container__accent_ttl"
+            [ngStyle]="accentStyle"
+            *ngIf="accentTitle"
+        >
+            {{ accentTitle }}
+        </p>
+        <p
+            class="description_container__txt"
+            [ngStyle]="descriptionStyle"
+            *ngIf="description"
+        >
+            {{ description }}
+        </p>
 
-        <p class="description_container__price" [ngStyle]="priceStyle">{{price}}</p>
-        <a class="description_container__link btn btn-info" *ngIf="link" [routerLink]="link">Подробнее</a>
+        <p class="description_container__price" [ngStyle]="priceStyle">
+            {{ price }}
+        </p>
+        <a
+            class="description_container__link btn btn-info"
+            *ngIf="link"
+            [routerLink]="link"
+            >Подробнее</a
+        >
     </div>
 </ng-template>

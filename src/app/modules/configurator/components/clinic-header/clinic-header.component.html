@@ -1,28 +1,95 @@
 <div class="clinic__header clinic-header" *ngIf="_ctg | async as CT">
     <div class="info_container">
-        <div class="clinic-header__info" >
-            <h2 class="clinic-header__ttl" (click)="openInPopup(CT)">{{CT.title}}</h2>
-            <p class="clinic-header__address">{{CT?.address_str || 'Адрес не определен'}}</p>
-            <p class="clinic-header__license">Лицензия: {{CT.licence || 'нет данных о лицензии'}}</p>
+        <div class="clinic-header__info">
+            <h2 class="clinic-header__ttl" (click)="openInPopup(CT)">
+                {{ CT.title }}
+            </h2>
+            <p class="clinic-header__address">
+                {{ CT?.address_str || "Адрес не определен" }}
+            </p>
+            <p class="clinic-header__license">
+                Лицензия: {{ CT.licence || "нет данных о лицензии" }}
+            </p>
         </div>
         <div class="phone_container" *ngIf="CT.phones">
             <div class="phone_item" *ngFor="let phone of CT.phones">
-                <span class="phone_ttl">{{phone.title}}</span><br>
-                <span class="phone_number">{{phone.phone}}</span>
+                <span class="phone_ttl">{{ phone.title }}</span
+                ><br />
+                <span class="phone_number">{{ phone.phone }}</span>
             </div>
         </div>
     </div>
 
-    <div class="clinic-header__actions clinic-header-actions" *ngIf="rating$ | async as rate">
+    <div
+        class="clinic-header__actions clinic-header-actions"
+        *ngIf="rating$ | async as rate"
+    >
         <p class="clinic-header-actions__review">
-            <img [src]="rate.avr > 1 ? 'img/icons/ic-star-24px.svg' : 'img/icons/ic-star-border-24px.svg'" width="22" height="22" class="clinic-header-actions__review-icon" alt="">
-            <img [src]="rate.avr > 2 ? 'img/icons/ic-star-24px.svg' : 'img/icons/ic-star-border-24px.svg'" width="22" height="22" class="clinic-header-actions__review-icon" alt="">
-            <img [src]="rate.avr > 3 ? 'img/icons/ic-star-24px.svg' : 'img/icons/ic-star-border-24px.svg'" width="22" height="22" class="clinic-header-actions__review-icon" alt="">
-            <img [src]="rate.avr > 4 ? 'img/icons/ic-star-24px.svg' : 'img/icons/ic-star-border-24px.svg'" width="22" height="22" class="clinic-header-actions__review-icon" alt="">
-            <img [src]="rate.avr > 4.5 ? 'img/icons/ic-star-24px.svg' : 'img/icons/ic-star-border-24px.svg'" width="22" height="22" class="clinic-header-actions__review-icon" alt="">
-            <span>{{rate.avr | number:'1.0-2'}} ({{rate.total}})</span>
+            <img
+                [src]="
+                    rate.avr > 1
+                        ? 'img/icons/ic-star-24px.svg'
+                        : 'img/icons/ic-star-border-24px.svg'
+                "
+                width="22"
+                height="22"
+                class="clinic-header-actions__review-icon"
+                alt=""
+            />
+            <img
+                [src]="
+                    rate.avr > 2
+                        ? 'img/icons/ic-star-24px.svg'
+                        : 'img/icons/ic-star-border-24px.svg'
+                "
+                width="22"
+                height="22"
+                class="clinic-header-actions__review-icon"
+                alt=""
+            />
+            <img
+                [src]="
+                    rate.avr > 3
+                        ? 'img/icons/ic-star-24px.svg'
+                        : 'img/icons/ic-star-border-24px.svg'
+                "
+                width="22"
+                height="22"
+                class="clinic-header-actions__review-icon"
+                alt=""
+            />
+            <img
+                [src]="
+                    rate.avr > 4
+                        ? 'img/icons/ic-star-24px.svg'
+                        : 'img/icons/ic-star-border-24px.svg'
+                "
+                width="22"
+                height="22"
+                class="clinic-header-actions__review-icon"
+                alt=""
+            />
+            <img
+                [src]="
+                    rate.avr > 4.5
+                        ? 'img/icons/ic-star-24px.svg'
+                        : 'img/icons/ic-star-border-24px.svg'
+                "
+                width="22"
+                height="22"
+                class="clinic-header-actions__review-icon"
+                alt=""
+            />
+            <span>{{ rate.avr | number : "1.0-2" }} ({{ rate.total }})</span>
         </p>
-        <a href="javascript:;" (click)="sendFeedback()" class="clinic-header-actions-link">Оставить отзыв</a>
-        <button class="clinic-header-actions-btn muted">Запланировать посещение</button>
+        <a
+            href="javascript:;"
+            (click)="sendFeedback()"
+            class="clinic-header-actions-link"
+            >Оставить отзыв</a
+        >
+        <button class="clinic-header-actions-btn muted">
+            Запланировать посещение
+        </button>
     </div>
 </div>

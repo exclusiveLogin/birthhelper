@@ -1,8 +1,12 @@
 <h4 class="lk_ttl">Стол заказов</h4>
 <app-orders-filter></app-orders-filter>
 <app-lk-view-block *ngFor="let ctg of selectedCTG$ | async">
-    {{ctg | json}}
-    <app-contragent-header *ngIf="ctg" [contragent]="ctg" data-header></app-contragent-header>
+    {{ ctg | json }}
+    <app-contragent-header
+        *ngIf="ctg"
+        [contragent]="ctg"
+        data-header
+    ></app-contragent-header>
     <div class="lk-view-block__body" data-list>
         <app-order-list [contragent]="ctg"></app-order-list>
     </div>

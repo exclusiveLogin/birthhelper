@@ -1,30 +1,36 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {IClinicMini} from 'app/models/clinic.interface';
-import {Router} from '@angular/router';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {ImageService} from '../../../../../services/image.service';
-import {SafeUrl} from '@angular/platform-browser';
-import {Entity} from '@models/entity.interface';
-import {FeedbackService} from '@modules/feedback/feedback.service';
-import {map, shareReplay, switchMap, tap} from 'rxjs/operators';
-import {SummaryVotes} from '@modules/feedback/models';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output,
+} from "@angular/core";
+import { IClinicMini } from "app/models/clinic.interface";
+import { Router } from "@angular/router";
+import { BehaviorSubject, Observable } from "rxjs";
+import { ImageService } from "../../../../../services/image.service";
+import { SafeUrl } from "@angular/platform-browser";
+import { Entity } from "@models/entity.interface";
+import { FeedbackService } from "@modules/feedback/feedback.service";
+import { map, shareReplay, switchMap, tap } from "rxjs/operators";
+import { SummaryVotes } from "@modules/feedback/models";
 
 @Component({
-    selector: 'app-clinic-card',
-    templateUrl: './clinic.card.component.html',
-    styleUrls: ['./clinic.card.component.scss'],
+    selector: "app-clinic-card",
+    templateUrl: "./clinic.card.component.html",
+    styleUrls: ["./clinic.card.component.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClinicCardComponent implements OnInit {
-
     viewClinic: IClinicMini = {
         id: -1,
-        address: 'Не найден',
-        title: 'Пустая клиника',
+        address: "Не найден",
+        title: "Пустая клиника",
         photo: null,
         lon: null,
         lat: null,
-        description: 'Какое то описание тестовой клиники',
+        description: "Какое то описание тестовой клиники",
         stat_value: 0,
         stat_count: 0,
         price_from: 0,
@@ -41,7 +47,7 @@ export class ClinicCardComponent implements OnInit {
             has_dms: null,
             free_meets: null,
             foreign_service: null,
-        }
+        },
     };
     photoUrl$: Observable<SafeUrl>;
     imageSignal$: BehaviorSubject<null>;
@@ -61,34 +67,44 @@ export class ClinicCardComponent implements OnInit {
     constructor(
         private router: Router,
         private imageService: ImageService,
-        private feedbackService: FeedbackService,
+        private feedbackService: FeedbackService
     ) {}
 
     refresher$ = new BehaviorSubject<null>(null);
     rating$: Observable<SummaryVotes> = this.refresher$.pipe(
-        switchMap(() => this.feedbackService.getRatingForTarget('clinic', this.viewClinic.id)),
-        map(result => result.summary),
+        switchMap(() =>
+            this.feedbackService.getRatingForTarget(
+                "clinic",
+                this.viewClinic.id
+            )
+        ),
+        map((result) => result.summary),
         shareReplay(1)
     );
 
     sendFeedback(): void {
-        this.feedbackService.initFeedbackByTarget('clinic', this.viewClinic.id, {section: 'clinic'}).then(r => {
-            console.log('feedback saved', r);
-            this.refresher$.next(null);
-        } );
+        this.feedbackService
+            .initFeedbackByTarget("clinic", this.viewClinic.id, {
+                section: "clinic",
+            })
+            .then((r) => {
+                console.log("feedback saved", r);
+                this.refresher$.next(null);
+            });
     }
     wrap(): void {
         this.wrapped = true;
     }
 
-    ngOnInit(): void {
-    }
+    ngOnInit(): void {}
 
     showClinicOnMap(): void {
         this.gotoMap.next(this.viewClinic);
     }
 
     gotoConfigurator(): void {
-        this.router.navigate(['/system/configurator/clinic', this.viewClinic.id]).then();
+        this.router
+            .navigate(["/system/configurator/clinic", this.viewClinic.id])
+            .then();
     }
 }

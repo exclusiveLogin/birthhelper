@@ -1,5 +1,10 @@
-import {SectionType} from '@services/search.service';
-export type FeedbackAction = 'CREATE' | 'ANSWER' | 'LIKE' | 'DISLIKE' | 'ISSUES';
+import { SectionType } from "@services/search.service";
+export type FeedbackAction =
+    | "CREATE"
+    | "ANSWER"
+    | "LIKE"
+    | "DISLIKE"
+    | "ISSUES";
 export interface Vote {
     id: number;
     slug: string;
@@ -20,7 +25,7 @@ export interface FeedbackFormDataAnswer {
 }
 
 export interface CreateFeedbackRequest {
-    action: 'CREATE';
+    action: "CREATE";
     target_entity_key: string;
     target_entity_id: number;
     votes: VoteResponse[];
@@ -34,7 +39,7 @@ export interface SummaryVotes {
     total: number;
 }
 
-export interface RateByVote extends SummaryVotes{
+export interface RateByVote extends SummaryVotes {
     slug: string;
 }
 

@@ -48,43 +48,43 @@
 }
 
 .checkbox__input {
-  display: none;
+    display: none;
 
-  & + .checkbox__label {
-    display: inline-block;
-    vertical-align: middle;
-    font-size: 14px;
-    line-height: 1.2;
-    text-align: left;
-    color: $black;
-    margin: 0;
-    position: relative;
-    padding: 0 0 0 37px;
-    cursor: pointer;
+    & + .checkbox__label {
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 14px;
+        line-height: 1.2;
+        text-align: left;
+        color: $black;
+        margin: 0;
+        position: relative;
+        padding: 0 0 0 37px;
+        cursor: pointer;
 
-    &::before {
-      content: "";
-      position: absolute;
-      top: 50%;
-      margin-top: -11px;
-      left: 0;
-      width: 22px;
-      height: 22px;
-      border-radius: 5px;
-      border: solid 1px $blue;
-      background: transparent;
+        &::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            margin-top: -11px;
+            left: 0;
+            width: 22px;
+            height: 22px;
+            border-radius: 5px;
+            border: solid 1px $blue;
+            background: transparent;
+        }
     }
-  }
 
-  &:checked + .checkbox__label::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    margin-top: -7px;
-    left: 4px;
-    width: 14px;
-    height: 14px;
-    border-radius: 3px;
-    background-color: $blue;
-  }
+    &:checked + .checkbox__label::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        margin-top: -7px;
+        left: 4px;
+        width: 14px;
+        height: 14px;
+        border-radius: 3px;
+        background-color: $blue;
+    }
 }

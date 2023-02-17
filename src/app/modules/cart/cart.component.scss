@@ -1,13 +1,13 @@
 :host {
-  display: flex;
-  flex-direction: column;
-  /* align-content: center; */
-  /* justify-content: center; */
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    /* align-content: center; */
+    /* justify-content: center; */
+    align-items: center;
 }
 .price_from {
-  margin-right: 0.4rem;
-  font-size: inherit;
+    margin-right: 0.4rem;
+    font-size: inherit;
 }
 .small {
     width: 50px;
@@ -71,7 +71,7 @@
     margin-top: 1rem;
 }
 $skype-color: #00aff0;
-$whatsapp-color: #128C7E;
+$whatsapp-color: #128c7e;
 $telegram-color: #0088cc;
 $viber-color: #59267c;
 .fa-viber {
@@ -103,7 +103,7 @@ $viber-color: #59267c;
             display: flex;
             flex: 1;
             &:nth-child(even) {
-                background-color: #DBE9FF;
+                background-color: #dbe9ff;
             }
         }
     }
@@ -117,7 +117,7 @@ $viber-color: #59267c;
         flex-grow: 1;
         width: 100%;
         flex-wrap: wrap;
-        background-color: #F3F3F3;
+        background-color: #f3f3f3;
     }
 }
 .cart-archive_header__title-img {

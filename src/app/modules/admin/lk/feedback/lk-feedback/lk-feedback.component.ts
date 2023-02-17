@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: 'app-lk-feedback',
-  templateUrl: './lk-feedback.component.html',
-  styleUrls: ['./lk-feedback.component.scss']
+    selector: "app-lk-feedback",
+    templateUrl: "./lk-feedback.component.html",
+    styleUrls: ["./lk-feedback.component.scss"],
 })
 export class LkFeedbackComponent implements OnInit {
+    constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+    ngOnInit(): void {}
 }
