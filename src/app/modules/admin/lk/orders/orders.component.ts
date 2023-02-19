@@ -11,8 +11,5 @@ import { RestService } from "@services/rest.service";
 export class OrdersComponent {
     selectedCTG$ = this.lkService.selectedContragents$;
 
-    constructor(
-        private restService: RestService,
-        private lkService: LkService
-    ) {}
+    constructor(private lkService: LkService) {}
 }

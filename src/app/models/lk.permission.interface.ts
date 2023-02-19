@@ -13,6 +13,7 @@ export interface Permission {
 export type PermissionLKType =
     | "orders"
     | "settings"
+    | "feedbacks"
     | "analytics"
     | "slots"
     | "reviews";
@@ -36,5 +37,11 @@ export const PermissionMap: { [key in PermissionLKType]?: PermissionSetting } =
             title: "Настройки",
             navigate: ["/admin", "lk", "settings"],
             classes: ["fas", "fa-cog"],
+        },
+        feedbacks: {
+            slug: "feedbacks",
+            title: "Отзывы",
+            navigate: ["/admin", "lk", "feedbacks"],
+            classes: ["fa-solid", "fa-comment-dots"],
         },
     };
