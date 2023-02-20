@@ -15,6 +15,7 @@ import { StoreService } from "@modules/feedback/store.service";
 import { Observable, of } from "rxjs";
 import { tap } from "rxjs/operators";
 import { AuthService } from "@modules/auth-module/auth.service";
+import { SectionType } from "@services/search.service";
 
 @Injectable({
     providedIn: "root",
@@ -29,11 +30,21 @@ export class FeedbackService extends StoreService {
         super();
     }
 
+    targetKeyMapper(targetKey): string {
+        const TMap: { [key in SectionType]: string } = {
+            clinic: "ent_clinic_contragents",
+            consultation: "ent_consultation_contragents",
+        };
+
+        return TMap[targetKey] ?? targetKey;
+    }
+
     async initFeedbackByTarget(
         targetKey: string,
         targetId: number,
         context: FeedbackContext
     ) {
+        targetKey = this.targetKeyMapper(targetKey);
         const role = await this.authService.getCurrentRole().toPromise();
 
         const filters: Record<string, string> = {
