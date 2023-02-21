@@ -3,23 +3,22 @@ import { FormControl, FormGroup } from "@angular/forms";
 import { LkService } from "@services/lk.service";
 
 @Component({
-    selector: "app-orders-filter",
-    templateUrl: "./orders-filter.component.html",
-    styleUrls: ["./orders-filter.component.scss"],
+    selector: "app-feedback-filter",
+    templateUrl: "./feedback-filter.component.html",
+    styleUrls: ["./feedback-filter.component.scss"],
 })
-export class OrdersFilterComponent implements OnInit {
+export class FeedbackFilterComponent implements OnInit {
     constructor(private lkService: LkService) {}
 
     filterForm = new FormGroup({
-        group_mode: new FormControl("order"),
-        status: new FormControl("inwork"),
+        status: new FormControl("pending"),
         section_key: new FormControl("clinic"),
     });
 
     ngOnInit(): void {
         this.filterForm.valueChanges.subscribe((data) => {
             console.log("this.filterForm.valueChanges", data);
-            this.lkService.setFilters("order", data);
+            this.lkService.setFilters("feedback", data);
         });
         this.filterForm.updateValueAndValidity();
     }

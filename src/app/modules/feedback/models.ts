@@ -7,6 +7,14 @@ export type FeedbackAction =
     | "DISLIKE"
     | "ISSUES";
 
+export type FeedbackStatus =
+    | "pending"
+    | "approved"
+    | "verified"
+    | "blocked"
+    | "reject"
+    | "official";
+
 export type LikeType = "comment" | "feedback";
 export interface Like {
     id: number;

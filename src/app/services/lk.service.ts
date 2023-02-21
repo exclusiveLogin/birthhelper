@@ -40,6 +40,7 @@ export class LkService {
         this.selectedContragents$.subscribe();
         this.availableContragents$.subscribe();
         this.ordersFilters$.subscribe();
+        this.feedbackFilters$.subscribe();
     }
 
     permissionsRaw$: Observable<Permission[]> = this.authService.user$.pipe(
@@ -81,7 +82,13 @@ export class LkService {
         );
     }
 
-    setFilters(filters: any): void {
-        this._ordersFilters$.next(filters);
+    setFilters(lkSection: "order" | "feedback", filters: any): void {
+        switch (lkSection) {
+            case "order":
+                this._ordersFilters$.next(filters);
+                break;
+            case "feedback":
+                this._feedbackFilters$.next(filters);
+        }
     }
 }

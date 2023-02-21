@@ -16,6 +16,7 @@ import { OrderListComponent } from "./orders/order-list/order-list.component";
 import { LkFeedbackComponent } from "./feedback/lk-feedback/lk-feedback.component";
 import { LkFeedbackItemComponent } from "./feedback/lk-feedback-item/lk-feedback-item.component";
 import { LkFeedbackListComponent } from "./feedback/lk-feedback-list/lk-feedback-list.component";
+import { FeedbackFilterComponent } from "@modules/admin/lk/feedback/feedback-filter/feedback-filter.component";
 
 @NgModule({
     declarations: [
@@ -27,6 +28,7 @@ import { LkFeedbackListComponent } from "./feedback/lk-feedback-list/lk-feedback
         OrdersFilterComponent,
         LKViewBlocComponent,
         OrdersFilterComponent,
+        FeedbackFilterComponent,
         ContragentHeaderComponent,
         OrderGroupComponent,
         OrderListComponent,

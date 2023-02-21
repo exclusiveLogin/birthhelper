@@ -1,6 +1,5 @@
 import {
     ChangeDetectionStrategy,
-    ChangeDetectorRef,
     Component,
     EventEmitter,
     Input,
@@ -10,15 +9,11 @@ import { CTG, LkService } from "@services/lk.service";
 import { BehaviorSubject, combineLatest, Observable } from "rxjs";
 import { Contragent } from "@models/contragent.interface";
 import { map, shareReplay, switchMap, tap } from "rxjs/operators";
-import {
-    ODRER_ACTIONS,
-    Order,
-    OrderGroup,
-    OrderRequest,
-    OrderResponse,
-} from "@models/order.interface";
+import { OrderGroup } from "@models/order.interface";
 import { User, UserSrc } from "@models/user.interface";
 import { RestService } from "@services/rest.service";
+import { FeedbackService } from "@modules/feedback/feedback.service";
+import { FeedbackResponse } from "@modules/feedback/models";
 
 @Component({
     selector: "app-lk-feedback-list",
@@ -50,62 +45,46 @@ export class LkFeedbackListComponent {
 
     updater$ = new BehaviorSubject(null);
     onRequest$ = this.lkService.feedbackFilters$.pipe(
-        map(
-            (filters) =>
-                ({
-                    action: ODRER_ACTIONS.GET,
-                    groupMode: filters.group_mode,
-                    contragent_entity_id: this.ctg.entId,
-                    status: filters.status,
-                    section_key: filters.section_key,
-                    skip: this.skip,
-                } as OrderRequest)
-        )
+        map((filters) => ({
+            contragentId: this.ctg.entId,
+            status: filters.status,
+            section: filters.section_key,
+            // skip: this.skip,
+        }))
     );
 
-    onOrdersGroups$ = combineLatest([this.updater$, this.onRequest$]).pipe(
+    onFeedbackList$ = combineLatest([this.updater$, this.onRequest$]).pipe(
+        tap((_) => console.log("onFeedbackList$", _)),
         map(([_, data]) => data),
-        tap((data) => (data.skip = this.skip)),
+        // tap((data) => (data.skip = this.skip)),
         switchMap((request) =>
-            this.restService.requestOrdersPost<OrderResponse<OrderGroup>>(
-                request
+            this.feedbackService.getFeedbackListByContragent(
+                request.contragentId,
+                request.section,
+                request.status
             )
         ),
         tap((_) => (this.isLoading = false)),
-        tap((_) => console.log("onOrdersGroups$", _)),
+        tap((_) => console.log("onFeedbackList$", _)),
         shareReplay(1)
     );
-
-    onOrdersGroupResult$ = this.onOrdersGroups$.pipe(
-        map((data) => data.result),
-        tap((grp) =>
-            grp?.forEach((g) => (g.orders = g.orders.map((o) => new Order(o))))
-        ),
-        tap((grp) =>
-            grp?.forEach(
-                (g) => (g.user = new User(g.user as unknown as UserSrc))
-            )
-        ),
-        tap((_) => this.cdr.markForCheck())
-    );
-
-    onOrdersTotal$ = this.onOrdersGroups$.pipe(
-        map((list) => list?.total ?? 0),
-        tap((total) => this.empty.next(!total))
-    );
-
-    onOrderGroupPages$ = this.onOrdersTotal$.pipe(
-        map((_) => (_ ? Math.ceil(_ / 20) || 1 : 1))
-    );
+    // onFeedbackTotal$ = this.onOrdersGroups$.pipe(
+    //     map((list) => list?.total ?? 0),
+    //     tap((total) => this.empty.next(!total))
+    // );
+    //
+    // onOrderGroupPages$ = this.onOrdersTotal$.pipe(
+    //     map((_) => (_ ? Math.ceil(_ / 20) || 1 : 1))
+    // );
 
     constructor(
-        private restService: RestService,
         private lkService: LkService,
-        private cdr: ChangeDetectorRef
+        private feedbackService: FeedbackService,
+        private restService: RestService
     ) {}
 
-    trackIt(idx: number, og: OrderGroup): string {
-        return og.group_id;
+    trackIt(idx: number, fb: FeedbackResponse): number {
+        return fb.id;
     }
 
     pageChange(page = 1): void {

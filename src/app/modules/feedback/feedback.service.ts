@@ -7,6 +7,7 @@ import {
     CreateFeedbackRequest,
     FeedbackFormDataAnswer,
     FeedbackResponse,
+    FeedbackStatus,
     SummaryRateByTargetResponse,
     Vote,
     VoteResponse,
@@ -156,6 +157,22 @@ export class FeedbackService extends StoreService {
         };
 
         const data = { key: targetKey, id: targetId.toString() };
+        return this.rest.fetchData(restSetting, data, true);
+    }
+
+    getFeedbackListByContragent(
+        contragentId: number,
+        section: SectionType,
+        status: FeedbackStatus
+    ): Observable<FeedbackResponse[]> {
+        const restSetting: ISettingsParams = {
+            mode: "api",
+            segment: "feedback",
+            resource: "listbycontragent",
+            script: contragentId.toString(),
+        };
+
+        const data = { section, status };
         return this.rest.fetchData(restSetting, data, true);
     }
 }
