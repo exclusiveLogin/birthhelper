@@ -18,6 +18,7 @@ import { Router } from "@angular/router";
 import { ConfiguratorService } from "app/modules/configurator/configurator.service";
 import { Sections } from "app/models/core";
 import { Order } from "app/models/order.interface";
+import { IConsultationMini } from "@models/consultation.interface";
 
 interface Titled {
     title: string;
@@ -100,6 +101,9 @@ export class ContragentComponent implements OnInit {
     getContextContragent(sectionKey: SectionType) {
         if (sectionKey === "clinic") {
             return this.contragent$ as unknown as Observable<IClinicMini>;
+        }
+        if (sectionKey === "consultation") {
+            return this.contragent$ as unknown as Observable<IConsultationMini>;
         }
         return this.contragent$ as Observable<Contragent>;
     }

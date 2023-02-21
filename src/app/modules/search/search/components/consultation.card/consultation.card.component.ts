@@ -3,7 +3,6 @@ import {
     Component,
     EventEmitter,
     Input,
-    OnInit,
     Output,
 } from "@angular/core";
 import { Router } from "@angular/router";
@@ -22,7 +21,7 @@ import { map, shareReplay, switchMap, tap } from "rxjs/operators";
     styleUrls: ["./consultation.card.component.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ConsultationCardComponent implements OnInit {
+export class ConsultationCardComponent {
     viewConsultation: IConsultationMini = {
         id: -1,
         address: "Не найден",
@@ -97,8 +96,6 @@ export class ConsultationCardComponent implements OnInit {
     wrap(): void {
         this.wrapped = true;
     }
-
-    ngOnInit(): void {}
 
     showClinicOnMap(): void {
         this.gotoMap.next(this.viewConsultation);

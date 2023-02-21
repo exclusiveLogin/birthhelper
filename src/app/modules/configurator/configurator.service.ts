@@ -8,6 +8,7 @@ import {
     zip,
     NEVER,
     merge,
+    of,
 } from "rxjs";
 import {
     ConfiguratorConfigSrc,
@@ -34,8 +35,9 @@ import {
     tap,
 } from "rxjs/operators";
 import { hasher } from "../utils/hasher";
-import { OrderService, ValidationTreeItem } from "../../services/order.service";
-import { Order } from "../../models/order.interface";
+import { OrderService, ValidationTreeItem } from "@services/order.service";
+import { Order } from "@models/order.interface";
+import { Contragent } from "@models/contragent.interface";
 
 @Injectable({
     providedIn: "root",
@@ -93,7 +95,7 @@ export class ConfiguratorService {
     onContragent$ = this.onContragentDataLoad$.pipe(
         filter((cfg) => !!cfg?.contragentId && !!cfg?.contragentEntityKey),
         switchMap((cfg) =>
-            this.restService.getEntity(
+            this.restService.getEntity<Contragent>(
                 cfg.contragentEntityKey,
                 cfg.contragentId
             )
@@ -119,9 +121,9 @@ export class ConfiguratorService {
         this.onContragent$,
         this.onConfigLoad$,
     ]).pipe(
-        switchMap(() =>
+        switchMap(([contragent]) =>
             this.orderService.getValidationTreeByContragent(
-                this.currentContragentID$.value
+                contragent.contragent
             )
         )
     );
@@ -165,7 +167,10 @@ export class ConfiguratorService {
     );
 
     onSelectionByUser$: Observable<null> = this._selection$.pipe(
-        tap((selection) => {
+        switchMap((selection) =>
+            combineLatest([this.onContragent$, of(selection)])
+        ),
+        tap(([ctg, selection]) => {
             // store
             const hash = hasher({
                 entId: selection.entId,
@@ -174,8 +179,7 @@ export class ConfiguratorService {
             const targetSelection = this.selectionStore[hash];
             const operation = targetSelection ? "remove" : "add";
             if (operation === "add") {
-                selection.contragent_entity_id =
-                    this.currentContragentID$.value;
+                selection.contragent_entity_id = ctg.contragent;
             }
             operation === "remove"
                 ? (targetSelection._status = "selected")
@@ -277,11 +281,12 @@ export class ConfiguratorService {
         const config = this._config;
         const providerConfigs = config?.providers ?? [];
         providerConfigs.forEach((_) => {
-            this.providers[_.key] = this.currentContragentID$.pipe(
-                switchMap((id) =>
+            this.providers[_.key] = this.onContragent$.pipe(
+                tap((_) => console.log("contragent: ", _)),
+                switchMap((contragent) =>
                     this.restService.getSlotsByContragent<SlotEntity>(
                         _.entityKey,
-                        id,
+                        contragent.contragent,
                         _.restrictors ?? []
                     )
                 )

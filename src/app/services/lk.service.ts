@@ -17,7 +17,11 @@ export interface CTG {
 })
 export class LkService {
     _ordersFilters$ = new Subject<any>();
+    _feedbackFilters$ = new Subject<any>();
     ordersFilters$: Observable<any> = this._ordersFilters$.pipe(shareReplay(1));
+    feedbackFilters$: Observable<any> = this._feedbackFilters$.pipe(
+        shareReplay(1)
+    );
 
     _availableContragents$ = new BehaviorSubject<CTG[]>([]);
     availableContragents$: Observable<CTG[]> = this._availableContragents$.pipe(

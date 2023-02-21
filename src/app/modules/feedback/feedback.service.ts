@@ -6,6 +6,7 @@ import { DictionaryService } from "@services/dictionary.service";
 import {
     CreateFeedbackRequest,
     FeedbackFormDataAnswer,
+    FeedbackResponse,
     SummaryRateByTargetResponse,
     Vote,
     VoteResponse,
@@ -142,5 +143,19 @@ export class FeedbackService extends StoreService {
             : this.fetchRatingForTarget(targetKey, targetId).pipe(
                   tap((data) => this.saveToStore(targetKey, targetId, data))
               );
+    }
+
+    getFeedbackListByTarget(
+        targetKey: string,
+        targetId: number
+    ): Observable<FeedbackResponse[]> {
+        const restSetting: ISettingsParams = {
+            mode: "api",
+            segment: "feedback",
+            script: "list",
+        };
+
+        const data = { key: targetKey, id: targetId.toString() };
+        return this.rest.fetchData(restSetting, data, true);
     }
 }

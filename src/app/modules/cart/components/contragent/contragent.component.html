@@ -8,9 +8,125 @@
         }"
     >
     </ng-container>
+    <ng-container
+        *ngSwitchCase="'consultation'"
+        [ngTemplateOutlet]="consultation"
+        [ngTemplateOutletContext]="{
+            $implicit: getContextContragent('consultation'),
+            invalid: _validationTreeByContragent.isInvalid
+        }"
+    >
+    </ng-container>
 </ng-container>
 
 <ng-template #clinic let-invalid="invalid" let-contragent>
+    <div class="cart-pack cart-pack--clinic">
+        <div
+            class="cart-pack__body"
+            *ngIf="{
+                cnt: contragent | async,
+                show: shown$ | async
+            } as data"
+        >
+            <div class="cart-pack__body-title">
+                <p class="cart-pack__body-title-text">{{ data?.cnt?.title }}</p>
+                <div class="edit_btn" (click)="gotoConfigurator()">
+                    <i
+                        class="far fa-edit fa-2x"
+                        title="Редактировать выбранные услуги"
+                    ></i>
+                </div>
+                <span class="badge badge-danger" *ngIf="invalid"
+                    >Не валидный пакет</span
+                >
+                <span class="badge badge-success" *ngIf="!invalid"
+                    >Валидный пакет</span
+                >
+            </div>
+            <div class="cart-pack__body-content">
+                <!-- Options of Clinic -->
+                <div class="cart-pack__body-options cart-pack-options">
+                    <p class="cart-pack-options__item">
+                        <span class="cart-pack-options__item-name"
+                            >Посещение мамы и малыша в палате:</span
+                        >
+                        <span class="cart-pack-options__item-value">{{
+                            data.cnt?.features?.free_meets ? "Да" : "Нет"
+                        }}</span>
+                    </p>
+                    <p class="cart-pack-options__item">
+                        <span class="cart-pack-options__item-name"
+                            >Наличие детской реанимации:</span
+                        >
+                        <span class="cart-pack-options__item-value">{{
+                            data.cnt?.features?.has_reanimation ? "Да" : "Нет"
+                        }}</span>
+                    </p>
+                    <p class="cart-pack-options__item">
+                        <span class="cart-pack-options__item-name"
+                            >Женская консультация при роддоме:</span
+                        >
+                        <span class="cart-pack-options__item-value">{{
+                            data.cnt?.features?.has_consultation ? "Да" : "Нет"
+                        }}</span>
+                    </p>
+                    <p class="cart-pack-options__item">
+                        <span class="cart-pack-options__item-name"
+                            >В палате с малышом:</span
+                        >
+                        <span class="cart-pack-options__item-value">{{
+                            data.cnt?.features?.mom_with_baby ? "Да" : "Нет"
+                        }}</span>
+                    </p>
+                </div>
+
+                <!-- Orders -->
+                <ng-container *ngIf="data.show">
+                    <div
+                        class="cart-pack__body-item"
+                        *ngFor="let section of sections"
+                    >
+                        <p class="cart-pack-item__title section__title">
+                            {{ section.title }}
+                        </p>
+                        <ng-container
+                            *ngFor="let tab of sectionTabs[section.key]"
+                        >
+                            <div
+                                class="cart-pack__body-item cart-pack-item"
+                                *ngIf="getOrders(section.key, tab.key).length"
+                            >
+                                <p class="cart-pack-item__title">
+                                    {{ tab.title }}
+                                </p>
+                                <app-order-block
+                                    [orders]="getOrders(section.key, tab.key)"
+                                ></app-order-block>
+                            </div>
+                        </ng-container>
+                    </div>
+                </ng-container>
+            </div>
+            <ng-container>
+                <button
+                    class="cart-pack__body-btn unaccent"
+                    *ngIf="data.show"
+                    (click)="unWrapOrdersBlock()"
+                >
+                    Свернуть
+                </button>
+                <button
+                    class="cart-pack__body-btn unaccent"
+                    *ngIf="!data.show"
+                    (click)="wrapOrdersBlock()"
+                >
+                    Развернуть список
+                </button>
+            </ng-container>
+        </div>
+    </div>
+</ng-template>
+<ng-template #consultation let-invalid="invalid" let-contragent>
     <div class="cart-pack cart-pack--clinic">
         <div
             class="cart-pack__body"

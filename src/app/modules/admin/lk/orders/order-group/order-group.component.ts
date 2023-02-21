@@ -4,7 +4,6 @@ import {
     Component,
     EventEmitter,
     Input,
-    OnInit,
     Output,
 } from "@angular/core";
 import {
@@ -63,7 +62,7 @@ interface OrderGroupFilters {
     styleUrls: ["./order-group.component.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OrderGroupComponent implements OnInit {
+export class OrderGroupComponent {
     ctg: CTG;
     sectionsDict = Sections;
     sections = Object.keys(this.sectionsDict) as SectionType[];
@@ -226,8 +225,6 @@ export class OrderGroupComponent implements OnInit {
     userPhoto$ = this.userPhotoData$.pipe(map((d) => d[0]));
     userPhotoSignal$ = this.userPhotoData$.pipe(map((d) => d[1]));
 
-    ngOnInit(): void {}
-
     getOrdersBySelection(
         section: SectionType,
         tabKey: string,
@@ -345,7 +342,7 @@ export class OrderGroupComponent implements OnInit {
         const configFloor = config.tabs
             .find((t) => t.key === order.tab_key)
             ?.floors.find((f) => f.key === order.floor_key);
-        const restrictors =
+        this.filters.restrictors =
             [
                 ...configFloor.consumerKeys
                     .map((ck) => config.consumers.find((c) => c.key === ck))
@@ -353,7 +350,6 @@ export class OrderGroupComponent implements OnInit {
                     .map((consumer) => consumer.restrictors)
                     .reduce((acc, r) => [...acc, ...r]),
             ] ?? ([] as Array<Restrictor>);
-        this.filters.restrictors = restrictors;
         this.filters.slotEntityKey = order.slot_entity_key;
         this.filters.section = order.section_key;
         this.loading$.next(null);

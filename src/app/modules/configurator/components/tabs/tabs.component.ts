@@ -24,11 +24,14 @@ export class TabsComponent implements OnInit {
     ) {}
 
     price$: Observable<number> = combineLatest([
-        this.configuratorService.currentContragentID$,
+        this.configuratorService.onContragent$,
         this.configuratorService.currentSectionKey$,
     ]).pipe(
-        switchMap(([id, section]) => {
-            return this.orderService.getPriceByContragent(id, section);
+        switchMap(([ctg, section]) => {
+            return this.orderService.getPriceByContragent(
+                ctg.contragent,
+                section
+            );
         })
     );
 

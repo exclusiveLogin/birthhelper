@@ -3,17 +3,16 @@ import {
     Component,
     EventEmitter,
     Input,
-    OnInit,
     Output,
 } from "@angular/core";
 import { IClinicMini } from "app/models/clinic.interface";
 import { Router } from "@angular/router";
 import { BehaviorSubject, Observable } from "rxjs";
-import { ImageService } from "../../../../../services/image.service";
+import { ImageService } from "@services/image.service";
 import { SafeUrl } from "@angular/platform-browser";
 import { Entity } from "@models/entity.interface";
 import { FeedbackService } from "@modules/feedback/feedback.service";
-import { map, shareReplay, switchMap, tap } from "rxjs/operators";
+import { map, shareReplay, switchMap } from "rxjs/operators";
 import { SummaryVotes } from "@modules/feedback/models";
 
 @Component({
@@ -22,7 +21,7 @@ import { SummaryVotes } from "@modules/feedback/models";
     styleUrls: ["./clinic.card.component.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClinicCardComponent implements OnInit {
+export class ClinicCardComponent {
     viewClinic: IClinicMini = {
         id: -1,
         address: "Не найден",
@@ -53,7 +52,7 @@ export class ClinicCardComponent implements OnInit {
     imageSignal$: BehaviorSubject<null>;
 
     @Input()
-    private set clinic(data: Entity) {
+    public set clinic(data: Entity) {
         this.viewClinic = data as IClinicMini;
         const imgData = this.imageService.getImage$(data.photo);
         this.photoUrl$ = imgData[0];
@@ -95,8 +94,6 @@ export class ClinicCardComponent implements OnInit {
     wrap(): void {
         this.wrapped = true;
     }
-
-    ngOnInit(): void {}
 
     showClinicOnMap(): void {
         this.gotoMap.next(this.viewClinic);

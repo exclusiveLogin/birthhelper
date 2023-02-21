@@ -106,9 +106,7 @@
                 <p class="cart-price__item-title">Итого к оплате:</p>
                 <p class="cart-price__item-value cart-price__item-value--green">
                     <span class="price_from">от</span
-                    >{{
-                        (totalPriceValid$ | async) || 0 | digitalSeparator
-                    }}
+                    >{{ (totalPriceValid$ | async) || 0 | digitalSeparator }}
                     руб.
                 </p>
             </div>
