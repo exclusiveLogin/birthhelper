@@ -17,6 +17,10 @@ import { LkFeedbackComponent } from "./feedback/lk-feedback/lk-feedback.componen
 import { LkFeedbackItemComponent } from "./feedback/lk-feedback-item/lk-feedback-item.component";
 import { LkFeedbackListComponent } from "./feedback/lk-feedback-list/lk-feedback-list.component";
 import { FeedbackFilterComponent } from "@modules/admin/lk/feedback/feedback-filter/feedback-filter.component";
+import { LkAvatarComponent } from './common/lk-avatar/lk-avatar.component';
+import { LkRatingComponent } from './common/lk-rating/lk-rating.component';
+import { LkTitleComponent } from './common/lk-title/lk-title.component';
+import { LkBubbleComponent } from './common/lk-bubble/lk-bubble.component';
 
 @NgModule({
     declarations: [
@@ -35,6 +39,10 @@ import { FeedbackFilterComponent } from "@modules/admin/lk/feedback/feedback-fil
         LkFeedbackComponent,
         LkFeedbackItemComponent,
         LkFeedbackListComponent,
+        LkAvatarComponent,
+        LkRatingComponent,
+        LkTitleComponent,
+        LkBubbleComponent,
     ],
     imports: [
         CommonModule,

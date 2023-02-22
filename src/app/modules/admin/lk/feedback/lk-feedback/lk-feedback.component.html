@@ -2,6 +2,7 @@
 <button class="button-close" [routerLink]="['/admin', 'lk']">
     <img src="/img/icons/close.svg" class="button-close__img" alt="закрыть" />
 </button>
+
 <app-feedback-filter></app-feedback-filter>
 <app-lk-view-block *ngFor="let ctg of selectedCTG$ | async">
     <app-contragent-header
