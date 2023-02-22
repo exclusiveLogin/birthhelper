@@ -5,7 +5,87 @@
 <ng-template #blankuser>
     <img class="user_avatar" src="img/blank-user.jpg" />
 </ng-template>
-
+<ng-template #loading>
+    <div class="loading_container">
+        <img src="assets/loading_1.gif" class="loading" />
+    </div>
+</ng-template>
+<ng-template #tpl_unwrap>
+    <ng-container *ngIf="data$ | async as data">
+        <div class="tbl_row" (click)="wrap()">
+            <!--        ID      -->
+            <div class="order_tbl__item small ellipsis" [title]="data.group_id">
+                {{ data.group_id }}
+            </div>
+            <!--        login      -->
+            <div class="order_tbl__item mid">
+                {{ data.user.login || "---" }}
+            </div>
+            <!--        ФИО      -->
+            <div class="order_tbl__item extra">
+                {{ data.user.first_name }}&nbsp; {{ data.user.last_name }}&nbsp;
+                {{ data.user.patronymic }}
+            </div>
+            <!--        email      -->
+            <div class="order_tbl__item extra">
+                {{ data?.contacts?.email || "email не указан" }}
+            </div>
+            <!--        телефон      -->
+            <div class="order_tbl__item long">
+                {{ data?.contacts?.phone || "телефон не указан" }}
+            </div>
+            <!--        предпочитаемый канал связи      -->
+            <div class="order_tbl__item long">
+                <i
+                    class="fas fa-phone"
+                    aria-hidden="true"
+                    title="Телефон"
+                    *ngIf="data?.contacts?.ch_phone"
+                ></i>
+                <i
+                    class="fab fa-viber"
+                    aria-hidden="true"
+                    title="Viber"
+                    *ngIf="data?.contacts?.ch_viber"
+                ></i>
+                <i
+                    class="fab fa-whatsapp"
+                    aria-hidden="true"
+                    title="WhatsApp"
+                    *ngIf="data?.contacts?.ch_whatsapp"
+                ></i>
+                <i
+                    class="fab fa-telegram-plane"
+                    aria-hidden="true"
+                    title="Telegram"
+                    *ngIf="data?.contacts?.ch_telegram"
+                ></i>
+                <i
+                    class="fa fa-envelope"
+                    aria-hidden="true"
+                    title="E-mail"
+                    *ngIf="data?.contacts?.ch_email"
+                ></i>
+                <i
+                    class="fab fa-skype"
+                    aria-hidden="true"
+                    title="Skype"
+                    *ngIf="data?.contacts?.ch_skype"
+                ></i>
+            </div>
+            <!--        предпочитаемый канал связи      -->
+            <div class="order_tbl__item long">{{ getLastDate() }}</div>
+            <!--        статус      -->
+            <div class="order_tbl__item mid">{{ getStatusTitle() }}</div>
+            <!--        цена      -->
+            <div class="order_tbl__item mid">{{ getGroupPrice() }}</div>
+            <!--        кнопка открыть      -->
+            <!--            <div class="order_tbl__item open_btn" (click)="wrap()">-->
+            <!--                <i class="fas fa-eye fa-lg"></i>-->
+            <!--            </div>-->
+        </div>
+    </ng-container>
+</ng-template>
 <ng-template #tpl_wrap>
     <div
         class="order_container cart-pack cart-pack--clinic"
@@ -403,87 +483,4 @@
             </ng-template>
         </div>
     </div>
-</ng-template>
-
-<ng-template #loading>
-    <div class="loading_container">
-        <img src="assets/loading_1.gif" class="loading" />
-    </div>
-</ng-template>
-
-<ng-template #tpl_unwrap>
-    <ng-container *ngIf="data$ | async as data">
-        <div class="tbl_row" (click)="wrap()">
-            <!--        ID      -->
-            <div class="order_tbl__item small ellipsis" [title]="data.group_id">
-                {{ data.group_id }}
-            </div>
-            <!--        login      -->
-            <div class="order_tbl__item mid">
-                {{ data.user.login || "---" }}
-            </div>
-            <!--        ФИО      -->
-            <div class="order_tbl__item extra">
-                {{ data.user.first_name }}&nbsp; {{ data.user.last_name }}&nbsp;
-                {{ data.user.patronymic }}
-            </div>
-            <!--        email      -->
-            <div class="order_tbl__item extra">
-                {{ data?.contacts?.email || "email не указан" }}
-            </div>
-            <!--        телефон      -->
-            <div class="order_tbl__item long">
-                {{ data?.contacts?.phone || "телефон не указан" }}
-            </div>
-            <!--        предпочитаемый канал связи      -->
-            <div class="order_tbl__item long">
-                <i
-                    class="fas fa-phone"
-                    aria-hidden="true"
-                    title="Телефон"
-                    *ngIf="data?.contacts?.ch_phone"
-                ></i>
-                <i
-                    class="fab fa-viber"
-                    aria-hidden="true"
-                    title="Viber"
-                    *ngIf="data?.contacts?.ch_viber"
-                ></i>
-                <i
-                    class="fab fa-whatsapp"
-                    aria-hidden="true"
-                    title="WhatsApp"
-                    *ngIf="data?.contacts?.ch_whatsapp"
-                ></i>
-                <i
-                    class="fab fa-telegram-plane"
-                    aria-hidden="true"
-                    title="Telegram"
-                    *ngIf="data?.contacts?.ch_telegram"
-                ></i>
-                <i
-                    class="fa fa-envelope"
-                    aria-hidden="true"
-                    title="E-mail"
-                    *ngIf="data?.contacts?.ch_email"
-                ></i>
-                <i
-                    class="fab fa-skype"
-                    aria-hidden="true"
-                    title="Skype"
-                    *ngIf="data?.contacts?.ch_skype"
-                ></i>
-            </div>
-            <!--        предпочитаемый канал связи      -->
-            <div class="order_tbl__item long">{{ getLastDate() }}</div>
-            <!--        статус      -->
-            <div class="order_tbl__item mid">{{ getStatusTitle() }}</div>
-            <!--        цена      -->
-            <div class="order_tbl__item mid">{{ getGroupPrice() }}</div>
-            <!--        кнопка открыть      -->
-            <!--            <div class="order_tbl__item open_btn" (click)="wrap()">-->
-            <!--                <i class="fas fa-eye fa-lg"></i>-->
-            <!--            </div>-->
-        </div>
-    </ng-container>
 </ng-template>

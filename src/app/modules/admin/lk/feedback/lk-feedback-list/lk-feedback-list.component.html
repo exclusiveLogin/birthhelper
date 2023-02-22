@@ -7,13 +7,29 @@
         <div class="lk-view-block__head__item extra">О ком отзыв</div>
         <div class="lk-view-block__head__item long">Дата</div>
         <div class="lk-view-block__head__item mid">Статус</div>
+        <div class="lk-view-block__head__item long">Действие</div>
     </div>
 </div>
-<app-lk-feedback-item
-    class="_row"
-    *ngFor="let fb of onFeedbackList$ | async; trackBy: trackIt"
-    [feedback]="fb"
-></app-lk-feedback-item>
+
+<ng-container *ngIf="onFeedbackList$ | async as fbl">
+    <div class="lk-feedback-list-block" *ngIf="fbl?.byCore?.length">
+        <h3>Отзывы о контрагенте</h3>
+        <app-lk-feedback-item
+            class="_row"
+            *ngFor="let fb of fbl.byCore; trackBy: trackIt"
+            [feedback]="fb"
+        ></app-lk-feedback-item>
+    </div>
+
+    <div class="lk-feedback-list-block" *ngIf="fbl?.bySlots?.length">
+        <h3>Отзывы об учлугах контрагента</h3>
+        <app-lk-feedback-item
+            class="_row"
+            *ngFor="let fb of fbl.bySlots; trackBy: trackIt"
+            [feedback]="fb"
+        ></app-lk-feedback-item>
+    </div>
+</ng-container>
 
 <!--<ng-container-->
 <!--    *ngIf="{-->

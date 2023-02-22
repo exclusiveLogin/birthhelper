@@ -1,1 +1,45 @@
-<p>lk-feedback-item works! {{ feedback.id }}</p>
+<ng-container
+    *ngTemplateOutlet="wrapMode ? tpl_wrap : tpl_unwrap"
+></ng-container>
+<ng-template #tpl_unwrap>
+    <div class="tbl_row feedback_item" (click)="wrap()">
+        <!--        ID      -->
+        <div class="order_tbl__item small ellipsis" [title]="feedback.id">
+            {{ feedback.id }}
+        </div>
+        <!--        rate      -->
+        <div class="order_tbl__item mid">
+            {{ "---" }}
+        </div>
+        <!--        login      -->
+        <div class="order_tbl__item mid">
+            {{ feedback.user.login }}
+        </div>
+        <!--        ФИО      -->
+        <div class="order_tbl__item extra">
+            {{ feedback?.user?.first_name }}&nbsp;
+            {{ feedback?.user?.last_name }}&nbsp;
+            {{ feedback?.user?.patronymic }}
+        </div>
+        <!--        О ком отзыв      -->
+        <div class="order_tbl__item extra">
+            {{ "---" }}
+        </div>
+        <!--        Дата      -->
+        <div class="order_tbl__item long">
+            {{ "---" }}
+        </div>
+        <!--        status      -->
+        <div class="order_tbl__item mid">
+            {{ feedback.status }}
+        </div>
+        <div class="order_tbl__item long">
+            {{ "---" }}
+        </div>
+        <!--        кнопка открыть      -->
+        <!--            <div class="order_tbl__item open_btn" (click)="wrap()">-->
+        <!--                <i class="fas fa-eye fa-lg"></i>-->
+        <!--            </div>-->
+    </div>
+</ng-template>
+<ng-template #tpl_wrap></ng-template>

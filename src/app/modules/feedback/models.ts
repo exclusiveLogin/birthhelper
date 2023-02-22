@@ -23,11 +23,20 @@ export interface Like {
     user_id: number;
     datetime_create: string;
 }
+
+export interface FeedbackByContragentResponse {
+    byCore: FeedbackResponse[];
+    bySlots: FeedbackResponse[];
+    contragentId: number;
+    total: number;
+}
 export interface FeedbackResponse {
     id: number;
     target_entity_key: string;
     target_entity_id: number;
     action: FeedbackAction;
+    status: FeedbackStatus;
+    user_id: number;
     comment: Comment;
     votes: Array<Vote>;
     likes: Array<Like>;

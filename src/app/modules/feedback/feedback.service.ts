@@ -5,6 +5,7 @@ import { ISettingsParams, RestService } from "@services/rest.service";
 import { DictionaryService } from "@services/dictionary.service";
 import {
     CreateFeedbackRequest,
+    FeedbackByContragentResponse,
     FeedbackFormDataAnswer,
     FeedbackResponse,
     FeedbackStatus,
@@ -164,7 +165,7 @@ export class FeedbackService extends StoreService {
         contragentId: number,
         section: SectionType,
         status: FeedbackStatus
-    ): Observable<FeedbackResponse[]> {
+    ): Observable<FeedbackByContragentResponse> {
         const restSetting: ISettingsParams = {
             mode: "api",
             segment: "feedback",

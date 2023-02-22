@@ -9,7 +9,19 @@ import { FeedbackResponse } from "@modules/feedback/models";
 })
 export class LkFeedbackItemComponent {
     constructor() {}
+    wrapMode = false;
 
     @Input()
     public feedback: FeedbackResponse;
+    wrap() {
+        this.wrapMode = true;
+    }
+    unwrap() {
+        this.wrapMode = false;
+    }
+
+    // rejectOrder(order: Order): Promise<any> {}
+    // removeOrder(order: Order): Promise<any> {}
+    // rejectOrder(order: Order): Promise<any> {}
+    // rejectOrder(order: Order): Promise<any> {}
 }
