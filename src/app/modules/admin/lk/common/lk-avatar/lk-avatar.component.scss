@@ -1,0 +1,20 @@
+:host {
+  .avatar_container {
+    border: 2px solid var(--border-color, grey);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+  .avatar_text {
+    position: absolute;
+  }
+  .empty-image {
+    height: 100%;
+    width: 100%;
+
+  }
+  .circle-image {
+    border-radius: 50%;
+  }
+}

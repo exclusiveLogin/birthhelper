@@ -1,1 +1,22 @@
-<p>lk-avatar works!</p>
+<div
+    class="avatar_container circle-image"
+    [ngStyle]="{ height: size + 'px', width: size + 'px' }"
+>
+    <ng-container *ngIf="!image">
+        <div
+            class="empty-image circle-image"
+            [ngStyle]="{ backgroundColor: defaultColorAvatar }"
+        ></div>
+        <div class="avatar_text" [ngStyle]="{ fontSize: size / 2 + 'px' }">
+            {{ avatarTitle }}
+        </div>
+    </ng-container>
+
+    <img
+        class="circle-image"
+        *ngIf="image"
+        [src]="photoUrl$ | async"
+        [alt]="title"
+        (error)="imageSignal$.next(null)"
+    />
+</div>
