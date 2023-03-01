@@ -48,21 +48,21 @@ export class LkRatingComponent implements OnInit {
                 this.maxWidth = 80;
                 break;
             case "m":
-                this.height = 120;
+                this.maxWidth = 120;
                 break;
             case "l":
-                this.height = 160;
+                this.maxWidth = 160;
                 break;
             default:
-                this.height = 120;
+                this.maxWidth = 120;
         }
         if (
             !this.rateMax ||
             !this.rateMin ||
-            !this.rateAvgMax ||
-            !this.rateAvgMin ||
-            this.rateMax - this.rateMin < 1 ||
-            this.rateAvgMax - this.rateAvgMin < 1
+            (this.mode === "compare" &&
+                (!this.rateAvgMax || !this.rateAvgMin)) ||
+            this.rateMax - this.rateMin < 0.3 ||
+            (this.mode === "compare" && this.rateAvgMax - this.rateAvgMin < 0.3)
         )
             this.stepMode = "discreet";
 
