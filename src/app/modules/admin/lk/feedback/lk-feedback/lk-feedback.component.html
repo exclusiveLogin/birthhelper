@@ -3,6 +3,18 @@
     <img src="/img/icons/close.svg" class="button-close__img" alt="закрыть" />
 </button>
 
+<app-lk-rating
+    [size]="'s'"
+    [mode]="'compare'"
+    [stepMode]="'flow'"
+    [rateCurrent]="4"
+    [rateMin]="3.5"
+    [rateMax]="4.5"
+    [rateAvg]="5"
+    [rateAvgMin]="3"
+    [rateAvgMax]="4"
+    [colorMode]="'primary'"
+></app-lk-rating>
 <app-feedback-filter></app-feedback-filter>
 <app-lk-view-block *ngFor="let ctg of selectedCTG$ | async">
     <app-contragent-header

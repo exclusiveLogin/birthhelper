@@ -17,10 +17,12 @@ import { LkFeedbackComponent } from "./feedback/lk-feedback/lk-feedback.componen
 import { LkFeedbackItemComponent } from "./feedback/lk-feedback-item/lk-feedback-item.component";
 import { LkFeedbackListComponent } from "./feedback/lk-feedback-list/lk-feedback-list.component";
 import { FeedbackFilterComponent } from "@modules/admin/lk/feedback/feedback-filter/feedback-filter.component";
-import { LkAvatarComponent } from './common/lk-avatar/lk-avatar.component';
-import { LkRatingComponent } from './common/lk-rating/lk-rating.component';
-import { LkTitleComponent } from './common/lk-title/lk-title.component';
-import { LkBubbleComponent } from './common/lk-bubble/lk-bubble.component';
+import { LkAvatarComponent } from "./common/lk-avatar/lk-avatar.component";
+import { LkRatingComponent } from "./common/lk-rating/lk-rating.component";
+import { LkTitleComponent } from "./common/lk-title/lk-title.component";
+import { LkBubbleComponent } from "./common/lk-bubble/lk-bubble.component";
+import { LkSimpleCardComponent } from "./common/lk-simple-card/lk-simple-card.component";
+import { LkUserCardComponent } from "./common/lk-user-card/lk-user-card.component";
 
 @NgModule({
     declarations: [
@@ -43,6 +45,8 @@ import { LkBubbleComponent } from './common/lk-bubble/lk-bubble.component';
         LkRatingComponent,
         LkTitleComponent,
         LkBubbleComponent,
+        LkSimpleCardComponent,
+        LkUserCardComponent,
     ],
     imports: [
         CommonModule,

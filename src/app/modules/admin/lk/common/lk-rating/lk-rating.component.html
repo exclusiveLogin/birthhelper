@@ -1,1 +1,97 @@
-<p>lk-rating works!</p>
+<!--ProgressClip compare-->
+<div
+    class="lk-rating-group"
+    [style.--lk-raitng-size.px]="height"
+    [style.--lk-raitng-max-width.px]="maxWidth"
+    [style.--lk-rating-current-clip]="clipCurrent"
+    [style.--lk-rating-compare-clip]="clipCompare"
+>
+    <!--    Grey skeleton-->
+    <div class="lk-rating-container">
+        <div class="lk-rating-item"></div>
+        <div class="lk-rating-item"></div>
+        <div class="lk-rating-item"></div>
+        <div class="lk-rating-item"></div>
+        <div class="lk-rating-item"></div>
+    </div>
+    <ng-container *ngIf="colorMode === 'primary'; then primored"></ng-container>
+    <ng-container *ngIf="colorMode === 'color'; then colored"></ng-container>
+    <ng-container *ngIf="mode === 'compare'; then compare"></ng-container>
+</div>
+
+<ng-template #primored>
+    <!--    Primary color-->
+    <div class="lk-rating-container lk-rating-container-current">
+        <div
+            class="lk-rating-item primary"
+            [ngClass]="{ hide: !isShowMeCurrent(1) }"
+        ></div>
+        <div
+            class="lk-rating-item primary"
+            [ngClass]="{ hide: !isShowMeCurrent(2) }"
+        ></div>
+        <div
+            class="lk-rating-item primary"
+            [ngClass]="{ hide: !isShowMeCurrent(3) }"
+        ></div>
+        <div
+            class="lk-rating-item primary"
+            [ngClass]="{ hide: !isShowMeCurrent(4) }"
+        ></div>
+        <div
+            class="lk-rating-item primary"
+            [ngClass]="{ hide: !isShowMeCurrent(5) }"
+        ></div>
+    </div>
+</ng-template>
+
+<ng-template #colored>
+    <!--    Colored-->
+    <div class="lk-rating-container lk-rating-container-current">
+        <div
+            class="lk-rating-item red"
+            [ngClass]="{ hide: !isShowMeCurrent(1) }"
+        ></div>
+        <div
+            class="lk-rating-item orange"
+            [ngClass]="{ hide: !isShowMeCurrent(2) }"
+        ></div>
+        <div
+            class="lk-rating-item yellow"
+            [ngClass]="{ hide: !isShowMeCurrent(3) }"
+        ></div>
+        <div
+            class="lk-rating-item green"
+            [ngClass]="{ hide: !isShowMeCurrent(4) }"
+        ></div>
+        <div
+            class="lk-rating-item green"
+            [ngClass]="{ hide: !isShowMeCurrent(5) }"
+        ></div>
+    </div>
+</ng-template>
+
+<ng-template #compare>
+    <div class="lk-rating-container lk-rating-container-compare">
+        <div
+            class="lk-rating-item-compare gold"
+            [ngClass]="{ hide: !isShowMeCompare(1) }"
+        ></div>
+        <div
+            class="lk-rating-item-compare gold"
+            [ngClass]="{ hide: !isShowMeCompare(2) }"
+        ></div>
+        <div
+            class="lk-rating-item-compare gold"
+            [ngClass]="{ hide: !isShowMeCompare(3) }"
+        ></div>
+        <div
+            class="lk-rating-item-compare gold"
+            [ngClass]="{ hide: !isShowMeCompare(4) }"
+        ></div>
+        <div
+            class="lk-rating-item-compare gold"
+            [ngClass]="{ hide: !isShowMeCompare(5) }"
+        ></div>
+    </div>
+</ng-template>
