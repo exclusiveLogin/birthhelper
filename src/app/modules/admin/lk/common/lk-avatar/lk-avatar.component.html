@@ -2,7 +2,7 @@
     class="avatar_container circle-image"
     [ngStyle]="{ height: size + 'px', width: size + 'px' }"
 >
-    <ng-container *ngIf="!image">
+    <ng-container *ngIf="!_image">
         <div
             class="empty-image circle-image"
             [ngStyle]="{ backgroundColor: defaultColorAvatar }"
@@ -14,9 +14,8 @@
 
     <img
         class="circle-image"
-        *ngIf="image"
+        *ngIf="_image"
         [src]="photoUrl$ | async"
         [alt]="title"
-        (error)="imageSignal$.next(null)"
     />
 </div>

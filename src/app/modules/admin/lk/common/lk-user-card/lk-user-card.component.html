@@ -1,1 +1,13 @@
-<p>lk-user-card works!</p>
+<div class="lk-user-card-container">
+    <app-lk-avatar
+        [size]="64"
+        [image]="userPhotoImage$ | async"
+    ></app-lk-avatar>
+    <app-lk-title
+        [title]="user.login"
+        [subTitle]="user.first_name"
+        [accentTitle]="user.last_name"
+    ></app-lk-title>
+    <app-lk-contacts></app-lk-contacts>
+    <app-lk-confirm-chanel></app-lk-confirm-chanel>
+</div>

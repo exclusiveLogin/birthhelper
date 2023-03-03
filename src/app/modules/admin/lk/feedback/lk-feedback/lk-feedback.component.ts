@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { LkService } from "@services/lk.service";
+import { AuthService } from "@modules/auth-module/auth.service";
 
 @Component({
     selector: "app-lk-feedback",
@@ -8,6 +9,10 @@ import { LkService } from "@services/lk.service";
 })
 export class LkFeedbackComponent {
     selectedCTG$ = this.lkService.selectedContragents$;
+    user$ = this.authService.user$;
 
-    constructor(private lkService: LkService) {}
+    constructor(
+        private lkService: LkService,
+        private authService: AuthService
+    ) {}
 }

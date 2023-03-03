@@ -1,8 +1,8 @@
 import {
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     Input,
-    OnInit,
 } from "@angular/core";
 import { ImageService } from "@services/image.service";
 import { IImage } from "@modules/admin/Dashboard/Editor/components/image/image.component";
@@ -16,11 +16,15 @@ import { randomColor } from "@modules/utils/random";
     styleUrls: ["./lk-avatar.component.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LkAvatarComponent implements OnInit {
+export class LkAvatarComponent {
     @Input() title: string;
     @Input() subtitle: string;
-    @Input() image: IImage;
+    @Input() set image(value: IImage) {
+        this.imageSetter(value);
+        this._image = value;
+    }
     @Input() size: number = 64;
+    _image: IImage;
     defaultColorAvatar: string = randomColor(50, 100);
 
     photoUrl$: Observable<SafeUrl>;
@@ -30,9 +34,9 @@ export class LkAvatarComponent implements OnInit {
 
     get avatarTitle(): string {
         const result: string[] = [];
-        result.push(this?.title[0]);
+        result.push(this?.title?.[0]);
         result.push(this?.subtitle?.[0]);
-        result.push(this?.title[1]);
+        result.push(this?.title?.[1]);
         return result
             .filter((_) => !!_)
             .slice(0, 2)
@@ -40,11 +44,10 @@ export class LkAvatarComponent implements OnInit {
             .join("");
     }
 
-    ngOnInit(): void {
-        if (this.image) {
-            [this.photoUrl$, this.imageSignal$] = this.imageService.getImage$(
-                this.image
-            );
+    imageSetter(image: IImage) {
+        if (image) {
+            [this.photoUrl$, this.imageSignal$] =
+                this.imageService.getImage$(image);
         }
     }
 }

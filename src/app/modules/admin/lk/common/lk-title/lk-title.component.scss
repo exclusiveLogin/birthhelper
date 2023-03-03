@@ -1,0 +1,16 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+
+  .lk-title {
+    &-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    &-subtitle {
+      font-size: 0.8rem;
+    }
+  }
+}

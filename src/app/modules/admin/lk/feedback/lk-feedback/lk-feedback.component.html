@@ -5,16 +5,18 @@
 
 <!--<app-lk-rating-->
 <!--    [size]="'l'"-->
-<!--    [mode]="'simple'"-->
-<!--    [stepMode]="'discreet'"-->
+<!--    [mode]="'compare'"-->
+<!--    [stepMode]="'flow'"-->
 <!--    [rateCurrent]="5"-->
 <!--    [rateMin]="1.5"-->
 <!--    [rateMax]="4.7"-->
 <!--    [rateAvg]="4.7"-->
 <!--    [rateAvgMin]="3.5"-->
 <!--    [rateAvgMax]="4.3"-->
-<!--    [colorMode]="'color'"-->
+<!--    [colorMode]="'primary'"-->
 <!--&gt;</app-lk-rating>-->
+
+<app-lk-user-card *ngIf="user$ | async as usr" [user]="usr"></app-lk-user-card>
 
 <app-feedback-filter></app-feedback-filter>
 <app-lk-view-block *ngFor="let ctg of selectedCTG$ | async">

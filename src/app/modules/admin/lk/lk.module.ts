@@ -23,6 +23,8 @@ import { LkTitleComponent } from "./common/lk-title/lk-title.component";
 import { LkBubbleComponent } from "./common/lk-bubble/lk-bubble.component";
 import { LkSimpleCardComponent } from "./common/lk-simple-card/lk-simple-card.component";
 import { LkUserCardComponent } from "./common/lk-user-card/lk-user-card.component";
+import { LkContactsComponent } from './common/lk-contacts/lk-contacts.component';
+import { LkConfirmChanelComponent } from './common/lk-confirm-chanel/lk-confirm-chanel.component';
 
 @NgModule({
     declarations: [
@@ -47,6 +49,8 @@ import { LkUserCardComponent } from "./common/lk-user-card/lk-user-card.componen
         LkBubbleComponent,
         LkSimpleCardComponent,
         LkUserCardComponent,
+        LkContactsComponent,
+        LkConfirmChanelComponent,
     ],
     imports: [
         CommonModule,
