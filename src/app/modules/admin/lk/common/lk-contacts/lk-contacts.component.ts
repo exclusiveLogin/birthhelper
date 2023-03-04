@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 
 @Component({
     selector: "app-lk-contacts",
@@ -10,9 +11,13 @@ export class LkContactsComponent {
     @Input() phone: string;
     @Input() email: string;
     @Input() skype: string;
-    constructor() {}
+    constructor(private sanitazer: DomSanitizer) {}
 
-    hasChanel(key: string): boolean {
-        return;
+    get skypeLink(): SafeUrl {
+        return this.skype
+            ? this.sanitazer.bypassSecurityTrustUrl(
+                  "skype:" + this.skype + "/call"
+              )
+            : null;
     }
 }

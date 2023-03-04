@@ -1,1 +1,28 @@
-<p>lk-confirm-chanel works!</p>
+<div class="lk-confirm-channels">
+    <i
+        class="fas fa-phone"
+        aria-hidden="true"
+        title="Телефон"
+        *ngIf="phone"
+    ></i>
+    <i class="fab fa-viber" aria-hidden="true" title="Viber" *ngIf="viber"></i>
+    <i
+        class="fab fa-whatsapp"
+        aria-hidden="true"
+        title="WhatsApp"
+        *ngIf="whatsapp"
+    ></i>
+    <i
+        class="fab fa-telegram-plane"
+        aria-hidden="true"
+        title="Telegram"
+        *ngIf="telegram"
+    ></i>
+    <i
+        class="fa fa-envelope"
+        aria-hidden="true"
+        title="E-mail"
+        *ngIf="email"
+    ></i>
+    <i class="fab fa-skype" aria-hidden="true" title="Skype" *ngIf="skype"></i>
+</div>

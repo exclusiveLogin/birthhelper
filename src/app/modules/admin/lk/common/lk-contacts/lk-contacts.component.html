@@ -1,1 +1,21 @@
-<p>lk-contacts works!</p>
+<div class="lk-contacts-container">
+    <div class="lk-contacts-phone lk-contacts-contact" *ngIf="phone">
+        <span class="lk-contacts-title"><i class="fa-solid fa-phone"></i></span>
+        <div class="lk-separator"></div>
+        <a class="lk-contacts-value" [href]="'tel:' + phone"> {{ phone }} </a>
+    </div>
+
+    <div class="lk-contacts-email lk-contacts-contact" *ngIf="email">
+        <span class="lk-contacts-title"><i class="fa-solid fa-at"></i></span>
+        <div class="lk-separator"></div>
+        <a class="lk-contacts-value" [href]="'mailto:' + email">{{ email }}</a>
+    </div>
+
+    <div class="lk-contacts-skype lk-contacts-contact" *ngIf="skype">
+        <span class="lk-contacts-title">
+            <i class="fa-brands fa-skype"></i>
+        </span>
+        <div class="lk-separator"></div>
+        <a class="lk-contacts-value" [href]="skypeLink"> {{ skype }} </a>
+    </div>
+</div>
