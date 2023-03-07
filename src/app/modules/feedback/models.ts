@@ -48,6 +48,7 @@ export interface Vote {
     slug: string;
     title: string;
     section: SectionType;
+    rate: number;
     feedback_entity_type: string;
     slot_category_type: number;
 }

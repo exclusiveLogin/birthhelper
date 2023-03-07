@@ -25,6 +25,7 @@ import { LkSimpleCardComponent } from "./common/lk-simple-card/lk-simple-card.co
 import { LkUserCardComponent } from "./common/lk-user-card/lk-user-card.component";
 import { LkContactsComponent } from './common/lk-contacts/lk-contacts.component';
 import { LkConfirmChanelComponent } from './common/lk-confirm-chanel/lk-confirm-chanel.component';
+import { LkRatingGroupComponent } from './common/lk-rating-group/lk-rating-group.component';
 
 @NgModule({
     declarations: [
@@ -51,6 +52,7 @@ import { LkConfirmChanelComponent } from './common/lk-confirm-chanel/lk-confirm-
         LkUserCardComponent,
         LkContactsComponent,
         LkConfirmChanelComponent,
+        LkRatingGroupComponent,
     ],
     imports: [
         CommonModule,
