@@ -1,5 +1,6 @@
 <div
     class="avatar_container circle-image"
+    [style.--border-radius]="borderRadius"
     [ngStyle]="{ height: size + 'px', width: size + 'px' }"
 >
     <ng-container *ngIf="!_image">

@@ -15,8 +15,21 @@
 <!--    [rateAvgMax]="4.3"-->
 <!--    [colorMode]="'primary'"-->
 <!--&gt;</app-lk-rating>-->
-
-<app-lk-user-card *ngIf="user$ | async as usr" [user]="usr"></app-lk-user-card>
+<div
+    class="lk-rating-row"
+    style="display: flex; gap: 24px; align-items: center"
+>
+    <app-lk-user-card
+        *ngIf="user$ | async as usr"
+        [user]="usr"
+    ></app-lk-user-card>
+    <i class="fas fa-chevron-right fa-3x"></i>
+    <app-lk-simple-card
+        [title]="'test'"
+        [subTitle]="'subtest'"
+        [photoId]="29"
+    ></app-lk-simple-card>
+</div>
 
 <app-feedback-filter></app-feedback-filter>
 <app-lk-view-block *ngFor="let ctg of selectedCTG$ | async">

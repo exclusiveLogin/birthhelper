@@ -24,7 +24,7 @@ export class LkRatingComponent implements OnInit {
     @Input() rateAvgMax?: number;
     @Input() rateAvgMin?: number;
     height: number;
-    maxWidth: number;
+    width: number;
 
     ngOnInit(): void {
         // set size
@@ -45,16 +45,16 @@ export class LkRatingComponent implements OnInit {
         // set max width
         switch (this.size) {
             case "s":
-                this.maxWidth = 80;
+                this.width = 80;
                 break;
             case "m":
-                this.maxWidth = 120;
+                this.width = 120;
                 break;
             case "l":
-                this.maxWidth = 160;
+                this.width = 160;
                 break;
             default:
-                this.maxWidth = 120;
+                this.width = 120;
         }
         if (
             !this.rateMax ||

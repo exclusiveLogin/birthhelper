@@ -1,1 +1,19 @@
-<p>lk-simple-card works!</p>
+<div class="lk-user-card-container">
+    <app-lk-avatar
+        [size]="64"
+        [image]="photoImage$ | async"
+        [borderRadius]="'10px'"
+    ></app-lk-avatar>
+    <app-lk-title
+        [title]="title"
+        [subTitle]="subTitle"
+        [accentTitle]="accentTitle"
+    ></app-lk-title>
+    <div class="lk-simple-rating">
+        <div class="rate-count">
+            {{ "-" }}
+        </div>
+        <app-lk-rating class="lk-simple-rating-rating"></app-lk-rating>
+        <span class="lk-rating-total-text">Всего 0 отзывов</span>
+    </div>
+</div>

@@ -19,6 +19,7 @@ import { randomColor } from "@modules/utils/random";
 export class LkAvatarComponent {
     @Input() title: string;
     @Input() subtitle: string;
+    @Input() borderRadius: string = "50%";
     @Input() set image(value: IImage) {
         this.imageSetter(value);
         this._image = value;
