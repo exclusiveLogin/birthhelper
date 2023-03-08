@@ -1,10 +1,10 @@
-<div class="lk-input-group">
-    <div class="lk-input-group-item" *ngFor="let vote of votes">
-        <div class="lk-input-group-title" [title]="vote.title">
+<div class="lk-rating-group">
+    <div class="lk-rating-group-item" *ngFor="let vote of votes">
+        <div class="lk-rating-group-title" [title]="vote.title">
             {{ vote.title }}
         </div>
         <app-lk-rating
-            class="lk-input-group-rating"
+            class="lk-rating-group-rating"
             [size]="'s'"
             [rateCurrent]="vote.rate"
         ></app-lk-rating>
