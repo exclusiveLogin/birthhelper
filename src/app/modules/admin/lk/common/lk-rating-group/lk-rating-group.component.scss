@@ -2,8 +2,9 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px 16px;
-  border: 3px #6896f5 solid;
-  border-radius: 16px;
+  border: 2px #d3d3d3 solid;
+  border-radius: 16px 8px;
+  background-color: #f3f3f3;
   padding: 8px;
 
   &-item {
