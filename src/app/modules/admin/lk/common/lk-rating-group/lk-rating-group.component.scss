@@ -1,11 +1,14 @@
 .lk-rating-group {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 16px;
-  border: 2px #d3d3d3 solid;
-  border-radius: 16px 8px;
-  background-color: #f3f3f3;
-  padding: 8px;
+  gap: 16px 16px;
+  border-radius: 8px 8px 4px 4px;
+  background-color: #ffffff;
+  box-shadow: 0px 13px 8px -10px rgb(195 195 195 / 60%);
+  border-bottom: 2px #007bff solid;
+  padding: 16px 24px;
+  font-size: 0.9rem;
+  font-weight: 500;
 
   &-item {
     display: flex;

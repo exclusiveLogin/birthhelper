@@ -15,7 +15,7 @@
 <!--    [rateAvgMax]="4.3"-->
 <!--    [colorMode]="'primary'"-->
 <!--&gt;</app-lk-rating>-->
-<div class="lk-rating-row" style="display: flex; gap: 24px; align-items: end">
+<div class="lk-rating-row" style="display: flex; gap: 36px; align-items: end">
     <app-lk-user-card
         *ngIf="user$ | async as usr"
         [user]="usr"
@@ -26,37 +26,47 @@
         [subTitle]="'subtest'"
         [photoId]="29"
     ></app-lk-simple-card>
-    <i class="fas fa-chevron-right fa-3x" style="align-self: center"></i>
-    <app-lk-rating-group [votes]="votes"></app-lk-rating-group>
 </div>
-<div class="lk-feedback-messages">
-    <div class="lk-feedback-message-box lk-feedback-message-main">
-        <div class="lk-feedback-message-date">28.02.2012 22:33</div>
-        <div class="lk-feedback-message speech-bubble">
-            <div class="lk-feedback-message-text">Да идите вы все нахуй!!!</div>
+<div class="lk-feedback-body">
+    <div class="lk-feedback-messages">
+        <div class="lk-feedback-message-box lk-feedback-message-main">
+            <div class="lk-feedback-message-date">28.02.2012 22:33</div>
+            <div class="lk-feedback-message speech-bubble">
+                <div class="lk-feedback-message-text">
+                    Да идите вы все нахуй!!!
+                </div>
+            </div>
+        </div>
+
+        <div class="lk-feedback-message-box">
+            <div class="lk-feedback-message-date">28.02.2012 22:33</div>
+            <app-lk-avatar [title]="'Агрессо'"></app-lk-avatar>
+            <div
+                class="lk-feedback-message speech-bubble speech-bubble-accent speech-bubble-left"
+            >
+                <div class="lk-feedback-message-text">Сам иди ебана!</div>
+            </div>
+        </div>
+
+        <div class="lk-feedback-message-box">
+            <div
+                class="lk-feedback-message-date lk-feedback-message-date-right"
+            >
+                28.02.2012 22:33
+            </div>
+            <div
+                class="lk-feedback-message speech-bubble-accent-secondary speech-bubble speech-bubble-right"
+            >
+                <div class="lk-feedback-message-text">
+                    Заткнитесь нахуй оба!
+                </div>
+            </div>
+            <app-lk-avatar [title]="'Мразь'"></app-lk-avatar>
         </div>
     </div>
-
-    <div class="lk-feedback-message-box">
-        <div class="lk-feedback-message-date">28.02.2012 22:33</div>
-        <app-lk-avatar [title]="'Агрессо'"></app-lk-avatar>
-        <div
-            class="lk-feedback-message speech-bubble speech-bubble-accent speech-bubble-left"
-        >
-            <div class="lk-feedback-message-text">Сам иди ебана!</div>
-        </div>
-    </div>
-
-    <div class="lk-feedback-message-box">
-        <div class="lk-feedback-message-date lk-feedback-message-date-right">
-            28.02.2012 22:33
-        </div>
-        <div
-            class="lk-feedback-message speech-bubble-accent-secondary speech-bubble speech-bubble-right"
-        >
-            <div class="lk-feedback-message-text">Заткнитесь нахуй оба!</div>
-        </div>
-        <app-lk-avatar [title]="'Мразь'"></app-lk-avatar>
+    <div class="lk-feedback-rating-block">
+        <i class="fas fa-chevron-down fa-3x" style="align-self: center"></i>
+        <app-lk-rating-group [votes]="votes"></app-lk-rating-group>
     </div>
 </div>
 
