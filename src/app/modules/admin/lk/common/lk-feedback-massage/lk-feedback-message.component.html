@@ -1,8 +1,49 @@
-<div class="lk-feedback-message-box lk-feedback-message-main">
-    <div class="lk-feedback-message-date">28.02.2012 22:33</div>
-    <div class="lk-feedback-message speech-bubble">
-        <div class="lk-feedback-message-text">Да идите вы все нахуй!!!</div>
-    </div>
-</div>
+<ng-container *ngTemplateOutlet="activeTemplate"></ng-container>
 
-<ng-template> </ng-template>
+<ng-template #mainTpl>
+    <div
+        class="lk-feedback-message-box"
+        [ngClass]="{ 'lk-feedback-message-main': mode === 'main' }"
+    >
+        <div class="lk-feedback-message-date">{{ date }}</div>
+        <app-lk-bubble
+            [text]="text"
+            [mode]="mode"
+            [color]="color"
+        ></app-lk-bubble>
+    </div>
+</ng-template>
+<ng-template #answerTpl>
+    <div class="lk-feedback-message-box">
+        <div class="lk-feedback-message-date">{{ date }}</div>
+        <app-lk-avatar
+            *ngIf="fromUser"
+            [title]="fromUser.first_name"
+            [subtitle]="fromUser.last_name"
+            [photoID]="fromUser.photo_id"
+        ></app-lk-avatar>
+        <app-lk-bubble
+            [text]="text"
+            [mode]="mode"
+            [color]="color"
+        ></app-lk-bubble>
+    </div>
+</ng-template>
+<ng-template #replyTpl>
+    <div class="lk-feedback-message-box">
+        <div class="lk-feedback-message-date lk-feedback-message-date-right">
+            {{ date }}
+        </div>
+        <app-lk-bubble
+            [text]="text"
+            [mode]="mode"
+            [color]="color"
+        ></app-lk-bubble>
+        <app-lk-avatar
+            *ngIf="fromUser"
+            [title]="fromUser.first_name"
+            [subtitle]="fromUser.last_name"
+            [photoID]="fromUser.photo_id"
+        ></app-lk-avatar>
+    </div>
+</ng-template>

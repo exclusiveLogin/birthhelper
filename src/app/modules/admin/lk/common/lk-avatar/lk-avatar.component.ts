@@ -9,6 +9,7 @@ import { IImage } from "@modules/admin/Dashboard/Editor/components/image/image.c
 import { BehaviorSubject, Observable } from "rxjs";
 import { SafeUrl } from "@angular/platform-browser";
 import { randomColor } from "@modules/utils/random";
+import { RestService } from "@services/rest.service";
 
 @Component({
     selector: "app-lk-avatar",
@@ -20,6 +21,12 @@ export class LkAvatarComponent {
     @Input() title: string;
     @Input() subtitle: string;
     @Input() borderRadius: string = "50%";
+    @Input() set photoID(value: number) {
+        if (!value || this._image) return;
+        this.restService
+            .getEntity<IImage>("ent_images", value)
+            .subscribe((image) => (this.image = image));
+    }
     @Input() set image(value: IImage) {
         this.imageSetter(value);
         this._image = value;
@@ -31,7 +38,10 @@ export class LkAvatarComponent {
     photoUrl$: Observable<SafeUrl>;
     imageSignal$: BehaviorSubject<null>;
 
-    constructor(private imageService: ImageService) {}
+    constructor(
+        private imageService: ImageService,
+        private restService: RestService
+    ) {}
 
     get avatarTitle(): string {
         const result: string[] = [];
