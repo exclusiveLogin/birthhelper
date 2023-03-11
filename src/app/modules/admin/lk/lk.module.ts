@@ -23,9 +23,11 @@ import { LkTitleComponent } from "./common/lk-title/lk-title.component";
 import { LkBubbleComponent } from "./common/lk-bubble/lk-bubble.component";
 import { LkSimpleCardComponent } from "./common/lk-simple-card/lk-simple-card.component";
 import { LkUserCardComponent } from "./common/lk-user-card/lk-user-card.component";
-import { LkContactsComponent } from './common/lk-contacts/lk-contacts.component';
-import { LkConfirmChanelComponent } from './common/lk-confirm-chanel/lk-confirm-chanel.component';
-import { LkRatingGroupComponent } from './common/lk-rating-group/lk-rating-group.component';
+import { LkContactsComponent } from "./common/lk-contacts/lk-contacts.component";
+import { LkConfirmChanelComponent } from "./common/lk-confirm-chanel/lk-confirm-chanel.component";
+import { LkRatingGroupComponent } from "./common/lk-rating-group/lk-rating-group.component";
+import { LkFeedbackMessageComponent } from "app/modules/admin/lk/common/lk-feedback-massage/lk-feedback-message.component";
+import { LkMessageDateComponent } from './common/lk-message-date/lk-message-date.component';
 
 @NgModule({
     declarations: [
@@ -53,6 +55,8 @@ import { LkRatingGroupComponent } from './common/lk-rating-group/lk-rating-group
         LkContactsComponent,
         LkConfirmChanelComponent,
         LkRatingGroupComponent,
+        LkFeedbackMessageComponent,
+        LkMessageDateComponent,
     ],
     imports: [
         CommonModule,

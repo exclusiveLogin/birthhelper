@@ -1,0 +1,24 @@
+.lk-feedback-message {
+  &-date {
+    flex-basis: 100%;
+    text-align: right;
+
+    &-right {
+      text-align: left;
+    }
+  }
+
+  &-text {
+    font-size: 1.2rem;
+  }
+
+  &-box {
+    display: flex;
+    gap: 6px 45px;
+    flex-wrap: wrap;
+  }
+
+  &-main {
+    margin-top: 16px;
+  }
+}

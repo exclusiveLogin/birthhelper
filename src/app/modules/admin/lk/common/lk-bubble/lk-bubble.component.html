@@ -1,1 +1,12 @@
-<p>lk-bubble works!</p>
+<div
+    class="speech-bubble"
+    [ngClass]="{
+    'speech-bubble-main': mode === 'main',
+    'speech-bubble-accent': color === 'accent',
+     'speech-bubble-accent-secondary': color === 'secondary-accent',
+     'speech-bubble-left': mode === 'answer',
+     'speech-bubble-right': mode === 'reply',
+     }"
+>
+    <div class="lk-feedback-message-text">{{ text }}</div>
+</div>
