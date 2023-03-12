@@ -8,6 +8,7 @@ import { FeedbackResponse, Vote } from "@modules/feedback/models";
 import { Observable } from "rxjs";
 import { User } from "@models/user.interface";
 import { RestService } from "@services/rest.service";
+import { Entity } from "@models/entity.interface";
 
 @Component({
     selector: "app-lk-feedback-item",
@@ -19,6 +20,7 @@ export class LkFeedbackItemComponent implements OnInit {
     constructor(private restService: RestService) {}
     wrapMode = false;
     user$: Observable<User>;
+    entity$: Observable<Entity>;
 
     @Input()
     public feedback: FeedbackResponse;
@@ -34,6 +36,10 @@ export class LkFeedbackItemComponent implements OnInit {
     ngOnInit(): void {
         this.user$ = this.restService.getUserById(this.feedback.user_id);
         this.votes = this.feedback?.votes;
+        this.entity$ = this.restService.getEntity(
+            this.feedback.target_entity_key,
+            this.feedback.target_entity_id
+        );
     }
 
     // rejectOrder(order: Order): Promise<any> {}

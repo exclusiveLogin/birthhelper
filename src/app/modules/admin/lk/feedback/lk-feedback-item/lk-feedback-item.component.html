@@ -50,9 +50,10 @@
         ></app-lk-user-card>
         <i class="fas fa-chevron-right fa-3x" style="align-self: center"></i>
         <app-lk-simple-card
-            [title]="'test'"
-            [subTitle]="'subtest'"
-            [photoId]="29"
+            *ngIf="entity$ | async as entity"
+            [title]="entity.title"
+            [subTitle]="entity.description ?? ''"
+            [photoId]="entity.image_id"
         ></app-lk-simple-card>
         <div class="btn_close" (click)="unwrap()"></div>
     </div>
