@@ -6,27 +6,14 @@
         [ngClass]="{ 'lk-feedback-message-main': mode === 'main' }"
     >
         <div class="lk-feedback-message-date">{{ date }}</div>
-        <app-lk-bubble
-            [text]="text"
-            [mode]="mode"
-            [color]="color"
-        ></app-lk-bubble>
+        <ng-container *ngTemplateOutlet="bubble"></ng-container>
     </div>
 </ng-template>
 <ng-template #answerTpl>
     <div class="lk-feedback-message-box">
         <div class="lk-feedback-message-date">{{ date }}</div>
-        <app-lk-avatar
-            *ngIf="fromUser"
-            [title]="fromUser.first_name"
-            [subtitle]="fromUser.last_name"
-            [photoID]="fromUser.photo_id"
-        ></app-lk-avatar>
-        <app-lk-bubble
-            [text]="text"
-            [mode]="mode"
-            [color]="color"
-        ></app-lk-bubble>
+        <ng-container *ngTemplateOutlet="avatar"></ng-container>
+        <ng-container *ngTemplateOutlet="bubble"></ng-container>
     </div>
 </ng-template>
 <ng-template #replyTpl>
@@ -34,16 +21,28 @@
         <div class="lk-feedback-message-date lk-feedback-message-date-right">
             {{ date }}
         </div>
-        <app-lk-bubble
-            [text]="text"
-            [mode]="mode"
-            [color]="color"
-        ></app-lk-bubble>
-        <app-lk-avatar
-            *ngIf="fromUser"
-            [title]="fromUser.first_name"
-            [subtitle]="fromUser.last_name"
-            [photoID]="fromUser.photo_id"
-        ></app-lk-avatar>
+        <ng-container *ngTemplateOutlet="bubble"></ng-container>
+        <ng-container *ngTemplateOutlet="avatar"></ng-container>
     </div>
+</ng-template>
+
+<ng-template #avatar>
+    <app-lk-avatar
+        *ngIf="fromUser"
+        [title]="fromUser.first_name"
+        [subtitle]="fromUser.last_name"
+        [photoID]="fromUser.photo_id"
+    ></app-lk-avatar>
+</ng-template>
+<ng-template #bubble>
+    <app-lk-bubble [text]="text" [mode]="mode" [color]="color">
+        <ng-container *ngTemplateOutlet="repliesTpl"></ng-container>
+    </app-lk-bubble>
+</ng-template>
+
+<ng-template #repliesTpl>
+    <app-replies
+        style="left: calc(100% - 32px); bottom: -10px; position: relative"
+        [replies]="replies"
+    ></app-replies>
 </ng-template>

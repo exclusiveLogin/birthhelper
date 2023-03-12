@@ -28,6 +28,7 @@ import { LkConfirmChanelComponent } from "./common/lk-confirm-chanel/lk-confirm-
 import { LkRatingGroupComponent } from "./common/lk-rating-group/lk-rating-group.component";
 import { LkFeedbackMessageComponent } from "app/modules/admin/lk/common/lk-feedback-massage/lk-feedback-message.component";
 import { LkMessageDateComponent } from './common/lk-message-date/lk-message-date.component';
+import { RepliesComponent } from './common/replies/replies.component';
 
 @NgModule({
     declarations: [
@@ -57,6 +58,7 @@ import { LkMessageDateComponent } from './common/lk-message-date/lk-message-date
         LkRatingGroupComponent,
         LkFeedbackMessageComponent,
         LkMessageDateComponent,
+        RepliesComponent,
     ],
     imports: [
         CommonModule,

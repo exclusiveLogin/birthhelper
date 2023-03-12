@@ -81,3 +81,17 @@ body {
   width: 100%;
   height: 100%;
 }
+
+.btn_close {
+  width: 49px;
+  height: 35px;
+  background: url("/img/icons/lk_close_btn_icon.png") no-repeat;
+  background-size: cover;
+  align-self: center;
+  margin-left: auto;
+  margin-right: 15px;
+  cursor: pointer;
+}
+.inactive {
+  filter: grayscale(1);
+}

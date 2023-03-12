@@ -42,4 +42,56 @@
         <!--            </div>-->
     </div>
 </ng-template>
-<ng-template #tpl_wrap> </ng-template>
+<ng-template #tpl_wrap>
+    <div class="lk-rating-row">
+        <app-lk-user-card
+            *ngIf="user$ | async as usr"
+            [user]="usr"
+        ></app-lk-user-card>
+        <i class="fas fa-chevron-right fa-3x" style="align-self: center"></i>
+        <app-lk-simple-card
+            [title]="'test'"
+            [subTitle]="'subtest'"
+            [photoId]="29"
+        ></app-lk-simple-card>
+        <div class="btn_close" (click)="unwrap()"></div>
+    </div>
+    <div class="lk-feedback-body">
+        <div class="lk-feedback-messages">
+            <app-lk-feedback-massage
+                *ngIf="feedback?.comment as comment; else emptyMessageTpl"
+                [color]="'primary'"
+                [date]="comment.datetime_update"
+                [mode]="'main'"
+                [text]="comment.text"
+                [replies]="comment.replies"
+            ></app-lk-feedback-massage>
+
+            <!--<app-lk-feedback-massage
+                [color]="'accent'"
+                [date]="'28.02.2012 22:33'"
+                [mode]="'answer'"
+                [text]="'Сам иди ебана!'"
+                [fromUser]="user$ | async"
+            ></app-lk-feedback-massage>-->
+        </div>
+        <div class="lk-feedback-rating-block">
+            <i class="fas fa-chevron-down fa-3x" style="align-self: center"></i>
+            <ng-container *ngIf="votes?.length; else emptyVotesTpl">
+                <app-lk-rating-group [votes]="votes"></app-lk-rating-group>
+            </ng-container>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #emptyMessageTpl>
+    <i class="fas fa-chevron-down fa-3x" style="align-self: center"></i>
+    <div class="empty-message-box">Нет комментария от пользователя</div>
+</ng-template>
+
+<ng-template #emptyVotesTpl>
+    <div class="empty-message-box">
+        Странно нет оценок. Вероятно какая то ошибка консистентности, либо это
+        искуственный отзыв
+    </div>
+</ng-template>

@@ -24,7 +24,9 @@ export class LkFeedbackMessageComponent implements OnInit {
     @Input() color: "primary" | "accent" | "secondary-accent";
     @Input() date: string;
     @Input() fromUser: User;
+    @Input() replies: number = 0;
     activeTemplate: TemplateRef<any>;
+
     constructor() {}
 
     ngOnInit(): void {

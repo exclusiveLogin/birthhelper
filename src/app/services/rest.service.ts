@@ -5,11 +5,11 @@ import { filter, map, shareReplay, switchMap, take } from "rxjs/operators";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { IDictItem } from "app/modules/admin/dict.service";
 import { SectionType } from "./search.service";
-import { SearchFilterConfig, SearchSection } from "../models/filter.interface";
-import { FilterResult } from "../modules/search/search/components/filter/filter.component";
-import { SessionResponse, UserRole } from "../modules/auth-module/auth.service";
-import { UserExit, UserSrc } from "../models/user.interface";
-import { InterceptorService } from "../modules/auth-module/interceptor.service";
+import { SearchFilterConfig, SearchSection } from "@models/filter.interface";
+import { FilterResult } from "@modules/search/search/components/filter/filter.component";
+import { SessionResponse, UserRole } from "@modules/auth-module/auth.service";
+import { User, UserExit, UserSrc } from "@models/user.interface";
+import { InterceptorService } from "@modules/auth-module/interceptor.service";
 import {
     ConfiguratorConfigSrc,
     Restrictor,
@@ -24,8 +24,9 @@ import {
     OrderResponseAction,
     orderRestMapper,
     OrderSrc,
-} from "../models/order.interface";
+} from "@models/order.interface";
 import { IContainerData } from "@modules/admin/container.model";
+import { Comment } from "@modules/feedback/models";
 
 export interface ISettingsParams {
     mode: string;
@@ -360,6 +361,17 @@ export class RestService {
         };
 
         return this.fetchData(ep_config);
+    }
+
+    public getUserById(id: number): Observable<User> {
+        return this.getEntity<UserSrc>("ent_users", id).pipe(
+            map((userSrc) => new User(userSrc))
+        );
+    }
+
+    getRepliesByComment(commentId: number, page = 1) {
+        const qp: IRestParams = { comment_id: commentId.toString() };
+        return this.getEntityList<Comment>("ent_comments", page, qp);
     }
 
     public getContainerFromId(
