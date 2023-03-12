@@ -40,7 +40,8 @@ export class LkAvatarComponent {
 
     constructor(
         private imageService: ImageService,
-        private restService: RestService
+        private restService: RestService,
+        private cdr: ChangeDetectorRef
     ) {}
 
     get avatarTitle(): string {
@@ -59,6 +60,7 @@ export class LkAvatarComponent {
         if (image) {
             [this.photoUrl$, this.imageSignal$] =
                 this.imageService.getImage$(image);
+            this.cdr.markForCheck();
         }
     }
 }

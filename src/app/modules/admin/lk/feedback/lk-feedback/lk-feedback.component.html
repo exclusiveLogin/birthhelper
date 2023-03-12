@@ -44,6 +44,13 @@
             </div>
         </div>
 
+        <app-lk-feedback-massage
+            [color]="'accent'"
+            [date]="'28.02.2012 22:33'"
+            [mode]="'answer'"
+            [text]="'Сам иди ебана!'"
+            [fromUser]="user$ | async"
+        ></app-lk-feedback-massage>
         <div class="lk-feedback-message-box">
             <div class="lk-feedback-message-date">28.02.2012 22:33</div>
             <app-lk-avatar [title]="'Агрессо'"></app-lk-avatar>
@@ -53,6 +60,14 @@
                 <div class="lk-feedback-message-text">Сам иди ебана!</div>
             </div>
         </div>
+
+        <app-lk-feedback-massage
+            [color]="'secondary-accent'"
+            [date]="'28.02.2012 22:33'"
+            [mode]="'reply'"
+            [text]="'Заткнитесь нахуй оба!'"
+            [fromUser]="user$ | async"
+        ></app-lk-feedback-massage>
 
         <div class="lk-feedback-message-box">
             <div
