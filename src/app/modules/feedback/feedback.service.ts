@@ -35,8 +35,8 @@ export class FeedbackService extends StoreService {
 
     targetKeyMapper(targetKey): string {
         const TMap: { [key in SectionType]: string } = {
-            clinic: "ent_clinic_contragents",
-            consultation: "ent_consultation_contragents",
+            clinic: "ent_contragents",
+            consultation: "ent_contragents",
         };
 
         return TMap[targetKey] ?? targetKey;
@@ -85,6 +85,7 @@ export class FeedbackService extends StoreService {
                 votes: (feedbackData?.votes as VoteResponse[]) ?? [],
                 comment: feedbackData?.comment ?? "",
                 action: "CREATE",
+                section: context.section,
             };
             return this.sendFeedback(feedbackSaveResponse);
         } catch (e) {

@@ -77,6 +77,7 @@ export interface FeedbackFormDataAnswer {
 
 export interface CreateFeedbackRequest {
     action: "CREATE";
+    section?: SectionType;
     target_entity_key: string;
     target_entity_id: number;
     votes: VoteResponse[];

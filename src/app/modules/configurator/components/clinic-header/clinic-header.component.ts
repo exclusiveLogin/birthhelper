@@ -76,7 +76,13 @@ export class ClinicHeaderComponent implements OnInit {
                     id: Number(params.get("id")),
                 })),
                 switchMap(({ section, id }) =>
-                    this.feedbackService.initFeedbackByTarget(section, id, {})
+                    this.feedbackService.initFeedbackByTarget(
+                        "ent_contragents",
+                        id,
+                        {
+                            section,
+                        }
+                    )
                 ),
                 tap((_) => this.refresher$.next(null))
             )
