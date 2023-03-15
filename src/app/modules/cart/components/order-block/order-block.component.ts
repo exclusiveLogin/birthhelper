@@ -9,7 +9,7 @@ import { ImageService } from "../../../../services/image.service";
     templateUrl: "./order-block.component.html",
     styleUrls: ["./order-block.component.scss"],
 })
-export class OrderBlockComponent implements OnInit {
+export class OrderBlockComponent {
     @Input() public orders: Order[];
 
     constructor(
@@ -17,10 +17,8 @@ export class OrderBlockComponent implements OnInit {
         public imageService: ImageService
     ) {}
 
-    ngOnInit(): void {}
-
     removeOrder(order: Order): void {
-        const seletion: SelectionOrderSlot = {
+        const selection: SelectionOrderSlot = {
             _status: "selected",
             entKey: order.slot_entity_key,
             entId: order.slot_entity_id,
@@ -30,7 +28,7 @@ export class OrderBlockComponent implements OnInit {
             sectionKey: order.section_key,
         };
 
-        this.configurator.deselectItemFromCart(seletion);
+        this.configurator.deselectItemFromCart(selection);
     }
 
     getStatusTitle(status: StatusType): string {

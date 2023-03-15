@@ -26,7 +26,11 @@ import {
     OrderSrc,
 } from "@models/order.interface";
 import { IContainerData } from "@modules/admin/container.model";
-import { Comment } from "@modules/feedback/models";
+import {
+    Comment,
+    FeedbackChangeStatusResponse,
+    FeedbackStatus,
+} from "@modules/feedback/models";
 
 export interface ISettingsParams {
     mode: string;
@@ -343,6 +347,22 @@ export class RestService {
     ): Observable<OrderSrc> {
         const data = orderRestMapper(selection, action);
         return this.requestOrdersPost(data);
+    }
+
+    public changeFeedbackStatus(
+        status: FeedbackStatus,
+        id: number
+    ): Observable<boolean> {
+        const ep_config: ISettingsParams = {
+            mode: "api",
+            segment: "feedback",
+        };
+
+        return this.putData<FeedbackChangeStatusResponse>(ep_config, {
+            id,
+            status,
+            action: "STATUS_CHANGE",
+        }).pipe(map((response) => response.result === "ok"));
     }
 
     public getUserRole(): Observable<UserRoleSrc> {

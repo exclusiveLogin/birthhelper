@@ -1,10 +1,11 @@
 import {
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     Input,
     OnInit,
 } from "@angular/core";
-import { FeedbackResponse, Vote } from "@modules/feedback/models";
+import { FeedbackResponse, StatusRusMap, Vote } from "@modules/feedback/models";
 import { Observable } from "rxjs";
 import { User } from "@models/user.interface";
 import { RestService } from "@services/rest.service";
@@ -17,7 +18,10 @@ import { Entity } from "@models/entity.interface";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LkFeedbackItemComponent implements OnInit {
-    constructor(private restService: RestService) {}
+    constructor(
+        private restService: RestService,
+        private cdr: ChangeDetectorRef
+    ) {}
     wrapMode = false;
     user$: Observable<User>;
     entity$: Observable<Entity>;
@@ -40,6 +44,31 @@ export class LkFeedbackItemComponent implements OnInit {
             this.feedback.target_entity_key,
             this.feedback.target_entity_id
         );
+    }
+
+    getStatusTitleForOrder(feedback: FeedbackResponse): string {
+        return StatusRusMap[feedback.status] ?? "---";
+    }
+
+    async setFbStatusApproved(e: MouseEvent) {
+        e?.stopImmediatePropagation();
+        const changed = await this.restService
+            .changeFeedbackStatus("approved", this.feedback.id)
+            .toPromise();
+        if (changed) {
+            this.feedback.status = "approved";
+            this.cdr.markForCheck();
+        }
+    }
+    async setFbStatusDeclined(e: MouseEvent) {
+        e?.stopImmediatePropagation();
+        const changed = await this.restService
+            .changeFeedbackStatus("reject", this.feedback.id)
+            .toPromise();
+        if (changed) {
+            this.feedback.status = "reject";
+            this.cdr.markForCheck();
+        }
     }
 
     // rejectOrder(order: Order): Promise<any> {}

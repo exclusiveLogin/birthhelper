@@ -5,7 +5,8 @@ export type FeedbackAction =
     | "ANSWER"
     | "LIKE"
     | "DISLIKE"
-    | "ISSUES";
+    | "ISSUES"
+    | "STATUS_CHANGE";
 
 export type FeedbackStatus =
     | "pending"
@@ -102,4 +103,23 @@ export interface SummaryRateByTargetResponse {
 
 export interface RateStore {
     [key: string]: SummaryRateByTargetResponse;
+}
+
+export type StatusTypeMap = {
+    [key in FeedbackStatus]: string;
+};
+
+export const StatusRusMap: StatusTypeMap = {
+    pending: "На модерации",
+    approved: "Одобрен",
+    blocked: "Заблокирован",
+    official: "Официально",
+    reject: "Отклонен",
+    verified: "Честный отзыв",
+};
+
+export interface FeedbackChangeStatusResponse {
+    result: "ok";
+    id: number;
+    status: FeedbackStatus;
 }

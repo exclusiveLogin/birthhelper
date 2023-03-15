@@ -25,21 +25,42 @@
         <div class="order_tbl__item extra">
             {{ "---" }}
         </div>
+        <!--        Comment      -->
+        <div class="order_tbl__item extra ellipsis">
+            {{ feedback?.comment?.text ?? "---" }}
+        </div>
         <!--        Дата      -->
         <div class="order_tbl__item long">
             {{ "---" }}
         </div>
         <!--        status      -->
         <div class="order_tbl__item mid">
-            {{ feedback.status }}
+            <p class="cart-pack-item__inner-value-text" *ngIf="feedback.status">
+                <span
+                    class="badge badge-default"
+                    [ngClass]="{
+                        'badge-info': feedback.status === 'pending',
+                        'badge-success': feedback.status === 'approved',
+                        'badge-danger': feedback.status === 'reject'
+                    }"
+                    >{{ getStatusTitleForOrder(feedback) }}</span
+                >
+            </p>
         </div>
-        <div class="order_tbl__item long">
-            {{ "---" }}
+        <div class="order_tbl__item extra">
+            <button
+                class="btn dicline__btn btn-sm"
+                (click)="setFbStatusDeclined($event)"
+            >
+                Отклонить
+            </button>
+            <button
+                class="btn approve__btn btn-sm"
+                (click)="setFbStatusApproved($event)"
+            >
+                Одобрить
+            </button>
         </div>
-        <!--        кнопка открыть      -->
-        <!--            <div class="order_tbl__item open_btn" (click)="wrap()">-->
-        <!--                <i class="fas fa-eye fa-lg"></i>-->
-        <!--            </div>-->
     </div>
 </ng-template>
 <ng-template #tpl_wrap>
@@ -53,8 +74,33 @@
             *ngIf="entity$ | async as entity"
             [title]="entity.title"
             [subTitle]="entity.description ?? ''"
-            [photoId]="entity.image_id"
+            [photoId]="entity.image_id ?? entity?._entity?.image_id"
         ></app-lk-simple-card>
+        <div class="action_grp">
+            <div class="cart-pack-item__inner-value">
+                <p
+                    class="cart-pack-item__inner-value-text"
+                    *ngIf="feedback.status"
+                >
+                    <span
+                        class="badge badge-default"
+                        [ngClass]="{
+                            'badge-info': feedback.status === 'pending',
+                            'badge-success': feedback.status === 'approved',
+                            'badge-danger': feedback.status === 'reject'
+                        }"
+                        >{{ getStatusTitleForOrder(feedback) }}</span
+                    >
+                </p>
+            </div>
+            <button class="btn dicline__btn" (click)="setFbStatusDeclined()">
+                Отклонить
+            </button>
+            <button class="btn approve__btn" (click)="setFbStatusApproved()">
+                Одобрить
+            </button>
+        </div>
+
         <div class="btn_close" (click)="unwrap()"></div>
     </div>
     <div class="lk-feedback-body">
