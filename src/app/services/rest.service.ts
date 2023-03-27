@@ -365,6 +365,19 @@ export class RestService {
         }).pipe(map((response) => response.result === "ok"));
     }
 
+    public getReplies(
+        feedbackId: number,
+        commentParentId: number,
+        page = 1
+    ): Observable<Comment[]> {
+        const filters: IRestParams = {
+            comment_id: commentParentId.toString(),
+            feedback_id: feedbackId.toString(),
+        };
+
+        return this.getEntityList("ent_comments", page, filters);
+    }
+
     public getUserRole(): Observable<UserRoleSrc> {
         const ep_config: ISettingsParams = {
             mode: "auth",

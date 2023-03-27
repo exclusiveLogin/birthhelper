@@ -8,6 +8,7 @@ import { Observable, of } from "rxjs";
 import { IImage } from "@modules/admin/Dashboard/Editor/components/image/image.component";
 import { filter, switchMap, tap } from "rxjs/operators";
 import { RestService } from "@services/rest.service";
+import { SummaryRateByTargetResponse } from "@modules/feedback/models";
 
 @Component({
     selector: "app-lk-simple-card",
@@ -20,6 +21,7 @@ export class LkSimpleCardComponent implements OnInit {
     @Input() title: string;
     @Input() subTitle: string;
     @Input() accentTitle: string;
+    @Input() rating: SummaryRateByTargetResponse;
     constructor(private restService: RestService) {}
     photoImage$: Observable<IImage>;
 
@@ -31,5 +33,12 @@ export class LkSimpleCardComponent implements OnInit {
             ),
             tap((image) => console.log("photoImage$", image))
         );
+    }
+
+    rateLevelClass(stat: number): string {
+        if (stat < 2) return "red";
+        if (stat >= 2 && stat <= 3.5) return "orange";
+        if (stat > 3.5) return "green";
+        return "";
     }
 }

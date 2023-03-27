@@ -9,11 +9,19 @@
         [subTitle]="subTitle"
         [accentTitle]="accentTitle"
     ></app-lk-title>
-    <div class="lk-simple-rating">
-        <div class="rate-count">
-            {{ "-" }}
+    <div class="lk-simple-rating" *ngIf="rating?.summary?.avr">
+        <div
+            class="rate-count"
+            [ngClass]="rateLevelClass(rating?.summary?.avr)"
+        >
+            {{ rating?.summary?.avr | number : "1.0-2" ?? "-" }}
         </div>
-        <app-lk-rating class="lk-simple-rating-rating"></app-lk-rating>
-        <span class="lk-rating-total-text">Всего 0 отзывов</span>
+        <app-lk-rating
+            [rateCurrent]="rating?.summary?.avr"
+            class="lk-simple-rating-rating"
+        ></app-lk-rating>
+        <span class="lk-rating-total-text"
+            >Всего {{ rating?.summary?.total || "0" }} отзывов</span
+        >
     </div>
 </div>

@@ -42,6 +42,7 @@
 
 <ng-template #repliesTpl>
     <app-replies
+        *ngIf="replies"
         style="left: calc(100% - 32px); bottom: -10px; position: relative"
         [replies]="replies"
     ></app-replies>

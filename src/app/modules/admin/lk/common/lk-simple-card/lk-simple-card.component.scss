@@ -13,6 +13,18 @@
     background-color: #cccccc;
     border-radius: 5px 10px;
     font-size: 1.2rem;
+
+    &.red {
+      background-color: #ffadad;
+    }
+
+    &.orange {
+      background-color: #ffdfa4;
+    }
+
+    &.green {
+      background-color: #9cff9e;
+    }
   }
 
   &-rating {
@@ -26,3 +38,4 @@
 .lk-rating-total-text {
   font-size: 0.7rem;
 }
+

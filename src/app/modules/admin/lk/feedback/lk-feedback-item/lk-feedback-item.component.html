@@ -75,6 +75,7 @@
             [title]="entity.title"
             [subTitle]="entity.description ?? ''"
             [photoId]="entity.image_id ?? entity?._entity?.image_id"
+            [rating]="rating$ | async"
         ></app-lk-simple-card>
         <div class="action_grp">
             <div class="cart-pack-item__inner-value">
@@ -114,13 +115,14 @@
                 [replies]="comment.replies"
             ></app-lk-feedback-massage>
 
-            <!--<app-lk-feedback-massage
+            <app-lk-feedback-massage
+                *ngFor="let comment of replies$ | async"
                 [color]="'accent'"
-                [date]="'28.02.2012 22:33'"
+                [date]="comment.datetime_update"
                 [mode]="'answer'"
-                [text]="'Сам иди ебана!'"
+                [text]="comment.text"
                 [fromUser]="user$ | async"
-            ></app-lk-feedback-massage>-->
+            ></app-lk-feedback-massage>
         </div>
         <div class="lk-feedback-rating-block">
             <i class="fas fa-chevron-down fa-3x" style="align-self: center"></i>
