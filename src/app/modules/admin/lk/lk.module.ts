@@ -29,6 +29,7 @@ import { LkRatingGroupComponent } from "./common/lk-rating-group/lk-rating-group
 import { LkFeedbackMessageComponent } from "app/modules/admin/lk/common/lk-feedback-massage/lk-feedback-message.component";
 import { LkMessageDateComponent } from './common/lk-message-date/lk-message-date.component';
 import { RepliesComponent } from './common/replies/replies.component';
+import { LikesComponent } from './common/likes/likes.component';
 
 @NgModule({
     declarations: [
@@ -59,6 +60,7 @@ import { RepliesComponent } from './common/replies/replies.component';
         LkFeedbackMessageComponent,
         LkMessageDateComponent,
         RepliesComponent,
+        LikesComponent,
     ],
     imports: [
         CommonModule,

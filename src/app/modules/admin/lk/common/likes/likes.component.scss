@@ -1,0 +1,14 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  gap: 16px;
+}
+
+.positive {
+  color: #1eab00;
+}
+.negative {
+  color: #ac0000;
+}

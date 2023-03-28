@@ -1,5 +1,6 @@
 <ng-container *ngTemplateOutlet="activeTemplate"></ng-container>
-
+<app-likes></app-likes>
+<app-likes [negative]="true"></app-likes>
 <ng-template #mainTpl>
     <div
         class="lk-feedback-message-box"

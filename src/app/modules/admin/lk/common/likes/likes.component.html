@@ -1,0 +1,25 @@
+<div [ngClass]="negative ? 'negative' : 'positive'">
+    <ng-container
+        [ngTemplateOutlet]="
+            negative ? (self ? dislike_self : dislike) : self ? like_self : like
+        "
+    ></ng-container>
+</div>
+
+<span class="count">{{ count }}</span>
+
+<ng-template #like>
+    <i class="fa-regular fa-thumbs-up fa-lg"></i>
+</ng-template>
+
+<ng-template #like_self>
+    <i class="fa-solid fa-thumbs-up fa-lg"></i>
+</ng-template>
+
+<ng-template #dislike>
+    <i class="fa-regular fa-thumbs-down fa-lg"></i>
+</ng-template>
+
+<ng-template #dislike_self>
+    <i class="fa-solid fa-thumbs-down fa-lg"></i>
+</ng-template>

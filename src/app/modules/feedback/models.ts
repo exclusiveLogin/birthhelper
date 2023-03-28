@@ -5,6 +5,7 @@ export type FeedbackAction =
     | "ANSWER"
     | "LIKE"
     | "DISLIKE"
+    | "UNLIKE"
     | "ISSUES"
     | "STATUS_CHANGE";
 
@@ -75,14 +76,38 @@ export interface FeedbackFormDataAnswer {
     votes: VoteResponse[];
     comment: string;
 }
+export type FeedbackDislikeCommentRequest = { action: "DISLIKE" } & Pick<
+    FeedbackDTO,
+    "id" | "section" | "comment_id"
+>;
+export type FeedbackLikeCommentRequest = { action: "LIKE" } & Pick<
+    FeedbackDTO,
+    "id" | "section" | "comment_id"
+>;
+export type FeedbackDislikeRequest = { action: "DISLIKE" } & Pick<
+    FeedbackDTO,
+    "id" | "section"
+>;
+export type FeedbackLikeRequest = { action: "LIKE" } & Pick<
+    FeedbackDTO,
+    "id" | "section"
+>;
+export type CreateFeedbackRequest = { action: "CREATE" } & Pick<
+    FeedbackDTO,
+    "section" | "target_entity_key" | "target_entity_id" | "votes" | "comment"
+>;
 
-export interface CreateFeedbackRequest {
-    action: "CREATE";
+export interface FeedbackDTO {
+    id?: number;
     section?: SectionType;
-    target_entity_key: string;
-    target_entity_id: number;
-    votes: VoteResponse[];
-    comment: string;
+    action: FeedbackAction;
+    status: FeedbackStatus;
+    target_entity_key?: string;
+    target_entity_id?: number;
+    comment?: string;
+    comment_id?: number;
+    votes?: Array<VoteResponse>;
+    tags?: number[];
 }
 
 export interface SummaryVotes {
