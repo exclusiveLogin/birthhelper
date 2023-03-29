@@ -1,8 +1,13 @@
 import { SectionType } from "@services/search.service";
 import { User } from "@models/user.interface";
+
 export type FeedbackAction =
+    | "GET"
     | "CREATE"
+    | "REMOVE_FEEDBACK"
+    | "REMOVE_COMMENT"
     | "ANSWER"
+    | "REPLY"
     | "LIKE"
     | "DISLIKE"
     | "UNLIKE"
