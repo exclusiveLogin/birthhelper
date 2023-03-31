@@ -240,9 +240,10 @@ export class RestService {
     public getEntityList<T = Entity>(
         key: string,
         page?: number,
-        qp?: IRestParams
+        qp?: IRestParams,
+        entSettings?: ISettingsParams
     ): Observable<T[]> {
-        const entSetting: ISettingsParams = {
+        const entSetting: ISettingsParams = entSettings ?? {
             mode: "api",
             segment: key,
         };
@@ -371,11 +372,18 @@ export class RestService {
         page = 1
     ): Observable<Comment[]> {
         const filters: IRestParams = {
-            comment_id: commentParentId.toString(),
+            // comment_id: commentParentId.toString(),
             feedback_id: feedbackId.toString(),
         };
 
-        return this.getEntityList("ent_comments", page, filters);
+        const settings: ISettingsParams = {
+            mode: "api",
+            segment: "feedback",
+            resource: "replies",
+            script: feedbackId.toString(),
+        };
+
+        return this.getEntityList("ent_comments", page, filters, settings);
     }
 
     public getUserRole(): Observable<UserRoleSrc> {
