@@ -25,6 +25,8 @@ export class LkFeedbackMessageComponent implements OnInit {
     @Input() date: string;
     @Input() fromUser: User;
     @Input() replies: number = 0;
+    @Input() editMode = false;
+
     activeTemplate: TemplateRef<any>;
 
     constructor() {}

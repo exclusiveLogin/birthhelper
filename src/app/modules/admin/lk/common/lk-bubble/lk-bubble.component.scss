@@ -36,7 +36,7 @@
       content: "";
       position: absolute;
       left: 0;
-      top: 50%;
+      top: 30px;
       width: 0;
       height: 0;
       border: 36px solid transparent;
@@ -73,4 +73,15 @@
 .speech-bubble-accent-secondary {
   --bubble-color: #ffbd73;
   --arrow-color: #d79d5d;
+}
+
+textarea {
+  resize: none;
+  overflow: hidden;
+  min-height: 50px;
+  background-color: transparent;
+  border: 1px solid white;
+  /* flex-grow: 1; */
+  width: 100%;
+  padding: 16px;
 }

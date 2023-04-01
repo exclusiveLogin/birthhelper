@@ -121,6 +121,14 @@
                 [date]="comment.datetime_update"
                 [mode]="'answer'"
                 [text]="comment.text"
+                [fromUser]="getUserByComment(comment) | async"
+            ></app-lk-feedback-massage>
+
+            <app-lk-feedback-massage
+                [color]="'accent'"
+                [date]="'test'"
+                [mode]="'answer'"
+                [editMode]="true"
                 [fromUser]="user$ | async"
             ></app-lk-feedback-massage>
         </div>
