@@ -177,4 +177,7 @@ export class FeedbackService extends StoreService {
         const data = { section, status };
         return this.rest.fetchData(restSetting, data, true);
     }
+
+    addFeedback(): void {}
+    replyFeedback(): void {}
 }

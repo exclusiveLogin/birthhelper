@@ -8,7 +8,12 @@
         'speech-bubble-right': mode === 'reply'
     }"
 >
-    <ng-container *ngIf="editMode then input; else default"></ng-container>    
+    <ng-container *ngIf="editMode then input; else default"></ng-container>  
+    <div class="bubble-footer">
+        <i class="fas fa-chevron-down clickable" *ngIf="!editMode"></i>
+        <i class="fa-solid fa-paper-plane clickable" *ngIf="editMode"></i>
+    </div>
+    
 </div>
 
 <ng-template #default>
