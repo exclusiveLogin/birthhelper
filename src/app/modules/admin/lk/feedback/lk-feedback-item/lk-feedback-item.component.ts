@@ -108,6 +108,22 @@ export class LkFeedbackItemComponent implements OnInit {
         }
     }
 
+    openReply(comment: Comment): void {
+        comment.replymode = true;
+    }
+
+    closeReply(comment: Comment): void {
+        comment.replymode = false;
+    }
+
+    replyFeedback(e: string, comment: Comment): void {
+
+    }
+
+    answerFeedback(e: string, comment: Comment): void {
+        this.closeReply(comment);
+    }
+
     // rejectOrder(order: Order): Promise<any> {}
     // removeOrder(order: Order): Promise<any> {}
     // rejectOrder(order: Order): Promise<any> {}

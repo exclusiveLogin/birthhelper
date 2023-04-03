@@ -14,15 +14,21 @@ export class LkBubbleComponent {
     @Input() editMode: boolean;
 
     @Output() sendText: EventEmitter<string> = new EventEmitter<string>();
+    @Output() openReply: EventEmitter<null> = new EventEmitter<null>();
     
     constructor() {}
 
-    auto_grow(element: HTMLElement) {
+    auto_grow(element: HTMLInputElement) {
         element.style.height = "5px";
         element.style.height = element.scrollHeight + "px";
+        this.text = element?.value;
     }
 
     send(text: string): void {
-        
+        this.sendText.emit(text);
+    }
+
+    openReplyDialog(): void {
+        this.openReply.emit(null);
     }
 }

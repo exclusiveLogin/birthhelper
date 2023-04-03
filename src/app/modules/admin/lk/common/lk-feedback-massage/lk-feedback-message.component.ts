@@ -1,8 +1,10 @@
 import {
     ChangeDetectionStrategy,
     Component,
+    EventEmitter,
     Input,
     OnInit,
+    Output,
     TemplateRef,
     ViewChild,
 } from "@angular/core";
@@ -26,8 +28,18 @@ export class LkFeedbackMessageComponent implements OnInit {
     @Input() fromUser: User;
     @Input() replies: number = 0;
     @Input() editMode = false;
+    @Output() sendText = new EventEmitter<string>();
+    @Output() replyTrigger = new EventEmitter<null>();
 
     activeTemplate: TemplateRef<any>;
+
+    reply(text: string): void {
+        this.sendText.emit(text);
+    }
+
+    openDialog(): void {
+        this.replyTrigger.next()
+    }
 
     constructor() {}
 

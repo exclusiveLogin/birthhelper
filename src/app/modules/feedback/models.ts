@@ -58,6 +58,7 @@ export interface Comment {
     text: string;
     comment_id?: number;
     replies?: number;
+    replymode?: boolean;
     datetime_update?: string;
     datetime_create?: string;
 }

@@ -42,7 +42,8 @@
         [mode]="mode"
         [color]="color"
         [editMode]="editMode"
-        (sendText)=""
+        (sendText)="reply($event)"
+        (openReply)="openDialog()"
     >
         <ng-container *ngTemplateOutlet="repliesTpl"></ng-container>
     </app-lk-bubble>

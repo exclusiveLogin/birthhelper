@@ -10,8 +10,8 @@
 >
     <ng-container *ngIf="editMode then input; else default"></ng-container>  
     <div class="bubble-footer">
-        <i class="fas fa-chevron-down clickable" *ngIf="!editMode"></i>
-        <i class="fa-solid fa-paper-plane clickable" *ngIf="editMode"></i>
+        <i class="fas fa-chevron-down clickable" *ngIf="!editMode" (click)="openReplyDialog()"></i>
+        <i class="fa-solid fa-paper-plane clickable" *ngIf="editMode" (click)="send(text)"></i>
     </div>
     
 </div>
