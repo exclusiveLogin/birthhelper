@@ -17,6 +17,7 @@ import { User } from "@models/user.interface";
 import { RestService } from "@services/rest.service";
 import { Entity } from "@models/entity.interface";
 import { FeedbackService } from "@modules/feedback/feedback.service";
+import { Reply } from "../../common/lk-bubble/lk-bubble.component";
 
 @Component({
     selector: "app-lk-feedback-item",
@@ -108,20 +109,17 @@ export class LkFeedbackItemComponent implements OnInit {
         }
     }
 
-    openReply(comment: Comment): void {
-        comment.replymode = true;
-    }
-
-    closeReply(comment: Comment): void {
-        comment.replymode = false;
+    openReply(opened: boolean, comment: Comment): void {
+        comment.replymode = opened;
     }
 
     replyFeedback(e: string, comment: Comment): void {
 
     }
 
-    answerFeedback(e: string, comment: Comment): void {
-        this.closeReply(comment);
+    answerFeedback(e: Reply, comment: Comment): void {
+        debugger;
+        this.openReply(false, comment);
     }
 
     // rejectOrder(order: Order): Promise<any> {}

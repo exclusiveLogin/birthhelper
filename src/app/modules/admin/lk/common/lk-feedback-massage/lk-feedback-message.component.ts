@@ -9,6 +9,7 @@ import {
     ViewChild,
 } from "@angular/core";
 import { User } from "@models/user.interface";
+import { Reply } from "../lk-bubble/lk-bubble.component";
 
 @Component({
     selector: "app-lk-feedback-massage",
@@ -22,23 +23,24 @@ export class LkFeedbackMessageComponent implements OnInit {
     elAnswerTemplate: TemplateRef<any>;
     @ViewChild("replyTpl", { static: true }) elReplyTemplate: TemplateRef<any>;
     @Input() text: string;
+    @Input() opened: boolean;
     @Input() mode: "main" | "answer" | "reply";
     @Input() color: "primary" | "accent" | "secondary-accent";
     @Input() date: string;
     @Input() fromUser: User;
     @Input() replies: number = 0;
     @Input() editMode = false;
-    @Output() sendText = new EventEmitter<string>();
-    @Output() replyTrigger = new EventEmitter<null>();
+    @Output() sendText = new EventEmitter<Reply>();
+    @Output() replyTrigger = new EventEmitter<boolean>();
 
     activeTemplate: TemplateRef<any>;
 
-    reply(text: string): void {
+    reply(text: Reply): void {
         this.sendText.emit(text);
     }
 
-    openDialog(): void {
-        this.replyTrigger.next()
+    openDialog(state: boolean): void {
+        this.replyTrigger.next(state);
     }
 
     constructor() {}

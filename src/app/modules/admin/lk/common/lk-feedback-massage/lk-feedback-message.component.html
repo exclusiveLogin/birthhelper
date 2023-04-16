@@ -7,7 +7,6 @@
         [ngClass]="{ 'lk-feedback-message-main': mode === 'main' }"
     >
         <div class="lk-feedback-message-date">{{ date }}</div>
-        <ng-container *ngIf="editMode; then input"></ng-container>
         <ng-container *ngTemplateOutlet="bubble"></ng-container>
     </div>
 </ng-template>
@@ -42,8 +41,9 @@
         [mode]="mode"
         [color]="color"
         [editMode]="editMode"
+        [opened]="opened"
         (sendText)="reply($event)"
-        (openReply)="openDialog()"
+        (openReply)="openDialog($event)"
     >
         <ng-container *ngTemplateOutlet="repliesTpl"></ng-container>
     </app-lk-bubble>

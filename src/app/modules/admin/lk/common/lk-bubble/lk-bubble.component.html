@@ -10,8 +10,17 @@
 >
     <ng-container *ngIf="editMode then input; else default"></ng-container>  
     <div class="bubble-footer">
-        <i class="fas fa-chevron-down clickable" *ngIf="!editMode" (click)="openReplyDialog()"></i>
-        <i class="fa-solid fa-paper-plane clickable" *ngIf="editMode" (click)="send(text)"></i>
+
+        <ng-container *ngIf="!editMode">
+            <i class="fas fa-chevron-down clickable" *ngIf="!opened" (click)="openReplyDialog()"></i>
+            <i class="fas fa-chevron-up clickable" *ngIf="opened" (click)="closeReplyDialog()"></i>
+        </ng-container>
+        
+        <ng-container *ngIf="editMode">
+            <i class="fa-solid fa-paper-plane clickable" (click)="send(text)"></i>
+            <ng-container *ngTemplateOutlet="officalTpl"></ng-container>
+        </ng-container>
+
     </div>
     
 </div>
@@ -25,4 +34,9 @@
     <div class="input_container">
         <textarea #ta_el (input)="auto_grow(ta_el)"></textarea>
     </div>
+</ng-template>
+
+<ng-template #officalTpl>
+    <input type="checkbox" name="offical" id="offical" (change)="toggleOfficial($event)">
+    <label for="offical">Официальный ответ</label>
 </ng-template>

@@ -22,6 +22,18 @@ export type FeedbackStatus =
     | "reject"
     | "official";
 
+export type FeedbackCommentStatus =
+    | "pending"
+    | "approved"
+    | "rejected"
+    | "deleted"
+    | "official";
+
+export type FeedbackCommentType =
+    | "master"
+    | "answer"
+    | "reply";
+
 export type LikeType = "comment" | "feedback";
 export interface Like {
     id: number;
@@ -59,6 +71,8 @@ export interface Comment {
     comment_id?: number;
     replies?: number;
     replymode?: boolean;
+    status?: FeedbackCommentStatus;
+    type?: FeedbackCommentType;
     datetime_update?: string;
     datetime_create?: string;
 }

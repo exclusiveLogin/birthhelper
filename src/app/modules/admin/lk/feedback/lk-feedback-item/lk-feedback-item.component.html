@@ -106,14 +106,27 @@
     </div>
     <div class="lk-feedback-body">
         <div class="lk-feedback-messages">
-            <app-lk-feedback-massage
-                *ngIf="feedback?.comment as comment; else emptyMessageTpl"
-                [color]="'primary'"
-                [date]="comment.datetime_update"
-                [mode]="'main'"
-                [text]="comment.text"
-                [replies]="comment.replies"
-            ></app-lk-feedback-massage>
+            <ng-container *ngIf="feedback?.comment as comment; else emptyMessageTpl">
+                <app-lk-feedback-massage
+                    [color]="'primary'"
+                    [date]="comment.datetime_update"
+                    [mode]="'main'"
+                    [text]="comment.text"
+                    [replies]="comment.replies"
+                    [opened]="comment.replymode"
+                    (replyTrigger)="openReply($event, comment)"
+                ></app-lk-feedback-massage>
+                <app-lk-feedback-massage
+                    *ngIf="comment.replymode"
+                    [color]="'accent'"
+                    [date]="comment.datetime_update"
+                    [mode]="'answer'"
+                    [editMode]="true"
+                    [fromUser]="user$ | async"
+                    (sendText)="answerFeedback($event, comment)"
+                ></app-lk-feedback-massage>
+            </ng-container>
+            
 
             <ng-container *ngFor="let comment of replies$ | async">
                 <app-lk-feedback-massage
@@ -121,8 +134,9 @@
                     [date]="comment.datetime_update"
                     [mode]="'answer'"
                     [text]="comment.text"
+                    [opened]="comment.replymode"
                     [fromUser]="getUserByComment(comment) | async"
-                    (replyTrigger)="openReply(comment)"
+                    (replyTrigger)="openReply($event, comment)"
                 ></app-lk-feedback-massage>
 
                 <app-lk-feedback-massage
