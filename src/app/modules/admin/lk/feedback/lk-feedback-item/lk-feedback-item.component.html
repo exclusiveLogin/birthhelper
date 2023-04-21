@@ -122,6 +122,7 @@
                     [date]="comment.datetime_update"
                     [mode]="'answer'"
                     [editMode]="true"
+                    [canOfficial]="true"
                     [fromUser]="user$ | async"
                     (sendText)="answerFeedback($event, comment)"
                 ></app-lk-feedback-massage>
@@ -145,6 +146,7 @@
                     [date]="'test'"
                     [mode]="'reply'"
                     [editMode]="true"
+                    [canOfficial]="true"
                     [fromUser]="user$ | async"
                     (sendText)="answerFeedback($event, comment)"
                 ></app-lk-feedback-massage>
