@@ -41,6 +41,15 @@ const routes: Routes = [
         component: WrapperComponent,
     },
     {
+        path: "feedback",
+        loadChildren: () =>
+            import("../modules/feedback/feedback.module").then(
+                (m) => m.FeedbackModule
+            ),
+        // canLoad: [AuthUserGuard],
+        component: WrapperComponent,
+    },
+    {
         path: "**",
         component: NotFoundComponent,
     },

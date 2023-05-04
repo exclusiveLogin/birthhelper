@@ -66,7 +66,6 @@ const routes: Routes = [
         DialogModule,
         ToastrModule.forRoot(),
         MenuModule,
-        FeedbackModule,
     ],
     bootstrap: [AppComponent],
 })
