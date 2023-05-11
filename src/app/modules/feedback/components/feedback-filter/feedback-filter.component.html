@@ -1,5 +1,5 @@
 <div class="filter_block" [formGroup]="filterForm">
-    <div class="form-group inline">
+    <div class="form-group inline" *ngIf="hasStatusFilter">
         <label for="status">Статус отзыва</label>
         <select class="form-control" id="status" formControlName="status">
             <option value="pending">Ожидает</option>
@@ -10,7 +10,7 @@
             <option value="official">Официальный</option>
         </select>
     </div>
-    <div class="form-group inline">
+    <div class="form-group inline" *ngIf="hasTypeFilter">
         <label for="section_key">Тип контрагента</label>
         <select
             class="form-control"
@@ -21,11 +21,11 @@
             <option value="consultation">Женская консультация</option>
         </select>
     </div>
-    <div class="form-group inline muted">
+    <div class="form-group inline muted" *ngIf="hasPeriodFilter">
         <label for="period_from">Период заказа - начало</label>
         <input type="date" id="period_from" class="form-control" />
     </div>
-    <div class="form-group inline muted">
+    <div class="form-group inline muted" *ngIf="hasPeriodFilter">
         <label for="period_until">Период заказа - окончание</label>
         <input type="date" id="period_until" class="form-control" />
     </div>

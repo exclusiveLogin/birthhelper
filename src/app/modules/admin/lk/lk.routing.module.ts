@@ -1,12 +1,11 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
 import { AuthAdminGuard } from "@guards/auth.admin.guard";
 import { RouterModule, Routes } from "@angular/router";
-import { LkComponent } from "../lk.component";
-import { OrdersComponent } from "../orders/orders.component";
+import { LkComponent } from "./lk.component";
+import { OrdersComponent } from "./orders/orders.component";
 import { NotFoundComponent } from "@static/not-found/not-found.component";
-import { SettingsComponent } from "../settings/settings.component";
-import { LkFeedbackComponent } from "@modules/admin/lk/feedback/lk-feedback/lk-feedback.component";
+import { SettingsComponent } from "./settings/settings.component";
+import { MenuModule } from "@modules/menu/menu.module";
 
 const routes: Routes = [
     {
@@ -35,7 +34,8 @@ const routes: Routes = [
             },
             {
                 path: "feedbacks",
-                component: LkFeedbackComponent,
+                loadChildren: () =>
+                    import("../../feedback/lk/feedback-lk.module").then((m) => m.FeedbackLkModule),
                 data: {
                     main_menu_mode: "contragents",
                     permission_mode: "feedbacks",
@@ -47,8 +47,8 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [],
-    imports: [CommonModule, RouterModule.forChild(routes)],
+    declarations: [LkComponent],
+    imports: [RouterModule.forChild(routes), MenuModule],
     exports: [RouterModule],
 })
 export class LkRoutingModule {}

@@ -1,6 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { LkService } from "@services/lk.service";
+
+export type FilterType = 'status' | 'type_contragent' | 'period';
 
 @Component({
     selector: "app-feedback-filter",
@@ -9,6 +11,8 @@ import { LkService } from "@services/lk.service";
 })
 export class FeedbackFilterComponent implements OnInit {
     constructor(private lkService: LkService) {}
+
+    @Input() filters: Array<FilterType> = ['status', 'type_contragent', 'period'];
 
     filterForm = new FormGroup({
         status: new FormControl("pending"),
@@ -21,5 +25,17 @@ export class FeedbackFilterComponent implements OnInit {
             this.lkService.setFilters("feedback", data);
         });
         this.filterForm.updateValueAndValidity();
+    }
+
+    get hasStatusFilter(): boolean {
+        return this.filters.some((f) => f === 'status');
+    }
+
+    get hasTypeFilter(): boolean {
+        return this.filters.some((f) => f === 'status');
+    }
+
+    get hasPeriodFilter(): boolean {
+        return this.filters.some((f) => f === 'status');
     }
 }

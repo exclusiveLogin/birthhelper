@@ -43,8 +43,8 @@ const routes: Routes = [
     {
         path: "feedback",
         loadChildren: () =>
-            import("../modules/feedback/feedback.module").then(
-                (m) => m.FeedbackModule
+            import("../modules/feedback/page/feedback-page.module").then(
+                (m) => m.FeedbackPageModule
             ),
         // canLoad: [AuthUserGuard],
         component: WrapperComponent,

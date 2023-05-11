@@ -9,8 +9,6 @@ import { CTG, LkService } from "@services/lk.service";
 import { BehaviorSubject, combineLatest, Observable } from "rxjs";
 import { Contragent } from "@models/contragent.interface";
 import { map, shareReplay, switchMap, tap } from "rxjs/operators";
-import { OrderGroup } from "@models/order.interface";
-import { User, UserSrc } from "@models/user.interface";
 import { RestService } from "@services/rest.service";
 import { FeedbackService } from "@modules/feedback/feedback.service";
 import { FeedbackResponse } from "@modules/feedback/models";
@@ -68,14 +66,6 @@ export class LkFeedbackListComponent {
         tap((_) => console.log("onFeedbackList$", _)),
         shareReplay(1)
     );
-    // onFeedbackTotal$ = this.onOrdersGroups$.pipe(
-    //     map((list) => list?.total ?? 0),
-    //     tap((total) => this.empty.next(!total))
-    // );
-    //
-    // onOrderGroupPages$ = this.onOrdersTotal$.pipe(
-    //     map((_) => (_ ? Math.ceil(_ / 20) || 1 : 1))
-    // );
 
     constructor(
         private lkService: LkService,
@@ -83,7 +73,7 @@ export class LkFeedbackListComponent {
         private restService: RestService
     ) {}
 
-    trackIt(idx: number, fb: FeedbackResponse): number {
+    trackIt(_: number, fb: FeedbackResponse): number {
         return fb.id;
     }
 

@@ -17,7 +17,7 @@ import { User } from "@models/user.interface";
 import { RestService } from "@services/rest.service";
 import { Entity } from "@models/entity.interface";
 import { FeedbackService } from "@modules/feedback/feedback.service";
-import { Reply } from "../../common/lk-bubble/lk-bubble.component";
+import { Reply } from "@modules/admin/lk/common/lk-bubble/lk-bubble.component";
 
 @Component({
     selector: "app-lk-feedback-item",

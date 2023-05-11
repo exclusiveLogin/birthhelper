@@ -4,6 +4,7 @@
 </button>
 
 <app-feedback-filter></app-feedback-filter>
+
 <app-lk-view-block *ngFor="let ctg of selectedCTG$ | async">
     <app-contragent-header
         *ngIf="ctg"
