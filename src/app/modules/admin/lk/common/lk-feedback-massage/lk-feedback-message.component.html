@@ -1,6 +1,6 @@
 <ng-container *ngTemplateOutlet="activeTemplate"></ng-container>
-<app-likes></app-likes>
-<app-likes [negative]="true"></app-likes>
+<app-likes *ngIf="canLikes"></app-likes>
+<app-likes [negative]="true"  *ngIf="canLikes"></app-likes>
 <ng-template #mainTpl>
     <div
         class="lk-feedback-message-box"
@@ -42,6 +42,7 @@
         [color]="color"
         [editMode]="editMode"
         [canOfficial]="canOfficial"
+        [canReply]="canReply"
         [opened]="opened"
         (sendText)="reply($event)"
         (openReply)="openDialog($event)"

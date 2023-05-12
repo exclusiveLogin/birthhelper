@@ -16,8 +16,10 @@ export class LkBubbleComponent {
     @Input() mode: "main" | "answer" | "reply";
     @Input() color: "primary" | "accent" | "secondary-accent";
     @Input() editMode: boolean;
+    @Input() canReply: boolean;
     @Input() canOfficial: boolean;
     @Input() opened: boolean;
+
 
     @Output() sendText: EventEmitter<Reply> = new EventEmitter<Reply>();
     @Output() openReply: EventEmitter<boolean> = new EventEmitter<boolean>();

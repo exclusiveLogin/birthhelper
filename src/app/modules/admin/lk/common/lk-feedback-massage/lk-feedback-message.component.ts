@@ -31,6 +31,8 @@ export class LkFeedbackMessageComponent implements OnInit {
     @Input() replies: number = 0;
     @Input() editMode = false;
     @Input() canOfficial: boolean;
+    @Input() canReply: boolean;
+    @Input() canLikes: boolean;
     
     @Output() sendText = new EventEmitter<Reply>();
     @Output() replyTrigger = new EventEmitter<boolean>();

@@ -1,6 +1,34 @@
 <h4 class="lk_ttl">Отзывы</h4>
-<button class="button-close" [routerLink]="['/admin', 'lk']">
+<button class="button-close" [routerLink]="['/', 'system']">
     <img src="/img/icons/close.svg" class="button-close__img" alt="закрыть" />
 </button>
 
-<app-feedback-filter></app-feedback-filter>
+<div class="info">
+    <app-contragent-card></app-contragent-card>
+    <i class="fas fa-chevron-right fa-3x" style="align-self: center"></i>
+    <app-rate [rate]="1.3" [size]="'96px'"></app-rate>
+    <app-lk-rating-group [votes]="votes"></app-lk-rating-group>
+</div>
+
+<app-feedback-filter class="muted"></app-feedback-filter>
+
+<div class="feedback_block">
+    <app-lk-user-card *ngIf="user$ | async as usr"  [user]="usr"></app-lk-user-card>
+    <i class="fas fa-chevron-right fa-3x" style="align-self: center"></i>
+    <app-rate [rate]="1.3"></app-rate>
+    <i class="fas fa-chevron-right fa-3x" style="align-self: center"></i>
+    <app-lk-feedback-massage style="margin-left: 28px;" [text]="'testing message...'" [editMode]="false" [mode]="'answer'"></app-lk-feedback-massage>
+
+    <app-likes></app-likes>
+    <app-likes [negative]="true"></app-likes>
+
+    <div class="separator"></div>
+    
+    <div class="action_block">
+        <i class="fas fa-edit fa-2x action_button"></i>
+        <i class="far fa-trash-alt fa-2x action_button"></i>
+    </div>
+</div>
+
+{{targetKey$ | async }}
+{{targetId$ | async }}

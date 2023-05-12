@@ -11,15 +11,17 @@
     <ng-container *ngIf="editMode then input; else default"></ng-container>  
     <div class="bubble-footer">
 
-        <ng-container *ngIf="!editMode">
-            <i class="fas fa-chevron-down clickable" *ngIf="!opened" (click)="openReplyDialog()"></i>
-            <i class="fas fa-chevron-up clickable" *ngIf="opened" (click)="closeReplyDialog()"></i>
-        </ng-container>
-        
-        <ng-container *ngIf="editMode">
-            <i class="fa-solid fa-paper-plane clickable" (click)="send(text)"></i>
-            <ng-container *ngIf="isOfficial">
-                <ng-container *ngTemplateOutlet="officalTpl"></ng-container>
+        <ng-container *ngIf="canReply">
+            <ng-container *ngIf="!editMode">
+                <i class="fas fa-chevron-down clickable" *ngIf="!opened" (click)="openReplyDialog()"></i>
+                <i class="fas fa-chevron-up clickable" *ngIf="opened" (click)="closeReplyDialog()"></i>
+            </ng-container>
+            
+            <ng-container *ngIf="editMode">
+                <i class="fa-solid fa-paper-plane clickable" (click)="send(text)"></i>
+                <ng-container *ngIf="isOfficial">
+                    <ng-container *ngTemplateOutlet="officalTpl"></ng-container>
+                </ng-container>
             </ng-container>
         </ng-container>
 

@@ -1,0 +1,29 @@
+.info {
+    display: flex;
+    flex-grow: 1;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+    gap: 16px;
+    padding: 16px;
+    align-items: center;
+}
+.feedback_block {
+    display: flex;
+    flex-grow: 1;
+    gap: 16px;
+    align-items: center;
+}
+.separator {
+    flex-grow: 1;
+}
+.action_block {
+    display: flex;
+    gap: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+    padding: 16px;
+
+    .action_button {
+        cursor: pointer;
+    }
+}
