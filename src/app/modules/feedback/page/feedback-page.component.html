@@ -4,15 +4,15 @@
 </button>
 
 <div class="info">
-    <app-contragent-card></app-contragent-card>
+    <app-contragent-card [contragent]="contragent$ | async"></app-contragent-card>
     <i class="fas fa-chevron-right fa-3x" style="align-self: center"></i>
     <app-rate [rate]="1.3" [size]="'96px'"></app-rate>
-    <app-lk-rating-group [votes]="votes"></app-lk-rating-group>
+    <app-lk-rating-group [votes]="votes" style="flex: 1 3 auto;"></app-lk-rating-group>
 </div>
 
 <app-feedback-filter class="muted"></app-feedback-filter>
 
-<div class="feedback_block">
+<div class="feedback_block zebra">
     <app-lk-user-card *ngIf="user$ | async as usr"  [user]="usr"></app-lk-user-card>
     <i class="fas fa-chevron-right fa-3x" style="align-self: center"></i>
     <app-rate [rate]="1.3"></app-rate>
@@ -23,7 +23,58 @@
     <app-likes [negative]="true"></app-likes>
 
     <div class="separator"></div>
-    
+
+    <div class="action_block">
+        <i class="fas fa-edit fa-2x action_button"></i>
+        <i class="far fa-trash-alt fa-2x action_button"></i>
+    </div>
+</div>
+<div class="feedback_block zebra">
+    <app-lk-user-card *ngIf="user2$ | async as usr"  [user]="usr"></app-lk-user-card>
+    <i class="fas fa-chevron-right fa-3x" style="align-self: center"></i>
+    <app-rate [rate]="3.4"></app-rate>
+    <i class="fas fa-chevron-right fa-3x" style="align-self: center"></i>
+    <app-lk-feedback-massage style="margin-left: 28px;" [text]="'testing message...'" [editMode]="false" [mode]="'answer'"></app-lk-feedback-massage>
+
+    <app-likes></app-likes>
+    <app-likes [negative]="true"></app-likes>
+
+    <div class="separator"></div>
+
+    <div class="action_block">
+        <i class="fas fa-edit fa-2x action_button"></i>
+        <i class="far fa-trash-alt fa-2x action_button"></i>
+    </div>
+</div>
+<div class="feedback_block zebra">
+    <app-lk-user-card *ngIf="user3$ | async as usr"  [user]="usr"></app-lk-user-card>
+    <i class="fas fa-chevron-right fa-3x" style="align-self: center"></i>
+    <app-rate [rate]="4.3"></app-rate>
+    <i class="fas fa-chevron-right fa-3x" style="align-self: center"></i>
+    <app-lk-feedback-massage style="margin-left: 28px;" [text]="'testing message...'" [editMode]="false" [mode]="'answer'"></app-lk-feedback-massage>
+
+    <app-likes></app-likes>
+    <app-likes [negative]="true"></app-likes>
+
+    <div class="separator"></div>
+
+    <div class="action_block">
+        <i class="fas fa-edit fa-2x action_button"></i>
+        <i class="far fa-trash-alt fa-2x action_button"></i>
+    </div>
+</div>
+<div class="feedback_block zebra">
+    <app-lk-user-card *ngIf="user4$ | async as usr"  [user]="usr"></app-lk-user-card>
+    <i class="fas fa-chevron-right fa-3x" style="align-self: center"></i>
+    <app-rate [rate]="4.1"></app-rate>
+    <i class="fas fa-chevron-right fa-3x" style="align-self: center"></i>
+    <app-lk-feedback-massage style="margin-left: 28px;" [text]="'testing message...'" [editMode]="false" [mode]="'answer'"></app-lk-feedback-massage>
+
+    <app-likes></app-likes>
+    <app-likes [negative]="true"></app-likes>
+
+    <div class="separator"></div>
+
     <div class="action_block">
         <i class="fas fa-edit fa-2x action_button"></i>
         <i class="far fa-trash-alt fa-2x action_button"></i>

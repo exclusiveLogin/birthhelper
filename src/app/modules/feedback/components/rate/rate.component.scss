@@ -1,9 +1,9 @@
 .rate {
     padding: 12px;
-    background-color: var(--rate-color, grey);
+    background: radial-gradient(circle, rgba(255,255,255,0) 0%, var(--rate-color, grey) 70%);
     border-radius: var(--border-radius, 50%);
     font-size: calc(var(--rate-size, 64px) / 2);
-    color: aliceblue;
+    // color: aliceblue;
     width: var(--rate-size, 64px);
     height: var(--rate-size, 64px);
     display: flex;

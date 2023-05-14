@@ -44,4 +44,9 @@ export class FeedbackPageComponent implements OnInit {
   ];
 
   user$ = this.restService.getUserById(1);
+  user2$ = this.restService.getUserById(19);
+  user3$ = this.restService.getUserById(20);
+  user4$ = this.restService.getUserById(21);
+
+  contragent$ = this.restService.getEntity('ent_clinic_contragents', 2);
 }

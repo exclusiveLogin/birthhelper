@@ -8,8 +8,8 @@
     align-items: center;
 }
 .feedback_block {
-    display: flex;
-    flex-grow: 1;
+    display: grid;
+    grid-template-columns: minmax(403px, max-content) 24px 64px 24px 1fr repeat(2, 16px) 1fr auto;
     gap: 16px;
     align-items: center;
 }
@@ -26,4 +26,7 @@
     .action_button {
         cursor: pointer;
     }
+}
+.zebra:nth-child(even){
+    background-color: rgb(240, 240, 240);
 }

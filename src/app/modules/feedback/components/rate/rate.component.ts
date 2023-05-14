@@ -17,23 +17,23 @@ export class RateComponent implements OnInit {
       return;
     } 
     if (value <= 1) {
-      this.bgcolor = '#720610';
+      this.bgcolor = '#72061077';
       return;
     }
     if (value <= 2.5) {
-      this.bgcolor = '#722906';
+      this.bgcolor = '#72290677';
       return;
     }
     if (value <= 3.4) {
-      this.bgcolor = '#9b7408';
+      this.bgcolor = '#9b740877';
       return;
     }
     if (value <= 4.2) {
-      this.bgcolor = '#5c7206';
+      this.bgcolor = '#5c720677';
       return;
     }
     if (value > 4.2) {
-      this.bgcolor = '#06722c';
+      this.bgcolor = '#06722c77';
       return;
     }
   };
