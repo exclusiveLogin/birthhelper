@@ -9,7 +9,7 @@
 }
 .feedback_block {
     display: grid;
-    grid-template-columns: minmax(403px, max-content) 24px 64px 24px 1fr repeat(2, 16px) 1fr auto;
+    grid-template-columns: minmax(215px, max-content) 24px 64px 24px 1fr repeat(2, 16px) auto auto;
     gap: 16px;
     align-items: center;
 }
