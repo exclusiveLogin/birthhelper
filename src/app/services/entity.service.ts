@@ -5,5 +5,8 @@ import { RestService } from "@services/rest.service";
     providedIn: "root",
 })
 export class EntityService {
-    constructor(private restService: RestService) {}
+    constructor(private restService: RestService) {
+
+        
+    }
 }

@@ -2,10 +2,11 @@
     <app-lk-avatar
         [size]="64"
         [image]="userPhotoImage$ | async"
-        [title]="user?.first_name ?? user?.login"
+        [title]="user?.first_name ?? user?.login ?? user?.id?.toString()"
         [subtitle]="user?.last_name"
     ></app-lk-avatar>
-    <app-lk-title
+    <ng-container *ngIf="!avatarOnly">
+        <app-lk-title
         [title]="user?.login"
         [subTitle]="user?.first_name"
         [accentTitle]="user?.last_name"
@@ -23,4 +24,6 @@
         [viber]="user?.ch_viber"
         [whatsapp]="user?.ch_whatsapp"
     ></app-lk-confirm-chanel>
+    </ng-container>
+    
 </div>

@@ -9,7 +9,7 @@
 }
 .feedback_block {
     display: grid;
-    grid-template-columns: minmax(215px, max-content) 24px 64px 24px 1fr repeat(2, 16px) auto auto;
+    grid-template-columns: auto 24px 64px 24px 1fr repeat(2, 16px) auto auto;
     gap: 16px;
     align-items: center;
 }
@@ -29,4 +29,10 @@
 }
 .zebra:nth-child(even){
     background-color: rgb(240, 240, 240);
+}
+
+.emptylist {
+    min-height: 40vh;
+    font-size: 1.2rem;
+    color: silver;
 }

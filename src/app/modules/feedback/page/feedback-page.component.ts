@@ -1,31 +1,52 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Vote } from '../models';
 import { ActivatedRoute } from '@angular/router';
-import {map, filter} from 'rxjs/operators';
-import { User } from '@models/user.interface';
+import {filter, map, switchMap} from 'rxjs/operators';
 import { RestService } from '@services/rest.service';
+import { zip, Observable } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { FeedbackService } from '../feedback.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-feedback-page',
   templateUrl: './feedback-page.component.html',
-  styleUrls: ['./feedback-page.component.scss']
+  styleUrls: ['./feedback-page.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeedbackPageComponent implements OnInit {
 
   constructor(
     private ar: ActivatedRoute,
     private restService: RestService,
+    private feedbackService: FeedbackService,
     ) { }
 
   targetKey$ = this.ar.queryParams.pipe(
-    filter(params => params.key),
-    map(params => params.key)
+    map(params => params.key),
+    untilDestroyed(this),
   );
 
   targetId$ = this.ar.queryParams.pipe(
-    filter(params => params.id),
-    map(params => params.id)
+    map(params => params.id),
+    untilDestroyed(this),
   );
+
+  target$ = zip(this.targetKey$, this.targetId$).pipe(
+    map(params => (params[0] &&  params[1]) ? ({key: params[0], id: params[1]}) : null),
+    untilDestroyed(this),
+  );
+
+  listFeedbackByTarget$ = this.target$.pipe(
+    filter(target => !!target.id && !!target.key),
+    switchMap(target => this.feedbackService.getFeedbackListByTarget(target.key, target.id)));
+
+  // listFeedbackByUser$ = this.feedbackService.
+
+  mode$: Observable<'targetfeedback' | 'myfeedback'> = this.target$.pipe(map(target => target ? 'targetfeedback' : 'myfeedback'))
+
+  isMyFeedbackMode$: Observable<boolean> = this.mode$.pipe(map(mode => mode === 'myfeedback'));
+  isTargetFeedbackMode$: Observable<boolean> = this.mode$.pipe(map(mode => mode === 'targetfeedback'));
 
   ngOnInit(): void {
     
@@ -36,11 +57,6 @@ export class FeedbackPageComponent implements OnInit {
     {rate: 1, slug: 'test', title: 'Test2'},
     {rate: 4, slug: 'test', title: 'Test3'},
     {rate: 3, slug: 'test', title: 'Test4'},
-    {rate: 5, slug: 'test', title: 'Test5'},
-    {rate: 2, slug: 'test', title: 'Test6'},
-    {rate: 5, slug: 'test', title: 'Test7'},
-    {rate: 2, slug: 'test', title: 'Test8'},
-    {rate: 3, slug: 'test', title: 'Test9'},
   ];
 
   user$ = this.restService.getUserById(1);

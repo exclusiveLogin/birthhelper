@@ -18,6 +18,7 @@ import { filter, map, switchMap, tap } from "rxjs/operators";
 })
 export class LkUserCardComponent implements OnInit {
     @Input() user: User;
+    @Input() avatarOnly = false;
     userPhotoImage$: Observable<IImage>;
     constructor(private restService: RestService) {}
 

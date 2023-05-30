@@ -395,7 +395,7 @@ export class RestService {
         return this.fetchData(ep_config);
     }
 
-    public getUser(): Observable<UserSrc> {
+    public getCurrentUser(): Observable<UserSrc> {
         const ep_config: ISettingsParams = {
             mode: "auth",
             segment: "user",

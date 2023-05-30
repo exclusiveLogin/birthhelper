@@ -118,7 +118,7 @@ export class AuthService {
     }
 
     getCurrentUser(): Observable<User> {
-        return this.rest.getUser().pipe(
+        return this.rest.getCurrentUser().pipe(
             map((data) => new User(data)),
             tap((user) => (this.user = user))
         );
