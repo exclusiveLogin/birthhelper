@@ -6,7 +6,6 @@ import { RestService } from '@services/rest.service';
 import { zip, Observable } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FeedbackService } from '../feedback.service';
-import { Entity } from '@models/entity.interface';
 import { AuthService } from '@modules/auth-module/auth.service';
 
 @UntilDestroy()
@@ -43,7 +42,8 @@ export class FeedbackPageComponent implements OnInit {
   listFeedbackByTarget$ = this.target$.pipe(
     filter(target => !!target.id && !!target.key),
     switchMap(target => this.feedbackService.getFeedbackListByTarget(target.key, target.id)),
-    tap(list => console.log('get list fb by target: ', list))
+    tap(list => console.log('get list fb by target: ', list)),
+    untilDestroyed(this)
     );
 
   listFeedbackByUser$ = this.feedbackService.getFeedbackListByUser()
@@ -56,11 +56,6 @@ export class FeedbackPageComponent implements OnInit {
 
   ngOnInit(): void {
     
-  }
-
-  getFeedbackTarget(key: string, id: number) {
-    console.log('getFeedbackTarget' + key + 'id: ' + id);
-    // return this.restService.getEntity(key, id);
   }
 
   isSelfOwner(user_id: number): boolean {
