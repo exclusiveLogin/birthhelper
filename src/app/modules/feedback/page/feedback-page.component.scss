@@ -9,9 +9,13 @@
 }
 .feedback_block {
     display: grid;
-    grid-template-columns: auto 24px 64px 24px 1fr repeat(2, 16px) auto auto;
+    grid-template-columns: 36% 24px 64px 24px 1fr repeat(2, 16px) auto auto;
     gap: 16px;
     align-items: center;
+
+    &.target_mode {
+        grid-template-columns: 240px 24px 64px 24px 1fr repeat(2, 16px) auto auto;
+    }
 }
 .separator {
     flex-grow: 1;

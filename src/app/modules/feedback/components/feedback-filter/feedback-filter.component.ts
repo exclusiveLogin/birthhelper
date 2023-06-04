@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { LkService } from "@services/lk.service";
 
@@ -10,9 +10,10 @@ export type FilterType = 'status' | 'type_contragent' | 'period';
     styleUrls: ["./feedback-filter.component.scss"],
 })
 export class FeedbackFilterComponent implements OnInit {
-    constructor(private lkService: LkService) {}
+    constructor() {}
 
     @Input() filters: Array<FilterType> = ['status', 'type_contragent', 'period'];
+    @Output() onChange = new EventEmitter<{[key in FilterType]: any}>();
 
     filterForm = new FormGroup({
         status: new FormControl("pending"),
@@ -21,8 +22,8 @@ export class FeedbackFilterComponent implements OnInit {
 
     ngOnInit(): void {
         this.filterForm.valueChanges.subscribe((data) => {
-            console.log("this.filterForm.valueChanges", data);
-            this.lkService.setFilters("feedback", data);
+            console.log("FeedbackFilterComponent", data);
+            this.onChange.emit(data);
         });
         this.filterForm.updateValueAndValidity();
     }
@@ -32,10 +33,10 @@ export class FeedbackFilterComponent implements OnInit {
     }
 
     get hasTypeFilter(): boolean {
-        return this.filters.some((f) => f === 'status');
+        return this.filters.some((f) => f === 'type_contragent');
     }
 
     get hasPeriodFilter(): boolean {
-        return this.filters.some((f) => f === 'status');
+        return this.filters.some((f) => f === 'period');
     }
 }

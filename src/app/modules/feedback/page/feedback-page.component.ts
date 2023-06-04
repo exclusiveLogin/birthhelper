@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Vote } from '../models';
 import { ActivatedRoute } from '@angular/router';
-import {filter, map, switchMap} from 'rxjs/operators';
+import {filter, map, switchMap, tap} from 'rxjs/operators';
 import { RestService } from '@services/rest.service';
 import { zip, Observable } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FeedbackService } from '../feedback.service';
+import { Entity } from '@models/entity.interface';
+import { AuthService } from '@modules/auth-module/auth.service';
 
 @UntilDestroy()
 @Component({
@@ -20,6 +22,7 @@ export class FeedbackPageComponent implements OnInit {
     private ar: ActivatedRoute,
     private restService: RestService,
     private feedbackService: FeedbackService,
+    private authService: AuthService,
     ) { }
 
   targetKey$ = this.ar.queryParams.pipe(
@@ -39,9 +42,12 @@ export class FeedbackPageComponent implements OnInit {
 
   listFeedbackByTarget$ = this.target$.pipe(
     filter(target => !!target.id && !!target.key),
-    switchMap(target => this.feedbackService.getFeedbackListByTarget(target.key, target.id)));
+    switchMap(target => this.feedbackService.getFeedbackListByTarget(target.key, target.id)),
+    tap(list => console.log('get list fb by target: ', list))
+    );
 
-  // listFeedbackByUser$ = this.feedbackService.
+  listFeedbackByUser$ = this.feedbackService.getFeedbackListByUser()
+    .pipe(tap(list => console.log('get list fb by user: ', list)), untilDestroyed(this),);
 
   mode$: Observable<'targetfeedback' | 'myfeedback'> = this.target$.pipe(map(target => target ? 'targetfeedback' : 'myfeedback'))
 
@@ -50,6 +56,15 @@ export class FeedbackPageComponent implements OnInit {
 
   ngOnInit(): void {
     
+  }
+
+  getFeedbackTarget(key: string, id: number) {
+    console.log('getFeedbackTarget' + key + 'id: ' + id);
+    // return this.restService.getEntity(key, id);
+  }
+
+  isSelfOwner(user_id: number): boolean {
+    return user_id ? this.authService.user?.id === user_id : false;
   }
 
   votes: Partial<Vote>[] = [

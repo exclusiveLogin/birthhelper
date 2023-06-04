@@ -30,7 +30,7 @@
 </div>
 
 <ng-template #default>
-    <div class="speech-bubble-text">{{ text }}</div>
+    <div class="speech-bubble-text" *ngIf="text?.length; else empty">{{ text }}</div>
     <ng-content></ng-content>
 </ng-template>
 
@@ -43,4 +43,8 @@
 <ng-template #officalTpl>
     <input type="checkbox" name="offical" id="offical" (change)="toggleOfficial($event)">
     <label for="offical">Официальный ответ</label>
+</ng-template>
+
+<ng-template #empty>
+    <div class="speech-bubble-text-empty">---</div>
 </ng-template>

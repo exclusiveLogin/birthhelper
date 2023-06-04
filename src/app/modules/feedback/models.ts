@@ -168,3 +168,5 @@ export interface FeedbackChangeStatusResponse {
     id: number;
     status: FeedbackStatus;
 }
+
+export type FeedbackSummaryVotes = { _summary: SummaryVotes}

@@ -44,6 +44,10 @@ export interface ContragentSlots {
     tabs: TabedSlots[];
 }
 
+export type Entitized = {
+    _entity: Entity;
+}
+
 export type SectionedContragentSlots = Sectioned<ContragentSlots>;
 
 export type PriceEntitySlot = SlotEntity & Price & Benefits;

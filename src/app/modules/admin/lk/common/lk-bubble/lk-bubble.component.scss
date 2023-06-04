@@ -17,6 +17,12 @@
   :not(&-main) > &{
     max-width: calc(100% - 64px - 36px - 16px);
   }
+  &-text {
+    &-empty {
+      opacity: 0.5;
+      user-select: none;
+    }
+  }
 
   &::after {
     content: "";

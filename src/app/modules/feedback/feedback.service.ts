@@ -9,16 +9,18 @@ import {
     FeedbackFormDataAnswer,
     FeedbackResponse,
     FeedbackStatus,
+    FeedbackSummaryVotes,
     SummaryRateByTargetResponse,
     Vote,
     VoteResponse,
 } from "@modules/feedback/models";
 import { DialogServiceConfig } from "@modules/dialog/dialog.model";
 import { StoreService } from "@modules/feedback/store.service";
-import { Observable, of } from "rxjs";
-import { tap } from "rxjs/operators";
+import { Observable, of, forkJoin } from "rxjs";
+import { tap, switchMap, map } from "rxjs/operators";
 import { AuthService } from "@modules/auth-module/auth.service";
 import { SectionType } from "@services/search.service";
+import { Entitized, Entity } from "@models/entity.interface";
 
 @Injectable({
     providedIn: "root",
@@ -159,7 +161,48 @@ export class FeedbackService extends StoreService {
         };
 
         const data = { key: targetKey, id: targetId.toString() };
-        return this.rest.fetchData(restSetting, data, true);
+        return this.rest.fetchData<FeedbackResponse[]>(restSetting, data, true).pipe(
+            map(fblist => fblist.filter(f => !!f.target_entity_id && !!f.target_entity_key)),
+            map(fblist => fblist.filter(f => !!f.votes?.length)),
+            map(fblist => fblist.map(f => this.summaryVotesEnreacher(f))),
+        );
+    }
+
+    getFeedbackListByUser(filters = {}): Observable<(FeedbackResponse & FeedbackSummaryVotes & Entitized)[]> {
+        const restSetting: ISettingsParams = {
+            mode: "api",
+            segment: "feedback",
+            script: "listbyuser",
+        };
+
+        const data = { ...filters };
+        return this.rest.fetchData<FeedbackResponse[]>(restSetting, data, true).pipe(
+            map(fblist => fblist.filter(f => !!f.target_entity_id && !!f.target_entity_key)),
+            map(fblist => fblist.filter(f => !!f.votes?.length)),
+            map(fblist => fblist.map(f => this.summaryVotesEnreacher(f))),
+            switchMap((fblist) => forkJoin(fblist.map((f) => this.getTargetEntity(f)))),
+        );
+    }
+
+    getTargetEntity(feedback: FeedbackResponse & FeedbackSummaryVotes): Observable<FeedbackResponse & Entitized & FeedbackSummaryVotes> {
+        return this.rest.getEntity<Entity>(feedback.target_entity_key, feedback.target_entity_id)
+            .pipe(
+                map(
+                    (ent) => ({...feedback, _entity: ent})
+                )
+            );
+    }
+
+    summaryVotesEnreacher(feedback: FeedbackResponse): FeedbackResponse & FeedbackSummaryVotes {
+        return {
+            ...feedback,
+            _summary: {
+                total: feedback?.votes?.length,
+                min: Math.min(...feedback?.votes?.map((v) => v.rate), 0),
+                max: Math.max(...feedback?.votes?.map((v) => v.rate), 0),
+                avr: feedback?.votes?.reduce((acc, v) => (v?.rate ?? 0) + acc, 0) / feedback?.votes?.length,
+            }
+        }
     }
 
     getFeedbackListByContragent(

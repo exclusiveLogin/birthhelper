@@ -16,6 +16,65 @@
 
 <app-feedback-filter class="muted"></app-feedback-filter>
 
+
+
+<!-- для отзывов пользователя -->
+<ng-container *ngIf="isMyFeedbackMode$ | async">
+    <div class="feedback_block zebra" *ngFor="let feedback of listFeedbackByUser$ | async">
+        <!-- карточка -->
+        <app-lk-simple-card [photoId]="feedback?._entity?.image_id" [title]="feedback?._entity?.title"></app-lk-simple-card>
+        
+        <!-- шеврон -->
+        <i class="fas fa-chevron-right fa-3x" style="align-self: center"></i>
+
+        <app-rate [rate]="feedback?._summary?.avr"></app-rate>
+
+        <!-- шеврон -->
+        <i class="fas fa-chevron-right fa-3x" style="align-self: center"></i>
+
+        <app-lk-feedback-massage style="margin-left: 28px;" [text]="feedback?.comment?.text" [editMode]="false" [mode]="'answer'"></app-lk-feedback-massage>
+
+        <!-- лайки -->
+        <app-likes [count]="feedback?.likes?.length ?? 0"></app-likes>
+        <app-likes [count]="feedback?.dislikes?.length ?? 0" [negative]="true"></app-likes>
+
+        <!-- экшены -->
+        <div class="action_block">
+            <i class="fas fa-edit fa-2x action_button"></i>
+            <i class="far fa-trash-alt fa-2x action_button"></i>
+        </div>
+    </div>
+
+</ng-container>
+
+<!-- для отзывов пользователя на target -->
+<ng-container *ngIf="isTargetFeedbackMode$ | async">
+    <div class="feedback_block target_mode zebra" *ngFor="let feedback of listFeedbackByTarget$ | async">
+        <!-- карточка -->
+        <app-lk-user-card *ngIf="feedback.user"  [user]="feedback.user"></app-lk-user-card>
+
+        <!-- шеврон -->
+        <i class="fas fa-chevron-right fa-3x" style="align-self: center"></i>
+
+        <app-rate [rate]="feedback?._summary?.avr"></app-rate>
+
+        <!-- шеврон -->
+        <i class="fas fa-chevron-right fa-3x" style="align-self: center"></i>
+
+        <app-lk-feedback-massage style="margin-left: 28px;" [text]="feedback?.comment?.text" [editMode]="false" [mode]="'answer'"></app-lk-feedback-massage>
+    
+        <!-- лайки -->
+        <app-likes [count]="feedback?.likes?.length ?? 0"></app-likes>
+        <app-likes [count]="feedback?.dislikes?.length ?? 0" [negative]="true"></app-likes>
+    
+        <!-- экшены -->
+        <div class="action_block" *ngIf="isSelfOwner(feedback.user_id)">
+            <i class="fas fa-edit fa-2x action_button"></i>
+            <i class="far fa-trash-alt fa-2x action_button"></i>
+        </div>
+    </div>
+</ng-container>
+
 <!-- <div class="feedback_block zebra">
     <app-lk-user-card *ngIf="user$ | async as usr"  [user]="usr" [avatarOnly]="true"></app-lk-user-card>
     <i class="fas fa-chevron-right fa-3x" style="align-self: center"></i>
