@@ -8,10 +8,10 @@ import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core
 })
 export class RateComponent implements OnInit {
   bgcolor = 'grey';
-  rateText: number;
+  rateText: string;
   @Input() size = '64px';
   @Input() set rate ( value: number ) {
-    this.rateText = value;
+    this.rateText = value?.toFixed(1);
     if ( !value ){
       this.bgcolor = 'grey';
       return;

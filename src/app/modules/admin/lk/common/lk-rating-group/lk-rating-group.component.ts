@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
-import { Vote } from "@modules/feedback/models";
+import { RateByVote } from "@modules/feedback/models";
 
 @Component({
     selector: "app-lk-rating-group",
@@ -8,6 +8,6 @@ import { Vote } from "@modules/feedback/models";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LkRatingGroupComponent {
-    @Input() votes: Partial<Vote>[];
+    @Input() votes: Partial<RateByVote>[];
     constructor() {}
 }

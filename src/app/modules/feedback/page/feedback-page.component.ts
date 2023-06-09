@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Vote } from '../models';
+import { SummaryRateByTargetResponse, Vote } from '../models';
 import { ActivatedRoute } from '@angular/router';
 import {filter, map, switchMap, tap} from 'rxjs/operators';
 import { RestService } from '@services/rest.service';
-import { zip, Observable } from 'rxjs';
+import { zip, Observable, forkJoin } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FeedbackService } from '../feedback.service';
 import { AuthService } from '@modules/auth-module/auth.service';
+import { Entity } from '@models/entity.interface';
 
 @UntilDestroy()
 @Component({
@@ -47,12 +48,24 @@ export class FeedbackPageComponent implements OnInit {
     );
 
   listFeedbackByUser$ = this.feedbackService.getFeedbackListByUser()
-    .pipe(tap(list => console.log('get list fb by user: ', list)), untilDestroyed(this),);
+    .pipe(
+      tap(list => console.log('get list fb by user: ', list)), 
+      untilDestroyed(this),
+    );
 
   mode$: Observable<'targetfeedback' | 'myfeedback'> = this.target$.pipe(map(target => target ? 'targetfeedback' : 'myfeedback'))
 
   isMyFeedbackMode$: Observable<boolean> = this.mode$.pipe(map(mode => mode === 'myfeedback'));
   isTargetFeedbackMode$: Observable<boolean> = this.mode$.pipe(map(mode => mode === 'targetfeedback'));
+
+  targetData$: Observable<{target: Entity, rate: SummaryRateByTargetResponse}> = this.target$.pipe(
+    switchMap(target => 
+      forkJoin(
+        [
+          this.restService.getEntity<Entity>(target.key, target.id),
+          this.feedbackService.getRatingForTarget(target.key, target.id)
+        ]).pipe(map(([target, rate]) => ({target, rate }))),
+        ))
 
   ngOnInit(): void {
     

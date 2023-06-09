@@ -139,6 +139,7 @@ export interface SummaryVotes {
 
 export interface RateByVote extends SummaryVotes {
     slug: string;
+    title: string;
 }
 
 export interface SummaryRateByTargetResponse {
