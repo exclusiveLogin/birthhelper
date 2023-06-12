@@ -20,7 +20,8 @@ export type FeedbackStatus =
     | "verified"
     | "blocked"
     | "reject"
-    | "official";
+    | "official"
+    | "deleted";
 
 export type FeedbackCommentStatus =
     | "pending"
@@ -162,6 +163,7 @@ export const StatusRusMap: StatusTypeMap = {
     official: "Официально",
     reject: "Отклонен",
     verified: "Честный отзыв",
+    deleted: "Удален",
 };
 
 export interface FeedbackChangeStatusResponse {
