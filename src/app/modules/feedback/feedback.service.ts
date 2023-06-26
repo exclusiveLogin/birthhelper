@@ -153,7 +153,8 @@ export class FeedbackService extends StoreService {
 
     getFeedbackListByTarget(
         targetKey: string,
-        targetId: number
+        targetId: number,
+        filters = {}
     ): Observable<FeedbackResponse[]> {
         const restSetting: ISettingsParams = {
             mode: "api",

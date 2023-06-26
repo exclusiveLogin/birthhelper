@@ -2,6 +2,7 @@
     <div class="form-group inline" *ngIf="hasStatusFilter">
         <label for="status">Статус отзыва</label>
         <select class="form-control" id="status" formControlName="status">
+            <option value>Не выбран</option>
             <option value="pending">Ожидает</option>
             <option value="approved">Одобрен</option>
             <option value="verified">Доверенный</option>

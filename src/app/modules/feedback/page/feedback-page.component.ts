@@ -74,6 +74,11 @@ export class FeedbackPageComponent implements OnInit {
     
   }
 
+  changeFilters(filters): void {
+    console.log('changeFilters', filters);
+    this.updater$.next(null);
+    }
+
   isSelfOwner(user_id: number): boolean {
     return user_id ? this.authService.user?.id === user_id : false;
   }
