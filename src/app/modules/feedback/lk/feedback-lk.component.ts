@@ -17,6 +17,10 @@ export class LkFeedbackComponent {
   ) {}
 
   filterChange(filters: any): void {
+    filters = Object.entries(filters)
+      .filter(filter => !!filter[1])
+      .reduce((acc, filter) => ({...acc, [filter[0]]: filter[1]}), {});
+
     this.lkService.setFilters('feedback',filters);
   }
 }

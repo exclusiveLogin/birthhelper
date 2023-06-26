@@ -59,9 +59,9 @@ export class LkFeedbackListComponent implements OnInit{
         // tap((data) => (data.skip = this.skip)),
         switchMap((request) =>
             this.feedbackService.getFeedbackListByContragent(
-                request.contragentId,
-                request.section,
-                request.status
+                request?.contragentId,
+                request?.section,
+                request?.status
             )
         ),
         tap((_) => (this.isLoading = false)),

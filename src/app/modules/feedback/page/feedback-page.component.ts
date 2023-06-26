@@ -27,6 +27,8 @@ export class FeedbackPageComponent implements OnInit {
     private dialogService: DialogService,
     ) { }
 
+  filters = {};
+
   updater$ = new BehaviorSubject<null>(null);
   targetKey$ = this.ar.queryParams.pipe(
     map(params => params.key),
@@ -45,13 +47,13 @@ export class FeedbackPageComponent implements OnInit {
 
   listFeedbackByTarget$ = zip(this.target$, this.updater$).pipe(
     filter(([target]) => !!target.id && !!target.key),
-    switchMap(([target]) => this.feedbackService.getFeedbackListByTarget(target.key, target.id)),
+    switchMap(([target]) => this.feedbackService.getFeedbackListByTarget(target.key, target.id, this.filters)),
     tap(list => console.log('get list fb by target: ', list)),
     untilDestroyed(this)
     );
 
   listFeedbackByUser$ = this.updater$.pipe(
-      switchMap(() => this.feedbackService.getFeedbackListByUser()),
+      switchMap(() => this.feedbackService.getFeedbackListByUser(this.filters)),
       tap(list => console.log('get list fb by user: ', list)), 
       untilDestroyed(this),
     );
@@ -76,6 +78,10 @@ export class FeedbackPageComponent implements OnInit {
 
   changeFilters(filters): void {
     console.log('changeFilters', filters);
+    this.filters = Object.entries(filters)
+      .filter(filter => !!filter[1])
+      .reduce((acc, filter) => ({...acc, [filter[0]]: filter[1]}), {});
+    console.log('changeFilters after', this.filters);
     this.updater$.next(null);
     }
 

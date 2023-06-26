@@ -219,7 +219,11 @@ export class FeedbackService extends StoreService {
             script: contragentId.toString(),
         };
 
-        const data = { section, status };
+        let data = { section, status } as {};
+        data = Object.entries(data)
+            .filter(filter => !!filter[1])
+            .reduce((acc, filter) => ({...acc, [filter[0]]: filter[1]}), {});
+            
         return this.rest.fetchData(restSetting, data, true);
     }
 
