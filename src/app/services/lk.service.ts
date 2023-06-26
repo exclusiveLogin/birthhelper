@@ -83,12 +83,14 @@ export class LkService {
     }
 
     setFilters(lkSection: "order" | "feedback", filters: any): void {
+        console.log("setFilters",lkSection, filters);
         switch (lkSection) {
             case "order":
                 this._ordersFilters$.next(filters);
                 break;
             case "feedback":
                 this._feedbackFilters$.next(filters);
+                break;
         }
     }
 }

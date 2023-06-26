@@ -54,7 +54,7 @@
         <!-- экшены -->
         <div class="action_block">
             <i class="fas fa-edit fa-2x action_button"></i>
-            <i class="far fa-trash-alt fa-2x action_button"></i>
+            <i class="far fa-trash-alt fa-2x action_button" (click)="deleteFeedback(feedback?.id)"></i>
         </div>
     </div>
 </ng-template>
@@ -82,7 +82,7 @@
         <!-- экшены -->
         <div class="action_block" *ngIf="isSelfOwner(feedback.user_id)">
             <i class="fas fa-edit fa-2x action_button"></i>
-            <i class="far fa-trash-alt fa-2x action_button"></i>
+            <i class="far fa-trash-alt fa-2x action_button" (click)="deleteFeedback(feedback?.id)"></i>
         </div>
     </div>
 </ng-template>

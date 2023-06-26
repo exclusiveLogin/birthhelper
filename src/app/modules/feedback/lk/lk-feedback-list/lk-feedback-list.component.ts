@@ -3,6 +3,7 @@ import {
     Component,
     EventEmitter,
     Input,
+    OnInit,
     Output,
 } from "@angular/core";
 import { CTG, LkService } from "@services/lk.service";
@@ -19,7 +20,7 @@ import { FeedbackResponse } from "@modules/feedback/models";
     styleUrls: ["./lk-feedback-list.component.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LkFeedbackListComponent {
+export class LkFeedbackListComponent implements OnInit{
     public isLoading = true;
     public contragent$: Observable<Contragent>;
     public ctg: CTG;
@@ -43,6 +44,7 @@ export class LkFeedbackListComponent {
 
     updater$ = new BehaviorSubject(null);
     onRequest$ = this.lkService.feedbackFilters$.pipe(
+        tap((_) => console.log("onRequest$", _)),
         map((filters) => ({
             contragentId: this.ctg.entId,
             status: filters.status,
@@ -80,6 +82,10 @@ export class LkFeedbackListComponent {
     pageChange(page = 1): void {
         this.skip = 20 * (page - 1);
         this.isLoading = true;
+        this.updater$.next(null);
+    }
+
+    ngOnInit(): void {
         this.updater$.next(null);
     }
 }

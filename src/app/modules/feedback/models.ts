@@ -117,6 +117,11 @@ export type CreateFeedbackRequest = { action: "CREATE" } & Pick<
     FeedbackDTO,
     "section" | "target_entity_key" | "target_entity_id" | "votes" | "comment"
 >;
+export type DeleteFeedbackRequest = { action: "CREATE" } & Pick<
+    FeedbackDTO,
+    "id"
+>;
+
 
 export interface FeedbackDTO {
     id?: number;
@@ -173,3 +178,8 @@ export interface FeedbackChangeStatusResponse {
 }
 
 export type FeedbackSummaryVotes = { _summary: SummaryVotes}
+
+export interface FeedbackRemoveResponse {
+    feedbackID: number,
+    result: string;
+}

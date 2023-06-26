@@ -7,6 +7,7 @@ import {
     CreateFeedbackRequest,
     FeedbackByContragentResponse,
     FeedbackFormDataAnswer,
+    FeedbackRemoveResponse,
     FeedbackResponse,
     FeedbackStatus,
     FeedbackSummaryVotes,
@@ -223,4 +224,14 @@ export class FeedbackService extends StoreService {
 
     addFeedback(): void {}
     replyFeedback(): void {}
+
+    deleteFeedback(feedbackId: number): Observable<FeedbackRemoveResponse> {
+        const restSetting: ISettingsParams = {
+            mode: "api",
+            segment: "feedback",
+            resource: `${feedbackId}`,
+        };
+
+        return this.rest.remData(restSetting);
+    }
 }

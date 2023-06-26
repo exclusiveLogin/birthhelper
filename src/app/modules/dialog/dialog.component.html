@@ -835,3 +835,21 @@
     </div>
 </ng-template>
 <!--Доп. услуги-end-->
+
+<!--Диалог вопроса-->
+<ng-template #tpl_prompt let-data>
+    <div class="popup popup--small prompt" @dialogState>
+        <div class="popup__body">
+            <div class="popup__message">
+                <img src="img\icons\question-mark-round-icon.svg" class="popup__message-img">
+                <p class="popup__message-text">{{data.text}}</p>
+            </div>
+        </div>
+        <div class="popup__footer">
+            <button class="popup__footer-btn submit" *ngIf="data.cancel" (click)="cancelDialog()">{{data.cancel ?? 'Отменить'}}</button>
+            <button class="popup__footer-btn cancel" (click)="submitDialog()">{{data.submit ?? 'Да'}}</button>
+        </div>
+    </div>
+</ng-template>
+
+<!--Сообщение отправлено-end-->

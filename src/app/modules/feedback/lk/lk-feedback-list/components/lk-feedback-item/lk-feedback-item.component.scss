@@ -22,11 +22,13 @@
   display: flex;
   gap: 36px;
   align-items: flex-start;
+  padding: 16px 24px;
 }
 .lk-feedback-rating-block {
   display: flex;
   flex-direction: column;
   max-width: 498px;
+  gap: 24px;
 }
 
 .lk-rating-row {
@@ -36,7 +38,6 @@
   align-items: center;
 }
 .empty-message-box {
-  margin: 16px;
   position: relative;
   background-color: #f7f7f7;
   border-radius: .4em;

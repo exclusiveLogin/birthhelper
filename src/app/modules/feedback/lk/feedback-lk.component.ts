@@ -15,4 +15,8 @@ export class LkFeedbackComponent {
       private lkService: LkService,
       private authService: AuthService
   ) {}
+
+  filterChange(filters: any): void {
+    this.lkService.setFilters('feedback',filters);
+  }
 }

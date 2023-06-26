@@ -11,7 +11,7 @@ export class RateComponent implements OnInit {
   rateText: string;
   @Input() size = '64px';
   @Input() set rate ( value: number ) {
-    this.rateText = value?.toFixed(1);
+    this.rateText = value?.toFixed(1) ?? 'NA';
     if ( !value ){
       this.bgcolor = 'grey';
       return;
