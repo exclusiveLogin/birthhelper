@@ -46,9 +46,8 @@ export class LkFeedbackListComponent implements OnInit{
     onRequest$ = this.lkService.feedbackFilters$.pipe(
         tap((_) => console.log("onRequest$", _)),
         map((filters) => ({
+            ...filters,
             contragentId: this.ctg.entId,
-            status: filters.status,
-            section: filters.section_key,
             // skip: this.skip,
         }))
     );

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 
-export type FilterType = 'status' | 'type_contragent' | 'period';
+export type FilterType = 'status' | 'section' | 'period';
 
 @Component({
     selector: "app-feedback-filter",
@@ -11,18 +11,18 @@ export type FilterType = 'status' | 'type_contragent' | 'period';
 export class FeedbackFilterComponent implements OnInit {
     constructor() {}
 
-    @Input() filters: Array<FilterType> = ['status', 'type_contragent', 'period'];
+    @Input() filters: Array<FilterType> = ['status', 'section', 'period'];
     @Input() defaults: {[key in FilterType]?: any} = {};
     @Output() onChange = new EventEmitter<{[key in FilterType]: any}>();
 
     filterForm = new FormGroup({
         status: new FormControl(""),
-        section_key: new FormControl("clinic"),
+        section: new FormControl("clinic"),
     });
 
     ngOnInit(): void {
         if('status' in this.defaults) this.filterForm.patchValue({'status': this.defaults.status});
-        if('type_contragent' in this.defaults) this.filterForm.patchValue({'section_key': this.defaults.type_contragent});
+        if('section' in this.defaults) this.filterForm.patchValue({'section': this.defaults.section});
 
         this.filterForm.valueChanges.subscribe((data) => {
             console.log("FeedbackFilterComponent", data);
@@ -36,7 +36,7 @@ export class FeedbackFilterComponent implements OnInit {
     }
 
     get hasTypeFilter(): boolean {
-        return this.filters.some((f) => f === 'type_contragent');
+        return this.filters.some((f) => f === 'section');
     }
 
     get hasPeriodFilter(): boolean {

@@ -38,8 +38,8 @@ export class FeedbackService extends StoreService {
 
     targetKeyMapper(targetKey): string {
         const TMap: { [key in SectionType]: string } = {
-            clinic: "ent_contragents",
-            consultation: "ent_contragents",
+            clinic: 'ent_clinic_contragents',
+            consultation: 'ent_consultation_contragents',
         };
 
         return TMap[targetKey] ?? targetKey;
@@ -223,7 +223,9 @@ export class FeedbackService extends StoreService {
         data = Object.entries(data)
             .filter(filter => !!filter[1])
             .reduce((acc, filter) => ({...acc, [filter[0]]: filter[1]}), {});
-            
+        
+        debugger;
+
         return this.rest.fetchData(restSetting, data, true);
     }
 
