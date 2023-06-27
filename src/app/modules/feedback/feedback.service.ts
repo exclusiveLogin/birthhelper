@@ -182,7 +182,7 @@ export class FeedbackService extends StoreService {
             map(fblist => fblist.filter(f => !!f.target_entity_id && !!f.target_entity_key)),
             map(fblist => fblist.filter(f => !!f.votes?.length)),
             map(fblist => fblist.map(f => this.summaryVotesEnreacher(f))),
-            switchMap((fblist) => forkJoin(fblist.map((f) => this.getTargetEntity(f)))),
+            switchMap((fblist) => fblist.length ? forkJoin(fblist.map((f) => this.getTargetEntity(f))) : of([])),
         );
     }
 
