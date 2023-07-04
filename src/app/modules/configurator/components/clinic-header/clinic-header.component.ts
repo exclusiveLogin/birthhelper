@@ -16,6 +16,16 @@ import { RestService } from "@services/rest.service";
 import { FeedbackService } from "@modules/feedback/feedback.service";
 import { SummaryVotes } from "@modules/feedback/models";
 import { ActivatedRoute } from "@angular/router";
+import { SectionType } from "@services/search.service";
+
+const sectionKeyMapper = (key: string): string | null => {
+    const SMap: { [key: string]: string } = {
+      clinic: "ent_clinic_contragents",
+      consultation: "ent_consultation_contragents",
+    };
+
+    return SMap[key];
+  }
 
 @Component({
     selector: "app-clinic-header",
@@ -53,7 +63,7 @@ export class ClinicHeaderComponent implements OnInit {
             mergeMap(() =>
                 zip(this.ar.data.pipe(pluck("section")), this.ar.paramMap).pipe(
                     map(([section, params]) => ({
-                        section,
+                        section: sectionKeyMapper(section),
                         id: params.get("id"),
                     })),
                     switchMap(({ section, id }) =>
