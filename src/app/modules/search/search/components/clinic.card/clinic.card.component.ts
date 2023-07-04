@@ -73,7 +73,7 @@ export class ClinicCardComponent {
     rating$: Observable<SummaryVotes> = this.refresher$.pipe(
         switchMap(() =>
             this.feedbackService.getRatingForTarget(
-                "clinic",
+                "ent_clinic_contragents",
                 this.viewClinic.id
             )
         ),

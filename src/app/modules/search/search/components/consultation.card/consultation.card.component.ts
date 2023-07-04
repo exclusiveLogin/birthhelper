@@ -74,7 +74,7 @@ export class ConsultationCardComponent {
     rating$: Observable<SummaryVotes> = this.refresher$.pipe(
         switchMap(() =>
             this.feedbackService.getRatingForTarget(
-                "consultation",
+                "ent_consultation_contragents",
                 this.viewConsultation.id
             )
         ),
