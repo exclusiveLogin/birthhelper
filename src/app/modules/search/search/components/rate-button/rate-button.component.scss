@@ -1,0 +1,6 @@
+@use 'sass:color';
+    
+.card-controls__btn-rating{
+    --rate-color-darker:  color-mix(in srgb, var(--rate-color),#000000 20%);
+    background: radial-gradient(circle, var(--rate-color, grey) 0%, var(--rate-color-darker, grey) 100%);
+}

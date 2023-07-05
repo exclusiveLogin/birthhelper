@@ -7,6 +7,7 @@ import { PaginatorComponent } from "./search/components/paginator/paginator.comp
 import { FilterComponent } from "./search/components/filter/filter.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ConsultationCardComponent } from "@modules/search/search/components/consultation.card/consultation.card.component";
+import { RateButtonComponent } from './search/components/rate-button/rate-button.component';
 
 @NgModule({
     declarations: [
@@ -15,6 +16,7 @@ import { ConsultationCardComponent } from "@modules/search/search/components/con
         ConsultationCardComponent,
         PaginatorComponent,
         FilterComponent,
+        RateButtonComponent,
     ],
     imports: [
         CommonModule,

@@ -87,13 +87,7 @@
                                 alt=""
                             />
                         </button>
-                        <button
-                            class="card-controls__btn card-controls__btn-rating"
-                        >
-                            <span class="card-controls__btn-txt">{{
-                                data?.rating?.avr ?? 0 | number : "1.0-1"
-                            }}</span>
-                        </button>
+                        <app-rate-button [rate]="data?.rating?.avr ?? 0"></app-rate-button>
                     </div>
                     <div class="card-controls__cnt">
                         <a
