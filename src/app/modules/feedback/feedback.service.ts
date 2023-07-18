@@ -22,6 +22,7 @@ import { tap, switchMap, map } from "rxjs/operators";
 import { AuthService } from "@modules/auth-module/auth.service";
 import { SectionType } from "@services/search.service";
 import { Entitized, Entity } from "@models/entity.interface";
+import { ToastrService } from "ngx-toastr";
 
 @Injectable({
     providedIn: "root",
@@ -31,7 +32,8 @@ export class FeedbackService extends StoreService {
         private dialog: DialogService,
         private rest: RestService,
         private dict: DictionaryService,
-        private authService: AuthService
+        private authService: AuthService,
+        private toast: ToastrService,
     ) {
         super();
     }
@@ -122,7 +124,11 @@ export class FeedbackService extends StoreService {
                     )
                 )
             )
-            .toPromise();
+            .toPromise().catch(error => {
+                if(error.status === 429) {
+                    this.toast.error('Вы уже недавно оставляли отзыв на этот объект, попробуйте позже');
+                }
+            });
     }
 
     fetchRatingForTarget(

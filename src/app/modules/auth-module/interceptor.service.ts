@@ -1,8 +1,6 @@
 import { Injectable } from "@angular/core";
 import {
-    BehaviorSubject,
     Observable,
-    of,
     pipe,
     Subject,
     throwError,
@@ -43,14 +41,14 @@ export class InterceptorService {
                 if (err.status === 403) {
                     this.toastr.error(
                         "Ошибка доступа при выполнении: " + error,
-                        `[403] ${err.status}`
+                        `[${err.status}]`
                     );
                     setTimeout(() => this.reseterToken$.next(null), 100);
                 }
                 if (err.status === 401) {
                     this.toastr.error(
                         "Ошибка доступа при выполнении: " + error,
-                        `[401] ${err.status}`
+                        `[${err.status}]`
                     );
                     localStorage.removeItem("bh_secure_token");
                     setTimeout(() => this.reseterToken$.next(null), 100);
@@ -58,9 +56,16 @@ export class InterceptorService {
                 if (err.status === 500) {
                     this.toastr.error(
                         "Ошибка доступа при выполнении: " + error,
-                        `[500] ${err.status}`
+                        `[${err.status}]`
                     );
                     return throwError(err.error);
+                }
+                if (err.status === 429) {
+                    this.toastr.error(
+                        "Ошибка выполнения: " + error,
+                        `[${err.status}]`
+                    );
+                    return throwError(err);
                 }
                 return throwError(err);
             })
