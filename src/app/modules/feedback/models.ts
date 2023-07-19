@@ -62,6 +62,8 @@ export interface FeedbackResponse {
     likes: Array<Like>;
     dislikes: Array<Like>;
     user: User;
+    canEdit: boolean;
+    canRemove: boolean;
 }
 
 export interface Comment {
