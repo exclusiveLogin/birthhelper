@@ -31,7 +31,7 @@ export class LkSimpleCardComponent implements OnInit {
             switchMap((photoId) =>
                 this.restService.getEntity<IImage>("ent_images", photoId)
             ),
-            tap((image) => console.log("photoImage$", image))
+            // tap((image) => console.log("photoImage$", image))
         );
     }
 
