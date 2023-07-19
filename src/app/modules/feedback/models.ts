@@ -95,6 +95,11 @@ export interface VoteResponse {
     rate: number;
 }
 
+export interface FeedbackSet {
+    total: number;
+    portion: number;
+}
+
 export interface FeedbackFormDataAnswer {
     votes: VoteResponse[];
     comment: string;

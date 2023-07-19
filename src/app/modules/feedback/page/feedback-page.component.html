@@ -107,3 +107,7 @@
         Нет результатов отвечающих кретериям поиска
     </div>
 </ng-template>
+
+<ng-container *ngIf="onSetChanged$ | async">
+    <app-paginator [pages]="pages" *ngIf="pages" (vc)="pageChanged($event)"></app-paginator>
+</ng-container>

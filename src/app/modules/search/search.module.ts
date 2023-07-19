@@ -3,27 +3,27 @@ import { CommonModule } from "@angular/common";
 import { SearchModuleRouting } from "./search.module.routing";
 import { ClinicCardComponent } from "./search/components/clinic.card/clinic.card.component";
 import { SearchComponent } from "./search/search.component";
-import { PaginatorComponent } from "./search/components/paginator/paginator.component";
 import { FilterComponent } from "./search/components/filter/filter.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ConsultationCardComponent } from "@modules/search/search/components/consultation.card/consultation.card.component";
 import { RateButtonComponent } from './search/components/rate-button/rate-button.component';
+import { SharedModule } from "@shared/shared.module";
 
 @NgModule({
     declarations: [
         SearchComponent,
         ClinicCardComponent,
         ConsultationCardComponent,
-        PaginatorComponent,
         FilterComponent,
         RateButtonComponent,
     ],
     imports: [
+        SharedModule,
         CommonModule,
         SearchModuleRouting,
         FormsModule,
         ReactiveFormsModule,
     ],
-    exports: [PaginatorComponent],
+    exports: [],
 })
 export class SearchModule {}

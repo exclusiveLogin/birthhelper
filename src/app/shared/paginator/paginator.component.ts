@@ -10,7 +10,7 @@ export class PaginatorComponent implements OnInit {
 
     @Input("pages")
     private set _(value) {
-        this.pages = Math.floor(value) + 1;
+        this.pages = value;
         if (this.currentPage > this.pages) {
             this.currentPage = this.pages;
         }

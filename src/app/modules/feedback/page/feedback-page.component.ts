@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { SummaryRateByTargetResponse } from '../models';
+import { FeedbackSet, SummaryRateByTargetResponse } from '../models';
 import { ActivatedRoute } from '@angular/router';
-import {filter, map, switchMap, tap,} from 'rxjs/operators';
+import {filter, map, shareReplay, switchMap, tap,} from 'rxjs/operators';
 import { RestService } from '@services/rest.service';
-import { zip, Observable, forkJoin, BehaviorSubject } from 'rxjs';
+import { zip, Observable, forkJoin, BehaviorSubject, NEVER, merge, Subject } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FeedbackService } from '../feedback.service';
 import { AuthService } from '@modules/auth-module/auth.service';
@@ -27,9 +27,16 @@ export class FeedbackPageComponent implements OnInit {
     private dialogService: DialogService,
     ) { }
 
-  filters = {};
+  filtersChange$ = new BehaviorSubject<any>({});
+  pageChange$ = new Subject<number>();
+  pages: number;
+  limit = 20;
+  skip = 0;
 
-  updater$ = new BehaviorSubject<null>(null);
+  // update the feedbacks
+  updater$ = new Subject<null>();
+  onUpdateList$ = merge(this.updater$, this.pageChange$)
+
   targetKey$ = this.ar.queryParams.pipe(
     map(params => params.key),
     untilDestroyed(this),
@@ -42,21 +49,46 @@ export class FeedbackPageComponent implements OnInit {
 
   target$ = zip(this.targetKey$, this.targetId$).pipe(
     map(params => (params[0] &&  params[1]) ? ({key: params[0], id: params[1]}) : null),
+    tap((data) => console.log('target: ', data)), 
+    shareReplay(1),
     untilDestroyed(this),
   );
 
-  listFeedbackByTarget$ = zip(this.target$, this.updater$).pipe(
-    filter(([target]) => !!target.id && !!target.key),
-    switchMap(([target]) => this.feedbackService.getFeedbackListByTarget(target.key, target.id, this.filters)),
+  setByUserList$ = this.feedbackService.fetchFeedbackSetByUser(this.filtersChange$.value);
+
+  setByTargetList$ = this.target$.pipe(
+    switchMap(({key, id}) => this.feedbackService.fetchFeedbackSetByTarget(key, id, this.filtersChange$.value)),
+  );
+
+  onSetChanged$ = this.filtersChange$.pipe(
+    tap((filters) => console.log('onSetChanged', filters)), 
+    switchMap(() => this.mode$.pipe(switchMap(mode => {
+      switch(mode){
+        case 'myfeedback':
+          return this.setByUserList$;
+        case 'targetfeedback':
+          return this.setByTargetList$;
+        default: return NEVER;
+      }
+    }))),
+    tap((_set) => this.setPageMetadata(_set))
+  );
+
+  // LIST //////////////////////////////////////////////////////////////////////////
+  listFeedbackByTarget$ = this.onUpdateList$.pipe(
+    switchMap(() => this.target$),
+    filter((target) => !!target.id && !!target.key),
+    switchMap((target) => this.feedbackService.getFeedbackListByTarget(target.key, target.id, {...this.filtersChange$.value, limit: this.limit, skip: this.skip})),
     tap(list => console.log('get list fb by target: ', list)),
     untilDestroyed(this)
     );
 
-  listFeedbackByUser$ = this.updater$.pipe(
-      switchMap(() => this.feedbackService.getFeedbackListByUser(this.filters)),
-      tap(list => console.log('get list fb by user: ', list)), 
-      untilDestroyed(this),
-    );
+  listFeedbackByUser$ = this.onUpdateList$.pipe(
+    switchMap(() => this.feedbackService.getFeedbackListByUser({...this.filtersChange$.value, limit: this.limit, skip: this.skip})),
+    tap(list => console.log('get list fb by user: ', list)), 
+    untilDestroyed(this),
+  );
+  ////////////////////////////////////////////////////////////////////////
 
   mode$: Observable<'targetfeedback' | 'myfeedback'> = this.target$.pipe(map(target => target ? 'targetfeedback' : 'myfeedback'))
 
@@ -73,21 +105,39 @@ export class FeedbackPageComponent implements OnInit {
         ))
 
   ngOnInit(): void {
-    
+    // init streams
+    // this.filtersChange$.next({});
+  }
+
+  setPageMetadata(_set: FeedbackSet): void {
+    console.log('setPageMetadata', _set);
+    this.limit = _set.portion;
+    this.pages = Math.ceil(_set.total / _set.portion ?? 20) || 1;
+    this.pageChanged(1);
+  }
+
+  pageChanged(page: number): void {
+    this.skip =  (this.limit * (page - 1)),
+    this.pageChange$.next(page);
   }
 
   changeFilters(filters): void {
-    console.log('changeFilters', filters);
-    this.filters = Object.entries(filters)
+    console.log('changeFilters before', filters);
+    const _filters = Object.entries(filters)
       .filter(filter => !!filter[1])
       .reduce((acc, filter) => ({...acc, [filter[0]]: filter[1]}), {});
-    console.log('changeFilters after', this.filters);
-    this.updater$.next(null);
+
+    this.filtersChange$.next(_filters);
+    console.log('changeFilters after', this.filtersChange$.value);
     }
+
+  ////////////////////////////////////////////////////////////////
 
   isSelfOwner(user_id: number): boolean {
     return user_id ? this.authService.user?.id === user_id : false;
   }
+
+  ////////////////////////////////////////////////////////////////
 
   editFeedback(feedback_id: number): void {
 

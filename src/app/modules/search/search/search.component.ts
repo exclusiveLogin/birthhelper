@@ -282,4 +282,8 @@ export class SearchComponent implements OnInit, AfterViewInit {
             this.map.fitByBounds(this.lfgClinics.getBounds());
         }
     }
+
+    getCeilPages(totalPages: number): number {
+        return Math.ceil(totalPages / 20) || 1
+    }
 }

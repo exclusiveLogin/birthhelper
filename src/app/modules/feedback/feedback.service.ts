@@ -9,6 +9,7 @@ import {
     FeedbackFormDataAnswer,
     FeedbackRemoveResponse,
     FeedbackResponse,
+    FeedbackSet,
     FeedbackStatus,
     FeedbackSummaryVotes,
     SummaryRateByTargetResponse,
@@ -131,6 +132,28 @@ export class FeedbackService extends StoreService {
             });
     }
 
+    fetchFeedbackSetByUser(filters = {}): Observable<FeedbackSet> {
+        const restSetting: ISettingsParams = {
+            mode: "api",
+            segment: "feedback",
+            script: "listbyuser/set",
+        };
+
+        const data = { ...filters };
+        return this.rest.fetchData<FeedbackSet>(restSetting, data, true);
+    }
+
+    fetchFeedbackSetByTarget(key: string, id: number, filters = {}): Observable<FeedbackSet> {
+        const restSetting: ISettingsParams = {
+            mode: "api",
+            segment: "feedback",
+            script: "list/set",
+        };
+
+        const data = {...filters, key, id: id.toString() };
+        return this.rest.fetchData<FeedbackSet>(restSetting, data, true);
+    }
+
     fetchRatingForTarget(
         targetKey: string,
         targetId: number
@@ -168,7 +191,7 @@ export class FeedbackService extends StoreService {
             script: "list",
         };
 
-        const data = { key: targetKey, id: targetId.toString() };
+        const data = { key: targetKey, id: targetId.toString(), ...filters };
         return this.rest.fetchData<FeedbackResponse[]>(restSetting, data, true).pipe(
             map(fblist => fblist.filter(f => !!f.target_entity_id && !!f.target_entity_key)),
             map(fblist => fblist.filter(f => !!f.votes?.length)),
