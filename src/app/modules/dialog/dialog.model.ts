@@ -1,7 +1,6 @@
 import { FormGroup } from "@angular/forms";
 import { TemplateRef } from "@angular/core";
 import { Subject } from "rxjs";
-import { VoteResponse } from "@modules/feedback/models";
 
 export type DialogType = "dialog" | "popup";
 export type DialogActionType = "show" | "close" | "submit" | "reject";

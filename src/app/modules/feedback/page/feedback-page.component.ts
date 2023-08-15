@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FeedbackSet, SummaryRateByTargetResponse } from '../models';
+import { FeedbackResponse, FeedbackSet, SummaryRateByTargetResponse } from '../models';
 import { ActivatedRoute } from '@angular/router';
-import {filter, map, shareReplay, switchMap, tap,} from 'rxjs/operators';
+import {filter, map, shareReplay, switchMap, tap, withLatestFrom,} from 'rxjs/operators';
 import { RestService } from '@services/rest.service';
 import { zip, Observable, forkJoin, BehaviorSubject, NEVER, merge, Subject } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -9,6 +9,7 @@ import { FeedbackService } from '../feedback.service';
 import { AuthService } from '@modules/auth-module/auth.service';
 import { Entity } from '@models/entity.interface';
 import { DialogService } from '@modules/dialog/dialog.service';
+import { FeedbackContext } from '@models/context';
 
 @UntilDestroy()
 @Component({
@@ -35,7 +36,9 @@ export class FeedbackPageComponent implements OnInit {
 
   // update the feedbacks
   updater$ = new Subject<null>();
-  onUpdateList$ = merge(this.updater$, this.pageChange$)
+  setUpdater$ = new Subject<null>();
+  onUpdateList$ = merge(this.updater$, this.pageChange$);
+  onUpdateSet$ = merge(this.setUpdater$, this.filtersChange$)
 
   targetKey$ = this.ar.queryParams.pipe(
     map(params => params.key),
@@ -60,8 +63,7 @@ export class FeedbackPageComponent implements OnInit {
     switchMap(({key, id}) => this.feedbackService.fetchFeedbackSetByTarget(key, id, this.filtersChange$.value)),
   );
 
-  onSetChanged$ = this.filtersChange$.pipe(
-    tap((filters) => console.log('onSetChanged', filters)), 
+  onSetChanged$ = this.onUpdateSet$.pipe(
     switchMap(() => this.mode$.pipe(switchMap(mode => {
       switch(mode){
         case 'myfeedback':
@@ -139,8 +141,16 @@ export class FeedbackPageComponent implements OnInit {
 
   ////////////////////////////////////////////////////////////////
 
-  editFeedback(feedback_id: number): void {
+  editFeedback(feedback: FeedbackResponse): void {
+    const feedbackContext: FeedbackContext = {
+      existFeedback: feedback,
+      section: feedback.section,
+    }
 
+    this.feedbackService.initFeedbackByTarget(feedback.target_entity_key, feedback.target_entity_id, feedbackContext)
+    .then(async (result) => {
+        this.updater$.next(null);
+    });
   }
 
   deleteFeedback(feedback_id: number): void {
@@ -153,9 +163,9 @@ export class FeedbackPageComponent implements OnInit {
     }).then(async () => {
       console.log('deleteFeedback', feedback_id);
       await this.feedbackService.deleteFeedback(feedback_id).toPromise();
-      this.updater$.next(null);
+      this.setUpdater$.next(null);
     }).catch((error) => {
-      console.log('deleteFeedback close', error);
+      console.log('deleteFeedback', error);
     });
   }
 

@@ -5,6 +5,7 @@ import { ISettingsParams, RestService } from "@services/rest.service";
 import { DictionaryService } from "@services/dictionary.service";
 import {
     CreateFeedbackRequest,
+    EditFeedbackRequest,
     FeedbackByContragentResponse,
     FeedbackFormDataAnswer,
     FeedbackRemoveResponse,
@@ -81,11 +82,31 @@ export class FeedbackService extends StoreService {
             const votes = await this.dict
                 .getDict("dict_votes", filters)
                 .toPromise();
+
+            let votes_cast: { [key: string]: string };
+            if(context.existFeedback && context.existFeedback?.votes?.length) {
+                votes_cast = {};
+                context.existFeedback?.votes?.forEach(vote =>  votes_cast[vote.vote_slug] = '' + vote.rate);
+            }
+            
+            const comment = context.existFeedback?.comment?.text;
             const result = await this.openFeedbackDialog(
-                votes as unknown as Vote[]
+                votes as unknown as Vote[],
+                context?.existFeedback ? 
+                {
+                    votes_cast,
+                    comment
+                } : undefined
             );
             const feedbackData = result.data as FeedbackFormDataAnswer;
-            const feedbackSaveResponse: CreateFeedbackRequest = {
+            const feedbackSaveResponse: CreateFeedbackRequest | EditFeedbackRequest = context?.existFeedback ? 
+            {
+                id: context.existFeedback.id,
+                votes: (feedbackData?.votes as VoteResponse[]) ?? [],
+                comment: feedbackData.comment,
+                action: 'EDIT',
+            } : 
+            {
                 target_entity_id: targetId,
                 target_entity_key: targetKey,
                 votes: (feedbackData?.votes as VoteResponse[]) ?? [],
@@ -93,23 +114,34 @@ export class FeedbackService extends StoreService {
                 action: "CREATE",
                 section: context.section,
             };
+
+            this.clearStoreByTarget(
+                targetKey,
+                targetId,
+            )
             return this.sendFeedback(feedbackSaveResponse);
         } catch (e) {
             console.log("feedback failed", e);
         }
     }
 
-    openFeedbackDialog(votes: Vote[]) {
+    openFeedbackDialog(votes: Vote[], oldfeedbackData?: {votes_cast: Record<string, string>, comment: string}) {
         const dialogConfiguration: Partial<DialogServiceConfig> = {
             data: { votes },
         };
+        if(oldfeedbackData) {
+            dialogConfiguration.data = {
+                ...dialogConfiguration.data, 
+                ...oldfeedbackData,
+            }
+        }
         return this.dialog.showDialogByTemplateKey(
             "feedback_form",
             dialogConfiguration
         );
     }
 
-    sendFeedback(feedback: CreateFeedbackRequest): Promise<unknown> {
+    sendFeedback(feedback: CreateFeedbackRequest | EditFeedbackRequest): Promise<unknown> {
         const restSetting: ISettingsParams = {
             mode: "api",
             segment: "feedback",
@@ -117,14 +149,6 @@ export class FeedbackService extends StoreService {
 
         return this.rest
             .postData(restSetting, feedback)
-            .pipe(
-                tap((_) =>
-                    this.clearStoreByTarget(
-                        feedback.target_entity_key,
-                        feedback.target_entity_id
-                    )
-                )
-            )
             .toPromise().catch(error => {
                 if(error.status === 429) {
                     this.toast.error('Вы уже недавно оставляли отзыв на этот объект, попробуйте позже');

@@ -52,6 +52,7 @@ export interface FeedbackByContragentResponse {
 }
 export interface FeedbackResponse {
     id: number;
+    section: SectionType;
     target_entity_key: string;
     target_entity_id: number;
     action: FeedbackAction;
@@ -82,7 +83,7 @@ export interface Comment {
 
 export interface Vote {
     id: number;
-    slug: string;
+    vote_slug: string;
     title: string;
     section: SectionType;
     rate: number;
@@ -124,7 +125,11 @@ export type CreateFeedbackRequest = { action: "CREATE" } & Pick<
     FeedbackDTO,
     "section" | "target_entity_key" | "target_entity_id" | "votes" | "comment"
 >;
-export type DeleteFeedbackRequest = { action: "CREATE" } & Pick<
+export type EditFeedbackRequest = { action: "EDIT" } & Pick<
+    FeedbackDTO,
+    "id" | "votes" | "comment"
+>;
+export type DeleteFeedbackRequest = { action: "REMOVE_FEEDBACK" } & Pick<
     FeedbackDTO,
     "id"
 >;

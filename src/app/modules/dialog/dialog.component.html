@@ -24,7 +24,7 @@
     <div class="popup popup--middle" @dialogState>
         <button class="popup__close" (click)="closeDialog()"></button>
         <div class="popup__header">
-            <p class="popup__title">Оставить отзыв о клинике</p>
+            <p class="popup__title">Оставить отзыв</p>
         </div>
         <div class="popup__body">
             <form #t="ngForm">
@@ -93,7 +93,7 @@
                                 [name]="vote.slug"
                                 [id]="vote.slug + '5'"
                                 value="5"
-                                ngModel="5"
+                                [ngModel]="data?.votes_cast?.[vote.slug] ? data?.votes_cast?.[vote.slug] : '5'"
                             />
                             <label
                                 class="rating__label"
@@ -106,7 +106,7 @@
                     class="popup__textarea"
                     placeholder="Введите текст Вашего отзыва"
                     [name]="'comment'"
-                    ngModel
+                    [ngModel]="data?.comment ? data?.comment : ''"
                 ></textarea>
             </form>
         </div>
