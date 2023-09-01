@@ -8,8 +8,8 @@ import { ImageService } from "@services/image.service";
 import { IImage } from "@modules/admin/Dashboard/Editor/components/image/image.component";
 import { BehaviorSubject, Observable } from "rxjs";
 import { SafeUrl } from "@angular/platform-browser";
-import { randomColor } from "@modules/utils/random";
 import { RestService } from "@services/rest.service";
+import { getColorFromAny } from "@modules/utils/random";
 
 @Component({
     selector: "app-lk-avatar",
@@ -33,8 +33,6 @@ export class LkAvatarComponent {
     }
     @Input() size: number = 64;
     _image: IImage;
-    defaultColorAvatar: string = randomColor(50, 100);
-
     photoUrl$: Observable<SafeUrl>;
     imageSignal$: BehaviorSubject<null>;
 
@@ -62,5 +60,9 @@ export class LkAvatarComponent {
                 this.imageService.getImage$(image);
             this.cdr.markForCheck();
         }
+    }
+
+    get defaultColorAvatar (): string {
+        return getColorFromAny([this.title ?? '_', this.subtitle ?? '_']);
     }
 }

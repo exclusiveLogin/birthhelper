@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FeedbackResponse, FeedbackSet, SummaryRateByTargetResponse } from '../models';
 import { ActivatedRoute } from '@angular/router';
-import {filter, map, shareReplay, switchMap, tap, withLatestFrom,} from 'rxjs/operators';
+import {filter, map, shareReplay, switchMap, tap,} from 'rxjs/operators';
 import { RestService } from '@services/rest.service';
 import { zip, Observable, forkJoin, BehaviorSubject, NEVER, merge, Subject } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';

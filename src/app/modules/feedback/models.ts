@@ -62,6 +62,8 @@ export interface FeedbackResponse {
     votes: Array<Vote>;
     likes: Array<Like>;
     dislikes: Array<Like>;
+    likeOwner: boolean;
+    dislikeOwner: boolean;
     user: User;
     canEdit: boolean;
     canRemove: boolean;
