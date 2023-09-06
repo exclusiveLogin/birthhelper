@@ -9,7 +9,7 @@ export class StoreService {
 
     rateStore: RateStore = {};
 
-    saveToStore(
+    saveRateToStore(
         targetKey: string,
         targetId: number,
         rating: SummaryRateByTargetResponse
@@ -18,7 +18,7 @@ export class StoreService {
         this.rateStore[hash] = rating;
     }
 
-    loadFromStore(
+    loadRateFromStore(
         targetKey: string,
         targetId: number
     ): SummaryRateByTargetResponse {
@@ -26,12 +26,12 @@ export class StoreService {
         return this.rateStore[hash];
     }
 
-    clearStoreByTarget(targetKey: string, targetId: number): void {
+    clearRateStoreByTarget(targetKey: string, targetId: number): void {
         const hash = hasher({ targetKey, targetId });
         delete this.rateStore[hash];
     }
 
-    clearStore(): void {
+    clearRateStore(): void {
         this.rateStore = {};
     }
 }

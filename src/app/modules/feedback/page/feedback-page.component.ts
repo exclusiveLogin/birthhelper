@@ -165,8 +165,18 @@ export class FeedbackPageComponent implements OnInit {
       await this.feedbackService.deleteFeedback(feedback_id).toPromise();
       this.setUpdater$.next(null);
     }).catch((error) => {
-      console.log('deleteFeedback', error);
+      console.log('deleteFeedback error: ', error);
     });
+  }
+
+  setLike(feedback_id: number, invert = false): void {
+    this.feedbackService.sendRateToFeedback(feedback_id, invert)
+    .then(async () => {
+      console.log('sendRateFeedback', feedback_id, invert);
+      this.updater$.next(null);
+    }).catch((error) => {
+      console.log('sendRateFeedback error: ', error);
+    });;
   }
 
 }

@@ -7,7 +7,9 @@ import {
     CreateFeedbackRequest,
     EditFeedbackRequest,
     FeedbackByContragentResponse,
+    FeedbackDislikeCommentRequest,
     FeedbackFormDataAnswer,
+    FeedbackLikeCommentRequest,
     FeedbackRemoveResponse,
     FeedbackResponse,
     FeedbackSet,
@@ -115,7 +117,7 @@ export class FeedbackService extends StoreService {
                 section: context.section,
             };
 
-            this.clearStoreByTarget(
+            this.clearRateStoreByTarget(
                 targetKey,
                 targetId,
             )
@@ -154,6 +156,27 @@ export class FeedbackService extends StoreService {
                     this.toast.error('Вы уже недавно оставляли отзыв на этот объект, попробуйте позже');
                 }
             });
+    }
+
+    sendRateToFeedback(id: number, invert: boolean = false): Promise<unknown> {
+        const restSetting: ISettingsParams = {
+            mode: "api",
+            segment: "feedback",
+        };
+
+        const feedback: FeedbackLikeCommentRequest | FeedbackDislikeCommentRequest = {
+            id,
+            action: invert ? 'DISLIKE' : 'LIKE',
+        };
+
+        return this.rest
+            .postData(restSetting, feedback)
+            .toPromise()
+            // .catch(error => {
+            //     if(error.status === 429) {
+            //         this.toast.error('Вы уже недавно оставляли отзыв на этот объект, попробуйте позже');
+            //     }
+            // });
     }
 
     fetchFeedbackSetByUser(filters = {}): Observable<FeedbackSet> {
@@ -196,11 +219,11 @@ export class FeedbackService extends StoreService {
         targetKey: string,
         targetId: number
     ): Observable<SummaryRateByTargetResponse> {
-        const rating = this.loadFromStore(targetKey, targetId);
+        const rating = this.loadRateFromStore(targetKey, targetId);
         return rating
             ? of(rating)
             : this.fetchRatingForTarget(targetKey, targetId).pipe(
-                  tap((data) => this.saveToStore(targetKey, targetId, data))
+                  tap((data) => this.saveRateToStore(targetKey, targetId, data))
               );
     }
 

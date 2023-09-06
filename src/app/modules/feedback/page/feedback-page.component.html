@@ -62,8 +62,17 @@
         <app-lk-feedback-massage style="margin-left: 28px;" [text]="feedback?.comment?.text" [editMode]="false" [mode]="'answer'"></app-lk-feedback-massage>
 
         <!-- лайки -->
-        <app-likes [count]="feedback?.likes?.length ?? 0" [self]="feedback.likeOwner"></app-likes>
-        <app-likes [count]="feedback?.dislikes?.length ?? 0" [negative]="true"  [self]="feedback.dislikeOwner"></app-likes>
+        <app-likes 
+            [count]="feedback?.likes?.length ?? 0" 
+            [self]="feedback.likeOwner" 
+            (click)="setLike(feedback.id)"
+            ></app-likes>
+        <app-likes 
+            [count]="feedback?.dislikes?.length ?? 0" 
+            [negative]="true"  
+            [self]="feedback.dislikeOwner"  
+            (click)="setLike(feedback.id, true)"
+            ></app-likes>
 
         <!-- экшены -->
         <div class="action_block">
@@ -90,8 +99,17 @@
         <app-lk-feedback-massage style="margin-left: 28px;" [text]="feedback?.comment?.text" [editMode]="false" [mode]="'answer'"></app-lk-feedback-massage>
     
         <!-- лайки -->
-        <app-likes [count]="feedback?.likes?.length ?? 0" [self]="feedback.likeOwner"></app-likes>
-        <app-likes [count]="feedback?.dislikes?.length ?? 0" [negative]="true"  [self]="feedback.dislikeOwner"></app-likes>
+        <app-likes 
+            [count]="feedback?.likes?.length ?? 0" 
+            [self]="feedback.likeOwner" 
+            (click)="setLike(feedback.id)"
+            ></app-likes>
+        <app-likes 
+            [count]="feedback?.dislikes?.length ?? 0" 
+            [negative]="true"  
+            [self]="feedback.dislikeOwner"  
+            (click)="setLike(feedback.id, true)"
+            ></app-likes>
     
         <!-- экшены -->
         <div class="action_block" *ngIf="isSelfOwner(feedback.user_id)">
