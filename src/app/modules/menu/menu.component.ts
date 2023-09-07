@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding } from "@angular/core";
 import { AuthService } from "../auth-module/auth.service";
 import { BehaviorSubject, combineLatest, Observable } from "rxjs";
 import { User } from "@models/user.interface";
@@ -22,7 +22,6 @@ import {
 } from "@models/lk.permission.interface";
 import { Contragent } from "@models/contragent.interface";
 import { randomColor } from "../utils/random";
-import { uniq } from "../utils/uniq";
 import { RoutingService } from "@services/routing.service";
 
 type MenuMode = "default" | "lk" | "contragents";
@@ -34,6 +33,12 @@ type MenuMode = "default" | "lk" | "contragents";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MenuComponent {
+    mql = window.matchMedia("(min-width: 480px)");
+    hide = !this.mql.matches;
+
+    @HostBinding('class.menuhide')get host_class() {
+        return  this.hide;
+    }
     // Modes
     mode$: Observable<MenuMode> = this.routingService.routeData$.pipe(
         pluck("main_menu_mode"),
@@ -100,7 +105,8 @@ export class MenuComponent {
         private restService: RestService,
         private imageService: ImageService,
         private lkService: LkService,
-        private routingService: RoutingService
+        private routingService: RoutingService,
+        private cdr: ChangeDetectorRef,
     ) {
         this.selectedContragents$
             .pipe(
@@ -110,6 +116,12 @@ export class MenuComponent {
                 tap((data) => console.log("selectedContragents$", data))
             )
             .subscribe();
+    }
+
+    menuToggle(): void {
+        console.log('menu');
+        this.hide = !this.hide;
+        this.cdr.detectChanges();
     }
 
     selectCTG(ctg: CTG): void {

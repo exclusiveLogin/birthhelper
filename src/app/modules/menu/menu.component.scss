@@ -1,3 +1,26 @@
+:host {
+    position: relative;
+    transition: all 0.5s ease-in-out;
+}
+:host(.menuhide) {
+    // transform: translateX(-220px);
+    margin-left: -220px;
+}
+
+.toggler{
+    position: absolute;
+    width: 20px;
+    background-color: gainsboro;
+    height: 120px;
+    left: 226px;
+    top: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 10px 10px 0;
+    box-shadow: 0 6px 24px 0 rgba(0, 0, 0, 0.1);
+}
+
 .ctg {
     display: flex;
     margin-bottom: 5px;
@@ -26,4 +49,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+
+@media (min-width: 480px) {
+    .toggler{
+        display: none;
+    }
 }
