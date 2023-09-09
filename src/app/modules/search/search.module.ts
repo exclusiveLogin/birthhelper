@@ -6,7 +6,6 @@ import { SearchComponent } from "./search/search.component";
 import { FilterComponent } from "./search/components/filter/filter.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ConsultationCardComponent } from "@modules/search/search/components/consultation.card/consultation.card.component";
-import { RateButtonComponent } from './search/components/rate-button/rate-button.component';
 import { SharedModule } from "@shared/shared.module";
 
 @NgModule({
@@ -15,7 +14,6 @@ import { SharedModule } from "@shared/shared.module";
         ClinicCardComponent,
         ConsultationCardComponent,
         FilterComponent,
-        RateButtonComponent,
     ],
     imports: [
         SharedModule,

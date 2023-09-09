@@ -80,7 +80,7 @@
                 class="clinic-header-actions__review-icon"
                 alt=""
             />
-            <span>{{ rate.avr | number : "1.0-2" }} ({{ rate.total }})</span>
+            <app-rate-button [rate]="rate.avr ?? 0"></app-rate-button>
         </p>
         <a
             href="javascript:;"
@@ -88,6 +88,7 @@
             class="clinic-header-actions-link"
             >Оставить отзыв</a
         >
+        <span class="card-controls__txt">Всего {{ rate.total || 0 }}</span>
         <button class="clinic-header-actions-btn muted">
             Запланировать посещение
         </button>

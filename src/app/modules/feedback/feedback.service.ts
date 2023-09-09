@@ -27,6 +27,7 @@ import { AuthService } from "@modules/auth-module/auth.service";
 import { SectionType } from "@services/search.service";
 import { Entitized, Entity } from "@models/entity.interface";
 import { ToastrService } from "ngx-toastr";
+import { Router } from "@angular/router";
 
 @Injectable({
     providedIn: "root",
@@ -38,6 +39,7 @@ export class FeedbackService extends StoreService {
         private dict: DictionaryService,
         private authService: AuthService,
         private toast: ToastrService,
+        private router: Router,
     ) {
         super();
     }
@@ -49,6 +51,15 @@ export class FeedbackService extends StoreService {
         };
 
         return TMap[targetKey] ?? targetKey;
+    }
+
+    gotoRatingPage(section?: string, targetId?: number): void {
+        if(!targetId && !section) {
+            this.router.navigate(['/','system','feedback']);
+        } else {
+            const target = this.targetKeyMapper(section);
+            this.router.navigate(['/','system','feedback'], { queryParams: {key: target, id: targetId}});
+        }
     }
 
     async initFeedbackByTarget(
@@ -151,7 +162,14 @@ export class FeedbackService extends StoreService {
 
         return this.rest
             .postData(restSetting, feedback)
-            .toPromise().catch(error => {
+            .toPromise()
+            .then(() => {
+                if((feedback as CreateFeedbackRequest).target_entity_key, (feedback as CreateFeedbackRequest).target_entity_id) {
+                    feedback = feedback as CreateFeedbackRequest;
+                    this.clearRateStoreByTarget(feedback.target_entity_key, feedback.target_entity_id)
+                }
+            })
+            .catch(error => {
                 if(error.status === 429) {
                     this.toast.error('Вы уже недавно оставляли отзыв на этот объект, попробуйте позже');
                 }
@@ -314,6 +332,7 @@ export class FeedbackService extends StoreService {
             segment: "feedback",
             resource: `${feedbackId}`,
         };
+        this.clearRateStore()
 
         return this.rest.remData(restSetting);
     }

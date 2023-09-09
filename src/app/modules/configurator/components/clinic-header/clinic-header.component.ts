@@ -8,7 +8,7 @@ import {
     Contragent,
     ContragentsPhone,
 } from "../../../../models/contragent.interface";
-import { BehaviorSubject, from, Observable, of, zip } from "rxjs";
+import { BehaviorSubject, merge, Observable, of, zip } from "rxjs";
 import { DialogServiceConfig } from "@modules/dialog/dialog.model";
 import { DialogService } from "@modules/dialog/dialog.service";
 import { map, mapTo, mergeMap, pluck, switchMap, tap } from "rxjs/operators";
@@ -16,7 +16,6 @@ import { RestService } from "@services/rest.service";
 import { FeedbackService } from "@modules/feedback/feedback.service";
 import { SummaryVotes } from "@modules/feedback/models";
 import { ActivatedRoute } from "@angular/router";
-import { SectionType } from "@services/search.service";
 
 const sectionKeyMapper = (key: string): string | null => {
     const SMap: { [key: string]: string } = {
@@ -59,7 +58,7 @@ export class ClinicHeaderComponent implements OnInit {
             )
         );
 
-        this.rating$ = this.refresher$.pipe(
+        this.rating$ = merge(this.refresher$, of(null)).pipe(
             mergeMap(() =>
                 zip(this.ar.data.pipe(pluck("section")), this.ar.paramMap).pipe(
                     map(([section, params]) => ({

@@ -109,4 +109,9 @@ export class ConsultationCardComponent {
             ])
             .then();
     }
+
+    gotoRatingPage(): void {
+        this.feedbackService.gotoRatingPage('consultation', this.viewConsultation.id);
+
+    }
 }

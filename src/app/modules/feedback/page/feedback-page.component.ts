@@ -3,7 +3,7 @@ import { FeedbackResponse, FeedbackSet, SummaryRateByTargetResponse } from '../m
 import { ActivatedRoute } from '@angular/router';
 import {filter, map, shareReplay, switchMap, tap,} from 'rxjs/operators';
 import { RestService } from '@services/rest.service';
-import { zip, Observable, forkJoin, BehaviorSubject, NEVER, merge, Subject } from 'rxjs';
+import { zip, Observable, BehaviorSubject, NEVER, merge, Subject, combineLatest, of } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FeedbackService } from '../feedback.service';
 import { AuthService } from '@modules/auth-module/auth.service';
@@ -97,18 +97,14 @@ export class FeedbackPageComponent implements OnInit {
   isMyFeedbackMode$: Observable<boolean> = this.mode$.pipe(map(mode => mode === 'myfeedback'));
   isTargetFeedbackMode$: Observable<boolean> = this.mode$.pipe(map(mode => mode === 'targetfeedback'));
 
-  targetData$: Observable<{target: Entity, rate: SummaryRateByTargetResponse}> = this.target$.pipe(
-    switchMap(target => 
-      forkJoin(
-        [
-          this.restService.getEntity<Entity>(target.key, target.id),
-          this.feedbackService.getRatingForTarget(target.key, target.id)
-        ]).pipe(map(([target, rate]) => ({target, rate }))),
-        ))
+  targetData$: Observable<Entity> = this.target$.pipe(
+    switchMap(target => this.restService.getEntity<Entity>(target.key, target.id)));
+
+  rating$: Observable<SummaryRateByTargetResponse> = combineLatest(this.target$, merge(of(null), this.updater$)).pipe(
+    map(([target]) => target),
+    switchMap(target => this.feedbackService.getRatingForTarget(target.key, target.id)));
 
   ngOnInit(): void {
-    // init streams
-    // this.filtersChange$.next({});
   }
 
   setPageMetadata(_set: FeedbackSet): void {
@@ -164,6 +160,7 @@ export class FeedbackPageComponent implements OnInit {
       console.log('deleteFeedback', feedback_id);
       await this.feedbackService.deleteFeedback(feedback_id).toPromise();
       this.setUpdater$.next(null);
+      this.updater$.next(null);
     }).catch((error) => {
       console.log('deleteFeedback error: ', error);
     });

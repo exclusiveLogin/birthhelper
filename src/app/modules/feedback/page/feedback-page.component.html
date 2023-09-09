@@ -6,10 +6,12 @@
 
 <ng-container *ngIf="isTargetFeedbackMode$ | async">
     <div class="info" *ngIf="targetData$ |async as data">
-        <app-contragent-card [contragent]="data.target"></app-contragent-card>
-        <i class="fas fa-chevron-right fa-3x" style="align-self: center"></i>
-        <app-rate [rate]="data?.rate?.summary?.avr" [size]="'96px'"></app-rate>
-        <app-lk-rating-group [votes]="data?.rate?.summary_by_votes" style="flex: 1 3 auto;"></app-lk-rating-group>
+        <app-contragent-card [contragent]="data"></app-contragent-card>
+        <ng-container *ngIf="rating$ | async as rating">
+             <i class="fas fa-chevron-right fa-3x" style="align-self: center"></i>
+            <app-rate [rate]="rating?.summary?.avr" [size]="'96px'"></app-rate>
+            <app-lk-rating-group [votes]="rating?.summary_by_votes" style="flex: 1 3 auto;"></app-lk-rating-group>
+        </ng-container>
     </div>
 </ng-container>
 

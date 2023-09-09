@@ -6,6 +6,7 @@ import { ClinicHeaderComponent } from "./components/clinic-header/clinic-header.
 import { TabsComponent } from "./components/tabs/tabs.component";
 import { ConfiguratorCardComponent } from "./components/configurator-card/configurator-card.component";
 import { PipeModule } from "app/pipes/pipe.module";
+import { SharedModule } from "@shared/shared.module";
 
 @NgModule({
     declarations: [
@@ -14,6 +15,11 @@ import { PipeModule } from "app/pipes/pipe.module";
         TabsComponent,
         ConfiguratorCardComponent,
     ],
-    imports: [ConfiguratorModuleRouting, CommonModule, PipeModule],
+    imports: [
+        ConfiguratorModuleRouting,
+         CommonModule,
+          PipeModule,
+          SharedModule,
+        ],
 })
 export class ConfiguratorModule {}

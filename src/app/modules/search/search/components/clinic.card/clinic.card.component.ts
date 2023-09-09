@@ -104,4 +104,9 @@ export class ClinicCardComponent {
             .navigate(["/system/configurator/clinic", this.viewClinic.id])
             .then();
     }
+
+    gotoRatingPage(): void {
+        this.feedbackService.gotoRatingPage('clinic', this.viewClinic.id);
+
+    }
 }

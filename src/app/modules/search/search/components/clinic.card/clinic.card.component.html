@@ -87,7 +87,9 @@
                                 alt=""
                             />
                         </button>
-                        <app-rate-button [rate]="data?.rating?.avr ?? 0"></app-rate-button>
+                        <app-rate-button 
+                            [rate]="data?.rating?.avr ?? 0"
+                            (click)="gotoRatingPage()"></app-rate-button>
                     </div>
                     <div class="card-controls__cnt">
                         <a

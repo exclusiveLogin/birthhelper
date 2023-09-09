@@ -14,7 +14,8 @@ export class StoreService {
         targetId: number,
         rating: SummaryRateByTargetResponse
     ): void {
-        const hash = hasher({ targetKey, targetId });
+        const _id: string = targetId.toString()
+        const hash = hasher(JSON.stringify({ targetKey, targetId: _id }));
         this.rateStore[hash] = rating;
     }
 
@@ -22,12 +23,14 @@ export class StoreService {
         targetKey: string,
         targetId: number
     ): SummaryRateByTargetResponse {
-        const hash = hasher({ targetKey, targetId });
+        const _id: string = targetId.toString()
+        const hash = hasher(JSON.stringify({ targetKey, targetId: _id }));
         return this.rateStore[hash];
     }
 
     clearRateStoreByTarget(targetKey: string, targetId: number): void {
-        const hash = hasher({ targetKey, targetId });
+        const _id: string = targetId.toString()
+        const hash = hasher(JSON.stringify({ targetKey, targetId: _id }));
         delete this.rateStore[hash];
     }
 
