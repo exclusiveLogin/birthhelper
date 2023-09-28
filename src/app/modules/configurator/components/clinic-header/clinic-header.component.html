@@ -80,14 +80,13 @@
                 class="clinic-header-actions__review-icon"
                 alt=""
             />
-            <app-rate-button [rate]="rate.avr ?? 0"></app-rate-button>
+            <app-rate-button [rate]="rate.avr ?? 0" (click)="gotoRatingPage()"></app-rate-button>
         </p>
         <a
             href="javascript:;"
             (click)="sendFeedback()"
             class="clinic-header-actions-link"
-            >Оставить отзыв</a
-        >
+            >Оставить отзыв</a>
         <span class="card-controls__txt">Всего {{ rate.total || 0 }}</span>
         <button class="clinic-header-actions-btn muted">
             Запланировать посещение

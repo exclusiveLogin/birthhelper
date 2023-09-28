@@ -8,14 +8,15 @@ import {
     Contragent,
     ContragentsPhone,
 } from "../../../../models/contragent.interface";
-import { BehaviorSubject, merge, Observable, of, zip } from "rxjs";
+import { BehaviorSubject, forkJoin, merge, Observable, of, zip } from "rxjs";
 import { DialogServiceConfig } from "@modules/dialog/dialog.model";
 import { DialogService } from "@modules/dialog/dialog.service";
-import { map, mapTo, mergeMap, pluck, switchMap, tap } from "rxjs/operators";
+import { catchError, map, mapTo, mergeMap, pluck, shareReplay, switchMap, tap } from "rxjs/operators";
 import { RestService } from "@services/rest.service";
 import { FeedbackService } from "@modules/feedback/feedback.service";
 import { SummaryVotes } from "@modules/feedback/models";
 import { ActivatedRoute } from "@angular/router";
+import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 
 const sectionKeyMapper = (key: string): string | null => {
     const SMap: { [key: string]: string } = {
@@ -26,6 +27,7 @@ const sectionKeyMapper = (key: string): string | null => {
     return SMap[key];
   }
 
+@UntilDestroy()
 @Component({
     selector: "app-clinic-header",
     templateUrl: "./clinic-header.component.html",
@@ -36,6 +38,9 @@ export class ClinicHeaderComponent implements OnInit {
     _ctg: Observable<Contragent>;
     rating$: Observable<SummaryVotes>;
     refresher$ = new BehaviorSubject<null>(null);
+    section$ = this.ar.data.pipe(pluck("section")).pipe(shareReplay(1));
+    params$ = this.ar.paramMap.pipe(shareReplay(1));
+
     @Input() set contragent$(value: Observable<Contragent>) {
         this._ctg = value.pipe(
             switchMap((ctg) =>
@@ -46,6 +51,7 @@ export class ClinicHeaderComponent implements OnInit {
                               ctg.phone_container_id
                           )
                           .pipe(
+                                catchError(err => of(null)),
                               map(
                                   (container) =>
                                       (ctg.phones =
@@ -55,12 +61,13 @@ export class ClinicHeaderComponent implements OnInit {
                               mapTo(ctg)
                           )
                     : of(ctg)
-            )
+            ),
+            untilDestroyed(this),
         );
 
         this.rating$ = merge(this.refresher$, of(null)).pipe(
             mergeMap(() =>
-                zip(this.ar.data.pipe(pluck("section")), this.ar.paramMap).pipe(
+                zip(this.section$, this.params$).pipe(
                     map(([section, params]) => ({
                         section: sectionKeyMapper(section),
                         id: params.get("id"),
@@ -73,12 +80,13 @@ export class ClinicHeaderComponent implements OnInit {
                     ),
                     map(({ summary }) => summary)
                 )
-            )
+            ),
+            untilDestroyed(this),
         );
     }
 
     sendFeedback() {
-        zip(this.ar.data.pipe(pluck("section")), this.ar.paramMap)
+        zip(this.section$, this.params$)
             .pipe(
                 map(([section, params]) => ({
                     section,
@@ -86,14 +94,15 @@ export class ClinicHeaderComponent implements OnInit {
                 })),
                 switchMap(({ section, id }) =>
                     this.feedbackService.initFeedbackByTarget(
-                        "ent_contragents",
+                        `ent_${section}_contragents`,
                         id,
                         {
                             section,
                         }
                     )
                 ),
-                tap((_) => this.refresher$.next(null))
+                tap((_) => this.refresher$.next(null)),
+                untilDestroyed(this),
             )
             .toPromise();
     }
@@ -113,5 +122,13 @@ export class ClinicHeaderComponent implements OnInit {
             data: ctg,
         };
         this.dialogService.showDialogByTemplateKey("contragent", cfg);
+    }
+
+    async gotoRatingPage() {
+        await zip(this.params$, this.section$).pipe(
+            map(([params, section]) => ({section: section, id: parseInt(params.get('id'))})),
+            tap((params) => this.feedbackService.gotoRatingPage(params.section, params.id)),
+            untilDestroyed(this),
+        ).toPromise()
     }
 }

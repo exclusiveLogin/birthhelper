@@ -1,6 +1,15 @@
 @use 'sass:color';
     
 .card-controls__btn-rating{
-    --rate-color-darker:  color-mix(in srgb, var(--rate-color),#000000 20%);
+    --rate-color-darker:  color-mix(in srgb, var(--rate-color),#000000 30%);
+
     background: radial-gradient(circle, var(--rate-color, grey) 0%, var(--rate-color-darker, grey) 100%);
+    transition: all 0.15s ease-in;
+
+    &:hover {
+        // --rate-color-darker:  color-mix(in srgb, var(--rate-color),#ffffff 50%);
+        // background: radial-gradient(circle, var(--rate-color, grey) 0%, var(--rate-color-darker, grey) 50%);
+        transform: scale(1.1);
+        box-shadow: 0 0 10px var(--rate-color-darker, #000000);
+    }
 }
