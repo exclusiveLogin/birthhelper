@@ -1,18 +1,22 @@
 <ng-container *ngTemplateOutlet="activeTemplate"></ng-container>
 <app-likes *ngIf="canLikes"></app-likes>
-<app-likes [negative]="true"  *ngIf="canLikes"></app-likes>
+<app-likes [negative]="true" *ngIf="canLikes"></app-likes>
 <ng-template #mainTpl>
     <div
         class="lk-feedback-message-box"
         [ngClass]="{ 'lk-feedback-message-main': mode === 'main' }"
     >
-        <div class="lk-feedback-message-date">{{ date }}</div>
+        <div class="lk-feedback-message-date">
+            {{ date | date : "medium" }}
+        </div>
         <ng-container *ngTemplateOutlet="bubble"></ng-container>
     </div>
 </ng-template>
 <ng-template #answerTpl>
     <div class="lk-feedback-message-box">
-        <div class="lk-feedback-message-date">{{ date }}</div>
+        <div class="lk-feedback-message-date">
+            {{ date | date : "medium" }}
+        </div>
         <ng-container *ngTemplateOutlet="avatar"></ng-container>
         <ng-container *ngTemplateOutlet="bubble"></ng-container>
     </div>
@@ -20,7 +24,7 @@
 <ng-template #replyTpl>
     <div class="lk-feedback-message-box">
         <div class="lk-feedback-message-date lk-feedback-message-date-right">
-            {{ date }}
+            {{ date | date : "medium" }}
         </div>
         <ng-container *ngTemplateOutlet="bubble"></ng-container>
         <ng-container *ngTemplateOutlet="avatar"></ng-container>
