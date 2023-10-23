@@ -12,7 +12,7 @@ import { User } from "@models/user.interface";
 import { Reply } from "../lk-bubble/lk-bubble.component";
 
 @Component({
-    selector: "app-lk-feedback-massage",
+    selector: "app-lk-feedback-message",
     templateUrl: "./lk-feedback-message.component.html",
     styleUrls: ["./lk-feedback-message.component.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,7 +33,7 @@ export class LkFeedbackMessageComponent implements OnInit {
     @Input() canOfficial: boolean;
     @Input() canReply: boolean;
     @Input() canLikes: boolean;
-    
+
     @Output() sendText = new EventEmitter<Reply>();
     @Output() replyTrigger = new EventEmitter<boolean>();
 

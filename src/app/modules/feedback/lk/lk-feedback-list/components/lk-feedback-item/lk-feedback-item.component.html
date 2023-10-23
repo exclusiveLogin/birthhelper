@@ -106,8 +106,10 @@
     </div>
     <div class="lk-feedback-body">
         <div class="lk-feedback-messages">
-            <ng-container *ngIf="feedback?.comment as comment; else emptyMessageTpl">
-                <app-lk-feedback-massage
+            <ng-container
+                *ngIf="feedback?.comment as comment; else emptyMessageTpl"
+            >
+                <app-lk-feedback-message
                     [color]="'primary'"
                     [date]="comment.datetime_update"
                     [mode]="'main'"
@@ -115,8 +117,8 @@
                     [replies]="comment.replies"
                     [opened]="comment.replymode"
                     (replyTrigger)="openReply($event, comment)"
-                ></app-lk-feedback-massage>
-                <app-lk-feedback-massage
+                ></app-lk-feedback-message>
+                <app-lk-feedback-message
                     *ngIf="comment.replymode"
                     [color]="'accent'"
                     [date]="comment.datetime_update"
@@ -125,12 +127,11 @@
                     [canOfficial]="true"
                     [fromUser]="user$ | async"
                     (sendText)="answerFeedback($event, comment)"
-                ></app-lk-feedback-massage>
+                ></app-lk-feedback-message>
             </ng-container>
-            
 
             <ng-container *ngFor="let comment of replies$ | async">
-                <app-lk-feedback-massage
+                <app-lk-feedback-message
                     [color]="'accent'"
                     [date]="comment.datetime_update"
                     [mode]="'answer'"
@@ -138,9 +139,9 @@
                     [opened]="comment.replymode"
                     [fromUser]="getUserByComment(comment) | async"
                     (replyTrigger)="openReply($event, comment)"
-                ></app-lk-feedback-massage>
+                ></app-lk-feedback-message>
 
-                <app-lk-feedback-massage
+                <app-lk-feedback-message
                     *ngIf="comment.replymode"
                     [color]="'accent'"
                     [date]="'test'"
@@ -149,10 +150,8 @@
                     [canOfficial]="true"
                     [fromUser]="user$ | async"
                     (sendText)="answerFeedback($event, comment)"
-                ></app-lk-feedback-massage>
+                ></app-lk-feedback-message>
             </ng-container>
-
-            
         </div>
         <div class="lk-feedback-rating-block">
             <i class="fas fa-chevron-down fa-3x" style="align-self: center"></i>
