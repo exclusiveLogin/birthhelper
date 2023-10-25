@@ -116,6 +116,7 @@
                     [text]="comment.text"
                     [replies]="comment.replies"
                     [opened]="comment.replymode"
+                    [canReply]="true"
                     (replyTrigger)="openReply($event, comment)"
                 ></app-lk-feedback-message>
                 <app-lk-feedback-message
@@ -125,6 +126,7 @@
                     [mode]="'answer'"
                     [editMode]="true"
                     [canOfficial]="true"
+                    [canReply]="true"
                     [fromUser]="user$ | async"
                     (sendText)="answerFeedback($event, comment)"
                 ></app-lk-feedback-message>

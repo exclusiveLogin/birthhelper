@@ -80,7 +80,7 @@ export class LkFeedbackItemComponent implements OnInit {
         this.cdr.markForCheck();
     }
 
-    getUserByComment(comment: Comment): Observable<User> { 
+    getUserByComment(comment: Comment): Observable<User> {
         return this.restService.getUserById(comment.user_id);
     }
 
@@ -118,7 +118,6 @@ export class LkFeedbackItemComponent implements OnInit {
     }
 
     answerFeedback(e: Reply, comment: Comment): void {
-        debugger;
         this.openReply(false, comment);
     }
 

@@ -101,24 +101,24 @@ export class FeedbackService extends StoreService {
                 votes_cast = {};
                 context.existFeedback?.votes?.forEach(vote =>  votes_cast[vote.vote_slug] = '' + vote.rate);
             }
-            
+
             const comment = context.existFeedback?.comment?.text;
             const result = await this.openFeedbackDialog(
                 votes as unknown as Vote[],
-                context?.existFeedback ? 
+                context?.existFeedback ?
                 {
                     votes_cast,
                     comment
                 } : undefined
             );
             const feedbackData = result.data as FeedbackFormDataAnswer;
-            const feedbackSaveResponse: CreateFeedbackRequest | EditFeedbackRequest = context?.existFeedback ? 
+            const feedbackSaveResponse: CreateFeedbackRequest | EditFeedbackRequest = context?.existFeedback ?
             {
                 id: context.existFeedback.id,
                 votes: (feedbackData?.votes as VoteResponse[]) ?? [],
                 comment: feedbackData.comment,
                 action: 'EDIT',
-            } : 
+            } :
             {
                 target_entity_id: targetId,
                 target_entity_key: targetKey,
@@ -144,7 +144,7 @@ export class FeedbackService extends StoreService {
         };
         if(oldfeedbackData) {
             dialogConfiguration.data = {
-                ...dialogConfiguration.data, 
+                ...dialogConfiguration.data,
                 ...oldfeedbackData,
             }
         }
@@ -317,8 +317,6 @@ export class FeedbackService extends StoreService {
         data = Object.entries(data)
             .filter(filter => !!filter[1])
             .reduce((acc, filter) => ({...acc, [filter[0]]: filter[1]}), {});
-        
-        debugger;
 
         return this.rest.fetchData(restSetting, data, true);
     }
