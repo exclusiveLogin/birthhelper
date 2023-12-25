@@ -135,6 +135,10 @@ export type DeleteFeedbackRequest = { action: "REMOVE_FEEDBACK" } & Pick<
     FeedbackDTO,
     "id"
 >;
+export type ReplyFeedbackRequest = { action: "REPLY" } & Pick<
+    FeedbackDTO,
+    "comment_id" | "comment" | "status"
+>;
 
 
 export interface FeedbackDTO {

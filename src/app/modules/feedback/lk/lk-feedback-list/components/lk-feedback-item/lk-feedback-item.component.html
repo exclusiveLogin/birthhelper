@@ -127,7 +127,7 @@
                     [editMode]="true"
                     [canOfficial]="true"
                     [canReply]="true"
-                    [fromUser]="user$ | async"
+                    [fromUser]="loginedUser$ | async"
                     (sendText)="answerFeedback($event, comment)"
                 ></app-lk-feedback-message>
             </ng-container>

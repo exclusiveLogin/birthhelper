@@ -15,6 +15,7 @@ import {
     FeedbackSet,
     FeedbackStatus,
     FeedbackSummaryVotes,
+    ReplyFeedbackRequest,
     SummaryRateByTargetResponse,
     Vote,
     VoteResponse,
@@ -169,6 +170,29 @@ export class FeedbackService extends StoreService {
                     this.clearRateStoreByTarget(feedback.target_entity_key, feedback.target_entity_id)
                 }
             })
+            .catch(error => {
+                if(error.status === 429) {
+                    this.toast.error('Вы уже недавно оставляли отзыв на этот объект, попробуйте позже');
+                }
+            });
+    }
+
+    sendFeedbackReply(repliebleComment: number, text: string, isOfficial: boolean) {
+        const restSetting: ISettingsParams = {
+            mode: "api",
+            segment: "feedback",
+        };
+
+        const reply: ReplyFeedbackRequest = {
+            action: 'REPLY',
+            status: isOfficial ? 'official' : 'pending',
+            comment: text,
+            comment_id: repliebleComment, 
+        };
+
+        return this.rest
+            .postData(restSetting, reply)
+            .toPromise()
             .catch(error => {
                 if(error.status === 429) {
                     this.toast.error('Вы уже недавно оставляли отзыв на этот объект, попробуйте позже');

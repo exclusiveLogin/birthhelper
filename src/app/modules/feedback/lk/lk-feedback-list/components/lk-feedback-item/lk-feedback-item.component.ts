@@ -18,6 +18,7 @@ import { RestService } from "@services/rest.service";
 import { Entity } from "@models/entity.interface";
 import { FeedbackService } from "@modules/feedback/feedback.service";
 import { Reply } from "@modules/admin/lk/common/lk-bubble/lk-bubble.component";
+import { AuthService } from "@modules/auth-module/auth.service";
 
 @Component({
     selector: "app-lk-feedback-item",
@@ -29,10 +30,12 @@ export class LkFeedbackItemComponent implements OnInit {
     constructor(
         private restService: RestService,
         private cdr: ChangeDetectorRef,
-        private fbs: FeedbackService
-    ) {}
+        private fbs: FeedbackService,
+        private authService: AuthService
+        ) {}
     wrapMode = false;
     user$: Observable<User>;
+    loginedUser$: Observable<User>;
     entity$: Observable<Entity>;
     replies$: Observable<Comment[]>;
     rating$: Observable<SummaryRateByTargetResponse>;
@@ -50,6 +53,7 @@ export class LkFeedbackItemComponent implements OnInit {
 
     ngOnInit(): void {
         this.user$ = this.restService.getUserById(this.feedback.user_id);
+        this.loginedUser$ = this.authService.getCurrentUser();
         this.votes = this.feedback?.votes;
         this.entity$ = this.restService.getEntity(
             this.feedback.target_entity_key,
@@ -60,11 +64,9 @@ export class LkFeedbackItemComponent implements OnInit {
             !!this.feedback?.comment?.feedback_id &&
             !!this.feedback?.comment?.id
         ) {
+            console.log('LkFeedbackItemComponent: ', this.feedback);
             this.replies$ = this.feedback?.comment?.replies
-                ? this.restService.getReplies(
-                      this.feedback.comment.feedback_id,
-                      this.feedback.comment.id
-                  )
+                ? this.restService.getReplies(this.feedback.comment.id)
                 : of(null);
         }
 
@@ -119,10 +121,6 @@ export class LkFeedbackItemComponent implements OnInit {
 
     answerFeedback(e: Reply, comment: Comment): void {
         this.openReply(false, comment);
+        this.fbs.sendFeedbackReply(comment.id, e.text, e.isOfficial);
     }
-
-    // rejectOrder(order: Order): Promise<any> {}
-    // removeOrder(order: Order): Promise<any> {}
-    // rejectOrder(order: Order): Promise<any> {}
-    // rejectOrder(order: Order): Promise<any> {}
 }

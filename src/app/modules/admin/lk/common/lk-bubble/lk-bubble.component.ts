@@ -49,6 +49,6 @@ export class LkBubbleComponent {
 
     toggleOfficial(state: Event): void {
         const target: HTMLInputElement = state.target as HTMLInputElement;
-        this.isOfficial = target.checked;
+        this.isOfficial = !!target.checked;
     }
 }

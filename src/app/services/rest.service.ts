@@ -367,23 +367,17 @@ export class RestService {
     }
 
     public getReplies(
-        feedbackId: number,
         commentParentId: number,
         page = 1
     ): Observable<Comment[]> {
-        const filters: IRestParams = {
-            // comment_id: commentParentId.toString(),
-            feedback_id: feedbackId.toString(),
-        };
-
         const settings: ISettingsParams = {
             mode: "api",
             segment: "feedback",
             resource: "replies",
-            script: feedbackId.toString(),
+            script: commentParentId.toString(),
         };
 
-        return this.getEntityList("ent_comments", page, filters, settings);
+        return this.fetchData(settings);
     }
 
     public getUserRole(): Observable<UserRoleSrc> {
