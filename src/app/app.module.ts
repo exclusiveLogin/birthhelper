@@ -1,8 +1,11 @@
 import { BrowserModule } from "@angular/platform-browser";
-import { NgModule } from "@angular/core";
+import { LOCALE_ID, NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { ReactiveFormsModule } from "@angular/forms";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+
+import { registerLocaleData } from "@angular/common";
+import localeRu from "@angular/common/locales/ru";
 
 import { AppComponent } from "./app.component";
 import { NotFoundComponent } from "@static//not-found/not-found.component";
@@ -20,6 +23,8 @@ import { MenuModule } from "@modules/menu/menu.module";
 import { DmsFormComponent } from "./main/components/dms.form/dms.form.component";
 import { OurAdvantageComponent } from "./main/components/our-advantage/our-advantage.component";
 import { AdSliderComponent } from "./main/components/ad-slider/ad-slider.component";
+
+registerLocaleData(localeRu);
 
 const routes: Routes = [
     { path: "", component: MainComponent },
@@ -67,5 +72,6 @@ const routes: Routes = [
         MenuModule,
     ],
     bootstrap: [AppComponent],
+    providers: [{ provide: LOCALE_ID, useValue: "ru" }],
 })
 export class AppModule {}

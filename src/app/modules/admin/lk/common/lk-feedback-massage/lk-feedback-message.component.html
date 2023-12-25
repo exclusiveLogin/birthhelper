@@ -28,6 +28,7 @@
         </div>
         <ng-container *ngTemplateOutlet="bubble"></ng-container>
         <ng-container *ngTemplateOutlet="avatar"></ng-container>
+        <ng-container *ngTemplateOutlet="titleTpl"></ng-container>
     </div>
 </ng-template>
 
@@ -61,4 +62,12 @@
         style="left: calc(100% - 32px); bottom: -10px; position: relative"
         [replies]="replies"
     ></app-replies>
+</ng-template>
+
+<ng-template #titleTpl>
+    <app-lk-title
+        [title]="fromUser?.first_name"
+        [subTitle]="fromUser?.last_name"
+        [accentTitle]="fromUser?.login"
+    ></app-lk-title>
 </ng-template>

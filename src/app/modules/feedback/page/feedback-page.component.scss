@@ -11,7 +11,6 @@ app-feedback-filter {
         display: flex;
         flex-direction: column;
         border-left: 9px solid #dbdbdb;
-        padding: 16px 24px;
         -webkit-box-shadow: -9px 0px 26px -5px rgba(34, 60, 80, 0.41);
         -moz-box-shadow: -9px 0px 26px -5px rgba(34, 60, 80, 0.41);
         box-shadow: -9px 0px 26px -5px rgba(34, 60, 80, 0.41);
@@ -53,6 +52,10 @@ app-feedback-filter {
         cursor: pointer;
     }
 }
+.zebra {
+    padding-left: 16px;
+}
+
 .zebra:nth-child(even){
     background-color: rgb(240, 240, 240);
 }
