@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input, Output } from "@angular/core";
+import {
+    ChangeDetectionStrategy,
+    Component,
+    Input,
+    Output,
+} from "@angular/core";
 import { EventEmitter } from "@angular/core";
 
 export interface Reply {
@@ -16,17 +21,13 @@ export class LkBubbleComponent {
     @Input() mode: "main" | "answer" | "reply";
     @Input() color: "primary" | "accent" | "secondary-accent";
     @Input() editMode: boolean;
-    @Input() canReply: boolean;
     @Input() canOfficial: boolean;
     @Input() opened: boolean;
 
-
-    @Output() sendText: EventEmitter<Reply> = new EventEmitter<Reply>();
-    @Output() openReply: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output() send: EventEmitter<Reply> = new EventEmitter<Reply>();
 
     isOfficial: boolean = false;
 
-    
     constructor() {}
 
     auto_grow(element: HTMLInputElement) {
@@ -35,16 +36,8 @@ export class LkBubbleComponent {
         this.text = element?.value;
     }
 
-    send(text: string): void {
-        this.sendText.emit({text, isOfficial: this.isOfficial});
-    }
-
-    openReplyDialog(): void {
-        this.openReply.emit(true);
-    }
-
-    closeReplyDialog(): void {
-        this.openReply.emit(false);
+    change(text: string): void {
+        this.send.emit({ text, isOfficial: this.isOfficial });
     }
 
     toggleOfficial(state: Event): void {

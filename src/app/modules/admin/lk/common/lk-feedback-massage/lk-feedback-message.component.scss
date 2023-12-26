@@ -21,8 +21,10 @@
     flex-wrap: wrap;
     margin-bottom: 16px;
     flex-grow: 1;
-    margin-inline-end: 32px;
-    margin-inline-start: 16px;
+
+    .official{
+      position: absolute;
+    }
   }
 
   &-main {

@@ -40,26 +40,28 @@ export class FeedbackService extends StoreService {
         private dict: DictionaryService,
         private authService: AuthService,
         private toast: ToastrService,
-        private router: Router,
+        private router: Router
     ) {
         super();
     }
 
     targetKeyMapper(targetKey): string {
         const TMap: { [key in SectionType]: string } = {
-            clinic: 'ent_clinic_contragents',
-            consultation: 'ent_consultation_contragents',
+            clinic: "ent_clinic_contragents",
+            consultation: "ent_consultation_contragents",
         };
 
         return TMap[targetKey] ?? targetKey;
     }
 
     gotoRatingPage(section?: string, targetId?: number): void {
-        if(!targetId && !section) {
-            this.router.navigate(['/','system','feedback']);
+        if (!targetId && !section) {
+            this.router.navigate(["/", "system", "feedback"]);
         } else {
             const target = this.targetKeyMapper(section);
-            this.router.navigate(['/','system','feedback'], { queryParams: {key: target, id: targetId}});
+            this.router.navigate(["/", "system", "feedback"], {
+                queryParams: { key: target, id: targetId },
+            });
         }
     }
 
@@ -98,56 +100,64 @@ export class FeedbackService extends StoreService {
                 .toPromise();
 
             let votes_cast: { [key: string]: string };
-            if(context.existFeedback && context.existFeedback?.votes?.length) {
+            if (context.existFeedback && context.existFeedback?.votes?.length) {
                 votes_cast = {};
-                context.existFeedback?.votes?.forEach(vote =>  votes_cast[vote.vote_slug] = '' + vote.rate);
+                context.existFeedback?.votes?.forEach(
+                    (vote) => (votes_cast[vote.vote_slug] = "" + vote.rate)
+                );
             }
 
             const comment = context.existFeedback?.comment?.text;
             const result = await this.openFeedbackDialog(
                 votes as unknown as Vote[],
-                context?.existFeedback ?
-                {
-                    votes_cast,
-                    comment
-                } : undefined
+                context?.existFeedback
+                    ? {
+                          votes_cast,
+                          comment,
+                      }
+                    : undefined
             );
             const feedbackData = result.data as FeedbackFormDataAnswer;
-            const feedbackSaveResponse: CreateFeedbackRequest | EditFeedbackRequest = context?.existFeedback ?
-            {
-                id: context.existFeedback.id,
-                votes: (feedbackData?.votes as VoteResponse[]) ?? [],
-                comment: feedbackData.comment,
-                action: 'EDIT',
-            } :
-            {
-                target_entity_id: targetId,
-                target_entity_key: targetKey,
-                votes: (feedbackData?.votes as VoteResponse[]) ?? [],
-                comment: feedbackData?.comment ?? "",
-                action: "CREATE",
-                section: context.section,
-            };
+            const feedbackSaveResponse:
+                | CreateFeedbackRequest
+                | EditFeedbackRequest = context?.existFeedback
+                ? {
+                      id: context.existFeedback.id,
+                      votes: (feedbackData?.votes as VoteResponse[]) ?? [],
+                      comment: feedbackData.comment,
+                      action: "EDIT",
+                  }
+                : {
+                      target_entity_id: targetId,
+                      target_entity_key: targetKey,
+                      votes: (feedbackData?.votes as VoteResponse[]) ?? [],
+                      comment: feedbackData?.comment ?? "",
+                      action: "CREATE",
+                      section: context.section,
+                  };
 
-            this.clearRateStoreByTarget(
-                targetKey,
-                targetId,
-            )
+            this.clearRateStoreByTarget(targetKey, targetId);
             return this.sendFeedback(feedbackSaveResponse);
         } catch (e) {
             console.log("feedback failed", e);
         }
     }
 
-    openFeedbackDialog(votes: Vote[], oldfeedbackData?: {votes_cast: Record<string, string>, comment: string}) {
+    openFeedbackDialog(
+        votes: Vote[],
+        oldfeedbackData?: {
+            votes_cast: Record<string, string>;
+            comment: string;
+        }
+    ) {
         const dialogConfiguration: Partial<DialogServiceConfig> = {
             data: { votes },
         };
-        if(oldfeedbackData) {
+        if (oldfeedbackData) {
             dialogConfiguration.data = {
                 ...dialogConfiguration.data,
                 ...oldfeedbackData,
-            }
+            };
         }
         return this.dialog.showDialogByTemplateKey(
             "feedback_form",
@@ -155,7 +165,9 @@ export class FeedbackService extends StoreService {
         );
     }
 
-    sendFeedback(feedback: CreateFeedbackRequest | EditFeedbackRequest): Promise<unknown> {
+    sendFeedback(
+        feedback: CreateFeedbackRequest | EditFeedbackRequest
+    ): Promise<unknown> {
         const restSetting: ISettingsParams = {
             mode: "api",
             segment: "feedback",
@@ -165,37 +177,51 @@ export class FeedbackService extends StoreService {
             .postData(restSetting, feedback)
             .toPromise()
             .then(() => {
-                if((feedback as CreateFeedbackRequest).target_entity_key, (feedback as CreateFeedbackRequest).target_entity_id) {
+                if (
+                    ((feedback as CreateFeedbackRequest).target_entity_key,
+                    (feedback as CreateFeedbackRequest).target_entity_id)
+                ) {
                     feedback = feedback as CreateFeedbackRequest;
-                    this.clearRateStoreByTarget(feedback.target_entity_key, feedback.target_entity_id)
+                    this.clearRateStoreByTarget(
+                        feedback.target_entity_key,
+                        feedback.target_entity_id
+                    );
                 }
             })
-            .catch(error => {
-                if(error.status === 429) {
-                    this.toast.error('Вы уже недавно оставляли отзыв на этот объект, попробуйте позже');
+            .catch((error) => {
+                if (error.status === 429) {
+                    this.toast.error(
+                        "Вы уже недавно оставляли отзыв на этот объект, попробуйте позже"
+                    );
                 }
             });
     }
 
-    sendFeedbackReply(repliebleComment: number, text: string, isOfficial: boolean) {
+    sendFeedbackReply(
+        repliebleComment: number,
+        text: string,
+        isOfficial: boolean
+    ) {
         const restSetting: ISettingsParams = {
             mode: "api",
             segment: "feedback",
         };
 
         const reply: ReplyFeedbackRequest = {
-            action: 'REPLY',
-            status: isOfficial ? 'official' : 'pending',
+            action: "REPLY",
+            status: isOfficial ? "official" : "pending",
             comment: text,
-            comment_id: repliebleComment, 
+            comment_id: repliebleComment,
         };
 
         return this.rest
             .postData(restSetting, reply)
             .toPromise()
-            .catch(error => {
-                if(error.status === 429) {
-                    this.toast.error('Вы уже недавно оставляли отзыв на этот объект, попробуйте позже');
+            .catch((error) => {
+                if (error.status === 429) {
+                    this.toast.error(
+                        "Вы уже недавно оставляли отзыв на этот объект, попробуйте позже"
+                    );
                 }
             });
     }
@@ -206,19 +232,19 @@ export class FeedbackService extends StoreService {
             segment: "feedback",
         };
 
-        const feedback: FeedbackLikeCommentRequest | FeedbackDislikeCommentRequest = {
+        const feedback:
+            | FeedbackLikeCommentRequest
+            | FeedbackDislikeCommentRequest = {
             id,
-            action: invert ? 'DISLIKE' : 'LIKE',
+            action: invert ? "DISLIKE" : "LIKE",
         };
 
-        return this.rest
-            .postData(restSetting, feedback)
-            .toPromise()
-            // .catch(error => {
-            //     if(error.status === 429) {
-            //         this.toast.error('Вы уже недавно оставляли отзыв на этот объект, попробуйте позже');
-            //     }
-            // });
+        return this.rest.postData(restSetting, feedback).toPromise();
+        // .catch(error => {
+        //     if(error.status === 429) {
+        //         this.toast.error('Вы уже недавно оставляли отзыв на этот объект, попробуйте позже');
+        //     }
+        // });
     }
 
     fetchFeedbackSetByUser(filters = {}): Observable<FeedbackSet> {
@@ -232,14 +258,18 @@ export class FeedbackService extends StoreService {
         return this.rest.fetchData<FeedbackSet>(restSetting, data, true);
     }
 
-    fetchFeedbackSetByTarget(key: string, id: number, filters = {}): Observable<FeedbackSet> {
+    fetchFeedbackSetByTarget(
+        key: string,
+        id: number,
+        filters = {}
+    ): Observable<FeedbackSet> {
         const restSetting: ISettingsParams = {
             mode: "api",
             segment: "feedback",
             script: "list/set",
         };
 
-        const data = {...filters, key, id: id.toString() };
+        const data = { ...filters, key, id: id.toString() };
         return this.rest.fetchData<FeedbackSet>(restSetting, data, true);
     }
 
@@ -281,14 +311,24 @@ export class FeedbackService extends StoreService {
         };
 
         const data = { key: targetKey, id: targetId.toString(), ...filters };
-        return this.rest.fetchData<FeedbackResponse[]>(restSetting, data, true).pipe(
-            map(fblist => fblist.filter(f => !!f.target_entity_id && !!f.target_entity_key)),
-            map(fblist => fblist.filter(f => !!f.votes?.length)),
-            map(fblist => fblist.map(f => this.summaryVotesEnreacher(f))),
-        );
+        return this.rest
+            .fetchData<FeedbackResponse[]>(restSetting, data, true)
+            .pipe(
+                map((fblist) =>
+                    fblist.filter(
+                        (f) => !!f.target_entity_id && !!f.target_entity_key
+                    )
+                ),
+                map((fblist) => fblist.filter((f) => !!f.votes?.length)),
+                map((fblist) =>
+                    fblist.map((f) => this.summaryVotesEnreacher(f))
+                )
+            );
     }
 
-    getFeedbackListByUser(filters = {}): Observable<(FeedbackResponse & FeedbackSummaryVotes & Entitized)[]> {
+    getFeedbackListByUser(
+        filters = {}
+    ): Observable<(FeedbackResponse & FeedbackSummaryVotes & Entitized)[]> {
         const restSetting: ISettingsParams = {
             mode: "api",
             segment: "feedback",
@@ -296,33 +336,53 @@ export class FeedbackService extends StoreService {
         };
 
         const data = { ...filters };
-        return this.rest.fetchData<FeedbackResponse[]>(restSetting, data, true).pipe(
-            map(fblist => fblist.filter(f => !!f.target_entity_id && !!f.target_entity_key)),
-            map(fblist => fblist.filter(f => !!f.votes?.length)),
-            map(fblist => fblist.map(f => this.summaryVotesEnreacher(f))),
-            switchMap((fblist) => fblist.length ? forkJoin(fblist.map((f) => this.getTargetEntity(f))) : of([])),
-        );
-    }
-
-    getTargetEntity(feedback: FeedbackResponse & FeedbackSummaryVotes): Observable<FeedbackResponse & Entitized & FeedbackSummaryVotes> {
-        return this.rest.getEntity<Entity>(feedback.target_entity_key, feedback.target_entity_id)
+        return this.rest
+            .fetchData<FeedbackResponse[]>(restSetting, data, true)
             .pipe(
-                map(
-                    (ent) => ({...feedback, _entity: ent})
+                map((fblist) =>
+                    fblist.filter(
+                        (f) => !!f.target_entity_id && !!f.target_entity_key
+                    )
+                ),
+                map((fblist) => fblist.filter((f) => !!f.votes?.length)),
+                map((fblist) =>
+                    fblist.map((f) => this.summaryVotesEnreacher(f))
+                ),
+                switchMap((fblist) =>
+                    fblist.length
+                        ? forkJoin(fblist.map((f) => this.getTargetEntity(f)))
+                        : of([])
                 )
             );
     }
 
-    summaryVotesEnreacher(feedback: FeedbackResponse): FeedbackResponse & FeedbackSummaryVotes {
+    getTargetEntity(
+        feedback: FeedbackResponse & FeedbackSummaryVotes
+    ): Observable<FeedbackResponse & Entitized & FeedbackSummaryVotes> {
+        return this.rest
+            .getEntity<Entity>(
+                feedback.target_entity_key,
+                feedback.target_entity_id
+            )
+            .pipe(map((ent) => ({ ...feedback, _entity: ent })));
+    }
+
+    summaryVotesEnreacher(
+        feedback: FeedbackResponse
+    ): FeedbackResponse & FeedbackSummaryVotes {
         return {
             ...feedback,
             _summary: {
                 total: feedback?.votes?.length,
                 min: Math.min(...feedback?.votes?.map((v) => v.rate), 0),
                 max: Math.max(...feedback?.votes?.map((v) => v.rate), 0),
-                avr: feedback?.votes?.reduce((acc, v) => (v?.rate ?? 0) + acc, 0) / feedback?.votes?.length,
-            }
-        }
+                avr:
+                    feedback?.votes?.reduce(
+                        (acc, v) => (v?.rate ?? 0) + acc,
+                        0
+                    ) / feedback?.votes?.length,
+            },
+        };
     }
 
     getFeedbackListByContragent(
@@ -339,8 +399,8 @@ export class FeedbackService extends StoreService {
 
         let data = { section, status } as {};
         data = Object.entries(data)
-            .filter(filter => !!filter[1])
-            .reduce((acc, filter) => ({...acc, [filter[0]]: filter[1]}), {});
+            .filter((filter) => !!filter[1])
+            .reduce((acc, filter) => ({ ...acc, [filter[0]]: filter[1] }), {});
 
         return this.rest.fetchData(restSetting, data, true);
     }
@@ -354,7 +414,7 @@ export class FeedbackService extends StoreService {
             segment: "feedback",
             resource: `${feedbackId}`,
         };
-        this.clearRateStore()
+        this.clearRateStore();
 
         return this.rest.remData(restSetting);
     }

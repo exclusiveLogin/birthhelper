@@ -30,10 +30,7 @@ export type FeedbackCommentStatus =
     | "deleted"
     | "official";
 
-export type FeedbackCommentType =
-    | "master"
-    | "answer"
-    | "reply";
+export type FeedbackCommentType = "master" | "answer" | "reply";
 
 export type LikeType = "comment" | "feedback";
 export interface Like {
@@ -67,6 +64,8 @@ export interface FeedbackResponse {
     user: User;
     canEdit: boolean;
     canRemove: boolean;
+    datetime_update?: string;
+    datetime_create?: string;
 }
 
 export interface Comment {
@@ -76,7 +75,6 @@ export interface Comment {
     text: string;
     comment_id?: number;
     replies?: number;
-    replymode?: boolean;
     status?: FeedbackCommentStatus;
     type?: FeedbackCommentType;
     datetime_update?: string;
@@ -140,7 +138,6 @@ export type ReplyFeedbackRequest = { action: "REPLY" } & Pick<
     "comment_id" | "comment" | "status"
 >;
 
-
 export interface FeedbackDTO {
     id?: number;
     section?: SectionType;
@@ -195,9 +192,9 @@ export interface FeedbackChangeStatusResponse {
     status: FeedbackStatus;
 }
 
-export type FeedbackSummaryVotes = { _summary: SummaryVotes}
+export type FeedbackSummaryVotes = { _summary: SummaryVotes };
 
 export interface FeedbackRemoveResponse {
-    feedbackID: number,
+    feedbackID: number;
     result: string;
 }

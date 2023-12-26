@@ -164,4 +164,8 @@ export class AuthService {
         const secureData = localStorage.getItem("bh_secure_token");
         return secureData ? of(secureData) : of(null);
     }
+
+    isSelfUser(id: number): boolean {
+        return this.user.id === id ?? false;
+    }
 }

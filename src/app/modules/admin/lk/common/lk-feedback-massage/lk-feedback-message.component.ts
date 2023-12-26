@@ -18,10 +18,27 @@ import { Reply } from "../lk-bubble/lk-bubble.component";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LkFeedbackMessageComponent implements OnInit {
-    @ViewChild("mainTpl", { static: true }) elMainTemplate: TemplateRef<any>;
+    @ViewChild("mainTpl", { static: true })
+    elMainTemplate: TemplateRef<any>;
+
     @ViewChild("answerTpl", { static: true })
     elAnswerTemplate: TemplateRef<any>;
-    @ViewChild("replyTpl", { static: true }) elReplyTemplate: TemplateRef<any>;
+
+    @ViewChild("replyTpl", { static: true })
+    elReplyTemplate: TemplateRef<any>;
+
+    @ViewChild("_avatarTpl", { static: true })
+    elAvatarTemplate: TemplateRef<any>;
+
+    @ViewChild("_titleTpl", { static: true })
+    elTitleTemplate: TemplateRef<any>;
+
+    @ViewChild("_repliesTpl", { static: true })
+    elRepliesTemplate: TemplateRef<any>;
+
+    @ViewChild("_bubbleTpl", { static: true })
+    elBubbleTemplate: TemplateRef<any>;
+
     @Input() text: string;
     @Input() opened: boolean;
     @Input() mode: "main" | "answer" | "reply";
@@ -31,20 +48,21 @@ export class LkFeedbackMessageComponent implements OnInit {
     @Input() replies: number = 0;
     @Input() editMode = false;
     @Input() canOfficial: boolean;
-    @Input() canReply: boolean;
     @Input() canLikes: boolean;
+    @Input() isOfficial: boolean;
 
-    @Output() sendText = new EventEmitter<Reply>();
-    @Output() replyTrigger = new EventEmitter<boolean>();
+    // tpls
+    @Input() avatarTemplate: TemplateRef<any>;
+    @Input() bubbleTemplate: TemplateRef<any>;
+    @Input() repliesTemplate: TemplateRef<any>;
+    @Input() titleTemplate: TemplateRef<any>;
+
+    @Output() send = new EventEmitter<Reply>();
 
     activeTemplate: TemplateRef<any>;
 
     reply(text: Reply): void {
-        this.sendText.emit(text);
-    }
-
-    openDialog(state: boolean): void {
-        this.replyTrigger.next(state);
+        this.send.emit(text);
     }
 
     constructor() {}
@@ -63,5 +81,10 @@ export class LkFeedbackMessageComponent implements OnInit {
             default:
                 this.activeTemplate = this.elMainTemplate;
         }
+
+        this.avatarTemplate = this.elAvatarTemplate;
+        this.bubbleTemplate = this.elBubbleTemplate;
+        this.repliesTemplate = this.elRepliesTemplate;
+        this.titleTemplate = this.elTitleTemplate;
     }
 }

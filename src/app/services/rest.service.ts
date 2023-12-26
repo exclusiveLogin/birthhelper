@@ -377,7 +377,8 @@ export class RestService {
             script: commentParentId.toString(),
         };
 
-        return this.fetchData(settings);
+        console.log("replies id:", commentParentId);
+        return this.fetchData(settings, null, true);
     }
 
     public getUserRole(): Observable<UserRoleSrc> {

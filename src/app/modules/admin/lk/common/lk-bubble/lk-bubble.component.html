@@ -8,29 +8,24 @@
         'speech-bubble-right': mode === 'reply'
     }"
 >
-    <ng-container *ngIf="editMode then input; else default"></ng-container>
+    <ng-container *ngIf="editMode; then input; else default"></ng-container>
     <div class="bubble-footer">
-
-        <ng-container *ngIf="canReply">
-            <ng-container *ngIf="!editMode">
-                <i class="fas fa-chevron-down clickable" *ngIf="!opened" (click)="openReplyDialog()"></i>
-                <i class="fas fa-chevron-up clickable" *ngIf="opened" (click)="closeReplyDialog()"></i>
-            </ng-container>
-
-            <ng-container *ngIf="editMode">
-                <i class="fa-solid fa-paper-plane clickable" (click)="send(text)"></i>
-                <ng-container *ngIf="canOfficial">
-                    <ng-container *ngTemplateOutlet="officalTpl"></ng-container>
-                </ng-container>
+        <ng-container *ngIf="editMode">
+            <i
+                class="fa-solid fa-paper-plane clickable"
+                (click)="change(text)"
+            ></i>
+            <ng-container *ngIf="canOfficial">
+                <ng-container *ngTemplateOutlet="officalTpl"></ng-container>
             </ng-container>
         </ng-container>
-
     </div>
-
 </div>
 
 <ng-template #default>
-    <div class="speech-bubble-text" *ngIf="text?.length; else empty">{{ text }}</div>
+    <div class="speech-bubble-text" *ngIf="text?.length; else empty">
+        {{ text }}
+    </div>
     <ng-content></ng-content>
 </ng-template>
 
@@ -41,7 +36,12 @@
 </ng-template>
 
 <ng-template #officalTpl>
-    <input type="checkbox" name="offical" id="offical" (change)="toggleOfficial($event)">
+    <input
+        type="checkbox"
+        name="offical"
+        id="offical"
+        (change)="toggleOfficial($event)"
+    />
     <label for="offical">Официальный ответ</label>
 </ng-template>
 

@@ -94,10 +94,16 @@
                     >
                 </p>
             </div>
-            <button class="btn dicline__btn" (click)="setFbStatusDeclined()">
+            <button
+                class="btn dicline__btn"
+                (click)="setFeedbackStatusDeclined()"
+            >
                 Отклонить
             </button>
-            <button class="btn approve__btn" (click)="setFbStatusApproved()">
+            <button
+                class="btn approve__btn"
+                (click)="setFeedbackStatusApproved()"
+            >
                 Одобрить
             </button>
         </div>
@@ -109,6 +115,7 @@
             <ng-container
                 *ngIf="feedback?.comment as comment; else emptyMessageTpl"
             >
+                <!-- Отзыв -->
                 <app-lk-feedback-message
                     [color]="'primary'"
                     [date]="comment.datetime_update"
@@ -117,10 +124,20 @@
                     [replies]="comment.replies"
                     [opened]="comment.replymode"
                     [canReply]="true"
-                    (replyTrigger)="openReply($event, comment)"
                 ></app-lk-feedback-message>
+
+                <button
+                    *ngIf="!replyMode"
+                    type="button"
+                    class="btn btn-primary btn-lg"
+                    (click)="replyMode = true"
+                >
+                    <i class="fa-solid fa-plus"></i>
+                    Добавить ответ
+                </button>
+                <!--Отвечаем на Отзыв -->
                 <app-lk-feedback-message
-                    *ngIf="comment.replymode"
+                    *ngIf="replyMode"
                     [color]="'accent'"
                     [date]="comment.datetime_update"
                     [mode]="'answer'"
@@ -128,30 +145,26 @@
                     [canOfficial]="true"
                     [canReply]="true"
                     [fromUser]="loginedUser$ | async"
-                    (sendText)="answerFeedback($event, comment)"
-                ></app-lk-feedback-message>
+                    (send)="answerFeedback($event, comment)"
+                >
+                    <i
+                        ngProjectAs="close_btn"
+                        class="fa-solid fa-circle-xmark close_btn fa-lg"
+                        (click)="replyMode = false"
+                    ></i>
+                </app-lk-feedback-message>
             </ng-container>
 
-            <ng-container *ngFor="let comment of replies$ | async">
+            <!-- Ответы -->
+            <ng-container *ngFor="let reply of replies$ | async">
                 <app-lk-feedback-message
                     [color]="'accent'"
-                    [date]="comment.datetime_update"
+                    [date]="reply.datetime_update"
                     [mode]="'answer'"
-                    [text]="comment.text"
-                    [opened]="comment.replymode"
-                    [fromUser]="getUserByComment(comment) | async"
-                    (replyTrigger)="openReply($event, comment)"
-                ></app-lk-feedback-message>
-
-                <app-lk-feedback-message
-                    *ngIf="comment.replymode"
-                    [color]="'accent'"
-                    [date]="'test'"
-                    [mode]="'reply'"
-                    [editMode]="true"
-                    [canOfficial]="true"
-                    [fromUser]="user$ | async"
-                    (sendText)="answerFeedback($event, comment)"
+                    [text]="reply.text"
+                    [opened]="reply.replymode"
+                    [isOfficial]="reply.status === 'official'"
+                    [fromUser]="getUserByComment(reply) | async"
                 ></app-lk-feedback-message>
             </ng-container>
         </div>

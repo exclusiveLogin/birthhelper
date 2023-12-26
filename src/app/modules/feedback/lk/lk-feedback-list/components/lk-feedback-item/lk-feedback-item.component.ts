@@ -12,13 +12,15 @@ import {
     SummaryRateByTargetResponse,
     Vote,
 } from "@modules/feedback/models";
-import { Observable, of } from "rxjs";
+import { BehaviorSubject, Observable, Subject, of } from "rxjs";
 import { User } from "@models/user.interface";
 import { RestService } from "@services/rest.service";
 import { Entity } from "@models/entity.interface";
 import { FeedbackService } from "@modules/feedback/feedback.service";
 import { Reply } from "@modules/admin/lk/common/lk-bubble/lk-bubble.component";
 import { AuthService } from "@modules/auth-module/auth.service";
+import { repeatWhen, retryWhen, switchMap, take, tap } from "rxjs/operators";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-lk-feedback-item",
@@ -31,17 +33,21 @@ export class LkFeedbackItemComponent implements OnInit {
         private restService: RestService,
         private cdr: ChangeDetectorRef,
         private fbs: FeedbackService,
-        private authService: AuthService
-        ) {}
+        private authService: AuthService,
+        private toastService: ToastrService
+    ) {}
     wrapMode = false;
     user$: Observable<User>;
     loginedUser$: Observable<User>;
     entity$: Observable<Entity>;
     replies$: Observable<Comment[]>;
     rating$: Observable<SummaryRateByTargetResponse>;
+    updater$: BehaviorSubject<null> = new BehaviorSubject(null);
 
     @Input()
     public feedback: FeedbackResponse;
+    public replyMode: boolean = false;
+
     wrap() {
         this.wrapMode = true;
     }
@@ -64,9 +70,16 @@ export class LkFeedbackItemComponent implements OnInit {
             !!this.feedback?.comment?.feedback_id &&
             !!this.feedback?.comment?.id
         ) {
-            console.log('LkFeedbackItemComponent: ', this.feedback);
+            console.log("LkFeedbackItemComponent: ", this.feedback);
             this.replies$ = this.feedback?.comment?.replies
-                ? this.restService.getReplies(this.feedback.comment.id)
+                ? this.updater$.pipe(
+                      switchMap(() =>
+                          this.restService.getReplies(this.feedback.comment.id)
+                      ),
+                      tap((data) => {
+                          this.feedback.comment.replies = data.length;
+                      })
+                  )
                 : of(null);
         }
 
@@ -90,7 +103,7 @@ export class LkFeedbackItemComponent implements OnInit {
         return StatusRusMap[feedback.status] ?? "---";
     }
 
-    async setFbStatusApproved(e: MouseEvent) {
+    async setFeddbackStatusApproved(e: MouseEvent) {
         e?.stopImmediatePropagation();
         const changed = await this.restService
             .changeFeedbackStatus("approved", this.feedback.id)
@@ -100,7 +113,7 @@ export class LkFeedbackItemComponent implements OnInit {
             this.cdr.markForCheck();
         }
     }
-    async setFbStatusDeclined(e: MouseEvent) {
+    async setFeedbackStatusDeclined(e: MouseEvent) {
         e?.stopImmediatePropagation();
         const changed = await this.restService
             .changeFeedbackStatus("reject", this.feedback.id)
@@ -111,16 +124,15 @@ export class LkFeedbackItemComponent implements OnInit {
         }
     }
 
-    openReply(opened: boolean, comment: Comment): void {
-        comment.replymode = opened;
-    }
-
-    replyFeedback(e: string, comment: Comment): void {
-
-    }
-
     answerFeedback(e: Reply, comment: Comment): void {
-        this.openReply(false, comment);
-        this.fbs.sendFeedbackReply(comment.id, e.text, e.isOfficial);
+        this.replyMode = false;
+        this.fbs
+            .sendFeedbackReply(comment.id, e.text, e.isOfficial)
+            .then(() => this.toastService.success("Ответ добавлен"))
+            .then(() => this.refresh());
+    }
+
+    refresh(): void {
+        this.updater$.next(null);
     }
 }

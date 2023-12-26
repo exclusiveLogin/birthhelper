@@ -185,14 +185,6 @@ export class FeedbackPageComponent {
         console.log("changeFilters after", this.filtersChange$.value);
     }
 
-    ////////////////////////////////////////////////////////////////
-
-    isSelfOwner(user_id: number): boolean {
-        return user_id ? this.authService.user?.id === user_id : false;
-    }
-
-    ////////////////////////////////////////////////////////////////
-
     editFeedback(feedback: FeedbackResponse): void {
         const feedbackContext: FeedbackContext = {
             existFeedback: feedback,
@@ -230,26 +222,5 @@ export class FeedbackPageComponent {
             .catch((error) => {
                 console.log("deleteFeedback error: ", error);
             });
-    }
-
-    setLike(feedback_id: number, invert = false): void {
-        this.feedbackService
-            .sendRateToFeedback(feedback_id, invert)
-            .then(async () => {
-                console.log("sendRateFeedback", feedback_id, invert);
-                this.updater$.next(null);
-            })
-            .catch((error) => {
-                console.log("sendRateFeedback error: ", error);
-            });
-    }
-
-    repliesByFeedback(feedback: FeedbackResponse): Observable<Comment[]> {
-        return this.restService.getReplies(feedback.comment?.id);
-    }
-
-    userByFeedback(comment: Comment): Observable<User> {
-        console.log("userByFeedback:", comment.user_id);
-        return this.restService.getUserById(comment.user_id);
     }
 }

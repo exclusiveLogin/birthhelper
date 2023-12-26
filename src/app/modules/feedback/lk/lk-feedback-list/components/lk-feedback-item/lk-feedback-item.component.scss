@@ -14,20 +14,20 @@
 .lk-feedback-messages {
   display: flex;
   flex-direction: column;
-  width: 480px;
   gap: 24px;
+  flex-grow: 1;
 }
 
 .lk-feedback-body {
   display: flex;
-  gap: 36px;
+  gap: 16px;
   align-items: flex-start;
 }
 
 .lk-feedback-rating-block {
   display: flex;
   flex-direction: column;
-  max-width: 780px;
+  max-width: 50%;
 }
 
 .lk-rating-row {
@@ -70,4 +70,8 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+}
+
+.close_btn{  
+  cursor: pointer;
 }
