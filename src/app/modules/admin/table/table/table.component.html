@@ -1,45 +1,59 @@
 <div class="stats">
-  <h3>{{title}}</h3>
-  <span>Таблица: {{key}} </span>
-  <span>тип: {{type === 'dict' ? 'Словарь' : 'Сущность'}} </span>
-  <span>Всего элементов: {{total}} </span>
-  <span>Всего страниц: {{ allPages }} </span>
-  <br>
-  <span *ngIf="currentItem">Выбранный элемент: {{currentItem.data.title}}[ {{currentItem.data.id}} ]</span>
-  <button
-    *ngIf="currentItem"
-    (click)="unselectItem()"
-    class="btn btn-outline-dark"
-    style="margin-left: 5px"
-  >Снять выбор</button>
-  <div class="bh_table_error_block" *ngIf="currentError">{{ currentError }}</div>
+    <h3>{{ title }}</h3>
+    <span>Таблица: {{ key }} </span>
+    <span>тип: {{ type === "dict" ? "Словарь" : "Сущность" }} </span>
+    <span>Всего элементов: {{ total }} </span>
+    <span>Всего страниц: {{ allPages }} </span>
+    <br />
+    <span *ngIf="currentItem"
+        >Выбранный элемент: {{ currentItem.data.title }}[
+        {{ currentItem.data.id }} ]</span
+    >
+    <button
+        *ngIf="currentItem"
+        (click)="unselectItem()"
+        class="btn btn-outline-dark"
+        style="margin-left: 5px"
+    >
+        Снять выбор
+    </button>
+    <div class="bh_table_error_block" *ngIf="currentError">
+        {{ currentError }}
+    </div>
 
-  <img class="img_block" *ngIf="currentItem && currentItem.image$ | async as url" [src]="url" width="35"/>
-
+    <img
+        class="img_block"
+        *ngIf="currentItem && currentItem.image$ | async as url"
+        [src]="url"
+        width="35"
+    />
 </div>
 <app-filters [fields$]="filters$" (update)="refreshTable($event)"></app-filters>
 <table class="table">
-  <thead>
-    <tr class="">
-      <th class="imagerow" *ngIf="hasImages()"><i class="far fa-image"></i></th>
-      <th class="" *ngFor="let rs of rowSettings">{{ rs.title }}</th>
-      <th class="" *ngIf="type === 'dummy'">Удалить</th>
-    </tr>
-  </thead>
-  <tbody>
-    <app-cell
-      *ngFor="let item of items; let i = index"
-      [rs]="rowSettings"
-      [data]="item"
-      (click)="!isDummy() ? selectItem( item ) : null"
-      (remove)="isDummy() ? deselectItem( item ) : null"
-      [modes]="isDummy() ? ['remove']: []"
-    ></app-cell>
-  </tbody>
-
-
+    <thead>
+        <tr class="">
+            <th class="imagerow" *ngIf="hasImages()">
+                <i class="far fa-image"></i>
+            </th>
+            <th class="" *ngFor="let rs of rowSettings">{{ rs.title }}</th>
+            <th class="" *ngIf="type === 'dummy'">Удалить</th>
+        </tr>
+    </thead>
+    <tbody>
+        <app-cell
+            *ngFor="let item of items; let i = index"
+            [rs]="rowSettings"
+            [data]="item"
+            (click)="!isDummy() ? selectItem(item) : null"
+            (remove)="isDummy() ? deselectItem(item) : null"
+            [modes]="isDummy() ? ['remove'] : []"
+        ></app-cell>
+    </tbody>
 </table>
 
 <div class="bh_table_page">
-  <app-paginator [pages]="allPages" (vc)="pageChanged($event)"></app-paginator>
+    <app-paginator
+        [pages]="allPages"
+        (vc)="pageChanged($event)"
+    ></app-paginator>
 </div>

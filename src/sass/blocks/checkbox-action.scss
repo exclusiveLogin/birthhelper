@@ -25,9 +25,9 @@
             left: 0;
             width: 40px;
             height: 40px;
-            background: $blue url("/img/icons/heart-white.svg") no-repeat center / 18px auto;
+            background: $blue url("/img/icons/heart-white.svg") no-repeat center /
+                18px auto;
             border-radius: 0 0 0 5px;
-
         }
     }
 
@@ -37,8 +37,8 @@
         left: 0;
         width: 40px;
         height: 40px;
-        background: $blue url("/img/icons/heart-red.svg") no-repeat center / 18px auto;
+        background: $blue url("/img/icons/heart-red.svg") no-repeat center /
+            18px auto;
         border-radius: 0 0 0 5px;
     }
 }
-

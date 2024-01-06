@@ -23,9 +23,9 @@
 }
 
 .badge {
-  width: fit-content;
-  padding: 5px 15px;
-  font-size: 0.75rem;
+    width: fit-content;
+    padding: 5px 15px;
+    font-size: 0.75rem;
 }
 
 .cart-pack__name {
@@ -93,18 +93,16 @@
     color: $white;
 
     &.unaccent {
-      background: $light-grey;
-      color: $dark-grey;
-      &:hover {
-        background: #eeeeee;
-      }
+        background: $light-grey;
+        color: $dark-grey;
+        &:hover {
+            background: #eeeeee;
+        }
     }
     &:hover {
         background: $light-blue;
     }
-
 }
 
 .cart-pack__body-review {
-
 }

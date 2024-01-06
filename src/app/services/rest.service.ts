@@ -1,26 +1,36 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {ApiService} from './api.service';
-import {filter, map, shareReplay, switchMap, take} from 'rxjs/operators';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {IDictItem} from 'app/modules/admin/dict.service';
-import {SectionType} from './search.service';
-import {SearchFilterConfig, SearchSection} from '../models/filter.interface';
-import {FilterResult} from '../modules/search/search/components/filter/filter.component';
-import {SessionResponse, UserRole} from '../modules/auth-module/auth.service';
-import {UserExit, UserSrc} from '../models/user.interface';
-import {InterceptorService} from '../modules/auth-module/interceptor.service';
-import {ConfiguratorConfigSrc, Restrictor, SelectionOrderSlot} from 'app/modules/configurator/configurator.model';
-import {Entity, SectionedContragentSlots} from 'app/models/entity.interface';
-import md5 from 'md5';
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
+import { ApiService } from "./api.service";
+import { filter, map, shareReplay, switchMap, take } from "rxjs/operators";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { IDictItem } from "app/modules/admin/dict.service";
+import { SectionType } from "./search.service";
+import { SearchFilterConfig, SearchSection } from "@models/filter.interface";
+import { FilterResult } from "@modules/search/search/components/filter/filter.component";
+import { SessionResponse, UserRole } from "@modules/auth-module/auth.service";
+import { User, UserExit, UserSrc } from "@models/user.interface";
+import { InterceptorService } from "@modules/auth-module/interceptor.service";
+import {
+    ConfiguratorConfigSrc,
+    Restrictor,
+    SelectionOrderSlot,
+} from "app/modules/configurator/configurator.model";
+import { Entity, SectionedContragentSlots } from "app/models/entity.interface";
+import md5 from "md5";
 import {
     ODRER_ACTIONS,
     OrderRequest,
-    OrderResponse, OrderResponseAction,
+    OrderResponse,
+    OrderResponseAction,
     orderRestMapper,
     OrderSrc,
-} from '../models/order.interface';
-import {IContainerData} from '@modules/admin/container.model';
+} from "@models/order.interface";
+import { IContainerData } from "@modules/admin/container.model";
+import {
+    Comment,
+    FeedbackChangeStatusResponse,
+    FeedbackStatus,
+} from "@modules/feedback/models";
 
 export interface ISettingsParams {
     mode: string;
@@ -40,7 +50,7 @@ export interface IRestBody {
 export interface IFileSaveResponse {
     status: string;
     file: {
-        id: number
+        id: number;
     };
 }
 
@@ -89,176 +99,217 @@ export interface RegistrationResponseSrc {
     password?: string;
 }
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: "root" })
 export class RestService {
-
     constructor(
         private http: HttpClient,
         private api: ApiService,
-        private interceptor: InterceptorService,
+        private interceptor: InterceptorService
     ) {
+        console.log("RestService", this);
     }
 
     cacheStore = {};
-    public uploadImage(file: File, _data?: IFileAdditionalData): Observable<IFileSaveResponse> {
+    public uploadImage(
+        file: File,
+        _data?: IFileAdditionalData
+    ): Observable<IFileSaveResponse> {
         const fileSetting: ISettingsParams = {
-            mode: 'admin',
-            segment: 'entity',
-            resource: 'file',
+            mode: "admin",
+            segment: "entity",
+            resource: "file",
         };
 
         const data: FormData = new FormData();
-        data.append('meta', JSON.stringify(_data));
-        data.append('photo', file);
+        data.append("meta", JSON.stringify(_data));
+        data.append("photo", file);
 
         return this.uploadData(fileSetting, data);
     }
 
-    public uploadData<T>(path: ISettingsParams, data?: FormData): Observable<T> {
+    public uploadData<T>(
+        path: ISettingsParams,
+        data?: FormData
+    ): Observable<T> {
         return this.postData(path, data);
     }
 
-    public getConfiguratorSettings(section: SectionType): Observable<ConfiguratorConfigSrc> {
+    public getConfiguratorSettings(
+        section: SectionType
+    ): Observable<ConfiguratorConfigSrc> {
         const entSetting: ISettingsParams = {
-            mode: 'api',
-            segment: 'configurator',
+            mode: "api",
+            segment: "configurator",
             resource: section,
         };
 
-        return this.getData(entSetting);
+        return this.fetchData(entSetting);
     }
 
     public getRaw(url: string): Observable<any> {
-        return this.http.get(url, {observe: 'response', responseType: 'arraybuffer'}).pipe(map(data => data.body));
+        return this.http
+            .get(url, { observe: "response", responseType: "arraybuffer" })
+            .pipe(map((data) => data.body));
     }
 
     public getEntity<T = Entity>(key: string, id: number): Observable<T> {
         const entSetting: ISettingsParams = {
-            mode: 'api',
+            mode: "api",
             segment: key,
             resource: id.toString(),
         };
 
-        return this.getData<T>(entSetting).pipe(map(d => d?.[0]));
+        return this.fetchData<T>(entSetting).pipe(map((d) => d?.[0]));
     }
 
     public activateUser(url: string): Observable<any> {
         const config: ISettingsParams = {
-            mode: 'auth',
-            segment: 'activation',
+            mode: "auth",
+            segment: "activation",
             resource: url,
         };
 
-        return this.getData(config);
+        return this.fetchData(config);
     }
 
-    public getFilterConfigByHash(key: SectionType, hash: string): Observable<SearchFilterConfig> {
+    public getFilterConfigByHash(
+        key: SectionType,
+        hash: string
+    ): Observable<SearchFilterConfig> {
         const entSetting: ISettingsParams = {
-            mode: 'search',
+            mode: "search",
             segment: key,
-            resource: 'filters',
+            resource: "filters",
             script: hash,
         };
 
-        return this.getData<SearchFilterConfig>(entSetting, null, true);
+        return this.fetchData<SearchFilterConfig>(entSetting, null, true);
     }
 
     public getFilterConfig(key: SectionType): Observable<SearchSection[]> {
         const entSetting: ISettingsParams = {
-            mode: 'search',
+            mode: "search",
             segment: key,
         };
 
-        return this.getData<SearchSectionSrc>(entSetting)
-            .pipe(map(data => data.results));
+        return this.fetchData<SearchSectionSrc>(entSetting).pipe(
+            map((data) => data.results)
+        );
     }
 
-    public getHashBySearchSection(key: SectionType, filters: FilterResult): Observable<string> {
+    public getHashBySearchSection(
+        key: SectionType,
+        filters: FilterResult
+    ): Observable<string> {
         const setting: ISettingsParams = {
-            mode: 'search',
+            mode: "search",
             segment: key,
         };
 
-        return this.postData<SearchVectorSrc>(setting, filters).pipe(map(result => result.hash));
+        return this.postData<SearchVectorSrc>(setting, filters).pipe(
+            map((result) => result.hash)
+        );
     }
 
-    public getSlotsByContragent<T = any>(key: string, contragentID: number, restrictors: Restrictor[]): Observable<T[]> {
+    public getSlotsByContragent<T = any>(
+        key: string,
+        contragentID: number,
+        restrictors: Restrictor[]
+    ): Observable<T[]> {
         const filters: IRestParams = {
             contragent_id: contragentID.toString(),
-            active: '1',
+            active: "1",
         };
-        restrictors.forEach(r => filters[r.key] = r.value.toString());
+        restrictors.forEach((r) => (filters[r.key] = r.value.toString()));
         return this.getEntityList(key, null, filters);
     }
 
-    public getSlotListByContragent(id: number): Observable<SectionedContragentSlots> {
+    public getSlotListByContragent(
+        id: number
+    ): Observable<SectionedContragentSlots> {
         const entSetting: ISettingsParams = {
-            mode: 'api',
-            segment: 'slots',
-            resource: 'contragent',
+            mode: "api",
+            segment: "slots",
+            resource: "contragent",
             script: id.toString(),
         };
 
-        return this.getData<SectionedContragentSlots>(entSetting);
+        return this.fetchData<SectionedContragentSlots>(entSetting);
     }
 
-    public getEntityList<T = Entity>(key: string, page?: number, qp?: IRestParams): Observable<T[]> {
-        const entSetting: ISettingsParams = {
-            mode: 'api',
+    public getEntityList<T = Entity>(
+        key: string,
+        page?: number,
+        qp?: IRestParams,
+        entSettings?: ISettingsParams
+    ): Observable<T[]> {
+        const entSetting: ISettingsParams = entSettings ?? {
+            mode: "api",
             segment: key,
         };
 
-        const data: IRestParams = page ? {skip: (20 * (page - 1)).toString()} : {};
+        const data: IRestParams = page
+            ? { skip: (20 * (page - 1)).toString() }
+            : {};
 
         if (qp) {
             Object.assign(data, qp);
         }
 
-        return this.getData<T[]>(entSetting, data);
+        return this.fetchData<T[]>(entSetting, data);
     }
 
     public getEntitySet(key: string, qp?: IRestParams): Observable<any[]> {
         const entSetting: ISettingsParams = {
-            mode: 'api',
+            mode: "api",
             segment: key,
-            script: 'set'
+            script: "set",
         };
 
-        return this.getData<any[]>(entSetting, qp);
+        return this.fetchData<any[]>(entSetting, qp);
     }
 
     public createGuestToken(): Observable<string> {
-        return this.authRequest().pipe(
-            map(data => data?.token),
-        );
+        return this.authRequest().pipe(map((data) => data?.token));
     }
 
-    public createNewUser(login?: string, password?: string): Observable<RegistrationResponseSrc> {
+    public createNewUser(
+        login?: string,
+        password?: string
+    ): Observable<RegistrationResponseSrc> {
         const config: ISettingsParams = {
-            mode: 'auth',
+            mode: "auth",
             segment: null,
         };
 
-        const data = {login, password};
+        const data = { login, password };
 
         return this.putData(config, data, true);
     }
 
-    public authorization(login?: string, password?: string): Observable<string> {
-        return this.authRequest(login, password).pipe(map(data => data?.token));
+    public authorization(
+        login?: string,
+        password?: string
+    ): Observable<string> {
+        return this.authRequest(login, password).pipe(
+            map((data) => data?.token)
+        );
     }
 
-    public authRequest(login?: string, password?: string): Observable<SessionResponse> {
+    public authRequest(
+        login?: string,
+        password?: string
+    ): Observable<SessionResponse> {
         let data;
         let insecure = false;
         if (login && password) {
-            data = {login, password};
+            data = { login, password };
         } else {
             insecure = true;
         }
 
         const ep_config: ISettingsParams = {
-            mode: 'auth',
+            mode: "auth",
             segment: null,
         };
 
@@ -267,17 +318,20 @@ export class RestService {
 
     public getOrdersByCurrentSession(): Observable<OrderSrc[]> {
         const entSetting: ISettingsParams = {
-            mode: 'order',
+            mode: "order",
             segment: null,
         };
 
-        return this.getData<OrderResponse>(entSetting, null, true).pipe(
-            map(response => response?.result ?? []));
+        return this.fetchData<OrderResponse>(entSetting, null, true).pipe(
+            map((response) => response?.result ?? [])
+        );
     }
 
-    requestOrdersPost<T = OrderResponseAction>(payload: OrderRequest): Observable<T> {
+    requestOrdersPost<T = OrderResponseAction>(
+        payload: OrderRequest
+    ): Observable<T> {
         const ep_config: ISettingsParams = {
-            mode: 'order',
+            mode: "order",
             segment: null,
         };
         return this.postData<T>(ep_config, payload);
@@ -290,76 +344,140 @@ export class RestService {
 
     public changeOrderBySelection(
         action: ODRER_ACTIONS,
-        selection?: SelectionOrderSlot,
+        selection?: SelectionOrderSlot
     ): Observable<OrderSrc> {
         const data = orderRestMapper(selection, action);
         return this.requestOrdersPost(data);
     }
 
+    public changeFeedbackStatus(
+        status: FeedbackStatus,
+        id: number
+    ): Observable<boolean> {
+        const ep_config: ISettingsParams = {
+            mode: "api",
+            segment: "feedback",
+        };
+
+        return this.putData<FeedbackChangeStatusResponse>(ep_config, {
+            id,
+            status,
+            action: "STATUS_CHANGE",
+        }).pipe(map((response) => response.result === "ok"));
+    }
+
+    public getReplies(
+        commentParentId: number,
+        page = 1
+    ): Observable<Comment[]> {
+        const settings: ISettingsParams = {
+            mode: "api",
+            segment: "feedback",
+            resource: "replies",
+            script: commentParentId.toString(),
+        };
+
+        console.log("replies id:", commentParentId);
+        return this.fetchData(settings, null, true);
+    }
+
     public getUserRole(): Observable<UserRoleSrc> {
         const ep_config: ISettingsParams = {
-            mode: 'auth',
-            segment: 'role',
+            mode: "auth",
+            segment: "role",
         };
 
-        return this.getData(ep_config);
+        return this.fetchData(ep_config);
     }
 
-    public getUser(): Observable<UserSrc> {
+    public getCurrentUser(): Observable<UserSrc> {
         const ep_config: ISettingsParams = {
-            mode: 'auth',
-            segment: 'user',
+            mode: "auth",
+            segment: "user",
         };
 
-        return this.getData(ep_config);
+        return this.fetchData(ep_config);
     }
 
-    public getContainerFromId(key: string, id: number, qp?: IRestParams): Observable<IContainerData> {
+    public getUserById(id: number): Observable<User> {
+        return this.getEntity<UserSrc>("ent_users", id).pipe(
+            map((userSrc) => new User(userSrc))
+        );
+    }
+
+    getRepliesByComment(commentId: number, page = 1) {
+        const qp: IRestParams = { comment_id: commentId.toString() };
+        return this.getEntityList<Comment>("ent_comments", page, qp);
+    }
+
+    public getContainerFromId(
+        key: string,
+        id: number,
+        qp?: IRestParams
+    ): Observable<IContainerData> {
         const entSetting: ISettingsParams = {
-            mode: 'api',
-            segment: 'containers',
+            mode: "api",
+            segment: "containers",
             resource: `${key}`,
-            script: '' + id,
+            script: "" + id,
         };
 
-        return this.getData<IContainerData>(entSetting, qp);
+        return this.fetchData<IContainerData>(entSetting, qp);
     }
 
     public logout(everywhere?: boolean): Observable<UserExit> {
         const ep_config: ISettingsParams = {
-            mode: 'auth',
+            mode: "auth",
             segment: null,
         };
 
         if (everywhere) {
-            ep_config.segment = 'all';
+            ep_config.segment = "all";
         }
 
         return this.remData(ep_config);
     }
 
-    public getDict(name: string, page?: number): Observable<IDictItem[]> {
+    public fetchDictionary(
+        name: string,
+        filters?: Record<string, string>,
+        page?: number
+    ): Observable<IDictItem[]> {
         const dictSetting: ISettingsParams = {
-            mode: 'api',
-            segment: 'dict',
-            resource: name
+            mode: "api",
+            segment: "dict",
+            resource: name,
         };
 
-        const data: IRestParams = page ? {skip: (20 * (page - 1)).toString()} : null;
+        let data: IRestParams = page
+            ? { skip: (20 * (page - 1)).toString() }
+            : {};
+        if (filters) {
+            data = { ...data, ...filters };
+        }
 
-        return this.getData<IDictItem[]>(dictSetting, data);
+        return this.fetchData<IDictItem[]>(dictSetting, data);
     }
 
     pathGen(path: ISettingsParams): void {
-        Object.keys(path).filter(key => path[key]).forEach(key => path[key] = '/' + path[key]);
+        Object.keys(path)
+            .filter((key) => path[key])
+            .forEach((key) => (path[key] = "/" + path[key]));
     }
 
     createUrl(path: ISettingsParams): string {
-        return `${this.api.getApiPath()}${path.mode ?? ''}${path.segment ?? ''}${path.resource ?? ''}${path.script ?? ''}`;
+        return `${this.api.getApiPath()}${path.mode ?? ""}${
+            path.segment ?? ""
+        }${path.resource ?? ""}${path.script ?? ""}`;
     }
 
-    public getData<T>(path: ISettingsParams, data?: IRestParams, nocache = false): Observable<T> {
-        if (path?.mode === 'auth') {
+    public fetchData<T>(
+        path: ISettingsParams,
+        data?: IRestParams,
+        nocache = false
+    ): Observable<T> {
+        // console.log('fetchData', path);
+        if (path?.mode === "auth") {
             nocache = true;
         }
         if (path) {
@@ -373,17 +491,21 @@ export class RestService {
 
         const url = this.createUrl(path);
 
-        const http = (token) => this.http.get(
-            url, {params: data, headers: token ? new HttpHeaders({token}) : null})
-            .pipe(
-                this.interceptor.interceptor(),
-                filter(d => !!d),
-                take(1),
-            );
+        const http = (token) =>
+            this.http
+                .get(url, {
+                    params: data,
+                    headers: token ? new HttpHeaders({ token }) : null,
+                })
+                .pipe(
+                    this.interceptor.interceptor(),
+                    filter((d) => !!d),
+                    take(1)
+                );
         const req = this.interceptor.token$.pipe(
             take(1),
             switchMap(http),
-            shareReplay(1),
+            shareReplay(1)
         );
         if (!nocache) {
             this.cacheStore[cacheKey] = req;
@@ -391,98 +513,113 @@ export class RestService {
         return req as Observable<T>;
     }
 
-    public postData<T>(path: ISettingsParams, data?: any, insecure?: boolean): Observable<T> {
-
+    public postData<T>(
+        path: ISettingsParams,
+        data?: any,
+        insecure?: boolean
+    ): Observable<T> {
         if (path) {
             this.pathGen(path);
         }
 
         const url = this.createUrl(path);
 
-        const http = (token?: string) => this.http.post(url, data,
-            {headers: token ? new HttpHeaders({token}) : null}
-        ).pipe(
-            this.interceptor.interceptor(),
-            filter(d => !!d),
-            take(1),
-        );
+        const http = (token?: string) =>
+            this.http
+                .post(url, data, {
+                    headers: token ? new HttpHeaders({ token }) : null,
+                })
+                .pipe(
+                    this.interceptor.interceptor(),
+                    filter((d) => !!d),
+                    take(1)
+                );
 
-        const req = insecure ? http() : this.interceptor.token$.pipe(
-            take(1),
-            switchMap(http),
-        );
+        const req = insecure
+            ? http()
+            : this.interceptor.token$.pipe(take(1), switchMap(http));
 
         return req as Observable<T>;
     }
 
-    public putData<T>(path: ISettingsParams, data?: any, insecure?: boolean): Observable<T> {
-
+    public putData<T>(
+        path: ISettingsParams,
+        data?: any,
+        insecure?: boolean
+    ): Observable<T> {
         if (path) {
             this.pathGen(path);
         }
 
         const url = this.createUrl(path);
 
-        const http = (token?: string) => this.http.put(url, data,
-            {headers: token ? new HttpHeaders({token}) : null}
-        ).pipe(
-            this.interceptor.interceptor(),
-            filter(d => !!d),
-            take(1),
-        );
+        const http = (token?: string) =>
+            this.http
+                .put(url, data, {
+                    headers: token ? new HttpHeaders({ token }) : null,
+                })
+                .pipe(
+                    this.interceptor.interceptor(),
+                    filter((d) => !!d),
+                    take(1)
+                );
 
-        const req = insecure ? http() : this.interceptor.token$.pipe(
-            take(1),
-            switchMap(http),
-        );
+        const req = insecure
+            ? http()
+            : this.interceptor.token$.pipe(take(1), switchMap(http));
 
         return req as Observable<T>;
     }
 
-    public postDataContainer<T>(path: ISettingsParams, data?: IRestBody): Observable<T> {
-
+    public postDataContainer<T>(
+        path: ISettingsParams,
+        data?: IRestBody
+    ): Observable<T> {
         if (path) {
             this.pathGen(path);
         }
 
         const url = this.createUrl(path);
 
-        const http = (token) => this.http.post(url, data.body,
-            {headers: token ? new HttpHeaders({token}) : null}
-        ).pipe(
-            this.interceptor.interceptor(),
-            filter(d => !!d),
-            take(1),
-        );
+        const http = (token) =>
+            this.http
+                .post(url, data.body, {
+                    headers: token ? new HttpHeaders({ token }) : null,
+                })
+                .pipe(
+                    this.interceptor.interceptor(),
+                    filter((d) => !!d),
+                    take(1)
+                );
 
-        const req = this.interceptor.token$.pipe(
-            take(1),
-            switchMap(http),
-        );
+        const req = this.interceptor.token$.pipe(take(1), switchMap(http));
 
         return req as Observable<T>;
     }
 
-    public remData<T>(path: ISettingsParams, data?: IRestParams): Observable<T> {
-
+    public remData<T>(
+        path: ISettingsParams,
+        data?: IRestParams
+    ): Observable<T> {
         if (path) {
             this.pathGen(path);
         }
 
         const url = this.createUrl(path);
 
-        const http = (token) => this.http.request('delete', url,
-            {body: data, headers: token ? new HttpHeaders({token}) : null}
-        ).pipe(
-            this.interceptor.interceptor(),
-            filter(d => !!d),
-            take(1),
-        );
+        const http = (token) =>
+            this.http
+                .request("delete", url, {
+                    body: data,
+                    headers: token ? new HttpHeaders({ token }) : null,
+                })
+                .pipe(
+                    this.interceptor.interceptor(),
+                    filter((d) => !!d),
+                    take(1)
+                );
 
-        const req = this.interceptor.token$.pipe(
-            take(1),
-            switchMap(http),
-        );
+        const req = this.interceptor.token$.pipe(take(1), switchMap(http));
 
         return req as Observable<T>;
     }

@@ -1,57 +1,57 @@
 .card-controls__btn-group {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 .card-controls__btn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 36px;
-  height: 36px;
-  margin: 0 0 0 5px;
-  border-radius: 5px;
-  border: none;
-  padding: 0;
-  background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 36px;
+    height: 36px;
+    margin: 0 0 0 5px;
+    border-radius: 5px;
+    border: none;
+    padding: 0;
+    background: transparent;
 }
 
 .card-controls__btn-other {
-  background: transparentize($blue, 0.9);
+    background: transparentize($blue, 0.9);
 }
 
 .card-controls__btn-rating {
-  background: $blue;
+    background: $blue;
 }
 
 .card-controls__btn-txt {
-  margin: 0;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.14;
-  color: $white;
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.14;
+    color: $white;
 }
 
 .card-controls__cnt {
-  margin: 6px 0 0;
+    margin: 6px 0 0;
 }
 
 .card-controls__link {
-  display: block;
-  margin: 0;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 1.17;
-  text-align: right;
-  color: $blue;
+    display: block;
+    margin: 0;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.17;
+    text-align: right;
+    color: $blue;
 }
 
 .card-controls__txt {
-  display: block;
-  margin: 1px 0 0;
-  font-size: 12px;
-  line-height: 1.17;
-  text-align: right;
-  color: $black;
+    display: block;
+    margin: 1px 0 0;
+    font-size: 12px;
+    line-height: 1.17;
+    text-align: right;
+    color: $black;
 }

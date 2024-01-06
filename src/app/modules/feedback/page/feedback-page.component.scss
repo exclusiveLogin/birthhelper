@@ -1,0 +1,49 @@
+app-feedback-filter {
+    z-index: 200;
+    position: relative;
+}
+.feedback_list_wrapper {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    z-index: 100;
+    margin-bottom: 16px;
+    .feedback_list_container {
+        display: flex;
+        flex-direction: column;
+        border-left: 9px solid #dbdbdb;
+        -webkit-box-shadow: -9px 0px 26px -5px rgba(34, 60, 80, 0.41);
+        -moz-box-shadow: -9px 0px 26px -5px rgba(34, 60, 80, 0.41);
+        box-shadow: -9px 0px 26px -5px rgba(34, 60, 80, 0.41);
+        width: 90%;
+        max-width: 980px;
+    }
+}
+
+.info {
+    display: flex;
+    flex-grow: 1;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+    gap: 16px;
+    padding: 16px;
+    align-items: center;
+}
+
+.separator {
+    flex-grow: 1;
+}
+
+.zebra {
+    padding-left: 16px;
+}
+
+.zebra:nth-child(even){
+    background-color: rgb(240, 240, 240);
+}
+
+.emptylist {
+    min-height: 40vh;
+    font-size: 1.2rem;
+    color: silver;
+}

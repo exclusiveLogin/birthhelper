@@ -1,41 +1,81 @@
 <div class="main__accordion accordion">
-    <div class="accordion__item"
-         [ngClass]="{'accordion__item--opened': isOpened('individ')}"
-         [@wrapper]="isOpened('individ') ? 'opened' : 'closed'">
+    <div
+        class="accordion__item"
+        [ngClass]="{ 'accordion__item--opened': isOpened('individ') }"
+        [@wrapper]="isOpened('individ') ? 'opened' : 'closed'"
+    >
         <div class="accordion__header" (click)="toggleBlockByKey('individ')">
             <div class="accordion__icon">
-                <img src="img/icons/businessman.svg" class="accordion__icon-img" alt="">
+                <img
+                    src="img/icons/businessman.svg"
+                    class="accordion__icon-img"
+                    alt=""
+                />
             </div>
             <p class="accordion__ttl">Индивидуальный подход</p>
         </div>
-        <div class="accordion__body" [@content]="isOpened('individ') ? 'opened' : 'closed'">
-            <p class="accordion__txt">Выбирайте с помощью сервиса BirthHelper только те услуги, которые нужны именно вам. Просто, удобно.</p>
+        <div
+            class="accordion__body"
+            [@content]="isOpened('individ') ? 'opened' : 'closed'"
+        >
+            <p class="accordion__txt">
+                Выбирайте с помощью сервиса BirthHelper только те услуги,
+                которые нужны именно вам. Просто, удобно.
+            </p>
         </div>
     </div>
-    <div class="accordion__item"
-         [ngClass]="{'accordion__item--opened': isOpened('partners')}"
-         [@wrapper]="isOpened('partners') ? 'opened' : 'closed'">
+    <div
+        class="accordion__item"
+        [ngClass]="{ 'accordion__item--opened': isOpened('partners') }"
+        [@wrapper]="isOpened('partners') ? 'opened' : 'closed'"
+    >
         <div class="accordion__header" (click)="toggleBlockByKey('partners')">
             <div class="accordion__icon">
-                <img src="img/icons/surface.svg" class="accordion__icon-img" alt="">
+                <img
+                    src="img/icons/surface.svg"
+                    class="accordion__icon-img"
+                    alt=""
+                />
             </div>
             <p class="accordion__ttl">Надежные и проверенные партнеры</p>
         </div>
-        <div class="accordion__body" [@content]="isOpened('partners') ? 'opened' : 'closed'">
-            <p class="accordion__txt">Сервис BirthHelper работает только с проверенными партнерами, имеющими лицензию на оказание услуг, а система оценки и отзывов позволяет следить за качеством оказываемых услуг. </p>
+        <div
+            class="accordion__body"
+            [@content]="isOpened('partners') ? 'opened' : 'closed'"
+        >
+            <p class="accordion__txt">
+                Сервис BirthHelper работает только с проверенными партнерами,
+                имеющими лицензию на оказание услуг, а система оценки и отзывов
+                позволяет следить за качеством оказываемых услуг.
+            </p>
         </div>
     </div>
-    <div class="accordion__item"
-         [ngClass]="{'accordion__item--opened': isOpened('suggestions')}"
-         [@wrapper]="isOpened('suggestions') ? 'opened' : 'closed'">
-        <div class="accordion__header" (click)="toggleBlockByKey('suggestions')">
+    <div
+        class="accordion__item"
+        [ngClass]="{ 'accordion__item--opened': isOpened('suggestions') }"
+        [@wrapper]="isOpened('suggestions') ? 'opened' : 'closed'"
+    >
+        <div
+            class="accordion__header"
+            (click)="toggleBlockByKey('suggestions')"
+        >
             <div class="accordion__icon">
-                <img src="img/icons/hearts.svg" class="accordion__icon-img" alt="">
+                <img
+                    src="img/icons/hearts.svg"
+                    class="accordion__icon-img"
+                    alt=""
+                />
             </div>
             <p class="accordion__ttl">Выгодные предложения</p>
         </div>
-        <div class="accordion__body" [@content]="isOpened('suggestions') ? 'opened' : 'closed'">
-            <p class="accordion__txt">Получайте выгодные предложения и экономьте с помощью BirthHelper.</p>
+        <div
+            class="accordion__body"
+            [@content]="isOpened('suggestions') ? 'opened' : 'closed'"
+        >
+            <p class="accordion__txt">
+                Получайте выгодные предложения и экономьте с помощью
+                BirthHelper.
+            </p>
         </div>
     </div>
 </div>

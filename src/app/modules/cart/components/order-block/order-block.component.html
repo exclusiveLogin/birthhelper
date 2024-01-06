@@ -1,32 +1,51 @@
 <div class="cart-pack__body-item cart-pack-item">
     <!--                        <p class="cart-pack-item__title">Специалисты</p>-->
     <div class="cart-pack-item__inner" *ngFor="let o of orders">
-        <div class="cart-pack-item__inner-avatar" *ngIf="{data: imageService.getImage$(o.cartPhoto)} as imageData">
-            <img [src]="imageData.data[0] | async" (error)="imageData.data[1].next(null)" >
+        <div
+            class="cart-pack-item__inner-avatar"
+            *ngIf="{ data: imageService.getImage$(o.cartPhoto) } as imageData"
+        >
+            <img
+                [src]="imageData.data[0] | async"
+                (error)="imageData.data[1].next(null)"
+            />
         </div>
-        <p class="cart-pack-item__inner-name">{{o.cartTitle}}</p>
+        <p class="cart-pack-item__inner-name">{{ o.cartTitle }}</p>
         <div class="cart-pack-item__inner-value">
-            <p class="cart-pack-item__inner-value-text" *ngIf="o.cartTitleAccent">{{o.cartTitleAccent}}</p>
+            <p
+                class="cart-pack-item__inner-value-text"
+                *ngIf="o.cartTitleAccent"
+            >
+                {{ o.cartTitleAccent }}
+            </p>
             <!--                                <p class="cart-pack-item__inner-value-text">Категория - А</p>-->
         </div>
         <div class="cart-pack-item__inner-value">
             <p class="cart-pack-item__inner-value-text" *ngIf="o.status">
-                <span class="badge"
-                      [ngClass]="{
-                                    'badge-info': o.status === 'waiting',
-                                    'badge-success': o.status === 'resolved',
-                                    'badge-danger': o.status === 'rejected',
-                                    'badge-default': o.status === 'completed'
-                }">{{getStatusTitle(o.status)}}</span>
+                <span
+                    class="badge"
+                    [ngClass]="{
+                        'badge-info': o.status === 'waiting',
+                        'badge-success': o.status === 'resolved',
+                        'badge-danger': o.status === 'rejected',
+                        'badge-default': o.status === 'completed'
+                    }"
+                    >{{ getStatusTitle(o.status) }}</span
+                >
             </p>
             <!--                                <p class="cart-pack-item__inner-value-text">Категория - А</p>-->
         </div>
-        <p class="cart-pack-item__inner-price">{{o?.slot?.price | digitalSeparator}} руб.</p>
+        <p class="cart-pack-item__inner-price">
+            {{ o?.slot?.price | digitalSeparator }} руб.
+        </p>
         <div class="cart-pack-item__inner-btns-group">
-            <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn--share"></button>
-            <button class="cart-pack-item__inner-btn cart-pack-item__inner-btn--delete"
-                    (click)="removeOrder(o)">
-            </button>
+            <button
+                class="cart-pack-item__inner-btn cart-pack-item__inner-btn--share"
+            ></button>
+            <button
+                class="cart-pack-item__inner-btn cart-pack-item__inner-btn--delete"
+                (click)="removeOrder(o)"
+            ></button>
         </div>
     </div>
 </div>

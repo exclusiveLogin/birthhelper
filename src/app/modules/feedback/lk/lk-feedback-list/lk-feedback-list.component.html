@@ -1,0 +1,53 @@
+<div class="lk-view-block__head">
+    <div class="_row">
+        <div class="lk-view-block__head__item small">ID</div>
+        <div class="lk-view-block__head__item mid">Оценка</div>
+        <div class="lk-view-block__head__item mid">Автор</div>
+        <div class="lk-view-block__head__item extra">ФИО</div>
+        <div class="lk-view-block__head__item extra">О ком отзыв</div>
+        <div class="lk-view-block__head__item extra">Комментарий</div>
+        <div class="lk-view-block__head__item long">Дата</div>
+        <div class="lk-view-block__head__item mid">Статус</div>
+        <div class="lk-view-block__head__item long">Действие</div>
+    </div>
+</div>
+
+<ng-container *ngIf="onFeedbackList$ | async as fbl">
+    <div class="lk-feedback-list-block" *ngIf="fbl?.byCore?.length">
+        <h3>Отзывы о контрагенте</h3>
+        <app-lk-feedback-item
+            class="zebra"
+            *ngFor="let fb of fbl.byCore; trackBy: trackIt"
+            [feedback]="fb"
+        ></app-lk-feedback-item>
+    </div>
+
+    <div class="lk-feedback-list-block" *ngIf="fbl?.bySlots?.length">
+        <h3>Отзывы об уcлугах контрагента</h3>
+        <app-lk-feedback-item
+            class="zebra"
+            *ngFor="let fb of fbl.bySlots; trackBy: trackIt"
+            [feedback]="fb"
+        ></app-lk-feedback-item>
+    </div>
+</ng-container>
+
+<!--<ng-container-->
+<!--    *ngIf="{-->
+<!--        total: onOrdersTotal$ | async,-->
+<!--        pages: onOrderGroupPages$ | async-->
+<!--    } as summary"-->
+<!--&gt;-->
+<!--    <app-paginator-->
+<!--        *ngIf="summary.total"-->
+<!--        [pages]="summary.pages"-->
+<!--        (vc)="pageChange($event)"-->
+<!--    ></app-paginator>-->
+<!--</ng-container>-->
+
+<ng-template #empty>
+    <div class="default" *ngIf="!isLoading">
+        У данного контрагента нет отзывов <br />
+        удовлетворяющих критериям поиска
+    </div>
+</ng-template>

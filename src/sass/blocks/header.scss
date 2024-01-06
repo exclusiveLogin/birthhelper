@@ -1,19 +1,17 @@
 .header {
-  padding: 12px 0 16px;
-  background: $white;
+    padding: 12px 0 16px;
+    background: $white;
 }
 
 .header__content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-@media screen and (max-width: 480px){
+@media screen and (max-width: 480px) {
     .header__content {
         align-items: center;
         flex-wrap: wrap;
     }
 }
-
-

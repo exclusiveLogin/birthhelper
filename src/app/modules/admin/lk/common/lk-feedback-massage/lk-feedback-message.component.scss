@@ -1,0 +1,33 @@
+:host {
+  display: flex;
+  gap: 16px;
+}
+
+.lk-feedback-message {
+
+  &-date {
+    flex-basis: 100%;
+    text-align: right;
+      opacity: 50%;
+
+    &-right {
+      text-align: left;
+    }
+  }
+
+  &-box {
+    display: flex;
+    gap: 6px 45px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    flex-grow: 1;
+
+    .official{
+      position: absolute;
+    }
+  }
+
+  &-main {
+    margin-top: 16px;
+  }
+}

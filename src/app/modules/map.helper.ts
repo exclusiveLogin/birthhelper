@@ -1,5 +1,5 @@
 /** Calculating the hypotenuse for 2 point */
-import {GeoBounds, GeoLatLon} from 'app/modules/map.models';
+import { GeoBounds, GeoLatLon } from "app/modules/map.models";
 
 export function hypot(x: number, y: number): number {
     return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
@@ -17,9 +17,14 @@ export function extendedBounds(bounds: GeoBounds): GeoBounds {
     return extBounds;
 }
 
-export function boundsContainsLatLon(bounds: GeoBounds, latLon: GeoLatLon): boolean {
+export function boundsContainsLatLon(
+    bounds: GeoBounds,
+    latLon: GeoLatLon
+): boolean {
     return (
-        bounds.north >= latLon.lat && bounds.east >= latLon.lon &&
-        bounds.south <= latLon.lat && bounds.west <= latLon.lon
+        bounds.north >= latLon.lat &&
+        bounds.east >= latLon.lon &&
+        bounds.south <= latLon.lat &&
+        bounds.west <= latLon.lon
     );
 }

@@ -1,59 +1,61 @@
 .price_from {
-  font-size: 0.8rem;
-  margin-right: 0.4rem;
-  color: #fff;
+    font-size: 0.8rem;
+    margin-right: 0.4rem;
+    color: #fff;
 }
 
 .clinic__tabs {
-  display: flex;
-  margin-top: 27px;
+    display: flex;
+    margin-top: 27px;
 }
 
 .clinic-cart-btn {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 50px;
-  width: 100%;
-  max-width: 260px;
-  margin: 0 0 0 auto;
-  padding: 0 0 0 52px;
-  font-size: 16px;
-  font-weight: bold;
-  line-height: 1.19;
-  color: #fff;
-  text-align: center;
-  white-space: nowrap;
-  border: none;
-  border-radius: 5px;
-  background: #ef424c url("/img/icons/shopping-cart-24.svg") no-repeat 16px center;
-  box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.03);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    width: 100%;
+    max-width: 260px;
+    margin: 0 0 0 auto;
+    padding: 0 0 0 52px;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.19;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    border: none;
+    border-radius: 5px;
+    background: #ef424c url("/img/icons/shopping-cart-24.svg") no-repeat 16px
+        center;
+    box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.03);
 
-  &:hover {
-    background: #ef6069 url("/img/icons/shopping-cart-24.svg") no-repeat 16px center;
-  }
+    &:hover {
+        background: #ef6069 url("/img/icons/shopping-cart-24.svg") no-repeat
+            16px center;
+    }
 
-  &:before {
-    position: absolute;
-    content: '';
-    left: 52px;
-    top: 50%;
-    display: block;
-    width: 1px;
-    height: 18px;
-    margin-top: -9px;
-    background: #fff;
-  }
+    &:before {
+        position: absolute;
+        content: "";
+        left: 52px;
+        top: 50%;
+        display: block;
+        width: 1px;
+        height: 18px;
+        margin-top: -9px;
+        background: #fff;
+    }
 }
 
 .clinic-cart-btn__icon {
-  position: relative;
-  flex-shrink: 1;
-  margin: 0 16px;
+    position: relative;
+    flex-shrink: 1;
+    margin: 0 16px;
 }
 
 .clinic-cart-btn__txt {
-  position: relative;
-  padding: 0 20px;
+    position: relative;
+    padding: 0 20px;
 }

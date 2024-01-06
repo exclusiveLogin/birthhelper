@@ -1,9 +1,12 @@
-import {hasher} from '../modules/utils/hasher';
-import {PriceEntitySlot, SlotEntity} from './entity.interface';
-import {SelectionOrderSlot, TabFloorSetting} from '../modules/configurator/configurator.model';
-import {SectionType} from '../services/search.service';
-import {MetaPhoto} from 'app/models/map-object.interface';
-import {User} from './user.interface';
+import { hasher } from "@modules/utils/hasher";
+import { PriceEntitySlot, SlotEntity } from "./entity.interface";
+import {
+    SelectionOrderSlot,
+    TabFloorSetting,
+} from "../modules/configurator/configurator.model";
+import { SectionType } from "../services/search.service";
+import { MetaPhoto } from "app/models/map-object.interface";
+import { User } from "./user.interface";
 
 export interface OrderSrc {
     id: number;
@@ -64,13 +67,13 @@ export interface OkPacket {
 }
 
 export interface OrderResponse<T = OrderSrc> {
-    context: 'orders';
+    context: "orders";
     result: T[];
     total: number;
 }
 
 export interface OrderResponseAction {
-    context: 'orders';
+    context: "orders";
     result: OkPacket;
 }
 
@@ -101,55 +104,54 @@ export interface OrderContacts {
 }
 
 export enum ODRER_ACTIONS {
-    GET = 'GET',
-    ADD = 'ADD',
-    REMOVE = 'REMOVE',
-    CLEAR = 'CLEAR',
-    SUBMIT = 'SUBMIT',
-    RESOLVE = 'RESOLVE',
-    REJECT = 'REJECT',
-    CANCEL = 'CANCEL',
-    COMPLETE = 'COMPLETE',
-    SENDBYORG = 'SENDBYORG',
-
+    GET = "GET",
+    ADD = "ADD",
+    REMOVE = "REMOVE",
+    CLEAR = "CLEAR",
+    SUBMIT = "SUBMIT",
+    RESOLVE = "RESOLVE",
+    REJECT = "REJECT",
+    CANCEL = "CANCEL",
+    COMPLETE = "COMPLETE",
+    SENDBYORG = "SENDBYORG",
 }
 
 export enum ORDER_STATUSES {
-    pending = 'pending',
-    deleted = 'deleted',
-    waiting = 'waiting',
-    resolved = 'resolved',
-    rejected = 'rejected',
-    completed = 'completed',
-    canceled = 'canceled',
-    progressing = 'progressing',
-    inwork = 'inwork',
-    incomplete = 'incomplete',
-    inplan = 'inplan',
+    pending = "pending",
+    deleted = "deleted",
+    waiting = "waiting",
+    resolved = "resolved",
+    rejected = "rejected",
+    completed = "completed",
+    canceled = "canceled",
+    progressing = "progressing",
+    inwork = "inwork",
+    incomplete = "incomplete",
+    inplan = "inplan",
 }
 export type StatusTypeMap = {
     [key in StatusType]: string;
 };
 
 export const StatusRusMap: StatusTypeMap = {
-    pending: 'Выбран',
-    waiting: 'Ожидает',
-    canceled: 'Отменен',
-    completed: 'Завершен',
-    deleted: 'Удален',
-    rejected: 'Отклонен',
-    resolved: 'Одобрен',
-    progressing: 'Обрабатывается',
-    incomplete: 'Завершенные',
-    inplan: 'Планируемые',
-    inwork: 'В работе',
+    pending: "Выбран",
+    waiting: "Ожидает",
+    canceled: "Отменен",
+    completed: "Завершен",
+    deleted: "Удален",
+    rejected: "Отклонен",
+    resolved: "Одобрен",
+    progressing: "Обрабатывается",
+    incomplete: "Завершенные",
+    inplan: "Планируемые",
+    inwork: "В работе",
 };
 
-export type OrderGroupMode = 'order' | 'session';
+export type OrderGroupMode = "order" | "session";
 
 export type StatusType = keyof typeof ORDER_STATUSES;
 
-export type SlotEntityUtility = 'person' | 'placement' | 'other';
+export type SlotEntityUtility = "person" | "placement" | "other";
 
 export class Order implements IOrder {
     id: number;
@@ -168,20 +170,26 @@ export class Order implements IOrder {
     raw: OrderSrc;
     hash: string;
     slot: PriceEntitySlot;
-    utility: SlotEntityUtility = 'other';
+    utility: SlotEntityUtility = "other";
     cartTitle: string;
     cartTitleAccent: string;
     cartPhoto: MetaPhoto;
     contragent_entity_id: number;
-    _status: 'pending' | 'error' | 'refreshing' | 'loading' | 'stable' = 'pending';
+    _status: "pending" | "error" | "refreshing" | "loading" | "stable" =
+        "pending";
 
     constructor(src: OrderSrc) {
         this.raw = src;
-        if (typeof src === 'object' && !!src.id && src.slot_entity_id && src.slot_entity_key) {
-            Object.keys(src).forEach(k => this[k] = src[k]);
+        if (
+            typeof src === "object" &&
+            !!src.id &&
+            src.slot_entity_id &&
+            src.slot_entity_key
+        ) {
+            Object.keys(src).forEach((k) => (this[k] = src[k]));
         }
         this.hash = hasher(src);
-        this._status = 'loading';
+        this._status = "loading";
         this.cartTitle = `[${this.id}] - #${this.hash}`;
     }
 
@@ -191,7 +199,7 @@ export class Order implements IOrder {
             return;
         }
 
-        this._status = 'stable';
+        this._status = "stable";
 
         if (this.hash === hash) {
             return;
@@ -201,9 +209,9 @@ export class Order implements IOrder {
             src.slot_entity_key !== this.slot_entity_key ||
             src.slot_entity_id !== this.slot_entity_id
         ) {
-            this._status = 'loading';
+            this._status = "loading";
         }
-        Object.keys(src).forEach(k => this[k] = src[k]);
+        Object.keys(src).forEach((k) => (this[k] = src[k]));
     }
 
     setSlot(slot: PriceEntitySlot): void {
@@ -213,47 +221,56 @@ export class Order implements IOrder {
 
     private refreshCartRenderData(): void {
         let ph: MetaPhoto = this.slot?.meta?.image_id as MetaPhoto;
-        ph = ph ?? this.slot?._entity?.meta?.image_id as MetaPhoto;
+        ph = ph ?? (this.slot?._entity?.meta?.image_id as MetaPhoto);
         this.cartPhoto = ph;
 
-        if (this.utility === 'person') {
+        if (this.utility === "person") {
             this.cartTitle = this.slot?._entity?.full_name
-                ? `${this.slot?._entity?.full_name ?? ''} ${this.slot?._entity?.short_name ?? ''}` : 'Без имени';
+                ? `${this.slot?._entity?.full_name ?? ""} ${
+                      this.slot?._entity?.short_name ?? ""
+                  }`
+                : "Без имени";
 
-            const position: string =  this.slot?._entity?.meta?.position?.title ?? '';
-            const cat: string =  this.slot?._entity?.meta?.category?.title ?? '';
-            this.cartTitleAccent = `${position ? position + ', ' : ''}${cat ?? ''}`;
+            const position: string =
+                this.slot?._entity?.meta?.position?.title ?? "";
+            const cat: string = this.slot?._entity?.meta?.category?.title ?? "";
+            this.cartTitleAccent = `${position ? position + ", " : ""}${
+                cat ?? ""
+            }`;
         }
 
-        if (this.utility === 'placement') {
+        if (this.utility === "placement") {
             this.cartTitle = this.slot?.title ?? this.slot?._entity?.title;
         }
 
-        if (this.utility === 'other') {
+        if (this.utility === "other") {
             this.cartTitle = this.slot?.title ?? this.slot?._entity?.title;
         }
 
-        this._status = 'stable';
+        this._status = "stable";
     }
 }
 
-export function orderRestMapper(selection: SelectionOrderSlot, action: ODRER_ACTIONS): OrderRequest {
+export function orderRestMapper(
+    selection: SelectionOrderSlot,
+    action: ODRER_ACTIONS
+): OrderRequest {
     return selection
         ? {
-            ent_key: selection.entKey,
-            ent_id: selection.entId,
-            tab_key: selection.tabKey,
-            floor_key: selection.floorKey,
-            section_key: selection.sectionKey,
-            contragent_entity_id: selection.contragent_entity_id,
-            action,
-            id: selection.id,
-            contacts: selection.contacts,
-            status: selection.status,
-            group_token: selection.group_token,
-            utility: selection.utility,
-        }
+              ent_key: selection.entKey,
+              ent_id: selection.entId,
+              tab_key: selection.tabKey,
+              floor_key: selection.floorKey,
+              section_key: selection.sectionKey,
+              contragent_entity_id: selection.contragent_entity_id,
+              action,
+              id: selection.id,
+              contacts: selection.contacts,
+              status: selection.status,
+              group_token: selection.group_token,
+              utility: selection.utility,
+          }
         : {
-            action
-        };
+              action,
+          };
 }

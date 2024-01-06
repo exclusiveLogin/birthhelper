@@ -1,14 +1,14 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
-import {environment} from '@environments/environment';
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Observable } from "rxjs/Observable";
+import { environment } from "@environments/environment";
 
 export interface IDadataPositionRequest {
     lat: number; // 	✓		Географическая широта
     lon: number; // 	✓		Географическая долгота
-    radius_meters:	number; // 		100	Радиус поиска в метрах (максимум – 1000)
-    count?:	number; // 		10	Количество результатов (максимум — 20)
-    language?:	string; // 		ru	На каком языке вернуть результат (ru / en)
+    radius_meters: number; // 		100	Радиус поиска в метрах (максимум – 1000)
+    count?: number; // 		10	Количество результатов (максимум — 20)
+    language?: string; // 		ru	На каком языке вернуть результат (ru / en)
 }
 
 export interface IDadataPositionData {
@@ -192,13 +192,10 @@ export interface IDadataResponse<T> {
 }
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: "root",
 })
 export class DadataService {
-
-    constructor(
-        private http: HttpClient,
-    ) {}
+    constructor(private http: HttpClient) {}
 
     public getDadataResponseByPosition(
         lat: number,
@@ -206,29 +203,35 @@ export class DadataService {
         radius_meters = 10
     ): Observable<IDadataResponse<IDadataPositionData>> {
         const data: IDadataPositionRequest = {
-            lat, lon, radius_meters
+            lat,
+            lon,
+            radius_meters,
         };
         return this.http.post<IDadataResponse<IDadataPositionData>>(
-            'https://suggestions.dadata.ru/suggestions/api/4_1/rs/geolocate/address',
+            "https://suggestions.dadata.ru/suggestions/api/4_1/rs/geolocate/address",
             data,
-            {headers: this.createAuthDadataHeaders()});
+            { headers: this.createAuthDadataHeaders() }
+        );
     }
 
-    public getDadataResponseBySearch(search: string): Observable<IDadataResponse<IDadataSearchData>> {
-        const data =  { query: search };
+    public getDadataResponseBySearch(
+        search: string
+    ): Observable<IDadataResponse<IDadataSearchData>> {
+        const data = { query: search };
         return this.http.post<IDadataResponse<IDadataSearchData>>(
-            'https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address',
+            "https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address",
             data,
-            {headers: this.createAuthDadataHeaders(true)});
+            { headers: this.createAuthDadataHeaders(true) }
+        );
     }
 
     createAuthDadataHeaders(needSecret?: boolean): HttpHeaders {
         const token = environment.dadataAuthorizationKey;
         const secretKey = environment.datataSecretKey;
 
-        let headers = new HttpHeaders({Authorization: 'Token ' + token});
+        let headers = new HttpHeaders({ Authorization: "Token " + token });
         if (needSecret) {
-            headers = headers.append('X-Secret', secretKey);
+            headers = headers.append("X-Secret", secretKey);
         }
 
         return headers;

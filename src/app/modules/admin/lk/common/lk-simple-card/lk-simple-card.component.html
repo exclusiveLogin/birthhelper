@@ -1,0 +1,27 @@
+<div class="lk-simple-card-container">
+    <app-lk-avatar
+        [size]="64"
+        [image]="photoImage$ | async"
+        [borderRadius]="'10px'"
+    ></app-lk-avatar>
+    <app-lk-title
+        [title]="title"
+        [subTitle]="subTitle"
+        [accentTitle]="accentTitle"
+    ></app-lk-title>
+    <div class="lk-simple-rating" *ngIf="rating?.summary?.avr">
+        <div
+            class="rate-count"
+            [ngClass]="rateLevelClass(rating?.summary?.avr)"
+        >
+            {{ rating?.summary?.avr | number : "1.0-2" ?? "-" }}
+        </div>
+        <app-lk-rating
+            [rateCurrent]="rating?.summary?.avr"
+            class="lk-simple-rating-rating"
+        ></app-lk-rating>
+        <span class="lk-rating-total-text"
+            >Всего {{ rating?.summary?.total || "0" }} отзывов</span
+        >
+    </div>
+</div>

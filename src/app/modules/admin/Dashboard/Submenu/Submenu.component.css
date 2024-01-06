@@ -1,9 +1,8 @@
-:host{
+:host {
     display: flex;
     flex-wrap: wrap;
-
 }
-.bh_admin_submenu_title{
+.bh_admin_submenu_title {
     background-color: #555;
     color: antiquewhite;
     padding-left: 20px;
@@ -11,6 +10,6 @@
     width: 100%;
 }
 
-app-submenu-item{
-  margin: 5px;
+app-submenu-item {
+    margin: 5px;
 }

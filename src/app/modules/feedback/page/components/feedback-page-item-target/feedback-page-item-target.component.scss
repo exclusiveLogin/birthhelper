@@ -1,0 +1,31 @@
+:host {
+  display: block;
+}
+
+.feedback_block {
+  display: grid;
+  grid-template-columns: 36% 24px 64px 24px 1fr repeat(2, 16px) auto auto;
+  gap: 16px;
+  align-items: center;
+
+  &.target_mode {
+      grid-template-columns: 24px 240px 1fr repeat(2, 16px) auto auto;
+  }
+}
+
+.action_block {
+  display: flex;
+  gap: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+  padding: 16px;
+
+  .action_button {
+      cursor: pointer;
+  }
+}
+
+.replies {
+  margin-inline-start: 10%;
+    transform: scale(0.9);
+}

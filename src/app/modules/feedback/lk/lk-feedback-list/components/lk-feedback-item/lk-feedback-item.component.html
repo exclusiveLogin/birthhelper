@@ -1,0 +1,190 @@
+<ng-container
+    *ngTemplateOutlet="wrapMode ? tpl_wrap : tpl_unwrap"
+></ng-container>
+<ng-template #tpl_unwrap>
+    <div class="tbl_row feedback_item" (click)="wrap()">
+        <!--        ID      -->
+        <div class="order_tbl__item small ellipsis" [title]="feedback.id">
+            {{ feedback.id }}
+        </div>
+        <!--        rate      -->
+        <div class="order_tbl__item mid">
+            {{ "---" }}
+        </div>
+        <!--        login      -->
+        <div class="order_tbl__item mid">
+            {{ feedback.user.login }}
+        </div>
+        <!--        ФИО      -->
+        <div class="order_tbl__item extra">
+            {{ feedback?.user?.first_name }}&nbsp;
+            {{ feedback?.user?.last_name }}&nbsp;
+            {{ feedback?.user?.patronymic }}
+        </div>
+        <!--        О ком отзыв      -->
+        <div class="order_tbl__item extra">
+            {{ "---" }}
+        </div>
+        <!--        Comment      -->
+        <div class="order_tbl__item extra ellipsis">
+            {{ feedback?.comment?.text ?? "---" }}
+        </div>
+        <!--        Дата      -->
+        <div class="order_tbl__item long">
+            {{ "---" }}
+        </div>
+        <!--        status      -->
+        <div class="order_tbl__item mid">
+            <p class="cart-pack-item__inner-value-text" *ngIf="feedback.status">
+                <span
+                    class="badge badge-default"
+                    [ngClass]="{
+                        'badge-info': feedback.status === 'pending',
+                        'badge-success': feedback.status === 'approved',
+                        'badge-danger': feedback.status === 'reject'
+                    }"
+                    >{{ getStatusTitleForOrder(feedback) }}</span
+                >
+            </p>
+        </div>
+        <div class="order_tbl__item extra">
+            <button
+                class="btn dicline__btn btn-sm"
+                (click)="setFbStatusDeclined($event)"
+            >
+                Отклонить
+            </button>
+            <button
+                class="btn approve__btn btn-sm"
+                (click)="setFbStatusApproved($event)"
+            >
+                Одобрить
+            </button>
+        </div>
+    </div>
+</ng-template>
+<ng-template #tpl_wrap>
+    <div class="lk-rating-row">
+        <app-lk-user-card
+            *ngIf="user$ | async as usr"
+            [user]="usr"
+        ></app-lk-user-card>
+        <i class="fas fa-chevron-right fa-3x" style="align-self: center"></i>
+        <app-lk-simple-card
+            *ngIf="entity$ | async as entity"
+            [title]="entity.title"
+            [subTitle]="entity.description ?? ''"
+            [photoId]="entity.image_id ?? entity?._entity?.image_id"
+            [rating]="rating$ | async"
+        ></app-lk-simple-card>
+        <div class="action_grp">
+            <div class="cart-pack-item__inner-value">
+                <p
+                    class="cart-pack-item__inner-value-text"
+                    *ngIf="feedback.status"
+                >
+                    <span
+                        class="badge badge-default"
+                        [ngClass]="{
+                            'badge-info': feedback.status === 'pending',
+                            'badge-success': feedback.status === 'approved',
+                            'badge-danger': feedback.status === 'reject'
+                        }"
+                        >{{ getStatusTitleForOrder(feedback) }}</span
+                    >
+                </p>
+            </div>
+            <button
+                class="btn dicline__btn"
+                (click)="setFeedbackStatusDeclined()"
+            >
+                Отклонить
+            </button>
+            <button
+                class="btn approve__btn"
+                (click)="setFeedbackStatusApproved()"
+            >
+                Одобрить
+            </button>
+        </div>
+
+        <div class="btn_close" (click)="unwrap()"></div>
+    </div>
+    <div class="lk-feedback-body">
+        <div class="lk-feedback-messages">
+            <ng-container
+                *ngIf="feedback?.comment as comment; else emptyMessageTpl"
+            >
+                <!-- Отзыв -->
+                <app-lk-feedback-message
+                    [color]="'primary'"
+                    [date]="comment.datetime_update"
+                    [mode]="'main'"
+                    [text]="comment.text"
+                    [replies]="comment.replies"
+                    [opened]="comment.replymode"
+                    [canReply]="true"
+                ></app-lk-feedback-message>
+
+                <button
+                    *ngIf="!replyMode"
+                    type="button"
+                    class="btn btn-primary btn-lg"
+                    (click)="replyMode = true"
+                >
+                    <i class="fa-solid fa-plus"></i>
+                    Добавить ответ
+                </button>
+                <!--Отвечаем на Отзыв -->
+                <app-lk-feedback-message
+                    *ngIf="replyMode"
+                    [color]="'accent'"
+                    [date]="comment.datetime_update"
+                    [mode]="'answer'"
+                    [editMode]="true"
+                    [canOfficial]="true"
+                    [canReply]="true"
+                    [fromUser]="loginedUser$ | async"
+                    (send)="answerFeedback($event, comment)"
+                >
+                    <i
+                        ngProjectAs="close_btn"
+                        class="fa-solid fa-circle-xmark close_btn fa-lg"
+                        (click)="replyMode = false"
+                    ></i>
+                </app-lk-feedback-message>
+            </ng-container>
+
+            <!-- Ответы -->
+            <ng-container *ngFor="let reply of replies$ | async">
+                <app-lk-feedback-message
+                    [color]="'accent'"
+                    [date]="reply.datetime_update"
+                    [mode]="'answer'"
+                    [text]="reply.text"
+                    [opened]="reply.replymode"
+                    [isOfficial]="reply.status === 'official'"
+                    [fromUser]="getUserByComment(reply) | async"
+                ></app-lk-feedback-message>
+            </ng-container>
+        </div>
+        <div class="lk-feedback-rating-block">
+            <i class="fas fa-chevron-down fa-3x" style="align-self: center"></i>
+            <ng-container *ngIf="votes?.length; else emptyVotesTpl">
+                <app-lk-rating-group [votes]="votes"></app-lk-rating-group>
+            </ng-container>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #emptyMessageTpl>
+    <i class="fas fa-chevron-down fa-3x" style="align-self: center"></i>
+    <div class="empty-message-box">Нет комментария от пользователя</div>
+</ng-template>
+
+<ng-template #emptyVotesTpl>
+    <div class="empty-message-box">
+        Странно нет оценок. Вероятно какая то ошибка консистентности, либо это
+        искуственный отзыв
+    </div>
+</ng-template>

@@ -1,37 +1,55 @@
 <ng-container *ngIf="filterConfig">
     <ng-container *ngFor="let filter of filterConfig">
-        <div class="filter__section"><p class="filter__ttl">{{filter.title}}</p>
+        <div class="filter__section">
+            <p class="filter__ttl">{{ filter.title }}</p>
 
             <ng-container [ngSwitch]="filter.type">
-
                 <form [id]="filter.key" *ngSwitchCase="'flag'">
                     <ul class="filter__list">
-                        <li class="filter__item" *ngFor="let item of filter.filters">
-                            <div class="checkbox"><input type="checkbox" class="checkbox__input" [id]="filter.key + item.id" [formControl]="item.control">
-                                <label class="checkbox__label" [for]="filter.key + item.id">{{item.title}}</label></div>
+                        <li
+                            class="filter__item"
+                            *ngFor="let item of filter.filters"
+                        >
+                            <div class="checkbox">
+                                <input
+                                    type="checkbox"
+                                    class="checkbox__input"
+                                    [id]="filter.key + item.id"
+                                    [formControl]="item.control"
+                                />
+                                <label
+                                    class="checkbox__label"
+                                    [for]="filter.key + item.id"
+                                    >{{ item.title }}</label
+                                >
+                            </div>
                         </li>
                     </ul>
                 </form>
 
-
                 <form [id]="filter.key" *ngSwitchCase="'select'">
-
-                    <select class="form-select select_input" [formControl]="filter.control">
+                    <select
+                        class="form-select select_input"
+                        [formControl]="filter.control"
+                    >
                         <option [value]="null">Не выбрано</option>
-                        <option [value]="item.id" *ngFor="let item of filter.filters">{{item.title}}</option>
+                        <option
+                            [value]="item.id"
+                            *ngFor="let item of filter.filters"
+                        >
+                            {{ item.title }}
+                        </option>
                     </select>
-
                 </form>
             </ng-container>
-
         </div>
         <div class="filter__separator"></div>
     </ng-container>
 </ng-container>
 
 <div class="filter__btn-group">
-    <button class="filter__btn filter__btn--green" (click)="submitForm()">Применить</button>
+    <button class="filter__btn filter__btn--green" (click)="submitForm()">
+        Применить
+    </button>
     <button class="filter__link" (click)="resetForm()">Сбросить фильтр</button>
 </div>
-
-

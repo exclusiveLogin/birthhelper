@@ -1,0 +1,22 @@
+<div class="lk-rating-group">
+    
+    <ng-container *ngIf="votes?.length; else empty">
+        <div class="lk-rating-group-item" *ngFor="let vote of votes">
+            <div class="lk-rating-group-title" [title]="vote.title">
+                {{ vote.title }}
+            </div>
+            <app-lk-rating
+                class="lk-rating-group-rating"
+                [size]="'s'"
+                [rateCurrent]="vote.avr"
+            ></app-lk-rating>
+        </div>
+    </ng-container>
+    
+</div>
+
+<ng-template #empty>
+    <div class="empty">
+        Нет доступной статистики по объекту
+    </div>
+</ng-template>

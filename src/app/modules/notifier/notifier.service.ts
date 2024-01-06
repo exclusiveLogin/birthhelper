@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
-import {shareReplay} from 'rxjs/operators';
-import {Observable, Subject} from 'rxjs';
+import { Injectable } from "@angular/core";
+import { shareReplay } from "rxjs/operators";
+import { Observable, Subject } from "rxjs";
 
 const repoSub = {
     authStr: new Subject<string>(),
@@ -13,12 +13,10 @@ const repo = {
 export type NotyRepoType = keyof typeof repo;
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: "root",
 })
 export class NotifierService {
-
-    constructor() {
-    }
+    constructor() {}
 
     setMessageTime(msg: string, key: NotyRepoType, delay = 5000): void {
         const target = repoSub[key];

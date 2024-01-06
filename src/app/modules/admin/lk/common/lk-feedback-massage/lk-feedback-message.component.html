@@ -1,0 +1,104 @@
+<ng-container *ngTemplateOutlet="activeTemplate"></ng-container>
+<ng-content select="close_btn" class="close_btn"></ng-content>
+
+<app-likes *ngIf="canLikes"></app-likes>
+<app-likes [negative]="true" *ngIf="canLikes"></app-likes>
+
+<ng-template #mainTpl>
+    <div
+        class="lk-feedback-message-box"
+        [ngClass]="{ 'lk-feedback-message-main': mode === 'main' }"
+    >
+        <span
+            class="official badge badge-default badge-success"
+            *ngIf="isOfficial"
+        >
+            <i class="fa-solid fa-check"></i>
+        </span>
+
+        <div class="lk-feedback-message-date">
+            {{ date | date : "medium" }}
+        </div>
+        <ng-container *ngTemplateOutlet="bubbleTemplate"></ng-container>
+    </div>
+</ng-template>
+
+<ng-template #answerTpl>
+    <div class="lk-feedback-message-box">
+        <span
+            class="official badge badge-default badge-success"
+            *ngIf="isOfficial"
+        >
+            <i class="fa-solid fa-check"></i>
+        </span>
+        <div class="lk-feedback-message-date">
+            {{ date | date : "medium" }}
+        </div>
+        <ng-container *ngTemplateOutlet="avatarTemplate"></ng-container>
+        <ng-container *ngTemplateOutlet="bubbleTemplate"></ng-container>
+    </div>
+</ng-template>
+
+<ng-template #replyTpl>
+    <div class="lk-feedback-message-box">
+        <div class="lk-feedback-message-date lk-feedback-message-date-right">
+            {{ date | date : "medium" }}
+        </div>
+
+        <ng-container *ngTemplateOutlet="bubbleTemplate"></ng-container>
+        <div
+            style="
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            "
+        >
+            <span class="badge badge-default badge-success" *ngIf="isOfficial">
+                <i class="fa-solid fa-check"></i> Организация
+            </span>
+        </div>
+        <ng-container *ngIf="fromUser">
+            <ng-container *ngTemplateOutlet="avatarTemplate"></ng-container>
+            <ng-container *ngTemplateOutlet="titleTemplate"></ng-container>
+        </ng-container>
+    </div>
+</ng-template>
+
+<ng-template #_avatarTpl>
+    <app-lk-avatar
+        *ngIf="fromUser"
+        [title]="fromUser.first_name"
+        [subtitle]="fromUser.last_name"
+        [photoID]="fromUser.photo_id"
+    ></app-lk-avatar>
+</ng-template>
+
+<ng-template #_bubbleTpl>
+    <app-lk-bubble
+        [text]="text"
+        [mode]="mode"
+        [color]="color"
+        [editMode]="editMode"
+        [canOfficial]="canOfficial"
+        [opened]="opened"
+        (send)="reply($event)"
+    >
+        <ng-container *ngTemplateOutlet="repliesTemplate"></ng-container>
+    </app-lk-bubble>
+</ng-template>
+
+<ng-template #_repliesTpl>
+    <app-replies
+        *ngIf="replies"
+        style="left: calc(100% - 32px); bottom: -10px; position: relative"
+        [replies]="replies"
+    ></app-replies>
+</ng-template>
+
+<ng-template #_titleTpl>
+    <app-lk-title
+        [title]="fromUser?.first_name"
+        [subTitle]="fromUser?.last_name"
+        [accentTitle]="fromUser?.login"
+    ></app-lk-title>
+</ng-template>

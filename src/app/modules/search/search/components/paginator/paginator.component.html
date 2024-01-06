@@ -1,7 +1,0 @@
-<div class="bh_page_container">
-  <div class="prev" (click)="prevPage()">пред</div>
-  <div class="pages" *ngIf="getPages() as pages">
-    <span class="page_title" [ngClass]="{'active': page === currentPage}" *ngFor="let page of pages" (click)="selectPage(page)">{{ page }}</span>
-  </div>
-  <div class="next" (click)="nextPage()">след</div>
-</div>

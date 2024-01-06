@@ -1,0 +1,50 @@
+<div class="feedback_block">
+    <!-- карточка -->
+    <app-lk-simple-card
+        [photoId]="feedback?._entity?.image_id"
+        [title]="feedback?._entity?.title"
+    ></app-lk-simple-card>
+
+    <!-- шеврон -->
+    <i class="fas fa-chevron-right fa-3x" style="align-self: center"></i>
+
+    <app-rate [rate]="feedback?._summary?.avr"></app-rate>
+
+    <!-- шеврон -->
+    <i class="fas fa-chevron-right fa-3x" style="align-self: center"></i>
+
+    <app-lk-feedback-message
+        style="margin-left: 28px"
+        [text]="feedback?.comment?.text"
+        [date]="feedback?.datetime_update"
+        [editMode]="false"
+        [mode]="'answer'"
+    ></app-lk-feedback-message>
+
+    <!-- лайки -->
+    <app-likes
+        [count]="feedback?.likes?.length ?? 0"
+        [self]="feedback.likeOwner"
+        (click)="setLike(feedback.id)"
+    ></app-likes>
+    <app-likes
+        [count]="feedback?.dislikes?.length ?? 0"
+        [negative]="true"
+        [self]="feedback.dislikeOwner"
+        (click)="setLike(feedback.id, true)"
+    ></app-likes>
+
+    <!-- экшены -->
+    <div class="action_block">
+        <i
+            class="fas fa-edit fa-2x action_button"
+            *ngIf="feedback.canEdit"
+            (click)="editFeedback(feedback)"
+        ></i>
+        <i
+            class="far fa-trash-alt fa-2x action_button"
+            *ngIf="feedback.canRemove"
+            (click)="deleteFeedback(feedback?.id)"
+        ></i>
+    </div>
+</div>

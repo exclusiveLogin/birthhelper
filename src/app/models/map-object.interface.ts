@@ -1,4 +1,4 @@
-import {IClinicMini} from 'app/models/clinic.interface';
+import { IClinicMini } from "app/models/clinic.interface";
 
 type MapObjectEntity = IClinicMini;
 

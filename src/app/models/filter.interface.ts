@@ -1,4 +1,4 @@
-import {FormControl} from '@angular/forms';
+import { FormControl } from "@angular/forms";
 
 export interface SearchSection {
     key: string;
@@ -20,4 +20,4 @@ export interface SearchFilter {
     preInitValue?: boolean;
 }
 
-export type SearchFilterType = 'flag' | 'select';
+export type SearchFilterType = "flag" | "select";

@@ -1,27 +1,35 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Router} from '@angular/router';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {ImageService} from '../../../../../services/image.service';
-import {SafeUrl} from '@angular/platform-browser';
-import {IConsultationMini} from '@models/consultation.interface';
-import {Entity} from '@models/entity.interface';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    EventEmitter,
+    Input,
+    Output,
+} from "@angular/core";
+import { Router } from "@angular/router";
+import { BehaviorSubject, Observable } from "rxjs";
+import { ImageService } from "../../../../../services/image.service";
+import { SafeUrl } from "@angular/platform-browser";
+import { IConsultationMini } from "@models/consultation.interface";
+import { Entity } from "@models/entity.interface";
+import { FeedbackService } from "@modules/feedback/feedback.service";
+import { SummaryVotes } from "@modules/feedback/models";
+import { map, shareReplay, switchMap, tap } from "rxjs/operators";
 
 @Component({
-    selector: 'app-consultation-card',
-    templateUrl: './consultation.card.component.html',
-    styleUrls: ['./consultation.card.component.scss'],
+    selector: "app-consultation-card",
+    templateUrl: "./consultation.card.component.html",
+    styleUrls: ["./consultation.card.component.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ConsultationCardComponent implements OnInit {
-
+export class ConsultationCardComponent {
     viewConsultation: IConsultationMini = {
         id: -1,
-        address: 'Не найден',
-        title: 'Пустая женская консультация',
+        address: "Не найден",
+        title: "Пустая женская консультация",
         photo: null,
         lon: null,
         lat: null,
-        description: 'Какое то описание тестовой консультации',
+        description: "Какое то описание тестовой консультации",
         stat_value: 0,
         stat_count: 0,
         price_from: 0,
@@ -59,13 +67,34 @@ export class ConsultationCardComponent implements OnInit {
     constructor(
         private router: Router,
         private imageService: ImageService,
+        private feedbackService: FeedbackService
     ) {}
+
+    refresher$ = new BehaviorSubject<null>(null);
+    rating$: Observable<SummaryVotes> = this.refresher$.pipe(
+        switchMap(() =>
+            this.feedbackService.getRatingForTarget(
+                "ent_consultation_contragents",
+                this.viewConsultation.id
+            )
+        ),
+        map((result) => result.summary),
+        shareReplay(1)
+    );
+
+    sendFeedback(): void {
+        this.feedbackService
+            .initFeedbackByTarget("consultation", this.viewConsultation.id, {
+                section: "consultation",
+            })
+            .then((r) => {
+                console.log("feedback saved", r);
+                this.refresher$.next(null);
+            });
+    }
 
     wrap(): void {
         this.wrapped = true;
-    }
-
-    ngOnInit(): void {
     }
 
     showClinicOnMap(): void {
@@ -73,6 +102,16 @@ export class ConsultationCardComponent implements OnInit {
     }
 
     gotoConfigurator(): void {
-        this.router.navigate(['/system/configurator/consultation', this.viewConsultation.id]).then();
+        this.router
+            .navigate([
+                "/system/configurator/consultation",
+                this.viewConsultation.id,
+            ])
+            .then();
+    }
+
+    gotoRatingPage(): void {
+        this.feedbackService.gotoRatingPage('consultation', this.viewConsultation.id);
+
     }
 }

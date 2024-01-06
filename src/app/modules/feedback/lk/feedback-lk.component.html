@@ -1,0 +1,17 @@
+<h4 class="lk_ttl">Отзывы</h4>
+<button class="button-close" [routerLink]="['/admin', 'lk']">
+    <img src="/img/icons/close.svg" class="button-close__img" alt="закрыть" />
+</button>
+
+<app-feedback-filter (onChange)="filterChange($event)"></app-feedback-filter>
+
+<app-lk-view-block *ngFor="let ctg of selectedCTG$ | async">
+    <app-contragent-header
+        *ngIf="ctg"
+        [contragent]="ctg"
+        data-header
+    ></app-contragent-header>
+    <div class="lk-view-block__body" data-list>
+        <app-lk-feedback-list [contragent]="ctg"></app-lk-feedback-list>
+    </div>
+</app-lk-view-block>

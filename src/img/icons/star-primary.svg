@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="ic-star-24px" width="22" height="22" viewBox="0 0 22 22">
+    <defs>
+        <style>
+            .cls-1{ fill:none }
+        </style>
+    </defs>
+    <path id="Path_359" d="M0 0h22v22H0z" class="cls-1"/>
+    <path id="Path_360" fill="#487ff1" d="M11.167 16l5.665 3.419-1.5-6.444 5-4.336-6.591-.559L11.167 2 8.591 8.077 2 8.637l5.005 4.336L5.5 19.417z" transform="translate(-.167 -.167)"/>
+    <path id="Path_361" d="M0 0h22v22H0z" class="cls-1"/>
+</svg>

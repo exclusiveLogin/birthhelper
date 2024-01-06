@@ -1,0 +1,99 @@
+<h4 class="lk_ttl" *ngIf="isTargetFeedbackMode$ | async">Отзывы</h4>
+<h4 class="lk_ttl" *ngIf="isMyFeedbackMode$ | async">Ваши отзывы</h4>
+<button class="button-close" [routerLink]="['/', 'system']">
+    <img src="/img/icons/close.svg" class="button-close__img" alt="закрыть" />
+</button>
+
+<ng-container *ngIf="isTargetFeedbackMode$ | async">
+    <div class="info" *ngIf="targetData$ | async as data">
+        <app-contragent-card [contragent]="data"></app-contragent-card>
+        <ng-container *ngIf="rating$ | async as rating">
+            <i
+                class="fas fa-chevron-right fa-3x"
+                style="align-self: center"
+            ></i>
+            <app-rate [rate]="rating?.summary?.avr" [size]="'96px'"></app-rate>
+            <app-lk-rating-group
+                [votes]="rating?.summary_by_votes"
+                style="flex: 1 3 auto"
+            ></app-lk-rating-group>
+        </ng-container>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="isMyFeedbackMode$ | async">
+    <app-feedback-filter
+        class=""
+        [filters]="['status', 'section']"
+        (onChange)="changeFilters($event)"
+    >
+    </app-feedback-filter>
+</ng-container>
+
+<!-- для отзывов пользователя на target -->
+<ng-container *ngIf="isTargetFeedbackMode$ | async">
+    <app-feedback-filter
+        class="muted"
+        [filters]="['status']"
+        [defaults]="{ status: 'approved' }"
+        (onChange)="changeFilters($event)"
+    >
+    </app-feedback-filter>
+</ng-container>
+
+<div class="feedback_list_wrapper">
+    <div class="feedback_list_container">
+        <ng-container *ngIf="isMyFeedbackMode$ | async">
+            <ng-container *ngIf="{ list: listFeedbackByUser$ | async } as data">
+                <ng-container
+                    *ngTemplateOutlet="
+                        data?.list?.length ? userlist : emptylist;
+                        context: { $implicit: data.list }
+                    "
+                ></ng-container>
+            </ng-container>
+        </ng-container>
+
+        <!-- для отзывов пользователя на target -->
+        <ng-container *ngIf="isTargetFeedbackMode$ | async">
+            <ng-container
+                *ngIf="{ list: listFeedbackByTarget$ | async } as data"
+            >
+                <ng-container
+                    *ngTemplateOutlet="
+                        data?.list?.length ? targetlist : emptylist;
+                        context: { $implicit: data.list }
+                    "
+                ></ng-container>
+            </ng-container>
+        </ng-container>
+    </div>
+</div>
+<!-- для отзывов пользователя -->
+
+<ng-template #userlist let-list
+    ><div class="feedback_block zebra" *ngFor="let feedback of list">
+        <app-feedback-page-item-user
+            [feedback]="feedback"
+        ></app-feedback-page-item-user></div
+></ng-template>
+
+<ng-template #targetlist let-list>
+    <div class="zebra" *ngFor="let feedback of list">
+        <app-feedback-page-item-target
+            [feedback]="feedback"
+        ></app-feedback-page-item-target>
+    </div>
+</ng-template>
+
+<ng-template #emptylist>
+    <div class="emptylist">Нет результатов отвечающих кретериям поиска</div>
+</ng-template>
+
+<ng-container *ngIf="onSetChanged$ | async">
+    <app-paginator
+        [pages]="pages"
+        *ngIf="pages"
+        (vc)="pageChanged($event)"
+    ></app-paginator>
+</ng-container>

@@ -1,153 +1,159 @@
-<div class="popup-wrapper" *ngIf="_showed$ | async" @dialogWrapper id="dialog_viewport">
+<div
+    class="popup-wrapper"
+    *ngIf="_showed$ | async"
+    @dialogWrapper
+    id="dialog_viewport"
+>
     <ng-container *ngIf="!tpl_custom">
-        <ng-container *ngTemplateOutlet="template; context: tpl_context"></ng-container>
+        <ng-container
+            *ngTemplateOutlet="template; context: tpl_context"
+        ></ng-container>
     </ng-container>
 
     <ng-container *ngIf="tpl_custom">
         <div class="popup popup--large" @dialogState>
-            <ng-container *ngTemplateOutlet="template; context: tpl_context"></ng-container>
+            <ng-container
+                *ngTemplateOutlet="template; context: tpl_context"
+            ></ng-container>
         </div>
     </ng-container>
 </div>
 
 <!--Оставить отзыв-->
-<!--<div class="popup popup&#45;&#45;middle">
-    <button class="popup__close"></button>
-    <div class="popup__header">
-        <p class="popup__title">Оставить отзыв о клинике</p>
-    </div>
-    <div class="popup__body">
-        <div class="popup__rating-list rating-list">
-            <div class="popup__rating-item rating">
-                <p class="rating__title">Комфорт</p>
-                <div class="rating__value">
-                    <input class="rating__input" type="radio" name="rating1" id="rating1" checked>
-                    <label class="rating__label" for="rating1"></label>
-                    <input class="rating__input" type="radio" name="rating1" id="rating2">
-                    <label class="rating__label" for="rating2"></label>
-                    <input class="rating__input" type="radio" name="rating1" id="rating3">
-                    <label class="rating__label" for="rating3"></label>
-                    <input class="rating__input" type="radio" name="rating1" id="rating4">
-                    <label class="rating__label" for="rating4"></label>
-                    <input class="rating__input" type="radio" name="rating1" id="rating5">
-                    <label class="rating__label" for="rating5"></label>
-                </div>
-            </div>
-            <div class="popup__rating-item rating">
-                <p class="rating__title">Соотношение цена/качество</p>
-                <div class="rating__value">
-                    <input class="rating__input" type="radio" name="rating2" id="rating21" checked>
-                    <label class="rating__label" for="rating21"></label>
-                    <input class="rating__input" type="radio" name="rating2" id="rating22">
-                    <label class="rating__label" for="rating22"></label>
-                    <input class="rating__input" type="radio" name="rating2" id="rating23">
-                    <label class="rating__label" for="rating23"></label>
-                    <input class="rating__input" type="radio" name="rating2" id="rating24">
-                    <label class="rating__label" for="rating24"></label>
-                    <input class="rating__input" type="radio" name="rating2" id="rating25">
-                    <label class="rating__label" for="rating25"></label>
-                </div>
-            </div>
-            <div class="popup__rating-item rating">
-                <p class="rating__title">Бесплатный WIFI</p>
-                <div class="rating__value">
-                    <input class="rating__input" type="radio" name="rating3" id="rating31" checked>
-                    <label class="rating__label" for="rating31"></label>
-                    <input class="rating__input" type="radio" name="rating3" id="rating32">
-                    <label class="rating__label" for="rating32"></label>
-                    <input class="rating__input" type="radio" name="rating3" id="rating33">
-                    <label class="rating__label" for="rating33"></label>
-                    <input class="rating__input" type="radio" name="rating3" id="rating34">
-                    <label class="rating__label" for="rating34"></label>
-                    <input class="rating__input" type="radio" name="rating3" id="rating35">
-                    <label class="rating__label" for="rating35"></label>
-                </div>
-            </div>
-            <div class="popup__rating-item rating">
-                <p class="rating__title">Чистота</p>
-                <div class="rating__value">
-                    <input class="rating__input" type="radio" name="rating4" id="rating41" checked>
-                    <label class="rating__label" for="rating41"></label>
-                    <input class="rating__input" type="radio" name="rating4" id="rating42">
-                    <label class="rating__label" for="rating42"></label>
-                    <input class="rating__input" type="radio" name="rating4" id="rating43">
-                    <label class="rating__label" for="rating43"></label>
-                    <input class="rating__input" type="radio" name="rating4" id="rating44">
-                    <label class="rating__label" for="rating44"></label>
-                    <input class="rating__input" type="radio" name="rating4" id="rating45">
-                    <label class="rating__label" for="rating45"></label>
-                </div>
-            </div>
-            <div class="popup__rating-item rating">
-                <p class="rating__title">Удобства</p>
-                <div class="rating__value">
-                    <input class="rating__input" type="radio" name="rating5" id="rating51" checked>
-                    <label class="rating__label" for="rating51"></label>
-                    <input class="rating__input" type="radio" name="rating5" id="rating52">
-                    <label class="rating__label" for="rating52"></label>
-                    <input class="rating__input" type="radio" name="rating5" id="rating53">
-                    <label class="rating__label" for="rating53"></label>
-                    <input class="rating__input" type="radio" name="rating5" id="rating54">
-                    <label class="rating__label" for="rating54"></label>
-                    <input class="rating__input" type="radio" name="rating5" id="rating55">
-                    <label class="rating__label" for="rating55"></label>
-                </div>
-            </div>
-            <div class="popup__rating-item rating">
-                <p class="rating__title">Персонал</p>
-                <div class="rating__value">
-                    <input class="rating__input" type="radio" name="rating6" id="rating61" checked>
-                    <label class="rating__label" for="rating61"></label>
-                    <input class="rating__input" type="radio" name="rating6" id="rating62">
-                    <label class="rating__label" for="rating62"></label>
-                    <input class="rating__input" type="radio" name="rating6" id="rating63">
-                    <label class="rating__label" for="rating63"></label>
-                    <input class="rating__input" type="radio" name="rating6" id="rating64">
-                    <label class="rating__label" for="rating64"></label>
-                    <input class="rating__input" type="radio" name="rating6" id="rating65">
-                    <label class="rating__label" for="rating65"></label>
-                </div>
-            </div>
-            <div class="popup__rating-item rating">
-                <p class="rating__title">Питание</p>
-                <div class="rating__value">
-                    <input class="rating__input" type="radio" name="rating7" id="rating71" checked>
-                    <label class="rating__label" for="rating71"></label>
-                    <input class="rating__input" type="radio" name="rating7" id="rating72">
-                    <label class="rating__label" for="rating72"></label>
-                    <input class="rating__input" type="radio" name="rating7" id="rating73">
-                    <label class="rating__label" for="rating73"></label>
-                    <input class="rating__input" type="radio" name="rating7" id="rating74">
-                    <label class="rating__label" for="rating74"></label>
-                    <input class="rating__input" type="radio" name="rating7" id="rating75">
-                    <label class="rating__label" for="rating75"></label>
-                </div>
-            </div>
-            <div class="popup__rating-item rating">
-                <p class="rating__title">Расположение</p>
-                <div class="rating__value">
-                    <input class="rating__input" type="radio" name="rating8" id="rating81" checked>
-                    <label class="rating__label" for="rating81"></label>
-                    <input class="rating__input" type="radio" name="rating8" id="rating82">
-                    <label class="rating__label" for="rating82"></label>
-                    <input class="rating__input" type="radio" name="rating8" id="rating83">
-                    <label class="rating__label" for="rating83"></label>
-                    <input class="rating__input" type="radio" name="rating8" id="rating84">
-                    <label class="rating__label" for="rating84"></label>
-                    <input class="rating__input" type="radio" name="rating8" id="rating85">
-                    <label class="rating__label" for="rating85"></label>
-                </div>
-            </div>
+<ng-template #tpl_dialog_feedback_form let-data>
+    <div class="popup popup--middle" @dialogState>
+        <button class="popup__close" (click)="closeDialog()"></button>
+        <div class="popup__header">
+            <p class="popup__title">Оставить отзыв</p>
         </div>
-        <textarea class="popup__textarea" placeholder="Введите текст Вашего отзыва"></textarea>
+        <div class="popup__body">
+            <form #t="ngForm">
+                <div
+                    class="popup__rating-list rating-list"
+                    ngModelGroup="votes"
+                >
+                    <div
+                        class="popup__rating-item rating"
+                        *ngFor="let vote of data.votes"
+                    >
+                        <p class="rating__title">{{ vote.title }}</p>
 
+                        <div class="rating__value">
+                            <input
+                                class="rating__input"
+                                type="radio"
+                                [name]="vote.slug"
+                                [id]="vote.slug + '1'"
+                                value="1"
+                                ngModel
+                            />
+                            <label
+                                class="rating__label"
+                                [for]="vote.slug + '1'"
+                            ></label>
+                            <input
+                                class="rating__input"
+                                type="radio"
+                                [name]="vote.slug"
+                                [id]="vote.slug + '2'"
+                                value="2"
+                                ngModel
+                            />
+                            <label
+                                class="rating__label"
+                                [for]="vote.slug + '2'"
+                            ></label>
+                            <input
+                                class="rating__input"
+                                type="radio"
+                                [name]="vote.slug"
+                                [id]="vote.slug + '3'"
+                                value="3"
+                                ngModel
+                            />
+                            <label
+                                class="rating__label"
+                                [for]="vote.slug + '3'"
+                            ></label>
+                            <input
+                                class="rating__input"
+                                type="radio"
+                                [name]="vote.slug"
+                                [id]="vote.slug + '4'"
+                                value="4"
+                                ngModel
+                            />
+                            <label
+                                class="rating__label"
+                                [for]="vote.slug + '4'"
+                            ></label>
+                            <input
+                                class="rating__input"
+                                type="radio"
+                                [name]="vote.slug"
+                                [id]="vote.slug + '5'"
+                                value="5"
+                                [ngModel]="data?.votes_cast?.[vote.slug] ? data?.votes_cast?.[vote.slug] : '5'"
+                            />
+                            <label
+                                class="rating__label"
+                                [for]="vote.slug + '5'"
+                            ></label>
+                        </div>
+                    </div>
+                </div>
+                <textarea
+                    class="popup__textarea"
+                    placeholder="Введите текст Вашего отзыва"
+                    [name]="'comment'"
+                    [ngModel]="data?.comment ? data?.comment : ''"
+                ></textarea>
+            </form>
+        </div>
+        <div class="popup__footer">
+            <button
+                class="popup__footer-btn"
+                (click)="sendFeedback(t.form.value)"
+            >
+                Отправить
+            </button>
+        </div>
     </div>
-    <div class="popup__footer">
-        <button class="popup__footer-btn">Отправить</button>
-    </div>
-</div>-->
+</ng-template>
+
 <!--Оставить отзыв-end-->
 
+<!--Предложение о регистрации-->
+<ng-template #tpl_suggestion let-data>
+    <div class="popup popup--xmiddle" @dialogState>
+        <div class="popup__actions">
+            <button
+                class="popup__actions-close"
+                (click)="closeDialog()"
+            ></button>
+        </div>
+        <div class="popup__body" style="padding-top: 0">
+            <h1>{{ data.title ?? "Внимание" }}</h1>
+            <h5>{{ data.subtitle ?? "Вы не авторизованы." }}</h5>
+            <h6>
+                {{ data.text ?? "Мы рекомендуем это сделать в один клик"
+                }}<br />
+                {{
+                    data.text2 ??
+                        "Это даст возможность Вам использовать функции нашего сервиса недоступные гостям"
+                }}<br />
+            </h6>
+            <div class="btn-group btn-group-lg" style="padding-top: 24px">
+                <button
+                    class="btn btn-info btn-group-lg"
+                    (click)="gotoRegistration()"
+                >
+                    Авторизоваться</button
+                >&nbsp;
+            </div>
+        </div>
+    </div>
+</ng-template>
 
 <!--Смена пароля-->
 <!--<div class="popup popup--small">
@@ -182,166 +188,285 @@
 <ng-template #tpl_popup_placement let-data>
     <div class="popup popup--large" @dialogState>
         <div class="popup__actions">
-            <button class="popup__actions-close" (click)="closeDialog()"></button>
+            <button
+                class="popup__actions-close"
+                (click)="closeDialog()"
+            ></button>
             <div class="popup__actions-checkbox checkbox-action">
-                <input type="checkbox" class="checkbox-action__input" id="checkbox">
+                <input
+                    type="checkbox"
+                    class="checkbox-action__input"
+                    id="checkbox"
+                />
                 <label class="checkbox-action__label" for="checkbox"></label>
             </div>
         </div>
         <div class="popup__body">
             <div class="popup__body-columns">
                 <div class="popup__body-img" *ngIf="photoUrl$ | async as url">
-                    <img [src]="url" (error)="imageSignal$.next(null)" [alt]="data?.title">
+                    <img
+                        [src]="url"
+                        (error)="imageSignal$.next(null)"
+                        [alt]="data?.title"
+                    />
                 </div>
                 <div class="popup__body-content">
-                    <p class="popup__desc" *ngIf="!data?.description_ext1">{{data.description}}</p>
-                    <p class="popup__desc">{{data?._entity?.description_ext1 || ''}}</p>
-                    <p class="popup__desc">{{data?._entity?.description_ext2 || ''}}</p>
-                    <p class="popup__info" *ngIf="data?._entity?.area_min || data?._entity?.area_max">
-                        Площадь палаты: {{data?._entity?.area_min}}-{{data?._entity?.area_max}} кв.м.
+                    <p class="popup__desc" *ngIf="!data?.description_ext1">
+                        {{ data.description }}
+                    </p>
+                    <p class="popup__desc">
+                        {{ data?._entity?.description_ext1 || "" }}
+                    </p>
+                    <p class="popup__desc">
+                        {{ data?._entity?.description_ext2 || "" }}
+                    </p>
+                    <p
+                        class="popup__info"
+                        *ngIf="
+                            data?._entity?.area_min || data?._entity?.area_max
+                        "
+                    >
+                        Площадь палаты: {{ data?._entity?.area_min }}-{{
+                            data?._entity?.area_max
+                        }}
+                        кв.м.
                     </p>
                     <p class="popup__price">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                        >
                             <g opacity="0.5">
-                                <path fill="#2d333f" d="M8 20a2 2 0 1 0 2 2 1.991 1.991 0 0 0-2-2zM2 4v2h2l3.6 7.585-1.35 2.45A2.033 2.033 0 0 0 6 17a2 2 0 0 0 2 2h12v-2H8.425a.248.248 0 0 1-.25-.25.238.238 0 0 1 .03-.12L9.1 15h7.45a2.006 2.006 0 0 0 1.75-1.03l3.575-6.49A.967.967 0 0 0 22 7a1 1 0 0 0-1-1H6.215l-.95-2H2zm16 16a2 2 0 1 0 2 2 1.991 1.991 0 0 0-2-2z" transform="translate(-1 -2)"/>
-                                <path fill="none" d="M0 0h24v24H0z"/>
-                            </g>
-                        </svg><span *ngIf="data.price">{{data.price}}&nbsp;руб.</span>
+                                <path
+                                    fill="#2d333f"
+                                    d="M8 20a2 2 0 1 0 2 2 1.991 1.991 0 0 0-2-2zM2 4v2h2l3.6 7.585-1.35 2.45A2.033 2.033 0 0 0 6 17a2 2 0 0 0 2 2h12v-2H8.425a.248.248 0 0 1-.25-.25.238.238 0 0 1 .03-.12L9.1 15h7.45a2.006 2.006 0 0 0 1.75-1.03l3.575-6.49A.967.967 0 0 0 22 7a1 1 0 0 0-1-1H6.215l-.95-2H2zm16 16a2 2 0 1 0 2 2 1.991 1.991 0 0 0-2-2z"
+                                    transform="translate(-1 -2)"
+                                />
+                                <path fill="none" d="M0 0h24v24H0z" />
+                            </g></svg
+                        ><span *ngIf="data.price"
+                            >{{ data.price }}&nbsp;руб.</span
+                        >
                     </p>
                 </div>
             </div>
         </div>
-<!--        <div class="popup__footer">-->
-<!--            <button class="popup__footer-btn popup__footer-btn&#45;&#45;short">Выбрать</button>-->
-<!--        </div>-->
+        <!--        <div class="popup__footer">-->
+        <!--            <button class="popup__footer-btn popup__footer-btn&#45;&#45;short">Выбрать</button>-->
+        <!--        </div>-->
     </div>
 </ng-template>
 <!--О палате-end-->
 
-
 <!--О специалисте-->
 <ng-template #tpl_popup_person let-data>
     <div class="popup popup--xmiddle" @dialogState>
-    <div class="popup__actions">
-        <button class="popup__actions-close" (click)="closeDialog()"></button>
-        <div class="popup__actions-checkbox checkbox-action">
-            <input type="checkbox" class="checkbox-action__input" id="checkbox">
-            <label class="checkbox-action__label" for="checkbox"></label>
-        </div>
-    </div>
-
-    <div class="popup__body">
-        <div class="popup__body-columns">
-            <div class="popup__body-column">
-                <div class="popup__body-avatar" *ngIf="photoUrl$ | async as url">
-                    <img [src]="url" (error)="imageSignal$.next(null)" [alt]="data?.title">
-                </div>
-                <button class="popup__spec-btn popup__spec-btn--blue muted">Задать вопрос</button>
-                <button class="popup__spec-btn popup__spec-btn--ghost muted">Записаться на прием</button>
-                <p class="popup__spec-text" *ngIf="data?._entity?.experience">
-                    Стаж(лет):&nbsp;{{data._entity.experience}}&nbsp;
-                </p>
-                <p class="popup__spec-text" *ngIf="data?._entity?.count">Количество родов: {{data._entity.count}}</p>
-                <p class="popup__spec-position">{{data?.description}}</p>
-            </div>
-
-            <div class="popup__body-content">
-                <div class="popup__body-content-header">
-                    <p class="popup__spec-name">{{data.full_name}}</p>
-                    <p class="popup__spec-price" *ngIf="data.price">{{data.price}} руб.</p>
-                </div>
-                <div class="popup__spec-tabs">
-                    <div class="popup__spec-tabs-bar">
-                        <div class="popup__spec-tab"
-                             [class.popup__spec-tab--active]="tabIdx === 0"
-                             (click)="setTabIdx(0)">
-                            Образование
-                        </div>
-                        <div class="popup__spec-tab"
-                             [class.popup__spec-tab--active]="tabIdx === 1"
-                             (click)="setTabIdx(1)">
-                            Профессиональные навыки
-                        </div>
-                        <div class="popup__spec-tab"
-                             [class.popup__spec-tab--active]="tabIdx === 2"
-                             (click)="setTabIdx(2)">
-                            Опыт
-                        </div>
-                        <div class="popup__spec-tab"
-                             [class.popup__spec-tab--active]="tabIdx === 3"
-                             (click)="setTabIdx(3)">
-                            Услуги
-                        </div>
-                    </div>
-                    <div class="popup__spec-tabs-content">
-                        <div class="popup__spec-tab-content">
-                            <p class="popup__spec-desc" *ngIf="tabIdx===0">{{data.description_education || 'Нет данных'}}</p>
-                            <p class="popup__spec-desc" *ngIf="tabIdx===1">{{data.description_pro || 'Нет данных'}}</p>
-                            <p class="popup__spec-desc" *ngIf="tabIdx===2">{{data.description_experience || 'Нет данных'}}</p>
-                            <p class="popup__spec-desc" *ngIf="tabIdx===3">{{data.description_services || 'Нет данных'}}</p>
-                        </div>
-                    </div>
-                </div>
-
+        <div class="popup__actions">
+            <button
+                class="popup__actions-close"
+                (click)="closeDialog()"
+            ></button>
+            <div class="popup__actions-checkbox checkbox-action">
+                <input
+                    type="checkbox"
+                    class="checkbox-action__input"
+                    id="checkbox"
+                />
+                <label class="checkbox-action__label" for="checkbox"></label>
             </div>
         </div>
-    </div>
-    <div class="popup__footer">
-        <button class="popup__footer-btn popup__footer-btn--short muted">Выбрать</button>
-    </div>
+
+        <div class="popup__body">
+            <div class="popup__body-columns">
+                <div class="popup__body-column">
+                    <div
+                        class="popup__body-avatar"
+                        *ngIf="photoUrl$ | async as url"
+                    >
+                        <img
+                            [src]="url"
+                            (error)="imageSignal$.next(null)"
+                            [alt]="data?.title"
+                        />
+                    </div>
+                    <button class="popup__spec-btn popup__spec-btn--blue muted">
+                        Задать вопрос
+                    </button>
+                    <button
+                        class="popup__spec-btn popup__spec-btn--ghost muted"
+                    >
+                        Записаться на прием
+                    </button>
+                    <p
+                        class="popup__spec-text"
+                        *ngIf="data?._entity?.experience"
+                    >
+                        Стаж(лет):&nbsp;{{ data._entity.experience }}&nbsp;
+                    </p>
+                    <p class="popup__spec-text" *ngIf="data?._entity?.count">
+                        Количество родов: {{ data._entity.count }}
+                    </p>
+                    <p class="popup__spec-position">{{ data?.description }}</p>
+                </div>
+
+                <div class="popup__body-content">
+                    <div class="popup__body-content-header">
+                        <p class="popup__spec-name">{{ data.full_name }}</p>
+                        <p class="popup__spec-price" *ngIf="data.price">
+                            {{ data.price }} руб.
+                        </p>
+                    </div>
+                    <div class="popup__spec-tabs">
+                        <div class="popup__spec-tabs-bar">
+                            <div
+                                class="popup__spec-tab"
+                                [class.popup__spec-tab--active]="tabIdx === 0"
+                                (click)="setTabIdx(0)"
+                            >
+                                Образование
+                            </div>
+                            <div
+                                class="popup__spec-tab"
+                                [class.popup__spec-tab--active]="tabIdx === 1"
+                                (click)="setTabIdx(1)"
+                            >
+                                Профессиональные навыки
+                            </div>
+                            <div
+                                class="popup__spec-tab"
+                                [class.popup__spec-tab--active]="tabIdx === 2"
+                                (click)="setTabIdx(2)"
+                            >
+                                Опыт
+                            </div>
+                            <div
+                                class="popup__spec-tab"
+                                [class.popup__spec-tab--active]="tabIdx === 3"
+                                (click)="setTabIdx(3)"
+                            >
+                                Услуги
+                            </div>
+                        </div>
+                        <div class="popup__spec-tabs-content">
+                            <div class="popup__spec-tab-content">
+                                <p
+                                    class="popup__spec-desc"
+                                    *ngIf="tabIdx === 0"
+                                >
+                                    {{
+                                        data.description_education ||
+                                            "Нет данных"
+                                    }}
+                                </p>
+                                <p
+                                    class="popup__spec-desc"
+                                    *ngIf="tabIdx === 1"
+                                >
+                                    {{ data.description_pro || "Нет данных" }}
+                                </p>
+                                <p
+                                    class="popup__spec-desc"
+                                    *ngIf="tabIdx === 2"
+                                >
+                                    {{
+                                        data.description_experience ||
+                                            "Нет данных"
+                                    }}
+                                </p>
+                                <p
+                                    class="popup__spec-desc"
+                                    *ngIf="tabIdx === 3"
+                                >
+                                    {{
+                                        data.description_services ||
+                                            "Нет данных"
+                                    }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="popup__footer">
+            <button class="popup__footer-btn popup__footer-btn--short muted">
+                Выбрать
+            </button>
+        </div>
     </div>
 </ng-template>
 <!--О специалисте-end-->
 
-
 <!--Доп. услуги-->
 <ng-template #tpl_popup_other let-data>
     <div class="popup popup--xmiddle" @dialogState>
-    <div class="popup__actions">
-        <button class="popup__actions-close" (click)="closeDialog()"></button>
-        <div class="popup__actions-checkbox checkbox-action">
-            <input type="checkbox" class="checkbox-action__input" id="checkbox">
-            <label class="checkbox-action__label" for="checkbox"></label>
+        <div class="popup__actions">
+            <button
+                class="popup__actions-close"
+                (click)="closeDialog()"
+            ></button>
+            <div class="popup__actions-checkbox checkbox-action">
+                <input
+                    type="checkbox"
+                    class="checkbox-action__input"
+                    id="checkbox"
+                />
+                <label class="checkbox-action__label" for="checkbox"></label>
+            </div>
         </div>
-    </div>
 
-    <div class="popup__body">
-        <div class="popup__body-columns">
-            <div class="popup__body-column">
-                <div class="popup__body-avatar popup__body-avatar--square" *ngIf="photoUrl$ | async as url">
-                    <img [src]="url" (error)="imageSignal$.next(null)" [alt]="data?.title">
+        <div class="popup__body">
+            <div class="popup__body-columns">
+                <div class="popup__body-column">
+                    <div
+                        class="popup__body-avatar popup__body-avatar--square"
+                        *ngIf="photoUrl$ | async as url"
+                    >
+                        <img
+                            [src]="url"
+                            (error)="imageSignal$.next(null)"
+                            [alt]="data?.title"
+                        />
+                    </div>
+                    <p class="popup__dop-name">{{ data.title }}</p>
+                    <!--                <p class="popup__dop-short-desc">Патронаж новорожденного-->
+                    <!--                    на дому по программе-->
+                    <!--                    «Я РОДИЛСЯ»!</p>-->
+                    <p class="popup__dop-price" *ngIf="data.price">
+                        {{ data.price }}&nbsp;руб.
+                    </p>
                 </div>
-                <p class="popup__dop-name">{{data.title}}</p>
-<!--                <p class="popup__dop-short-desc">Патронаж новорожденного-->
-<!--                    на дому по программе-->
-<!--                    «Я РОДИЛСЯ»!</p>-->
-                <p class="popup__dop-price" *ngIf="data.price">{{data.price}}&nbsp;руб.</p>
-            </div>
 
-            <div class="popup__body-content">
-                <p class="popup__dop-desc" *ngIf="!data?.description_ext1">{{data.description}}</p>
-                <p class="popup__dop-desc">{{data.description_ext1}}</p>
-                <p class="popup__dop-desc">{{data.description_ext2}}</p>
-                <ng-container *ngIf="data?._entity?.advantage">
-                    <div class="popup__mention">
-                        <i class="fa-solid fa-thumbs-up fa-lg"></i>
-                        <strong>Преимущества:</strong>
-                        <span>{{data?._entity?.advantage}}</span>
-                    </div>
-                </ng-container>
-                <ng-container *ngIf="data?._entity?.lack">
-                    <div class="popup__mention">
-                        <i class="fa-solid fa-thumbs-down fa-lg"></i>
-                        <strong>Недостатки:</strong>
-                        <span>{{data?._entity?.lack}}</span>
-                    </div>
-                </ng-container>
+                <div class="popup__body-content">
+                    <p class="popup__dop-desc" *ngIf="!data?.description_ext1">
+                        {{ data.description }}
+                    </p>
+                    <p class="popup__dop-desc">{{ data.description_ext1 }}</p>
+                    <p class="popup__dop-desc">{{ data.description_ext2 }}</p>
+                    <ng-container *ngIf="data?._entity?.advantage">
+                        <div class="popup__mention">
+                            <i class="fa-solid fa-thumbs-up fa-lg"></i>
+                            <strong>Преимущества:</strong>
+                            <span>{{ data?._entity?.advantage }}</span>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="data?._entity?.lack">
+                        <div class="popup__mention">
+                            <i class="fa-solid fa-thumbs-down fa-lg"></i>
+                            <strong>Недостатки:</strong>
+                            <span>{{ data?._entity?.lack }}</span>
+                        </div>
+                    </ng-container>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="popup__footer">
-        <button class="popup__footer-btn popup__footer-btn--short muted">Выбрать</button>
-    </div>
+        <div class="popup__footer">
+            <button class="popup__footer-btn popup__footer-btn--short muted">
+                Выбрать
+            </button>
+        </div>
     </div>
 </ng-template>
 <!--Доп. услуги-end-->
@@ -350,9 +475,16 @@
 <ng-template #tpl_popup_contragent let-data>
     <div class="popup popup--xmiddle" @dialogState>
         <div class="popup__actions">
-            <button class="popup__actions-close" (click)="closeDialog()"></button>
+            <button
+                class="popup__actions-close"
+                (click)="closeDialog()"
+            ></button>
             <div class="popup__actions-checkbox checkbox-action">
-                <input type="checkbox" class="checkbox-action__input" id="checkbox">
+                <input
+                    type="checkbox"
+                    class="checkbox-action__input"
+                    id="checkbox"
+                />
                 <label class="checkbox-action__label" for="checkbox"></label>
             </div>
         </div>
@@ -360,32 +492,49 @@
         <div class="popup__body">
             <div class="popup__body-columns">
                 <div class="popup__body-column">
-                    <div class="popup__body-avatar popup__body-avatar--square" *ngIf="photoUrl$ | async as url">
-                        <img [src]="url" (error)="imageSignal$.next(null)" [alt]="data?.title">
+                    <div
+                        class="popup__body-avatar popup__body-avatar--square"
+                        *ngIf="photoUrl$ | async as url"
+                    >
+                        <img
+                            [src]="url"
+                            (error)="imageSignal$.next(null)"
+                            [alt]="data?.title"
+                        />
                     </div>
-                    <p class="popup__dop-name">{{data.title}}</p>
-                    <p class="popup__dop-name">Лицензия: {{data.licence || 'Нет данных'}}</p>
+                    <p class="popup__dop-name">{{ data.title }}</p>
+                    <p class="popup__dop-name">
+                        Лицензия: {{ data.licence || "Нет данных" }}
+                    </p>
                     <!--                <p class="popup__dop-short-desc">Патронаж новорожденного-->
                     <!--                    на дому по программе-->
                     <!--                    «Я РОДИЛСЯ»!</p>-->
                 </div>
 
                 <div class="popup__body-content">
-                    <p class="popup__dop-desc">{{data.address_str || 'Нет данных'}}</p>
-                    <ng-container *ngFor="let phone of (data.phones || [])">
+                    <p class="popup__dop-desc">
+                        {{ data.address_str || "Нет данных" }}
+                    </p>
+                    <ng-container *ngFor="let phone of data.phones || []">
                         <div class="phone_container">
-                            <p class="popup__dop-desc">{{phone.title}} : </p><p class="popup__dop-short-desc">{{phone.phone}}</p>
+                            <p class="popup__dop-desc">{{ phone.title }} :</p>
+                            <p class="popup__dop-short-desc">
+                                {{ phone.phone }}
+                            </p>
                         </div>
                     </ng-container>
 
-
-                    <p class="popup__dop-desc" *ngIf="data?.description">{{data.description}}</p>
+                    <p class="popup__dop-desc" *ngIf="data?.description">
+                        {{ data.description }}
+                    </p>
                     <div class="map_container"></div>
                 </div>
             </div>
         </div>
         <div class="popup__footer">
-            <button class="popup__footer-btn popup__footer-btn--short muted">Выбрать</button>
+            <button class="popup__footer-btn popup__footer-btn--short muted">
+                Выбрать
+            </button>
         </div>
     </div>
 </ng-template>
@@ -420,7 +569,6 @@
     </div>
 </div>-->
 <!--Запрос доп.параметров-end-->
-
 
 <!--Редактировать профиль-->
 <!--<div class="popup popup--small">
@@ -502,7 +650,6 @@
     </div>
 </div>-->
 <!--Запрос доп.параметров-end-->
-
 
 <!--Сообщение отправлено-->
 <!-- <div class="popup popup--small">
@@ -596,7 +743,6 @@
 </div>-->
 <!--Страховая компания-end-->
 
-
 <!--Номер полиса-->
 <!--<div class="popup popup--small">
     <button class="popup__close"></button>
@@ -620,7 +766,6 @@
     </div>
 </div>-->
 <!--Номер полиса-end-->
-
 
 <!--Страховая компания-->
 <!--<div class="popup popup&#45;&#45;small">
@@ -659,9 +804,16 @@
 <ng-template #tpl_popup_blank let-data>
     <div class="popup popup--xmiddle">
         <div class="popup__actions">
-            <button class="popup__actions-close" (click)="closeDialog()"></button>
+            <button
+                class="popup__actions-close"
+                (click)="closeDialog()"
+            ></button>
             <div class="popup__actions-checkbox checkbox-action">
-                <input type="checkbox" class="checkbox-action__input" id="checkbox">
+                <input
+                    type="checkbox"
+                    class="checkbox-action__input"
+                    id="checkbox"
+                />
                 <label class="checkbox-action__label" for="checkbox"></label>
             </div>
         </div>
@@ -670,14 +822,34 @@
             <div class="popup__body-columns">
                 <div class="popup__body-column">
                     <div class="popup__body-avatar popup__body-avatar--square">
-                        <img src="img/clinic-cards/1.png" alt="">
+                        <img src="img/clinic-cards/1.png" alt="" />
                     </div>
                     <p class="popup__dop-name">Ошибка</p>
                     <p class="popup__dop-short-desc">{{ data.error_tpl }}</p>
-                    <p class="popup__dop-price">code: {{data.error_tpl_code }}</p>
+                    <p class="popup__dop-price">
+                        code: {{ data.error_tpl_code }}
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 </ng-template>
 <!--Доп. услуги-end-->
+
+<!--Диалог вопроса-->
+<ng-template #tpl_prompt let-data>
+    <div class="popup popup--small prompt" @dialogState>
+        <div class="popup__body">
+            <div class="popup__message">
+                <img src="img\icons\question-mark-round-icon.svg" class="popup__message-img">
+                <p class="popup__message-text">{{data.text}}</p>
+            </div>
+        </div>
+        <div class="popup__footer">
+            <button class="popup__footer-btn submit" *ngIf="data.cancel" (click)="cancelDialog()">{{data.cancel ?? 'Отменить'}}</button>
+            <button class="popup__footer-btn cancel" (click)="submitDialog()">{{data.submit ?? 'Да'}}</button>
+        </div>
+    </div>
+</ng-template>
+
+<!--Сообщение отправлено-end-->

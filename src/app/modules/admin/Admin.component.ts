@@ -1,30 +1,26 @@
-import {Component, OnInit} from '@angular/core';
-import {DictService} from './dict.service';
-import {LoaderService} from './loader.service';
-import {AuthService} from '../auth-module/auth.service';
-import {Router} from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { DictService } from "./dict.service";
+import { LoaderService } from "./loader.service";
+import { AuthService } from "../auth-module/auth.service";
+import { Router } from "@angular/router";
 
 @Component({
-    selector: 'app-admin',
-    templateUrl: './Admin.component.html',
-    styleUrls: ['./Admin.component.css']
+    selector: "app-admin",
+    templateUrl: "./Admin.component.html",
+    styleUrls: ["./Admin.component.css"],
 })
 export class AdminComponent implements OnInit {
-
     constructor(
         private dct: DictService,
         private loader: LoaderService,
         private auth: AuthService,
-        private router: Router,
-    ) {
-    }
+        private router: Router
+    ) {}
 
-    ngOnInit() {
-
-    }
+    ngOnInit() {}
 
     public async exit() {
-        await this.router.navigate(['/']);
+        await this.router.navigate(["/"]);
         this.auth.logout();
     }
 

@@ -1,0 +1,28 @@
+:host {
+  display: flex;
+}
+.lk-separator {
+  flex-grow: 1;
+  border-bottom: 1px dotted;
+  box-sizing: border-box;
+  margin-bottom: 2px;
+  min-width: 32px;
+}
+.lk-contacts-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.lk-contacts-contact {
+  display: flex;
+  align-items: flex-end;
+
+  &.lk-contacts-phone {
+
+    .lk-contacts-value {
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+  }
+}
+

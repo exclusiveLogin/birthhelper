@@ -20,3 +20,26 @@
     border: 1px solid #e1e1e1;
     border-radius: 8px;
 }
+.popup__footer-btn {
+    &.submit {
+        // background-color: #a00d2e;
+    }
+
+    &.cancel {
+        background-color: #ef424c;
+
+        &:hover {
+            background-color: #e9747a;
+        }
+    }
+}
+
+.prompt {
+    .popup__footer{
+        display: flex;
+    }
+
+    .popup__message-img {
+        width: 64px;
+    }
+}

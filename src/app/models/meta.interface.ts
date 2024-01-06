@@ -3,6 +3,6 @@ export interface MetaInterface {
         [key: string]: {
             id: number;
             [key: string]: any;
-        }
+        };
     };
 }

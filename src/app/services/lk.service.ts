@@ -1,9 +1,11 @@
-import {Injectable} from '@angular/core';
-import {RestService} from './rest.service';
-import {User} from '../models/user.interface';
-import {BehaviorSubject, Observable, Subject, throwError} from 'rxjs';
-import {Permission} from '../models/lk.permission.interface';
-import {shareReplay, tap} from 'rxjs/operators';
+import { Injectable } from "@angular/core";
+import { RestService } from "./rest.service";
+import { User } from "../models/user.interface";
+import { BehaviorSubject, Observable, Subject, throwError } from "rxjs";
+import { Permission } from "../models/lk.permission.interface";
+import { map, shareReplay, switchMap, tap } from "rxjs/operators";
+import { uniq } from "@modules/utils/uniq";
+import { AuthService } from "@modules/auth-module/auth.service";
 
 export interface CTG {
     entId: number;
@@ -11,33 +13,57 @@ export interface CTG {
 }
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: "root",
 })
 export class LkService {
-
     _ordersFilters$ = new Subject<any>();
-    ordersFilters$: Observable<any> = this._ordersFilters$.pipe(
-        shareReplay(1),
+    _feedbackFilters$ = new Subject<any>();
+    ordersFilters$: Observable<any> = this._ordersFilters$.pipe(shareReplay(1));
+    feedbackFilters$: Observable<any> = this._feedbackFilters$.pipe(
+        shareReplay(1)
     );
 
     _availableContragents$ = new BehaviorSubject<CTG[]>([]);
-    availableContragents$: Observable<CTG[]> = this._availableContragents$
-        .pipe(shareReplay(1));
+    availableContragents$: Observable<CTG[]> = this._availableContragents$.pipe(
+        shareReplay(1)
+    );
 
     _selectedContragents$ = new BehaviorSubject<CTG[]>([]);
-    selectedContragents$: Observable<CTG[]> = this._selectedContragents$
-        .pipe(shareReplay(1));
+    selectedContragents$: Observable<CTG[]> = this._selectedContragents$.pipe(
+        shareReplay(1)
+    );
 
     constructor(
         private restService: RestService,
+        private authService: AuthService
     ) {
         this.selectedContragents$.subscribe();
         this.availableContragents$.subscribe();
         this.ordersFilters$.subscribe();
+        this.feedbackFilters$.subscribe();
     }
+
+    permissionsRaw$: Observable<Permission[]> = this.authService.user$.pipe(
+        switchMap((user) => this.getPermissionsByUser(user)),
+        tap((data) => console.log("getPermissionsByUser: ", data))
+    );
+
+    userHasLkPermissions$: Observable<boolean> = this.permissionsRaw$.pipe(
+        map((permission) => !!permission?.length),
+        tap((state) => console.log("userHasLkPermissions$", state))
+    );
+    permSections$: Observable<string[]> = this.permissionsRaw$.pipe(
+        map((permissions) =>
+            uniq(permissions.map((p) => p?.meta?.permission_id?.slug))
+        )
+    );
     getPermissionsByUser(user: User): Observable<Permission[]> {
-        if (!user?.id) { return throwError('Не передан корректный пользователь'); }
-        return this.restService.getEntityList('ent_lk_permissions', null, {user_id: user.id.toString()});
+        if (!user?.id) {
+            return throwError("Не передан корректный пользователь");
+        }
+        return this.restService.getEntityList("ent_lk_permissions", null, {
+            user_id: user.id.toString(),
+        });
     }
 
     setAvailableContragents(ctgs: CTG[]): void {
@@ -49,12 +75,22 @@ export class LkService {
     }
 
     getContragentColor(ctg: CTG): string {
-        return this._availableContragents$.value
-            .find(_ => JSON.stringify(_) === JSON.stringify(ctg))?.color ?? '#ffffff';
+        return (
+            this._availableContragents$.value.find(
+                (_) => JSON.stringify(_) === JSON.stringify(ctg)
+            )?.color ?? "#ffffff"
+        );
     }
 
-    setFilters(filters: any): void {
-        console.log('setFilters');
-        this._ordersFilters$.next(filters);
+    setFilters(lkSection: "order" | "feedback", filters: any): void {
+        console.log("setFilters",lkSection, filters);
+        switch (lkSection) {
+            case "order":
+                this._ordersFilters$.next(filters);
+                break;
+            case "feedback":
+                this._feedbackFilters$.next(filters);
+                break;
+        }
     }
 }

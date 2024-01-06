@@ -1,7 +1,7 @@
-import {MapObject, MetaPhoto} from 'app/models/map-object.interface';
-import {Summarized} from './summary.interface';
-import {Contragent} from '@models/contragent.interface';
-import {Entity} from '@models/entity.interface';
+import { MapObject, MetaPhoto } from "app/models/map-object.interface";
+import { Summarized } from "./summary.interface";
+import { Contragent } from "@models/contragent.interface";
+import { Entity } from "@models/entity.interface";
 
 export interface IConsultationMini extends MapObject, Entity {
     address: string;
@@ -30,7 +30,11 @@ export interface ConsultationPathology {
     onko: boolean;
 }
 
-export interface IConsultationSrc extends Contragent, Summarized, ConsultationPathology, ConsultationFeatures {
+export interface IConsultationSrc
+    extends Contragent,
+        Summarized,
+        ConsultationPathology,
+        ConsultationFeatures {
     contragent: number;
     foreign_service: string;
 }
@@ -55,9 +59,9 @@ export class Consultation {
 
         const ph: MetaPhoto = src?.meta?.image_id as MetaPhoto;
 
-        return  {
+        return {
             id: src.id ? Number(src.id) : -1,
-            address: src?.address_str || 'Адрес не найден',
+            address: src?.address_str || "Адрес не найден",
             description: src.description,
             title: src.title,
             price_from: src?.summary?.min_price,

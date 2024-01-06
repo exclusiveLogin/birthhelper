@@ -1,69 +1,110 @@
 @use "sass:math";
 
 @font-face {
-  font-family: "Gilroy";
-  src:
-    url("../fonts/Gilroy-Regular.woff") format("woff"),
-    url("../fonts/Gilroy-Regular.ttf") format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
+    font-family: "Gilroy";
+    src: url("../fonts/Gilroy-Regular.woff") format("woff"),
+        url("../fonts/Gilroy-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: "Gilroy";
-  src:
-    url("../fonts/Gilroy-Medium.woff") format("woff"),
-    url("../fonts/Gilroy-Medium.ttf") format('truetype');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
+    font-family: "Gilroy";
+    src: url("../fonts/Gilroy-Medium.woff") format("woff"),
+        url("../fonts/Gilroy-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
 }
 
-
 html {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 *,
 *::before,
 *::after {
-  box-sizing: inherit;
+    box-sizing: inherit;
 }
 
 body {
-  min-width: 320px;
-  margin: 0;
-  font-size: 14px;
-  line-height: math.div(18, 14);
-  font-family: "Gilroy", "Arial", sans-serif;
-  color: $dark;
-  background-color: $main-bg;
+    min-width: 320px;
+    margin: 0;
+    font-size: 14px;
+    line-height: math.div(18, 14);
+    font-family: "Gilroy", "Arial", sans-serif;
+    color: $dark;
+    background-color: $main-bg;
 }
 
 .visually-hidden {
-  position: absolute;
-  overflow: hidden;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  border: 0;
-  clip: rect(0 0 0 0);
+    position: absolute;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    clip: rect(0 0 0 0);
 }
 .bold {
     font-weight: bold;
 }
 
 ::-webkit-input-placeholder {
-  color: rgba(45, 51, 63, 0.5);
+    color: rgba(45, 51, 63, 0.5);
 }
 ::-moz-placeholder {
-  color: rgba(45, 51, 63, 0.5);
-}/*Firefox19+*/
+    color: rgba(45, 51, 63, 0.5);
+} /*Firefox19+*/
 :-moz-placeholder {
-  color: rgba(45, 51, 63, 0.5);
-}/*Firefox18-*/
+    color: rgba(45, 51, 63, 0.5);
+} /*Firefox18-*/
 :-ms-input-placeholder {
-  color: rgba(45, 51, 63, 0.5);
+    color: rgba(45, 51, 63, 0.5);
+}
+
+.button-close {
+   position: absolute;
+   top: -30px;
+   right: 30px;
+   z-index: 10;
+   border: none;
+   width: 26px;
+   height: 26px;
+   padding: 0;
+   background: transparent;
+ }
+
+.button-close__img {
+  width: 100%;
+  height: 100%;
+}
+
+.btn_close {
+  width: 49px;
+  height: 35px;
+  background: url("/img/icons/lk_close_btn_icon.png") no-repeat;
+  background-size: cover;
+  align-self: center;
+  margin-left: auto;
+  margin-right: 15px;
+  cursor: pointer;
+}
+.inactive {
+  filter: grayscale(1);
+}
+.default {
+    height: 5rem;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.25rem;
+    color: grey;
+    border: 2px solid lightgrey;
+    text-align: center;
+    padding: 15px;
+    width: 100%;
 }

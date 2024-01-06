@@ -2,7 +2,7 @@
     text-align: right;
 }
 
-@media screen and (max-width: 480px){
+@media screen and (max-width: 480px) {
     .contacts {
         text-align: right;
         flex: 1 0 auto;
@@ -21,7 +21,7 @@
     .contacts__phone {
         flex-basis: 100%;
         text-align: center;
-     }
+    }
 }
 
 .contacts__txt {

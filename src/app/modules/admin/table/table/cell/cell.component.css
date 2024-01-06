@@ -1,31 +1,31 @@
-tr:hover{
+tr:hover {
     background-color: burlywood !important;
 }
-:host{
-  display: contents;
+:host {
+    display: contents;
 }
 
 tr.selected {
     background-color: #ffdfac;
 }
 
-td{
-  border-right: #2d333f;
+td {
+    border-right: #2d333f;
 }
 
-:last-child.col{
-  border-right: none;
+:last-child.col {
+    border-right: none;
 }
 
-button.remove{
+button.remove {
     color: aliceblue;
     background-color: brown;
     padding: 5px;
 }
-.img_block:hover{
-  transition: all 0.1s ease-in-out;
-  transform: scale(5);
+.img_block:hover {
+    transition: all 0.1s ease-in-out;
+    transform: scale(5);
 }
-.imagerow{
-  max-width: 40px;
+.imagerow {
+    max-width: 40px;
 }

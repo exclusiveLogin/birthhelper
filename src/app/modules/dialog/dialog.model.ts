@@ -1,16 +1,24 @@
-import {FormGroup} from '@angular/forms';
-import {TemplateRef} from '@angular/core';
+import { FormGroup } from "@angular/forms";
+import { TemplateRef } from "@angular/core";
+import { Subject } from "rxjs";
 
-export type DialogType = 'dialog' | 'popup';
+export type DialogType = "dialog" | "popup";
+export type DialogActionType = "show" | "close" | "submit" | "reject";
+export interface DialogAnswer {
+    action: DialogActionType;
+    data: Record<string, any>;
+    templateKey: string;
+}
 
 export interface DialogAction {
     dialogKey: string;
-    action: 'show' | 'close' | 'submit' | 'reject';
+    action: DialogActionType;
     mode?: DialogType;
     templateKey?: string;
     template?: TemplateRef<any>;
     data?: any;
     form?: FormGroup;
+    dialogAnswerPipe$: Subject<DialogAnswer>;
 }
 
 export interface DialogServiceConfig {

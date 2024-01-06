@@ -1,0 +1,22 @@
+<div
+    class="avatar_container circle-image"
+    [style.--border-radius]="borderRadius"
+    [ngStyle]="{ height: size + 'px', width: size + 'px' }"
+>
+    <ng-container *ngIf="!_image">
+        <div
+            class="empty-image circle-image"
+            [ngStyle]="{ backgroundColor: defaultColorAvatar }"
+        ></div>
+        <div class="avatar_text" [ngStyle]="{ fontSize: size / 2 + 'px' }">
+            {{ avatarTitle }}
+        </div>
+    </ng-container>
+
+    <img
+        class="circle-image"
+        *ngIf="_image"
+        [src]="photoUrl$ | async"
+        [alt]="title"
+    />
+</div>

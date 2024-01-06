@@ -1,0 +1,50 @@
+<div
+    class="speech-bubble"
+    [ngClass]="{
+        'speech-bubble-main': mode === 'main',
+        'speech-bubble-accent': color === 'accent',
+        'speech-bubble-accent-secondary': color === 'secondary-accent',
+        'speech-bubble-left': mode === 'answer',
+        'speech-bubble-right': mode === 'reply'
+    }"
+>
+    <ng-container *ngIf="editMode; then input; else default"></ng-container>
+    <div class="bubble-footer">
+        <ng-container *ngIf="editMode">
+            <i
+                class="fa-solid fa-paper-plane clickable"
+                (click)="change(text)"
+            ></i>
+            <ng-container *ngIf="canOfficial">
+                <ng-container *ngTemplateOutlet="officalTpl"></ng-container>
+            </ng-container>
+        </ng-container>
+    </div>
+</div>
+
+<ng-template #default>
+    <div class="speech-bubble-text" *ngIf="text?.length; else empty">
+        {{ text }}
+    </div>
+    <ng-content></ng-content>
+</ng-template>
+
+<ng-template #input>
+    <div class="input_container">
+        <textarea #ta_el (input)="auto_grow(ta_el)"></textarea>
+    </div>
+</ng-template>
+
+<ng-template #officalTpl>
+    <input
+        type="checkbox"
+        name="offical"
+        id="offical"
+        (change)="toggleOfficial($event)"
+    />
+    <label for="offical">Официальный ответ</label>
+</ng-template>
+
+<ng-template #empty>
+    <div class="speech-bubble-text-empty">---</div>
+</ng-template>

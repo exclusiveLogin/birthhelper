@@ -1,37 +1,62 @@
 <ng-template #blankuser>
-    <img class="menu__user-avatar-img" src="/img/blank-user.jpg">
+    <img class="menu__user-avatar-img" src="/img/blank-user.jpg" />
 </ng-template>
 
 <ng-template #blankuserinfo>
     <p>Идет загрузка данных...</p>
 </ng-template>
 
-
 <div class="menu__header">
-    <a href="/" class="logo"><img src="img/logo.png"
-                                  srcset="img/logo@2x.png 2x, img/logo@3x.png 3x"
-                                  class="logo__icon" alt=""></a>
+    <a href="/" class="logo"
+        ><img
+            src="img/logo.png"
+            srcset="img/logo@2x.png 2x, img/logo@3x.png 3x"
+            class="logo__icon"
+            alt=""
+    /></a>
+     <div class="toggler" (click)="menuToggle()">
+        <ng-container *ngIf="!hide">
+            <i class="fa-solid fa-angle-left"></i>
+        </ng-container>
+        <ng-container *ngIf="hide">
+            <i class="fa-solid fa-angle-right"></i>
+        </ng-container>
+     </div>
 </div>
 <div class="menu__body" *ngIf="isDefaultMode$ | async">
-    <ng-container *ngIf="{
+    <ng-container
+        *ngIf="{
             access: onUserAccess$ | async,
             photo: userPhoto$ | async,
             signal: userPhotoSignal$ | async,
             user: user$ | async
-         } as userData">
+        } as userData"
+    >
         <div class="menu__user menu-user" *ngIf="userData.access">
             <div class="menu__user-avatar">
-
-                <ng-container *ngIf="userData.photo | async as image else blankuser">
+                <ng-container
+                    *ngIf="userData.photo | async as image; else blankuser"
+                >
                     <img
                         [src]="image"
                         (error)="userData.signal.next(null)"
-                        class="menu__user-avatar-img" [alt]="getUserName(userData.user)">
+                        class="menu__user-avatar-img"
+                        [alt]="getUserName(userData.user)"
+                    />
                 </ng-container>
-
             </div>
-            <p class="menu__user-name" *ngIf="userData?.user else blankuserinfo">{{getUserName(userData.user)}}</p>
-            <a [routerLink]="['/system', 'profile']" class="menu__user-btn"><img src="img/icons/settings.svg" class="menu__user-btn-icon" alt=""></a>
+            <p
+                class="menu__user-name"
+                *ngIf="userData?.user; else blankuserinfo"
+            >
+                {{ getUserName(userData.user) }}
+            </p>
+            <a [routerLink]="['/system', 'profile']" class="menu__user-btn"
+                ><img
+                    src="img/icons/settings.svg"
+                    class="menu__user-btn-icon"
+                    alt=""
+            /></a>
         </div>
     </ng-container>
     <ul class="menu__list">
@@ -42,7 +67,11 @@
         </li>-->
         <li class="menu__item">
             <span class="menu__link menu__link--sub-list">
-                <img src="img/icons/toddler.svg" class="menu__link-icon" alt="">
+                <img
+                    src="img/icons/toddler.svg"
+                    class="menu__link-icon"
+                    alt=""
+                />
                 <span class="menu__link-txt">Направления</span>
             </span>
             <ul class="menu__sub-list">
@@ -52,12 +81,18 @@
                     </a>
                 </li>
                 <li class="menu__sub-item">
-                    <a [routerLink]="['/system', 'search', 'consultations']" class="menu__link">
+                    <a
+                        [routerLink]="['/system', 'search', 'consultations']"
+                        class="menu__link"
+                    >
                         <span class="menu__link-txt">Ведение</span>
                     </a>
                 </li>
                 <li class="menu__sub-item">
-                    <a [routerLink]="['/system', 'search', 'clinics']" class="menu__link">
+                    <a
+                        [routerLink]="['/system', 'search', 'clinics']"
+                        class="menu__link"
+                    >
                         <span class="menu__link-txt">Родовспоможение</span>
                     </a>
                 </li>
@@ -68,41 +103,59 @@
                 </li>
             </ul>
         </li>
+        <li class="menu__item">
+            <a [routerLink]="['/','system','feedback']" class="menu__link">
+                <img src="img/icons/star-primary.svg" class="menu__link-icon" alt="" />
+                <span class="menu__link-txt">Мои отзывы</span>
+            </a>
+        </li>
         <li class="menu__item muted">
             <a href="javascript:void(0);" class="menu__link">
-                <img src="img/icons/chat.svg" class="menu__link-icon" alt="">
+                <img src="img/icons/chat.svg" class="menu__link-icon" alt="" />
                 <span class="menu__link-txt">Сообщения</span>
                 <span class="menu__link-badge">13</span>
             </a>
         </li>
-        <li class="menu__item muted">
+        <!-- <li class="menu__item muted">
             <a href="javascript:void(0);" class="menu__link">
-                <img src="img/icons/shape.svg" class="menu__link-icon" alt="">
+                <img src="img/icons/shape.svg" class="menu__link-icon" alt="" />
                 <span class="menu__link-txt">Хочу быть в форме</span>
             </a>
-        </li>
+        </li> -->
         <li class="menu__item muted">
             <a href="javascript:void(0);" class="menu__link">
-                <img src="img/icons/bookmark.svg" class="menu__link-icon" alt="">
+                <img
+                    src="img/icons/bookmark.svg"
+                    class="menu__link-icon"
+                    alt=""
+                />
                 <span class="menu__link-txt">Закладки</span>
             </a>
         </li>
-        <li class="menu__item muted">
+        <!-- <li class="menu__item muted">
             <a href="javascript:void(0);" class="menu__link">
-                <img src="img/icons/bell.svg" class="menu__link-icon" alt="">
+                <img src="img/icons/bell.svg" class="menu__link-icon" alt="" />
                 <span class="menu__link-txt">Уведомления</span>
             </a>
-        </li>
-        <li class="menu__item muted">
+        </li> -->
+        <!-- <li class="menu__item muted">
             <a href="javascript:void(0);" class="menu__link">
-                <img src="img/icons/business.svg" class="menu__link-icon" alt="">
+                <img
+                    src="img/icons/business.svg"
+                    class="menu__link-icon"
+                    alt=""
+                />
                 <span class="menu__link-txt">Магазин (скоро)</span>
             </a>
-        </li>
+        </li> -->
         <li class="menu__item">
             <a [routerLink]="['/system', 'cart']" class="menu__link">
-                <img src="img/icons/shopping-cart.svg" class="menu__link-icon" alt="">
-            <span class="menu__link-txt">Мои заказы</span>
+                <img
+                    src="img/icons/shopping-cart.svg"
+                    class="menu__link-icon"
+                    alt=""
+                />
+                <span class="menu__link-txt">Мои заказы</span>
             </a>
         </li>
     </ul>
@@ -122,35 +175,53 @@
     </ul>
 </div>
 
-<div class="menu__body" *ngIf="isContragentsMode$ |async">
+<div class="menu__body" *ngIf="isContragentsMode$ | async">
     <ul class="menu__list">
         <li class="menu__item menu__item_ctg">
-            <ng-container *ngIf="{ selectedState: selectedStateCtgs$ | async } as selState">
+            <ng-container
+                *ngIf="{
+                    selectedState: selectedStateCtgs$ | async
+                } as selState"
+            >
                 <button
                     class="filter__btn filter__btn--blue selectall_btn"
                     *ngIf="selState.selectedState"
-                    (click)="deselectAll()">
+                    (click)="deselectAll()"
+                >
                     Снять выбор
                 </button>
                 <button
                     class="filter__btn filter__btn--green selectall_btn"
                     *ngIf="!selState.selectedState"
-                    (click)="selectAll()">
+                    (click)="selectAll()"
+                >
                     Выбрать все
                 </button>
             </ng-container>
 
-            <ng-container *ngFor="let ctg of availableContragents$ | async; trackBy: trackByIdentity" >
-                <div class="ctg" *ngIf="getContragent(ctg.entId) | async as contragent">
-                    <div class="ctg_head" [style]="{background: ctg.color}">
-                        <input type="checkbox" [id]="'ctg_' + contragent.id" [checked]="isSelectedCTG(ctg)" (change)="selectCTG(ctg)">
+            <ng-container
+                *ngFor="
+                    let ctg of availableContragents$ | async;
+                    trackBy: trackByIdentity
+                "
+            >
+                <div
+                    class="ctg"
+                    *ngIf="getContragent(ctg.entId) | async as contragent"
+                >
+                    <div class="ctg_head" [style]="{ background: ctg.color }">
+                        <input
+                            type="checkbox"
+                            [id]="'ctg_' + contragent.id"
+                            [checked]="isSelectedCTG(ctg)"
+                            (change)="selectCTG(ctg)"
+                        />
                     </div>
                     <div class="ctg_info">
-                        <span>{{contragent.title}}</span>
+                        <span>{{ contragent.title }}</span>
                     </div>
                 </div>
             </ng-container>
-
         </li>
     </ul>
 </div>
@@ -158,6 +229,7 @@
 <div class="menu__footer">
     <a href="javascript:void(0);" class="menu__footer-link muted">О нас</a>
     <button class="menu__footer-btn" (click)="authService.logout()">
-        <img src="img/icons/exit.svg" class="menu__footer-btn-icon" alt="">
-        <span class="menu__footer-btn-txt">Выйти</span></button>
+        <img src="img/icons/exit.svg" class="menu__footer-btn-icon" alt="" />
+        <span class="menu__footer-btn-txt">Выйти из аккаунта</span>
+    </button>
 </div>

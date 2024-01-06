@@ -14,13 +14,13 @@
 
     &:after {
         position: absolute;
-        content: '';
+        content: "";
         right: 0;
         top: 50%;
         margin-top: -10px;
         height: 20px;
         width: 1px;
-        background: rgba(45,51,63,0.1);
+        background: rgba(45, 51, 63, 0.1);
     }
 
     &:last-child {
@@ -82,14 +82,13 @@
     line-height: 1.14;
     color: #2d333f;
     border-radius: 3px;
-    background-color: rgba(45,51,63, 0.05);
+    background-color: rgba(45, 51, 63, 0.05);
 
-  &.valid {
-    background-color: rgba(60, 200, 70, 0.7);
-  }
+    &.valid {
+        background-color: rgba(60, 200, 70, 0.7);
+    }
 
-  &.invalid {
-    background-color: rgba(200, 60, 70, 0.7);
-  }
+    &.invalid {
+        background-color: rgba(200, 60, 70, 0.7);
+    }
 }
-

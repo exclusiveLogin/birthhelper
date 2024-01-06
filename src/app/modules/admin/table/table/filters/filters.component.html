@@ -1,67 +1,67 @@
 <form class="filter_form" [formGroup]="form">
+    <div class="input-group mb-3" *ngFor="let field of fields">
+        <div class="input-group-prepend">
+            <span class="input-group-text" [id]="field.name">{{
+                field.title
+            }}</span>
+        </div>
 
-  <div class="input-group mb-3" *ngFor="let field of fields">
+        <ng-container [ngSwitch]="field.type">
+            <ng-container *ngSwitchCase="'string'">
+                <input
+                    [formControl]="field.control"
+                    type="text"
+                    [name]="field.name"
+                    [id]="field.name"
+                    [placeholder]="'Введите ' + field.title | lowercase"
+                    class="form-control"
+                    [attr.aria-describedby]="field.name"
+                />
+            </ng-container>
 
-    <div class="input-group-prepend">
-      <span class="input-group-text" [id]="field.name">{{ field.title }}</span>
+            <ng-container *ngSwitchCase="'text'">
+                <textarea
+                    [name]="field.name"
+                    [id]="field.name"
+                    [placeholder]="'Введите ' + field.title | lowercase"
+                    class="form-control"
+                    [attr.aria-describedby]="field.name"
+                ></textarea>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'flag'">
+                <input
+                    [formControl]="field.control"
+                    type="checkbox"
+                    [name]="field.name"
+                    [id]="field.name"
+                    class="form-control"
+                    [attr.aria-describedby]="field.name"
+                />
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'id'">
+                <select
+                    [name]="field.name"
+                    [id]="field.name"
+                    *ngIf="field.items$"
+                    [formControl]="field.control"
+                    [attr.aria-describedby]="field.name"
+                    class="form-control"
+                >
+                    <option value>Не выбран</option>
+                    <option
+                        *ngFor="let item of field.items$ | async"
+                        [value]="
+                            field?.valueKey ? item[field.valueKey] : item.id
+                        "
+                    >
+                        {{ item.title }}
+                    </option>
+                </select>
+            </ng-container>
+
+            <ng-container *ngSwitchDefault></ng-container>
+        </ng-container>
     </div>
-
-    <ng-container [ngSwitch]="field.type">
-
-      <ng-container *ngSwitchCase="'string'">
-        <input
-          [formControl]="field.control"
-          type="text"
-          [name]="field.name"
-          [id]="field.name"
-          [placeholder]="'Введите ' + field.title | lowercase"
-          class="form-control"
-          [attr.aria-describedby]="field.name"
-        />
-      </ng-container>
-
-      <ng-container *ngSwitchCase="'text'">
-        <textarea
-          [name]="field.name"
-          [id]="field.name"
-          [placeholder]="'Введите ' + field.title | lowercase"
-          class="form-control"
-          [attr.aria-describedby]="field.name"
-        ></textarea>
-      </ng-container>
-
-      <ng-container *ngSwitchCase="'flag'">
-        <input
-          [formControl]="field.control"
-          type="checkbox"
-          [name]="field.name"
-          [id]="field.name"
-          class="form-control"
-          [attr.aria-describedby]="field.name"
-        />
-      </ng-container>
-
-      <ng-container *ngSwitchCase="'id'">
-        <select
-          [name]="field.name"
-          [id]="field.name"
-          *ngIf="field.items$"
-          [formControl]="field.control"
-          [attr.aria-describedby]="field.name"
-          class="form-control"
-        >
-          <option value>Не выбран</option>
-          <option
-              *ngFor="let item of field.items$ | async"
-              [value]="field?.valueKey ? item[field.valueKey] : item.id">
-              {{item.title}}
-          </option>
-        </select>
-      </ng-container>
-
-
-      <ng-container *ngSwitchDefault></ng-container>
-    </ng-container>
-
-  </div>
 </form>

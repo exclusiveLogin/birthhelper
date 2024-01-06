@@ -1,0 +1,77 @@
+@import "~sass/variables";
+
+.feedback_item {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+}
+.tbl_row {
+  cursor: pointer;
+}
+.order_tbl__item{
+  margin: 15px;
+}
+.lk-feedback-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex-grow: 1;
+}
+
+.lk-feedback-body {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.lk-feedback-rating-block {
+  display: flex;
+  flex-direction: column;
+  max-width: 50%;
+}
+
+.lk-rating-row {
+  box-shadow: 0px 13px 8px -10px rgba(195, 195, 195, 0.6);
+  display: flex;
+  gap: 36px;
+  align-items: center;
+}
+.empty-message-box {
+  position: relative;
+  background-color: #f7f7f7;
+  border-radius: .4em;
+  padding: 16px;
+  font-size: 1.2rem;
+  flex-grow: 1;
+  box-shadow: 0px 13px 16px -9px rgb(195 195 195 / 70%);
+  border-bottom: 2px #ffb500 solid;
+}
+
+.dicline__btn {
+  background-color: #feeded;
+  color: $red;
+
+  margin-left: 10px;
+  &:hover {
+    background-color: transparentize($red, 0.7);
+  }
+}
+.approve__btn {
+  background-color: #edfeee;
+  color: $green;
+
+  margin-left: 10px;
+  &:hover {
+    background-color: transparentize($green, 0.7);
+  }
+}
+.action_grp {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.close_btn{  
+  cursor: pointer;
+}

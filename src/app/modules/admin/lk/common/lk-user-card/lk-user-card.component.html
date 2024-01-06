@@ -1,0 +1,29 @@
+<div class="lk-user-card-container">
+    <app-lk-avatar
+        [size]="64"
+        [image]="userPhotoImage$ | async"
+        [title]="user?.first_name ?? user?.login ?? user?.id?.toString()"
+        [subtitle]="user?.last_name"
+    ></app-lk-avatar>
+    <ng-container *ngIf="!avatarOnly">
+        <app-lk-title
+        [title]="user?.login"
+        [subTitle]="user?.first_name"
+        [accentTitle]="user?.last_name"
+    ></app-lk-title>
+    <app-lk-contacts
+        [email]="user?.email"
+        [phone]="user?.phone"
+        [skype]="user?.skype"
+    ></app-lk-contacts>
+    <app-lk-confirm-chanel
+        [skype]="user?.skype && user?.ch_skype"
+        [phone]="user?.phone && user?.ch_phone"
+        [email]="user?.email && user?.ch_email"
+        [telegram]="user?.ch_telegram"
+        [viber]="user?.ch_viber"
+        [whatsapp]="user?.ch_whatsapp"
+    ></app-lk-confirm-chanel>
+    </ng-container>
+    
+</div>

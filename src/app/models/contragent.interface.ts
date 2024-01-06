@@ -1,5 +1,6 @@
-import {Entity} from 'app/models/entity.interface';
-import {SectionType} from '@services/search.service';
+import { Entity } from "app/models/entity.interface";
+import { SectionType } from "@services/search.service";
+import { IImage } from "@modules/admin/Dashboard/Editor/components/image/image.component";
 
 export interface Contragent extends Entity {
     active: boolean;
@@ -17,19 +18,12 @@ export interface Contragent extends Entity {
     phones?: ContragentsPhone[];
     section_clinic: boolean;
     section_consultation: boolean;
+    contragent?: number;
 }
 
 export interface ExtraMetaContragent {
     [key: string]: any;
-    image_id: {
-        id: number,
-        file_id: number,
-        title: string,
-        description: string,
-        datetime_update: string,
-        datetime_create: string,
-        filename: string,
-    };
+    image_id: IImage;
 }
 
 export interface ContragentsPhone {

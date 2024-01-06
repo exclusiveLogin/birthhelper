@@ -1,0 +1,63 @@
+$rootElementName: lk-rating;
+
+.#{$rootElementName}{
+  &-group{
+    width: var(--lk-raitng-width, 120px);
+  }
+  &-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    width: var(--lk-raitng-width, 120px);
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+
+    &-current {
+      transform: translateY(-100%);
+      clip-path: var(--lk-rating-current-clip, inset(0% 0% 0% 0%));
+    }
+    &-compare {
+      transform: translateX(-200%);
+      clip-path: var(--lk-rating-compare-clip, inset(0% 0% 0% 0%));
+    }
+  }
+  &-item {
+    height: var(--lk-raitng-size, 8px);
+    flex-grow: 1;
+    background-color: #c0c0c0;
+    border-radius: 10px;
+
+    &-compare {
+      height: var(--lk-raitng-size, 8px);
+      background-color: #f300f7;
+      flex-grow: 1;
+      border-radius: 10px;
+    }
+  }
+}
+.green {
+  background-color: #0cc500;
+}
+.yellow {
+  background-color: #ffc507;
+}
+.orange {
+  background-color: #ff8800;
+}
+.red {
+  background-color: #ff0000;
+}
+.grey {
+  background-color: #c0c0c0;
+}
+.compare-color {
+  background-color: #3edcff;
+}
+.primary {
+  background-color: #487ff1;
+}
+.hide {
+  opacity: 0;
+}

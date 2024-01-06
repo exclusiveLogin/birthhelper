@@ -1,37 +1,36 @@
-<div class="bh_admin_submenu_title" *ngIf="menuSelected">Подменю {{menuSelected.title}}</div>
+<div class="bh_admin_submenu_title" *ngIf="menuSelected">
+    Подменю {{ menuSelected.title }}
+</div>
 <ng-container *ngIf="menuSelected">
     <app-submenu-item
         *ngIf="hasViewMode"
-        [title]="'Открыть '+menuSelected.titleVoc"
+        [title]="'Открыть ' + menuSelected.titleVoc"
         (click)="selectSubmenuMode('view')"
         [mode]="genViewMode()"
         class="btn btn-outline-dark"
     ></app-submenu-item>
 
     <app-submenu-item
-      *ngIf="hasCreateMode"
-      [title]="'Создать '+menuSelected.titleVoc"
-      (click)="selectSubmenuMode('create')"
-      [mode]="genCreateMode()"
-      class="btn btn-outline-dark"
+        *ngIf="hasCreateMode"
+        [title]="'Создать ' + menuSelected.titleVoc"
+        (click)="selectSubmenuMode('create')"
+        [mode]="genCreateMode()"
+        class="btn btn-outline-dark"
     ></app-submenu-item>
 
     <app-submenu-item
-      *ngIf="hasEditMode"
-      [title]="'Редактировать '+menuSelected.titleVoc"
-      (click)="selectSubmenuMode('edit')"
-      [mode]="genEditMode()"
-      class="btn btn-outline-dark"
+        *ngIf="hasEditMode"
+        [title]="'Редактировать ' + menuSelected.titleVoc"
+        (click)="selectSubmenuMode('edit')"
+        [mode]="genEditMode()"
+        class="btn btn-outline-dark"
     ></app-submenu-item>
 
     <app-submenu-item
-      *ngIf="hasDeleteMode"
-      [title]="'Удалить '+menuSelected.titleVoc"
-      (click)="selectSubmenuMode('delete')"
-      [mode]="genDeleteMode()"
-      class="btn btn-outline-danger"
+        *ngIf="hasDeleteMode"
+        [title]="'Удалить ' + menuSelected.titleVoc"
+        (click)="selectSubmenuMode('delete')"
+        [mode]="genDeleteMode()"
+        class="btn btn-outline-danger"
     ></app-submenu-item>
-
 </ng-container>
-
-

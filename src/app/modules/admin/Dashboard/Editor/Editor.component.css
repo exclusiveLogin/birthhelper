@@ -36,7 +36,9 @@ input[readonly] {
     opacity: 0.5;
 }
 
-input, textarea, select {
+input,
+textarea,
+select {
     font-size: 15pt;
     width: 90%;
     justify-content: center;
@@ -65,7 +67,7 @@ input, textarea, select {
 }
 
 form.ng-invalid::after {
-    content: 'не заполнены обязательные поля';
+    content: "не заполнены обязательные поля";
     margin-top: -15px;
 }
 
@@ -82,7 +84,6 @@ form.ng-invalid::after {
 }
 
 .bh_link_control {
-
 }
 
 .bh_error_block {

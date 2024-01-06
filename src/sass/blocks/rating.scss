@@ -23,7 +23,6 @@
 
     .rating__input {
         display: none;
-
         & + .rating__label {
             display: inline-block;
             vertical-align: middle;
@@ -32,11 +31,16 @@
             width: 24px;
             height: 24px;
             background: url("/img/icons/ic-star-24px.svg") no-repeat center;
+            transition: all 100ms ease-in;
+        }
 
+        &:hover + .rating__label {
+            transform: scale(1.2);
         }
 
         &:checked + .rating__label ~ .rating__label {
-            background: url("/img/icons/ic-star-border-24px.svg") no-repeat center;
+            background: url("/img/icons/ic-star-border-24px.svg") no-repeat
+                center;
         }
     }
 }

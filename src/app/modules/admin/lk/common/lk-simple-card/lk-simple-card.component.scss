@@ -1,0 +1,41 @@
+@import "sass/variables";
+.lk-simple-rating {
+  display: flex;
+  flex-wrap: wrap;
+  width: 200px;
+  align-items: center;
+  gap: 0 12px;
+  justify-content: center;
+  align-content: center;
+
+  .rate-count {
+    padding: 5px 10px;
+    background-color: #cccccc;
+    border-radius: 5px 10px;
+    font-size: 1.2rem;
+
+    &.red {
+      background-color: #ffadad;
+    }
+
+    &.orange {
+      background-color: #ffdfa4;
+    }
+
+    &.green {
+      background-color: #9cff9e;
+    }
+  }
+
+  &-rating {
+  }
+}
+.lk-simple-card-container {
+  display: flex;
+  padding: 8px;
+  gap: 16px;
+}
+.lk-rating-total-text {
+  font-size: 0.7rem;
+}
+

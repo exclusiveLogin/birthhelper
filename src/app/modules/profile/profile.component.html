@@ -1,41 +1,84 @@
 <ng-template #blankuser>
-    <img class="profile_avatar__img" src="/img/blank-user.jpg">
+    <img class="profile_avatar__img" src="/img/blank-user.jpg" />
 </ng-template>
 
 <ng-template #blankuserinfo>
     <p>Идет загрузка данных...</p>
 </ng-template>
-<div class="profile_container" *ngIf="{
-    user: user$ | async,
-    photo: userPhoto$ | async,
-    signal: userPhotoSignal$ | async,
-    role: role$ | async
-} as userData">
+<div
+    class="profile_container"
+    *ngIf="{
+        user: user$ | async,
+        photo: userPhoto$ | async,
+        signal: userPhotoSignal$ | async,
+        role: role$ | async
+    } as userData"
+>
     <div class="profile_header">
         <div class="profile_avatar">
-            <ng-container *ngIf="userData.photo | async as image else blankuser">
-                <img class="profile_avatar__img" [src]="image" (error)="userData.signal.next(null)">
+            <ng-container
+                *ngIf="userData.photo | async as image; else blankuser"
+            >
+                <img
+                    class="profile_avatar__img"
+                    [src]="image"
+                    (error)="userData.signal.next(null)"
+                />
             </ng-container>
-            <input type="file" style="display: none;" #file accept="image/png, image/jpeg" (change)="upload($event)">
-            <i class="fas fa-camera fa-lg upload_photo__icon" (click)="uploadAvatarHandler()"></i>
+            <input
+                type="file"
+                style="display: none"
+                #file
+                accept="image/png, image/jpeg"
+                (change)="upload($event)"
+            />
+            <i
+                class="fas fa-camera fa-lg upload_photo__icon"
+                (click)="uploadAvatarHandler()"
+            ></i>
         </div>
         <div class="profile_ttl__container">
-            <p class="profile_ttl" *ngIf="userData?.user else blankuserinfo">
-                {{userData?.user?.first_name}} {{userData?.user?.last_name}}
+            <p class="profile_ttl" *ngIf="userData?.user; else blankuserinfo">
+                {{ userData?.user?.first_name }} {{ userData?.user?.last_name }}
             </p>
-            <p class="profile_ttl_accent">Роль:
-                <span class="badge badge-info" *ngIf="userData?.role?.slug === 'user'">{{userData.role.title}}</span>
-                <span class="badge badge-warning" *ngIf="userData?.role?.slug === 'moderator'">{{userData.role.title}}</span>
-                <span class="badge badge-danger" *ngIf="userData?.role?.slug === 'admin'">{{userData.role.title}}</span>
-                <span class="badge badge-dark" *ngIf="userData?.role?.slug === 'master'">{{userData.role.title}}</span>
-                <span class="badge badge-light" *ngIf="userData?.role?.slug === 'guest'">{{userData.role.title}}</span>
+            <p class="profile_ttl_accent">
+                Роль:
+                <span
+                    class="badge badge-info"
+                    *ngIf="userData?.role?.slug === 'user'"
+                    >{{ userData.role.title }}</span
+                >
+                <span
+                    class="badge badge-warning"
+                    *ngIf="userData?.role?.slug === 'moderator'"
+                    >{{ userData.role.title }}</span
+                >
+                <span
+                    class="badge badge-danger"
+                    *ngIf="userData?.role?.slug === 'admin'"
+                    >{{ userData.role.title }}</span
+                >
+                <span
+                    class="badge badge-dark"
+                    *ngIf="userData?.role?.slug === 'master'"
+                    >{{ userData.role.title }}</span
+                >
+                <span
+                    class="badge badge-light"
+                    *ngIf="userData?.role?.slug === 'guest'"
+                    >{{ userData.role.title }}</span
+                >
             </p>
-            <p class="profile_ttl_accent">Статус аккаунта:
-                <span class="badge badge-success" *ngIf="userData?.user?.active else deactive">Активный</span>
+            <p class="profile_ttl_accent">
+                Статус аккаунта:
+                <span
+                    class="badge badge-success"
+                    *ngIf="userData?.user?.active; else deactive"
+                    >Активный</span
+                >
                 <ng-template #deactive>
                     <span class="badge badge-danger">Не подтвержденный</span>
                 </ng-template>
-
             </p>
         </div>
     </div>
@@ -43,175 +86,268 @@
         <form class="profile-form" [formGroup]="formGroup">
             <div class="form-group half">
                 <label for="first_name">Имя</label>
-                <input type="text"
-                       id="first_name"
-                       placeholder="Введите имя"
-                       class="form-control"
-                       formControlName="first_name">
+                <input
+                    type="text"
+                    id="first_name"
+                    placeholder="Введите имя"
+                    class="form-control"
+                    formControlName="first_name"
+                />
             </div>
             <div class="form-group half">
                 <label for="last_name">Фамилия</label>
-                <input type="text"
-                       id="last_name"
-                       placeholder="Введите фамилию"
-                       class="form-control"
-                       formControlName="last_name">
+                <input
+                    type="text"
+                    id="last_name"
+                    placeholder="Введите фамилию"
+                    class="form-control"
+                    formControlName="last_name"
+                />
             </div>
             <div class="form-group half">
                 <label for="patronymic">Отчество</label>
-                <input type="text"
-                       id="patronymic"
-                       placeholder="Введите фамилию"
-                       class="form-control"
-                       formControlName="patronymic">
+                <input
+                    type="text"
+                    id="patronymic"
+                    placeholder="Введите фамилию"
+                    class="form-control"
+                    formControlName="patronymic"
+                />
                 <small class="form-text text-muted">Если имеется</small>
             </div>
             <div class="form-group half">
                 <label for="patronymic">Логин</label>
-                <input type="text"
-                       id="login"
-                       placeholder="Введите логин"
-                       class="form-control"
-                       formControlName="login">
+                <input
+                    type="text"
+                    id="login"
+                    placeholder="Введите логин"
+                    class="form-control"
+                    formControlName="login"
+                />
             </div>
             <div class="form-group half">
                 <label for="client_birthday_datetime">Дата рождения</label>
-                <input type="date"
-                       id="client_birthday_datetime"
-                       placeholder="Ввыберите дату"
-                       class="form-control"
-                       formControlName="client_birthday_datetime">
+                <input
+                    type="date"
+                    id="client_birthday_datetime"
+                    placeholder="Ввыберите дату"
+                    class="form-control"
+                    formControlName="client_birthday_datetime"
+                />
             </div>
             <div class="form-group half">
                 <label for="status_type">Статус</label>
-                <select class="form-control" id="status_type" formControlName="status_type">
-                    {{statuses$ | async | json}}
+                <select
+                    class="form-control"
+                    id="status_type"
+                    formControlName="status_type"
+                >
                     <option value="null">Не выбрано</option>
-                    <option *ngFor="let item of statuses$ | async" [value]="item.id">{{item.title}}</option>
+                    <option
+                        *ngFor="let item of statuses$ | async"
+                        [value]="item.id"
+                    >
+                        {{ item.title }}
+                    </option>
                 </select>
-                <small class="form-text text-muted">Будет использован для подбора персональных предложений</small>
+                <small class="form-text text-muted"
+                    >Будет использован для подбора персональных
+                    предложений</small
+                >
             </div>
             <div class="form-group half">
                 <label for="conception_datetime">Дата зачатия</label>
-                <input type="date"
-                       id="conception_datetime"
-                       placeholder="Выберите дату"
-                       class="form-control"
-                       formControlName="conception_datetime">
-                <small class="form-text text-muted">Предположительная дата начала беременности</small>
+                <input
+                    type="date"
+                    id="conception_datetime"
+                    placeholder="Выберите дату"
+                    class="form-control"
+                    formControlName="conception_datetime"
+                />
+                <small class="form-text text-muted"
+                    >Предположительная дата начала беременности</small
+                >
             </div>
             <div class="form-group nogrow">
-                    <label for="multi_pregnant">Многоплодная беременность</label>
-                    <input type="checkbox"
-                           id="multi_pregnant"
-                           class="form-control checkbox"
-                           formControlName="multi_pregnant">
+                <label for="multi_pregnant">Многоплодная беременность</label>
+                <input
+                    type="checkbox"
+                    id="multi_pregnant"
+                    class="form-control checkbox"
+                    formControlName="multi_pregnant"
+                />
             </div>
             <div class="form-group">
                 <label for="weight">Вес</label>
-                <input type="text"
-                       id="weight"
-                       placeholder="Введите вес"
-                       class="form-control"
-                       formControlName="weight">
+                <input
+                    type="text"
+                    id="weight"
+                    placeholder="Введите вес"
+                    class="form-control"
+                    formControlName="weight"
+                />
             </div>
             <div class="form-group">
                 <label for="height">Рост</label>
-                <input type="text"
-                       id="height"
-                       placeholder="Введите рост"
-                       class="form-control"
-                       formControlName="height">
+                <input
+                    type="text"
+                    id="height"
+                    placeholder="Введите рост"
+                    class="form-control"
+                    formControlName="height"
+                />
             </div>
             <div class="form-group">
                 <label for="clothes_size">Размер одежды</label>
-                <input type="text"
-                       id="clothes_size"
-                       placeholder="Введите размер"
-                       class="form-control"
-                       formControlName="clothes_size">
+                <input
+                    type="text"
+                    id="clothes_size"
+                    placeholder="Введите размер"
+                    class="form-control"
+                    formControlName="clothes_size"
+                />
             </div>
             <div class="form-group">
                 <label for="shoes_size">Размер обуви</label>
-                <input type="text"
-                       id="shoes_size"
-                       placeholder="Введите размер"
-                       class="form-control"
-                       formControlName="shoes_size">
+                <input
+                    type="text"
+                    id="shoes_size"
+                    placeholder="Введите размер"
+                    class="form-control"
+                    formControlName="shoes_size"
+                />
             </div>
             <div class="filter__separator ng-star-inserted"></div>
-            <p class="filter__ttl" >Контактные данные</p>
+            <p class="filter__ttl">Контактные данные</p>
             <div class="form-group">
                 <label for="phone">Телефон</label>
-                <input type="phone"
-                       id="phone"
-                       placeholder="Введите Телефон"
-                       class="form-control"
-                       formControlName="phone">
+                <input
+                    type="phone"
+                    id="phone"
+                    placeholder="Введите Телефон"
+                    class="form-control"
+                    formControlName="phone"
+                />
             </div>
             <div class="form-group">
                 <label for="email">Эл. почта</label>
-                <input type="email"
-                       id="email"
-                       placeholder="Введите e-mail"
-                       class="form-control"
-                       formControlName="email">
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Введите e-mail"
+                    class="form-control"
+                    formControlName="email"
+                />
             </div>
             <div class="form-group">
                 <label for="skype">Skype</label>
-                <input type="text"
-                       id="skype"
-                       placeholder="Введите skype"
-                       class="form-control"
-                       formControlName="skype">
+                <input
+                    type="text"
+                    id="skype"
+                    placeholder="Введите skype"
+                    class="form-control"
+                    formControlName="skype"
+                />
             </div>
-            <p class="filter__ttl" >Предпочитаемый канал связи</p>
+            <p class="filter__ttl">Предпочитаемый канал связи</p>
             <div class="form-group text-center">
-                <label for="ch_phone"><i class="fas fa-phone fa-2x" aria-hidden="true" title="Телефон"></i></label>
-                <input type="checkbox"
-                       id="ch_phone"
-                       class="form-control checkbox"
-                       formControlName="ch_phone">
-            </div>
-            <div class="form-group text-center">
-                <label for="ch_viber"><i class="fab fa-viber fa-2x" aria-hidden="true" title="Viber"></i></label>
-                <input type="checkbox"
-                       id="ch_viber"
-                       class="form-control checkbox"
-                       formControlName="ch_viber">
-            </div>
-            <div class="form-group text-center">
-                <label for="ch_whatsapp"><i class="fab fa-whatsapp fa-2x" aria-hidden="true" title="WhatsApp"></i></label>
-                <input type="checkbox"
-                       id="ch_whatsapp"
-                       class="form-control checkbox"
-                       formControlName="ch_whatsapp">
+                <label for="ch_phone"
+                    ><i
+                        class="fas fa-phone fa-2x"
+                        aria-hidden="true"
+                        title="Телефон"
+                    ></i
+                ></label>
+                <input
+                    type="checkbox"
+                    id="ch_phone"
+                    class="form-control checkbox"
+                    formControlName="ch_phone"
+                />
             </div>
             <div class="form-group text-center">
-                <label for="ch_telegram"><i class="fab fa-telegram-plane fa-2x" aria-hidden="true" title="Telegram"></i></label>
-                <input type="checkbox"
-                       id="ch_telegram"
-                       class="form-control checkbox"
-                       formControlName="ch_telegram">
+                <label for="ch_viber"
+                    ><i
+                        class="fab fa-viber fa-2x"
+                        aria-hidden="true"
+                        title="Viber"
+                    ></i
+                ></label>
+                <input
+                    type="checkbox"
+                    id="ch_viber"
+                    class="form-control checkbox"
+                    formControlName="ch_viber"
+                />
             </div>
             <div class="form-group text-center">
-                <label for="ch_email"><i class="fa fa-envelope fa-2x" aria-hidden="true" title="E-mail"></i></label>
-                <input type="checkbox"
-                       id="ch_email"
-                       class="form-control checkbox"
-                       formControlName="ch_email">
+                <label for="ch_whatsapp"
+                    ><i
+                        class="fab fa-whatsapp fa-2x"
+                        aria-hidden="true"
+                        title="WhatsApp"
+                    ></i
+                ></label>
+                <input
+                    type="checkbox"
+                    id="ch_whatsapp"
+                    class="form-control checkbox"
+                    formControlName="ch_whatsapp"
+                />
             </div>
             <div class="form-group text-center">
-                <label for="ch_skype"><i class="fab fa-skype fa-2x" aria-hidden="true" title="Skype"></i></label>
-                <input type="checkbox"
-                       id="ch_skype"
-                       class="form-control checkbox"
-                       formControlName="ch_skype">
+                <label for="ch_telegram"
+                    ><i
+                        class="fab fa-telegram-plane fa-2x"
+                        aria-hidden="true"
+                        title="Telegram"
+                    ></i
+                ></label>
+                <input
+                    type="checkbox"
+                    id="ch_telegram"
+                    class="form-control checkbox"
+                    formControlName="ch_telegram"
+                />
+            </div>
+            <div class="form-group text-center">
+                <label for="ch_email"
+                    ><i
+                        class="fa fa-envelope fa-2x"
+                        aria-hidden="true"
+                        title="E-mail"
+                    ></i
+                ></label>
+                <input
+                    type="checkbox"
+                    id="ch_email"
+                    class="form-control checkbox"
+                    formControlName="ch_email"
+                />
+            </div>
+            <div class="form-group text-center">
+                <label for="ch_skype"
+                    ><i
+                        class="fab fa-skype fa-2x"
+                        aria-hidden="true"
+                        title="Skype"
+                    ></i
+                ></label>
+                <input
+                    type="checkbox"
+                    id="ch_skype"
+                    class="form-control checkbox"
+                    formControlName="ch_skype"
+                />
             </div>
         </form>
     </div>
     <div *ngIf="userData?.role?.slug !== 'guest'" class="profile_footer">
-        <button class="filter__link" (click)="reject()">Отменить изменения</button>
-        <button class="filter__btn filter__btn--green" (click)="submit()" >Применить</button>
+        <button class="filter__link" (click)="reject()">
+            Отменить изменения
+        </button>
+        <button class="filter__btn filter__btn--green" (click)="submit()">
+            Применить
+        </button>
     </div>
 </div>
