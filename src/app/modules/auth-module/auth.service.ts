@@ -168,4 +168,8 @@ export class AuthService {
     isSelfUser(id: number): boolean {
         return this.user.id === id ?? false;
     }
+
+    gotoLoginPage(): void {
+        this.router.navigate(['/auth']);
+    }
 }

@@ -14,14 +14,14 @@
             class="logo__icon"
             alt=""
     /></a>
-     <div class="toggler" (click)="menuToggle()">
+    <div class="toggler" (click)="menuToggle()">
         <ng-container *ngIf="!hide">
             <i class="fa-solid fa-angle-left"></i>
         </ng-container>
         <ng-container *ngIf="hide">
             <i class="fa-solid fa-angle-right"></i>
         </ng-container>
-     </div>
+    </div>
 </div>
 <div class="menu__body" *ngIf="isDefaultMode$ | async">
     <ng-container
@@ -32,7 +32,7 @@
             user: user$ | async
         } as userData"
     >
-        <div class="menu__user menu-user" *ngIf="userData.access">
+        <div class="menu__user menu-user">
             <div class="menu__user-avatar">
                 <ng-container
                     *ngIf="userData.photo | async as image; else blankuser"
@@ -57,8 +57,21 @@
                     class="menu__user-btn-icon"
                     alt=""
             /></a>
+            <i
+                class="fa-solid fa-right-from-bracket logout fa-lg"
+                (click)="authService.logout()"
+                title="Выйти из аккаунта"
+                *ngIf="userData.access"
+            ></i>
+            <i
+                class="fa-solid fa-right-to-bracket fa-lg login"
+                title="Войти в аккаунт"
+                (click)="authService.gotoLoginPage()"
+                *ngIf="!userData.access"
+            ></i>
         </div>
     </ng-container>
+
     <ul class="menu__list">
         <!--<li class="menu__item">
             <a [routerLink]="['/']" class="menu__link"><img src="img/icons/home.svg" class="menu__link-icon" alt="">
@@ -104,8 +117,12 @@
             </ul>
         </li>
         <li class="menu__item">
-            <a [routerLink]="['/','system','feedback']" class="menu__link">
-                <img src="img/icons/star-primary.svg" class="menu__link-icon" alt="" />
+            <a [routerLink]="['/', 'system', 'feedback']" class="menu__link">
+                <img
+                    src="img/icons/star-primary.svg"
+                    class="menu__link-icon"
+                    alt=""
+                />
                 <span class="menu__link-txt">Мои отзывы</span>
             </a>
         </li>
@@ -228,8 +245,8 @@
 
 <div class="menu__footer">
     <a href="javascript:void(0);" class="menu__footer-link muted">О нас</a>
-    <button class="menu__footer-btn" (click)="authService.logout()">
-        <img src="img/icons/exit.svg" class="menu__footer-btn-icon" alt="" />
-        <span class="menu__footer-btn-txt">Выйти из аккаунта</span>
-    </button>
+    <!--    <button class="menu__footer-btn" (click)="authService.logout()">-->
+    <!--        <img src="img/icons/exit.svg" class="menu__footer-btn-icon" alt="" />-->
+    <!--        <span class="menu__footer-btn-txt">Выйти из аккаунта</span>-->
+    <!--    </button>-->
 </div>
