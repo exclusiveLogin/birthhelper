@@ -27,6 +27,8 @@ import { switchMap } from "rxjs/operators";
 export class FeedbackPageItemUserComponent {
     @Input() feedback: FeedbackResponse & FeedbackSummaryVotes & Entitized;
     @Output() update = new EventEmitter();
+    @Output() delete = new EventEmitter();
+    @Output() edit = new EventEmitter();
 
     updater$ = new BehaviorSubject(null);
     replies$ = this.updater$.pipe(
@@ -57,5 +59,13 @@ export class FeedbackPageItemUserComponent {
 
     isSelfOwner(user_id: number): boolean {
         return this.authService.isSelfUser(user_id);
+    }
+
+    selfDelete(): void {
+        this.delete.emit();
+    }
+
+    selfEdit(): void {
+        this.edit.emit();
     }
 }

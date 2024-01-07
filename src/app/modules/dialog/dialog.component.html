@@ -12,6 +12,7 @@
 
     <ng-container *ngIf="tpl_custom">
         <div class="popup popup--large" @dialogState>
+            <button class="popup__close" (click)="closeDialog()"></button>
             <ng-container
                 *ngTemplateOutlet="template; context: tpl_context"
             ></ng-container>
@@ -245,8 +246,9 @@
                                     transform="translate(-1 -2)"
                                 />
                                 <path fill="none" d="M0 0h24v24H0z" />
-                            </g></svg
-                        ><span *ngIf="data.price"
+                            </g>
+                        </svg>
+                        <span *ngIf="data.price"
                             >{{ data.price }}&nbsp;руб.</span
                         >
                     </p>
@@ -841,13 +843,24 @@
     <div class="popup popup--small prompt" @dialogState>
         <div class="popup__body">
             <div class="popup__message">
-                <img src="img\icons\question-mark-round-icon.svg" class="popup__message-img">
-                <p class="popup__message-text">{{data.text}}</p>
+                <img
+                    src="img\icons\question-mark-round-icon.svg"
+                    class="popup__message-img"
+                />
+                <p class="popup__message-text">{{ data.text }}</p>
             </div>
         </div>
         <div class="popup__footer">
-            <button class="popup__footer-btn submit" *ngIf="data.cancel" (click)="cancelDialog()">{{data.cancel ?? 'Отменить'}}</button>
-            <button class="popup__footer-btn cancel" (click)="submitDialog()">{{data.submit ?? 'Да'}}</button>
+            <button
+                class="popup__footer-btn submit"
+                *ngIf="data.cancel"
+                (click)="cancelDialog()"
+            >
+                {{ data.cancel ?? "Отменить" }}
+            </button>
+            <button class="popup__footer-btn cancel" (click)="submitDialog()">
+                {{ data.submit ?? "Да" }}
+            </button>
         </div>
     </div>
 </ng-template>

@@ -33,12 +33,14 @@ export class DialogComponent implements OnInit {
     _showed$ = new Subject<boolean>();
     tabIdx: number;
     _mode: DialogType = "popup";
+
     constructor(
         private cdr: ChangeDetectorRef,
         private dialogService: DialogService,
         private imageService: ImageService,
         private router: Router
     ) {}
+
     @Input() id_dialog = "main_app_dialog";
 
     tplData = {
@@ -56,7 +58,7 @@ export class DialogComponent implements OnInit {
     @ViewChild("tpl_popup_person", { static: true })
     tpl_person: TemplateRef<any>;
 
-    @ViewChild("tpl_popup_other", { static: true }) 
+    @ViewChild("tpl_popup_other", { static: true })
     tpl_other: TemplateRef<any>;
 
     @ViewChild("tpl_popup_contragent", { static: true })
@@ -107,10 +109,10 @@ export class DialogComponent implements OnInit {
                         this.dialogAnswer$ =
                             action.dialogAnswerPipe$ ??
                             new Subject<DialogAnswer>();
-                        
+
                         const _tpl = this.getTemplate(action);
                         if (!_tpl) return;
-                    
+
                         this.tpl_context.$implicit = action.data;
 
                         if (this.imageSignal$) {
@@ -119,16 +121,17 @@ export class DialogComponent implements OnInit {
                             this.photoUrl$ = null;
                         }
 
-                        const imgData = this.imageService.getImage$(action?.data?.photo);
+                        const imgData = this.imageService.getImage$(
+                            action?.data?.photo
+                        );
                         this.photoUrl$ = imgData?.[0];
                         this.imageSignal$ = imgData?.[1];
-                       
+
                         if (this.hasMapTpl(action.templateKey)) {
                             this.showMapMarker(action);
                         }
 
                         this.showDialog(action, _tpl);
-
                     }
                     if (action.action === "close") {
                         this.uninstallDialog();
@@ -157,8 +160,7 @@ export class DialogComponent implements OnInit {
         if (!action?.data?.position_lat || !action?.data?.position_lon) return;
         setTimeout(() => {
             const el = document.getElementById("dialog_viewport");
-            const mapEl =
-                el?.querySelector(".map_container");
+            const mapEl = el?.querySelector(".map_container");
             if (!mapEl) {
                 return;
             }
@@ -181,9 +183,8 @@ export class DialogComponent implements OnInit {
                     lon: action.data.position_lon,
                 },
                 this.mapTimeout
-            );               
+            );
         }, this.mapTimeout);
-        
     }
 
     openDialog(tpl: TemplateRef<any>): void {
@@ -269,6 +270,7 @@ export class DialogComponent implements OnInit {
     }
 
     cancelDialog(): void {
-        this.dialogAnswer$.error('cancel dialog');
+        this.dialogAnswer$.error("cancel dialog");
+        this.uninstallDialog();
     }
 }

@@ -71,17 +71,22 @@
 </div>
 <!-- для отзывов пользователя -->
 
-<ng-template #userlist let-list
-    ><div class="feedback_block zebra" *ngFor="let feedback of list">
+<ng-template #userlist let-list>
+    <div class="feedback_block zebra" *ngFor="let feedback of list">
         <app-feedback-page-item-user
             [feedback]="feedback"
-        ></app-feedback-page-item-user></div
-></ng-template>
+            (edit)="editFeedback(feedback)"
+            (delete)="deleteFeedback(feedback.id)"
+        ></app-feedback-page-item-user>
+    </div>
+</ng-template>
 
 <ng-template #targetlist let-list>
     <div class="zebra" *ngFor="let feedback of list">
         <app-feedback-page-item-target
             [feedback]="feedback"
+            (edit)="editFeedback(feedback)"
+            (delete)="deleteFeedback(feedback.id)"
         ></app-feedback-page-item-target>
     </div>
 </ng-template>
@@ -97,3 +102,28 @@
         (vc)="pageChanged($event)"
     ></app-paginator>
 </ng-container>
+
+<!--Ответ на отзыв-->
+<ng-template #tpl_dialog_feedback_reply let-data>
+    <div class="popup__header">
+        <p class="popup__title">Ответ на отзыв {{ data.id }}</p>
+    </div>
+    <div class="popup__body">
+        <form #t="ngForm">
+            <textarea
+                class="popup__textarea"
+                placeholder="Введите текст Вашего отзыва"
+                [name]="'comment'"
+                [ngModel]="data?.comment ? data?.comment : ''"
+            ></textarea>
+        </form>
+    </div>
+    <div class="popup__footer">
+        <button
+            class="popup__footer-btn"
+            (click)="sendFeedbackReply(t.form.value)"
+        >
+            Ответить
+        </button>
+    </div>
+</ng-template>

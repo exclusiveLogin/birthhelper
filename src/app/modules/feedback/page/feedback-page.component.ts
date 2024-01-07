@@ -1,6 +1,10 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
 import {
-    Comment,
+    ChangeDetectionStrategy,
+    Component,
+    TemplateRef,
+    ViewChild,
+} from "@angular/core";
+import {
     FeedbackResponse,
     FeedbackSet,
     SummaryRateByTargetResponse,
@@ -20,11 +24,9 @@ import {
 } from "rxjs";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 import { FeedbackService } from "../feedback.service";
-import { AuthService } from "@modules/auth-module/auth.service";
 import { Entity } from "@models/entity.interface";
 import { DialogService } from "@modules/dialog/dialog.service";
 import { FeedbackContext } from "@models/context";
-import { User } from "@models/user.interface";
 
 @UntilDestroy()
 @Component({
@@ -34,11 +36,13 @@ import { User } from "@models/user.interface";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeedbackPageComponent {
+    @ViewChild("tpl_dialog_feedback_reply", { static: true, read: TemplateRef })
+    replyTemplate: TemplateRef<any>;
+
     constructor(
         private ar: ActivatedRoute,
         private restService: RestService,
         private feedbackService: FeedbackService,
-        private authService: AuthService,
         private dialogService: DialogService
     ) {}
 
@@ -222,5 +226,9 @@ export class FeedbackPageComponent {
             .catch((error) => {
                 console.log("deleteFeedback error: ", error);
             });
+    }
+
+    sendFeedbackReply(form: Record<string, string>): void {
+        console.log("sendFeedbackReply: ", form);
     }
 }
