@@ -29,6 +29,7 @@ export class FeedbackPageItemUserComponent {
     @Output() update = new EventEmitter();
     @Output() delete = new EventEmitter();
     @Output() edit = new EventEmitter();
+    @Output() reply = new EventEmitter();
 
     updater$ = new BehaviorSubject(null);
     replies$ = this.updater$.pipe(
@@ -67,5 +68,9 @@ export class FeedbackPageItemUserComponent {
 
     selfEdit(): void {
         this.edit.emit();
+    }
+
+    selfReply(): void {
+        this.reply.emit();
     }
 }

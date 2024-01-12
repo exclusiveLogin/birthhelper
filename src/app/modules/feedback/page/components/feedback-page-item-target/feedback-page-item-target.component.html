@@ -47,6 +47,12 @@
             (click)="selfDelete()"
         ></i>
     </div>
+    <div class="action_block" *ngIf="!isSelfOwner(feedback.user_id)">
+        <i
+            class="fa-solid fa-reply fa-2x action_button"
+            (click)="selfReply()"
+        ></i>
+    </div>
 </div>
 <ng-container *ngIf="feedback.comment?.replies">
     <div class="replies" *ngIf="{ replies: replies$ | async } as data">

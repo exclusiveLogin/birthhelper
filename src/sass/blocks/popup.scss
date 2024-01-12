@@ -43,8 +43,7 @@
 
     &--xmiddle {
         width: 774px;
-        background: #fff url("../../img/clinic-cards/clinic-card-bg.png")
-            no-repeat 0 0 / 242px auto;
+        background: #fff url("../../img/clinic-cards/clinic-card-bg.png") no-repeat 0 0 / 242px auto;
 
         .popup__body {
             padding: 40px 67px 20px 42px;
@@ -53,9 +52,7 @@
 
     &--large {
         width: 907px;
-        background: #fff
-            url("../../img/accommodation-cards/accommodation-cards-bg.png")
-            no-repeat 100% calc(100% - 30px) / 242px auto;
+        background: #fff url("../../img/accommodation-cards/accommodation-cards-bg.png") no-repeat 100% calc(100% - 30px) / 242px auto;
 
         .popup__body {
             padding: 35px 72px 15px 34px;
@@ -295,6 +292,7 @@
     border: none;
     padding: 30px 24px;
     outline: none;
+    font-size: 1.2rem;
 }
 
 .popup__body-column {
@@ -415,9 +413,11 @@
     line-height: 1.33;
     color: rgba($black, 0.7);
 }
+
 .popup__body-content {
     flex-grow: 1;
 }
+
 .popup__body-content-header {
     display: flex;
     justify-content: space-between;

@@ -198,7 +198,7 @@ export class FeedbackService extends StoreService {
     }
 
     sendFeedbackReply(
-        repliebleComment: number,
+        repliableCommentId: number,
         text: string,
         isOfficial: boolean
     ) {
@@ -211,7 +211,7 @@ export class FeedbackService extends StoreService {
             action: "REPLY",
             status: isOfficial ? "official" : "pending",
             comment: text,
-            comment_id: repliebleComment,
+            comment_id: repliableCommentId,
         };
 
         return this.rest
@@ -404,9 +404,6 @@ export class FeedbackService extends StoreService {
 
         return this.rest.fetchData(restSetting, data, true);
     }
-
-    addFeedback(): void {}
-    replyFeedback(): void {}
 
     deleteFeedback(feedbackId: number): Observable<FeedbackRemoveResponse> {
         const restSetting: ISettingsParams = {

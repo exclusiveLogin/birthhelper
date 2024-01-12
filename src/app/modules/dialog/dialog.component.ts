@@ -5,7 +5,7 @@ import {
     Input,
     OnInit,
     TemplateRef,
-    ViewChild,
+    ViewChild
 } from "@angular/core";
 import { DialogAction, DialogAnswer, DialogType } from "./dialog.model";
 import { DialogService } from "./dialog.service";
@@ -25,7 +25,7 @@ import { Router } from "@angular/router";
     templateUrl: "./dialog.component.html",
     styleUrls: ["./dialog.component.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    animations: [dialogWrapperAnimation, dialogAnimation],
+    animations: [dialogWrapperAnimation, dialogAnimation]
 })
 export class DialogComponent implements OnInit {
     map: LLMap;
@@ -39,16 +39,18 @@ export class DialogComponent implements OnInit {
         private dialogService: DialogService,
         private imageService: ImageService,
         private router: Router
-    ) {}
+    ) {
+    }
 
     @Input() id_dialog = "main_app_dialog";
 
     tplData = {
         error_tpl: "Целевой шаблон не задан",
         error_tpl_code: "ERR_TPL_BLANK",
+        size: "large"
     };
     tpl_context = {
-        $implicit: this.tplData,
+        $implicit: this.tplData
     };
     tpl_custom = false;
 
@@ -132,9 +134,13 @@ export class DialogComponent implements OnInit {
                         }
 
                         this.showDialog(action, _tpl);
+                        if (action.size) {
+                            this.tplData.size = action.size;
+                        }
                     }
                     if (action.action === "close") {
                         this.uninstallDialog();
+                        this.tplData.size = "large";
                     }
                 });
         }
@@ -174,13 +180,13 @@ export class DialogComponent implements OnInit {
                 icon: icon({
                     iconUrl: "img/icons/hospital.png",
                     iconSize: [32, 32],
-                    iconAnchor: [16, 16],
-                }),
+                    iconAnchor: [16, 16]
+                })
             }).addTo(this.map.map);
             this.map.fitByLatLonAnimate(
                 {
                     lat: action.data.position_lat,
-                    lon: action.data.position_lon,
+                    lon: action.data.position_lon
                 },
                 this.mapTimeout
             );
@@ -250,10 +256,10 @@ export class DialogComponent implements OnInit {
             data: {
                 votes: Object.keys(votes).map((k) => ({
                     slug: k,
-                    rate: Number(votes[k]),
+                    rate: Number(votes[k])
                 })),
-                comment: data.comment,
-            },
+                comment: data.comment
+            }
         };
         this.dialogAnswer$.next(answer);
         this.uninstallDialog();

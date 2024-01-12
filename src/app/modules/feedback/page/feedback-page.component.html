@@ -6,7 +6,9 @@
 
 <ng-container *ngIf="isTargetFeedbackMode$ | async">
     <div class="info" *ngIf="targetData$ | async as data">
-        <app-contragent-card [contragent]="data"></app-contragent-card>
+        <app-contragent-card
+            [contragent]="parentContragent$ | async"
+        ></app-contragent-card>
         <ng-container *ngIf="rating$ | async as rating">
             <i
                 class="fas fa-chevron-right fa-3x"
@@ -77,6 +79,7 @@
             [feedback]="feedback"
             (edit)="editFeedback(feedback)"
             (delete)="deleteFeedback(feedback.id)"
+            (reply)="openReplyDialog(feedback)"
         ></app-feedback-page-item-user>
     </div>
 </ng-template>
@@ -87,6 +90,7 @@
             [feedback]="feedback"
             (edit)="editFeedback(feedback)"
             (delete)="deleteFeedback(feedback.id)"
+            (reply)="openReplyDialog(feedback)"
         ></app-feedback-page-item-target>
     </div>
 </ng-template>
@@ -106,7 +110,17 @@
 <!--Ответ на отзыв-->
 <ng-template #tpl_dialog_feedback_reply let-data>
     <div class="popup__header">
-        <p class="popup__title">Ответ на отзыв {{ data.id }}</p>
+        <p class="popup__title">Ответ на отзыв #{{ data.id }}</p>
+        <ng-container *ngIf="data.feedback as feedback">
+            <app-lk-feedback-message
+                [text]="feedback?.comment?.text"
+                [date]="feedback?.datetime_update"
+                [editMode]="false"
+                [mode]="'answer'"
+                [isOfficial]="feedback.status === 'official'"
+                [fromUser]="feedback.user"
+            ></app-lk-feedback-message>
+        </ng-container>
     </div>
     <div class="popup__body">
         <form #t="ngForm">
@@ -121,7 +135,7 @@
     <div class="popup__footer">
         <button
             class="popup__footer-btn"
-            (click)="sendFeedbackReply(t.form.value)"
+            (click)="sendFeedbackReply(t.form.value, data.feedback)"
         >
             Ответить
         </button>
