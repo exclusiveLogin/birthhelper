@@ -29,18 +29,8 @@ export class FeedbackPageItemUserComponent {
     @Output() update = new EventEmitter();
     @Output() delete = new EventEmitter();
     @Output() edit = new EventEmitter();
-    @Output() reply = new EventEmitter();
 
-    updater$ = new BehaviorSubject(null);
-    replies$ = this.updater$.pipe(
-        switchMap(() => this.restService.getReplies(this.feedback.comment?.id))
-    );
-
-    constructor(
-        private feedbackService: FeedbackService,
-        private restService: RestService,
-        private authService: AuthService
-    ) {}
+    constructor(private feedbackService: FeedbackService) {}
 
     setLike(feedback_id: number, invert = false): void {
         this.feedbackService
@@ -54,23 +44,11 @@ export class FeedbackPageItemUserComponent {
             });
     }
 
-    userByFeedback(comment: Comment): Observable<User> {
-        return this.restService.getUserById(comment.user_id);
-    }
-
-    isSelfOwner(user_id: number): boolean {
-        return this.authService.isSelfUser(user_id);
-    }
-
     selfDelete(): void {
         this.delete.emit();
     }
 
     selfEdit(): void {
         this.edit.emit();
-    }
-
-    selfReply(): void {
-        this.reply.emit();
     }
 }

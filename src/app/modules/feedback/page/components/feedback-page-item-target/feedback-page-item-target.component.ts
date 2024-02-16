@@ -4,6 +4,8 @@ import {
     EventEmitter,
     Input,
     Output,
+    TemplateRef,
+    ViewChild,
 } from "@angular/core";
 import { Entitized } from "@models/entity.interface";
 import { User } from "@models/user.interface";
@@ -17,6 +19,8 @@ import {
 import { RestService } from "@services/rest.service";
 import { BehaviorSubject, Observable } from "rxjs";
 import { switchMap } from "rxjs/operators";
+import { DialogService } from "@modules/dialog/dialog.service";
+import { DialogServiceConfig } from "@modules/dialog/dialog.model";
 
 @Component({
     selector: "app-feedback-page-item-target",
@@ -25,12 +29,16 @@ import { switchMap } from "rxjs/operators";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeedbackPageItemTargetComponent {
+    @ViewChild("tpl_dialog_feedback_reply", { static: true, read: TemplateRef })
+    replyTemplate: TemplateRef<any>;
+
     @Input() feedback: FeedbackResponse & FeedbackSummaryVotes & Entitized;
 
     @Output() update = new EventEmitter();
     @Output() delete = new EventEmitter();
     @Output() edit = new EventEmitter();
     @Output() reply = new EventEmitter();
+    @Output() removeReply = new EventEmitter();
 
     updater$ = new BehaviorSubject(null);
     replies$ = this.updater$.pipe(
@@ -40,7 +48,8 @@ export class FeedbackPageItemTargetComponent {
     constructor(
         private feedbackService: FeedbackService,
         private restService: RestService,
-        private authService: AuthService
+        private authService: AuthService,
+        private dialogService: DialogService
     ) {}
 
     setLike(feedback_id: number, invert = false): void {
@@ -65,13 +74,65 @@ export class FeedbackPageItemTargetComponent {
 
     selfDelete(): void {
         this.delete.emit();
+        this.updater$.next(null);
     }
 
     selfEdit(): void {
         this.edit.emit();
+        this.updater$.next(null);
     }
 
-    selfReply(): void {
-        this.reply.emit();
+    deleteFeedbackReply(feedback: FeedbackResponse, comment: Comment): void {
+        this.dialogService
+            .showDialogByTemplateKey("prompt", {
+                data: {
+                    text: "Вы уверены что хотите удалить этот комментарий?",
+                    submit: "Удалить",
+                    cancel: "Отмена",
+                },
+            })
+            .then(async () => {
+                console.log("deleteFeedbackReply", comment);
+                await this.feedbackService
+                    .deleteFeedbackReply(feedback.id, comment.id)
+                    .toPromise();
+                this.updater$.next(null);
+                this.removeReply.emit();
+            })
+            .catch((error) => {
+                console.log("deleteFeedback error: ", error);
+            });
+    }
+
+    replyTrackBy(index, reply: Comment) {
+        return reply.id;
+    }
+
+    openReplyDialog(feedback: FeedbackResponse): void {
+        const dialogConfig: Partial<DialogServiceConfig> = {
+            data: {
+                id: feedback.id,
+                feedback,
+            },
+        };
+        this.dialogService
+            .showDialogByTemplate(this.replyTemplate, dialogConfig)
+            .then((r) => console.log("dialog result: ", r));
+    }
+
+    sendFeedbackReply(
+        form: Record<string, string>,
+        feedback: FeedbackResponse
+    ): void {
+        console.log("sendFeedbackReply: ", form, feedback);
+        this.feedbackService
+            .sendFeedbackReply(feedback.comment.id, form.comment, false)
+            .then((r) => {
+                console.log("add reply result: ", r);
+                this.dialogService.closeOpenedDialog("main_app_dialog");
+                this.updater$.next(null);
+                this.reply.emit();
+            })
+            .catch((err) => console.log("add reply error:", err));
     }
 }

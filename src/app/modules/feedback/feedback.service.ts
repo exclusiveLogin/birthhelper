@@ -5,6 +5,7 @@ import { ISettingsParams, RestService } from "@services/rest.service";
 import { DictionaryService } from "@services/dictionary.service";
 import {
     CreateFeedbackRequest,
+    DeleteFeedbackReplyRequest,
     EditFeedbackRequest,
     FeedbackByContragentResponse,
     FeedbackDislikeCommentRequest,
@@ -16,6 +17,7 @@ import {
     FeedbackStatus,
     FeedbackSummaryVotes,
     ReplyFeedbackRequest,
+    ReplyRemoveResponse,
     SummaryRateByTargetResponse,
     Vote,
     VoteResponse,
@@ -414,5 +416,23 @@ export class FeedbackService extends StoreService {
         this.clearRateStore();
 
         return this.rest.remData(restSetting);
+    }
+
+    deleteFeedbackReply(
+        feedbackId: number,
+        replyId: number
+    ): Observable<ReplyRemoveResponse> {
+        const restSetting: ISettingsParams = {
+            mode: "api",
+            segment: "feedback",
+        };
+
+        const data: DeleteFeedbackReplyRequest = {
+            action: "REMOVE_COMMENT",
+            comment_id: replyId,
+            id: feedbackId,
+        };
+
+        return this.rest.postData(restSetting, data);
     }
 }

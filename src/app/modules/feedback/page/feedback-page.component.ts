@@ -1,9 +1,4 @@
-import {
-    ChangeDetectionStrategy,
-    Component,
-    TemplateRef,
-    ViewChild,
-} from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import {
     FeedbackResponse,
     FeedbackSet,
@@ -27,7 +22,6 @@ import { FeedbackService } from "../feedback.service";
 import { SlotEntity } from "@models/entity.interface";
 import { DialogService } from "@modules/dialog/dialog.service";
 import { FeedbackContext } from "@models/context";
-import { DialogServiceConfig } from "@modules/dialog/dialog.model";
 import { Contragent } from "@models/contragent.interface";
 import { SlotService } from "@services/slot.service";
 
@@ -39,9 +33,6 @@ import { SlotService } from "@services/slot.service";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeedbackPageComponent {
-    @ViewChild("tpl_dialog_feedback_reply", { static: true, read: TemplateRef })
-    replyTemplate: TemplateRef<any>;
-
     constructor(
         private ar: ActivatedRoute,
         private restService: RestService,
@@ -237,34 +228,7 @@ export class FeedbackPageComponent {
             });
     }
 
-    openReplyDialog(feedback: FeedbackResponse): void {
-        const dialogConfig: Partial<DialogServiceConfig> = {
-            data: {
-                id: feedback.id,
-                feedback,
-            },
-        };
-        this.dialogService
-            .showDialogByTemplate(this.replyTemplate, dialogConfig)
-            .then((r) => console.log("dialog result: ", r));
-    }
-
-    sendFeedbackReply(
-        form: Record<string, string>,
-        feedback: FeedbackResponse
-    ): void {
-        console.log("sendFeedbackReply: ", form, feedback);
-        this.feedbackService
-            .sendFeedbackReply(feedback.comment.id, form.comment, false)
-            .then((r) => {
-                console.log("add reply result: ", r);
-                this.dialogService.closeOpenedDialog("main_app_dialog");
-                this.refreshPage();
-            })
-            .catch((err) => console.log("add reply error:", err));
-    }
-
-    refreshPage(): void {
-        this.updater$.next();
+    listTrackByFn(index, item: FeedbackResponse) {
+        return item.id;
     }
 }
