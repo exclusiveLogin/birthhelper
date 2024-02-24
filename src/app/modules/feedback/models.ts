@@ -49,7 +49,7 @@ export interface FeedbackByContragentResponse {
     total: number;
 }
 
-export interface FeedbackResponse {
+export interface FeedbackResponse extends Reactions {
     id: number;
     section: SectionType;
     target_entity_key: string;
@@ -59,10 +59,6 @@ export interface FeedbackResponse {
     user_id: number;
     comment: Comment;
     votes: Array<Vote>;
-    likes: Array<Like>;
-    dislikes: Array<Like>;
-    likeOwner: boolean;
-    dislikeOwner: boolean;
     user: User;
     canEdit: boolean;
     canRemove: boolean;
@@ -70,7 +66,7 @@ export interface FeedbackResponse {
     datetime_create?: string;
 }
 
-export interface Comment {
+export interface Comment extends Reactions {
     id?: number;
     feedback_id: number;
     user_id: number;
@@ -81,6 +77,13 @@ export interface Comment {
     type?: FeedbackCommentType;
     datetime_update?: string;
     datetime_create?: string;
+}
+
+interface Reactions {
+    likes: Array<Like>;
+    dislikes: Array<Like>;
+    likeOwner: boolean;
+    dislikeOwner: boolean;
 }
 
 export interface Vote {

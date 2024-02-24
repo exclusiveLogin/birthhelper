@@ -61,6 +61,19 @@
     <div class="replies" *ngIf="{ replies: replies$ | async } as data">
         <ng-container *ngFor="let reply of data.replies; trackBy: replyTrackBy">
             <div class="message-item">
+                <!-- лайки -->
+                <app-likes
+                    [count]="reply?.likes?.length ?? 0"
+                    [self]="reply?.likeOwner"
+                    (click)="setReplyLike(reply?.id)"
+                ></app-likes>
+                <app-likes
+                    [count]="reply?.dislikes?.length ?? 0"
+                    [negative]="true"
+                    [self]="reply?.dislikeOwner"
+                    (click)="setReplyLike(reply?.id, true)"
+                ></app-likes>
+
                 <app-lk-feedback-message
                     class="message_container"
                     [text]="reply.text"

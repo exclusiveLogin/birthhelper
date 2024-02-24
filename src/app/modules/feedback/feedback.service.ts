@@ -228,7 +228,11 @@ export class FeedbackService extends StoreService {
             });
     }
 
-    sendRateToFeedback(id: number, invert: boolean = false): Promise<unknown> {
+    sendRateToFeedback(config: {
+        id?: number;
+        invert?: boolean;
+        comment_id?: number;
+    }): Promise<unknown> {
         const restSetting: ISettingsParams = {
             mode: "api",
             segment: "feedback",
@@ -237,16 +241,12 @@ export class FeedbackService extends StoreService {
         const feedback:
             | FeedbackLikeCommentRequest
             | FeedbackDislikeCommentRequest = {
-            id,
-            action: invert ? "DISLIKE" : "LIKE",
+            id: config.id,
+            action: config.invert ? "DISLIKE" : "LIKE",
+            comment_id: config.comment_id,
         };
 
         return this.rest.postData(restSetting, feedback).toPromise();
-        // .catch(error => {
-        //     if(error.status === 429) {
-        //         this.toast.error('Вы уже недавно оставляли отзыв на этот объект, попробуйте позже');
-        //     }
-        // });
     }
 
     fetchFeedbackSetByUser(filters = {}): Observable<FeedbackSet> {

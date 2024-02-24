@@ -1,5 +1,6 @@
 import {
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     EventEmitter,
     Input,
@@ -49,15 +50,29 @@ export class FeedbackPageItemTargetComponent {
         private feedbackService: FeedbackService,
         private restService: RestService,
         private authService: AuthService,
-        private dialogService: DialogService
+        private dialogService: DialogService,
+        private cdr: ChangeDetectorRef
     ) {}
 
     setLike(feedback_id: number, invert = false): void {
         this.feedbackService
-            .sendRateToFeedback(feedback_id, invert)
+            .sendRateToFeedback({ id: feedback_id, invert })
             .then(async () => {
                 console.log("sendRateFeedback", feedback_id, invert);
                 this.update.emit();
+            })
+            .catch((error) => {
+                console.log("sendRateFeedback error: ", error);
+            });
+    }
+
+    setReplyLike(reply_id: number, invert = false): void {
+        this.feedbackService
+            .sendRateToFeedback({ comment_id: reply_id, invert })
+            .then(async () => {
+                console.log("sendRateFeedback", reply_id, invert);
+                this.updater$.next(null);
+                this.cdr.markForCheck();
             })
             .catch((error) => {
                 console.log("sendRateFeedback error: ", error);

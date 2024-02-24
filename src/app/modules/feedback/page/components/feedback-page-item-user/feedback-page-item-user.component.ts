@@ -34,7 +34,7 @@ export class FeedbackPageItemUserComponent {
 
     setLike(feedback_id: number, invert = false): void {
         this.feedbackService
-            .sendRateToFeedback(feedback_id, invert)
+            .sendRateToFeedback({ id: feedback_id, invert })
             .then(async () => {
                 console.log("sendRateFeedback", feedback_id, invert);
                 this.update.emit();
