@@ -5,7 +5,7 @@ import {
     Input,
     OnInit,
     TemplateRef,
-    ViewChild,
+    ViewChild
 } from "@angular/core";
 import { DialogAction, DialogAnswer, DialogType } from "./dialog.model";
 import { DialogService } from "./dialog.service";
@@ -25,7 +25,7 @@ import { Router } from "@angular/router";
     templateUrl: "./dialog.component.html",
     styleUrls: ["./dialog.component.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    animations: [dialogWrapperAnimation, dialogAnimation],
+    animations: [dialogWrapperAnimation, dialogAnimation]
 })
 export class DialogComponent implements OnInit {
     map: LLMap;
@@ -33,20 +33,24 @@ export class DialogComponent implements OnInit {
     _showed$ = new Subject<boolean>();
     tabIdx: number;
     _mode: DialogType = "popup";
+
     constructor(
         private cdr: ChangeDetectorRef,
         private dialogService: DialogService,
         private imageService: ImageService,
         private router: Router
-    ) {}
+    ) {
+    }
+
     @Input() id_dialog = "main_app_dialog";
 
     tplData = {
         error_tpl: "Целевой шаблон не задан",
         error_tpl_code: "ERR_TPL_BLANK",
+        size: "large"
     };
     tpl_context = {
-        $implicit: this.tplData,
+        $implicit: this.tplData
     };
     tpl_custom = false;
 
@@ -56,7 +60,7 @@ export class DialogComponent implements OnInit {
     @ViewChild("tpl_popup_person", { static: true })
     tpl_person: TemplateRef<any>;
 
-    @ViewChild("tpl_popup_other", { static: true }) 
+    @ViewChild("tpl_popup_other", { static: true })
     tpl_other: TemplateRef<any>;
 
     @ViewChild("tpl_popup_contragent", { static: true })
@@ -107,10 +111,10 @@ export class DialogComponent implements OnInit {
                         this.dialogAnswer$ =
                             action.dialogAnswerPipe$ ??
                             new Subject<DialogAnswer>();
-                        
+
                         const _tpl = this.getTemplate(action);
                         if (!_tpl) return;
-                    
+
                         this.tpl_context.$implicit = action.data;
 
                         if (this.imageSignal$) {
@@ -119,19 +123,24 @@ export class DialogComponent implements OnInit {
                             this.photoUrl$ = null;
                         }
 
-                        const imgData = this.imageService.getImage$(action?.data?.photo);
+                        const imgData = this.imageService.getImage$(
+                            action?.data?.photo
+                        );
                         this.photoUrl$ = imgData?.[0];
                         this.imageSignal$ = imgData?.[1];
-                       
+
                         if (this.hasMapTpl(action.templateKey)) {
                             this.showMapMarker(action);
                         }
 
                         this.showDialog(action, _tpl);
-
+                        if (action.size) {
+                            this.tplData.size = action.size;
+                        }
                     }
                     if (action.action === "close") {
                         this.uninstallDialog();
+                        this.tplData.size = "large";
                     }
                 });
         }
@@ -157,8 +166,7 @@ export class DialogComponent implements OnInit {
         if (!action?.data?.position_lat || !action?.data?.position_lon) return;
         setTimeout(() => {
             const el = document.getElementById("dialog_viewport");
-            const mapEl =
-                el?.querySelector(".map_container");
+            const mapEl = el?.querySelector(".map_container");
             if (!mapEl) {
                 return;
             }
@@ -172,18 +180,17 @@ export class DialogComponent implements OnInit {
                 icon: icon({
                     iconUrl: "img/icons/hospital.png",
                     iconSize: [32, 32],
-                    iconAnchor: [16, 16],
-                }),
+                    iconAnchor: [16, 16]
+                })
             }).addTo(this.map.map);
             this.map.fitByLatLonAnimate(
                 {
                     lat: action.data.position_lat,
-                    lon: action.data.position_lon,
+                    lon: action.data.position_lon
                 },
                 this.mapTimeout
-            );               
+            );
         }, this.mapTimeout);
-        
     }
 
     openDialog(tpl: TemplateRef<any>): void {
@@ -249,10 +256,10 @@ export class DialogComponent implements OnInit {
             data: {
                 votes: Object.keys(votes).map((k) => ({
                     slug: k,
-                    rate: Number(votes[k]),
+                    rate: Number(votes[k])
                 })),
-                comment: data.comment,
-            },
+                comment: data.comment
+            }
         };
         this.dialogAnswer$.next(answer);
         this.uninstallDialog();
@@ -269,6 +276,7 @@ export class DialogComponent implements OnInit {
     }
 
     cancelDialog(): void {
-        this.dialogAnswer$.error('cancel dialog');
+        this.dialogAnswer$.error("cancel dialog");
+        this.uninstallDialog();
     }
 }

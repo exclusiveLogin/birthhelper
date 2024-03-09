@@ -39,26 +39,99 @@
         <i
             class="fas fa-edit fa-2x action_button"
             *ngIf="feedback.canEdit"
-            (click)="editFeedback(feedback)"
+            (click)="selfEdit()"
         ></i>
         <i
             class="far fa-trash-alt fa-2x action_button"
             *ngIf="feedback.canRemove"
-            (click)="deleteFeedback(feedback?.id)"
+            (click)="selfDelete()"
+        ></i>
+    </div>
+    <div
+        class="action_block"
+        *ngIf="!isSelfOwner(feedback.user_id) && feedback.comment"
+    >
+        <i
+            class="fa-solid fa-reply fa-2x action_button"
+            (click)="openReplyDialog(feedback)"
         ></i>
     </div>
 </div>
 <ng-container *ngIf="feedback.comment?.replies">
     <div class="replies" *ngIf="{ replies: replies$ | async } as data">
-        <ng-container *ngFor="let reply of data.replies">
-            <app-lk-feedback-message
-                [text]="reply.text"
-                [date]="feedback?.datetime_update"
-                [editMode]="false"
-                [mode]="'reply'"
-                [isOfficial]="reply.status === 'official'"
-                [fromUser]="userByFeedback(reply) | async"
-            ></app-lk-feedback-message>
+        <ng-container *ngFor="let reply of data.replies; trackBy: replyTrackBy">
+            <div class="message-item">
+                <!-- лайки -->
+                <app-likes
+                    [count]="reply?.likes?.length ?? 0"
+                    [self]="reply?.likeOwner"
+                    (click)="setReplyLike(reply?.id)"
+                ></app-likes>
+                <app-likes
+                    [count]="reply?.dislikes?.length ?? 0"
+                    [negative]="true"
+                    [self]="reply?.dislikeOwner"
+                    (click)="setReplyLike(reply?.id, true)"
+                ></app-likes>
+
+                <app-lk-feedback-message
+                    class="message_container"
+                    [text]="reply.text"
+                    [date]="feedback?.datetime_update"
+                    [editMode]="false"
+                    [mode]="'reply'"
+                    [isOfficial]="reply.status === 'official'"
+                    [fromUser]="userByFeedback(reply) | async"
+                ></app-lk-feedback-message>
+
+                <!-- экшены -->
+                <div class="action_block" *ngIf="isSelfOwner(reply.user_id)">
+                    <!--                <i-->
+                    <!--                    class="fas fa-edit fa-2x action_button"-->
+                    <!--                    *ngIf="reply.canEdit"-->
+                    <!--                    (click)="selfEdit()"-->
+                    <!--                ></i>-->
+                    <i
+                        class="far fa-trash-alt fa-2x action_button"
+                        (click)="deleteFeedbackReply(feedback, reply)"
+                    ></i>
+                </div>
+            </div>
         </ng-container>
     </div>
 </ng-container>
+
+<!--Ответ на отзыв-->
+<ng-template #tpl_dialog_feedback_reply let-data>
+    <div class="popup__header">
+        <p class="popup__title">Ответ на отзыв #{{ data.id }}</p>
+        <ng-container *ngIf="data.feedback as feedback">
+            <app-lk-feedback-message
+                [text]="feedback?.comment?.text"
+                [date]="feedback?.datetime_update"
+                [editMode]="false"
+                [mode]="'answer'"
+                [isOfficial]="feedback.status === 'official'"
+                [fromUser]="feedback.user"
+            ></app-lk-feedback-message>
+        </ng-container>
+    </div>
+    <div class="popup__body">
+        <form #t="ngForm">
+            <textarea
+                class="popup__textarea"
+                placeholder="Введите текст Вашего отзыва"
+                [name]="'comment'"
+                [ngModel]="data?.comment ? data?.comment : ''"
+            ></textarea>
+        </form>
+    </div>
+    <div class="popup__footer">
+        <button
+            class="popup__footer-btn"
+            (click)="sendFeedbackReply(t.form.value, data.feedback)"
+        >
+            Ответить
+        </button>
+    </div>
+</ng-template>

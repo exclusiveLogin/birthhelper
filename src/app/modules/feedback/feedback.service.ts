@@ -5,6 +5,7 @@ import { ISettingsParams, RestService } from "@services/rest.service";
 import { DictionaryService } from "@services/dictionary.service";
 import {
     CreateFeedbackRequest,
+    DeleteFeedbackReplyRequest,
     EditFeedbackRequest,
     FeedbackByContragentResponse,
     FeedbackDislikeCommentRequest,
@@ -16,6 +17,7 @@ import {
     FeedbackStatus,
     FeedbackSummaryVotes,
     ReplyFeedbackRequest,
+    ReplyRemoveResponse,
     SummaryRateByTargetResponse,
     Vote,
     VoteResponse,
@@ -198,7 +200,7 @@ export class FeedbackService extends StoreService {
     }
 
     sendFeedbackReply(
-        repliebleComment: number,
+        repliableCommentId: number,
         text: string,
         isOfficial: boolean
     ) {
@@ -211,7 +213,7 @@ export class FeedbackService extends StoreService {
             action: "REPLY",
             status: isOfficial ? "official" : "pending",
             comment: text,
-            comment_id: repliebleComment,
+            comment_id: repliableCommentId,
         };
 
         return this.rest
@@ -226,7 +228,11 @@ export class FeedbackService extends StoreService {
             });
     }
 
-    sendRateToFeedback(id: number, invert: boolean = false): Promise<unknown> {
+    sendRateToFeedback(config: {
+        id?: number;
+        invert?: boolean;
+        comment_id?: number;
+    }): Promise<unknown> {
         const restSetting: ISettingsParams = {
             mode: "api",
             segment: "feedback",
@@ -235,16 +241,12 @@ export class FeedbackService extends StoreService {
         const feedback:
             | FeedbackLikeCommentRequest
             | FeedbackDislikeCommentRequest = {
-            id,
-            action: invert ? "DISLIKE" : "LIKE",
+            id: config.id,
+            action: config.invert ? "DISLIKE" : "LIKE",
+            comment_id: config.comment_id,
         };
 
         return this.rest.postData(restSetting, feedback).toPromise();
-        // .catch(error => {
-        //     if(error.status === 429) {
-        //         this.toast.error('Вы уже недавно оставляли отзыв на этот объект, попробуйте позже');
-        //     }
-        // });
     }
 
     fetchFeedbackSetByUser(filters = {}): Observable<FeedbackSet> {
@@ -405,9 +407,6 @@ export class FeedbackService extends StoreService {
         return this.rest.fetchData(restSetting, data, true);
     }
 
-    addFeedback(): void {}
-    replyFeedback(): void {}
-
     deleteFeedback(feedbackId: number): Observable<FeedbackRemoveResponse> {
         const restSetting: ISettingsParams = {
             mode: "api",
@@ -417,5 +416,23 @@ export class FeedbackService extends StoreService {
         this.clearRateStore();
 
         return this.rest.remData(restSetting);
+    }
+
+    deleteFeedbackReply(
+        feedbackId: number,
+        replyId: number
+    ): Observable<ReplyRemoveResponse> {
+        const restSetting: ISettingsParams = {
+            mode: "api",
+            segment: "feedback",
+        };
+
+        const data: DeleteFeedbackReplyRequest = {
+            action: "REMOVE_COMMENT",
+            comment_id: replyId,
+            id: feedbackId,
+        };
+
+        return this.rest.postData(restSetting, data);
     }
 }

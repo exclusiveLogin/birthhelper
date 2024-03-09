@@ -1,6 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding } from "@angular/core";
+import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    HostBinding,
+} from "@angular/core";
 import { AuthService } from "../auth-module/auth.service";
-import { BehaviorSubject, combineLatest, Observable } from "rxjs";
+import { BehaviorSubject, combineLatest, Observable, of } from "rxjs";
 import { User } from "@models/user.interface";
 import {
     filter,
@@ -36,9 +41,10 @@ export class MenuComponent {
     mql = window.matchMedia("(min-width: 480px)");
     hide = !this.mql.matches;
 
-    @HostBinding('class.menuhide')get host_class() {
-        return  this.hide;
+    @HostBinding("class.menuhide") get host_class() {
+        return this.hide;
     }
+
     // Modes
     mode$: Observable<MenuMode> = this.routingService.routeData$.pipe(
         pluck("main_menu_mode"),
@@ -61,12 +67,16 @@ export class MenuComponent {
     onUserAccess$ = this.authService.onUserAccess$;
     user$: Observable<User> = this.authService.user$.pipe(shareReplay(1));
     userPhotoData$ = this.user$.pipe(
-        filter((user) => !!user.photo_id),
+        // filter((user) => !!user.photo_id),
         map((user) => user.photo_id),
         switchMap((userPhotoId) =>
-            this.restService.getEntity("ent_images", userPhotoId)
+            userPhotoId
+                ? this.restService.getEntity("ent_images", userPhotoId)
+                : of(null)
         ),
-        map((image) => this.imageService.getImage$(image as IImage))
+        map((image) =>
+            image ? this.imageService.getImage$(image as IImage) : of(null)
+        )
     );
     userPhoto$ = this.userPhotoData$.pipe(map((d) => d[0]));
     userPhotoSignal$ = this.userPhotoData$.pipe(map((d) => d[1]));
@@ -106,7 +116,7 @@ export class MenuComponent {
         private imageService: ImageService,
         private lkService: LkService,
         private routingService: RoutingService,
-        private cdr: ChangeDetectorRef,
+        private cdr: ChangeDetectorRef
     ) {
         this.selectedContragents$
             .pipe(
@@ -119,7 +129,7 @@ export class MenuComponent {
     }
 
     menuToggle(): void {
-        console.log('menu');
+        console.log("menu");
         this.hide = !this.hide;
         this.cdr.detectChanges();
     }

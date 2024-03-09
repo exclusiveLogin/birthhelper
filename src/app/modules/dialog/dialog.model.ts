@@ -19,6 +19,7 @@ export interface DialogAction {
     data?: any;
     form?: FormGroup;
     dialogAnswerPipe$: Subject<DialogAnswer>;
+    size?: DialogSize;
 }
 
 export interface DialogServiceConfig {
@@ -26,3 +27,5 @@ export interface DialogServiceConfig {
     mode: DialogType;
     data: any;
 }
+
+export type DialogSize = 'small' | 'middle' | 'x-middle' | 'large';

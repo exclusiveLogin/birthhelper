@@ -27,21 +27,14 @@ import { switchMap } from "rxjs/operators";
 export class FeedbackPageItemUserComponent {
     @Input() feedback: FeedbackResponse & FeedbackSummaryVotes & Entitized;
     @Output() update = new EventEmitter();
+    @Output() delete = new EventEmitter();
+    @Output() edit = new EventEmitter();
 
-    updater$ = new BehaviorSubject(null);
-    replies$ = this.updater$.pipe(
-        switchMap(() => this.restService.getReplies(this.feedback.comment?.id))
-    );
-
-    constructor(
-        private feedbackService: FeedbackService,
-        private restService: RestService,
-        private authService: AuthService
-    ) {}
+    constructor(private feedbackService: FeedbackService) {}
 
     setLike(feedback_id: number, invert = false): void {
         this.feedbackService
-            .sendRateToFeedback(feedback_id, invert)
+            .sendRateToFeedback({ id: feedback_id, invert })
             .then(async () => {
                 console.log("sendRateFeedback", feedback_id, invert);
                 this.update.emit();
@@ -51,11 +44,11 @@ export class FeedbackPageItemUserComponent {
             });
     }
 
-    userByFeedback(comment: Comment): Observable<User> {
-        return this.restService.getUserById(comment.user_id);
+    selfDelete(): void {
+        this.delete.emit();
     }
 
-    isSelfOwner(user_id: number): boolean {
-        return this.authService.isSelfUser(user_id);
+    selfEdit(): void {
+        this.edit.emit();
     }
 }

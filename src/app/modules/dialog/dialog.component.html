@@ -11,7 +11,8 @@
     </ng-container>
 
     <ng-container *ngIf="tpl_custom">
-        <div class="popup popup--large" @dialogState>
+        <div class="popup" [class]="'popup--' + tplData.size" @dialogState>
+            <button class="popup__close" (click)="uninstallDialog()"></button>
             <ng-container
                 *ngTemplateOutlet="template; context: tpl_context"
             ></ng-container>
@@ -22,7 +23,7 @@
 <!--Оставить отзыв-->
 <ng-template #tpl_dialog_feedback_form let-data>
     <div class="popup popup--middle" @dialogState>
-        <button class="popup__close" (click)="closeDialog()"></button>
+        <button class="popup__close" (click)="uninstallDialog()"></button>
         <div class="popup__header">
             <p class="popup__title">Оставить отзыв</p>
         </div>
@@ -129,7 +130,7 @@
         <div class="popup__actions">
             <button
                 class="popup__actions-close"
-                (click)="closeDialog()"
+                (click)="uninstallDialog()"
             ></button>
         </div>
         <div class="popup__body" style="padding-top: 0">
@@ -190,7 +191,7 @@
         <div class="popup__actions">
             <button
                 class="popup__actions-close"
-                (click)="closeDialog()"
+                (click)="uninstallDialog()"
             ></button>
             <div class="popup__actions-checkbox checkbox-action">
                 <input
@@ -245,8 +246,9 @@
                                     transform="translate(-1 -2)"
                                 />
                                 <path fill="none" d="M0 0h24v24H0z" />
-                            </g></svg
-                        ><span *ngIf="data.price"
+                            </g>
+                        </svg>
+                        <span *ngIf="data.price"
                             >{{ data.price }}&nbsp;руб.</span
                         >
                     </p>
@@ -266,7 +268,7 @@
         <div class="popup__actions">
             <button
                 class="popup__actions-close"
-                (click)="closeDialog()"
+                (click)="uninstallDialog()"
             ></button>
             <div class="popup__actions-checkbox checkbox-action">
                 <input
@@ -405,7 +407,7 @@
         <div class="popup__actions">
             <button
                 class="popup__actions-close"
-                (click)="closeDialog()"
+                (click)="uninstallDialog()"
             ></button>
             <div class="popup__actions-checkbox checkbox-action">
                 <input
@@ -477,7 +479,7 @@
         <div class="popup__actions">
             <button
                 class="popup__actions-close"
-                (click)="closeDialog()"
+                (click)="uninstallDialog()"
             ></button>
             <div class="popup__actions-checkbox checkbox-action">
                 <input
@@ -806,7 +808,7 @@
         <div class="popup__actions">
             <button
                 class="popup__actions-close"
-                (click)="closeDialog()"
+                (click)="uninstallDialog()"
             ></button>
             <div class="popup__actions-checkbox checkbox-action">
                 <input
@@ -841,13 +843,24 @@
     <div class="popup popup--small prompt" @dialogState>
         <div class="popup__body">
             <div class="popup__message">
-                <img src="img\icons\question-mark-round-icon.svg" class="popup__message-img">
-                <p class="popup__message-text">{{data.text}}</p>
+                <img
+                    src="img\icons\question-mark-round-icon.svg"
+                    class="popup__message-img"
+                />
+                <p class="popup__message-text">{{ data.text }}</p>
             </div>
         </div>
         <div class="popup__footer">
-            <button class="popup__footer-btn submit" *ngIf="data.cancel" (click)="cancelDialog()">{{data.cancel ?? 'Отменить'}}</button>
-            <button class="popup__footer-btn cancel" (click)="submitDialog()">{{data.submit ?? 'Да'}}</button>
+            <button
+                class="popup__footer-btn submit"
+                *ngIf="data.cancel"
+                (click)="cancelDialog()"
+            >
+                {{ data.cancel ?? "Отменить" }}
+            </button>
+            <button class="popup__footer-btn cancel" (click)="submitDialog()">
+                {{ data.submit ?? "Да" }}
+            </button>
         </div>
     </div>
 </ng-template>

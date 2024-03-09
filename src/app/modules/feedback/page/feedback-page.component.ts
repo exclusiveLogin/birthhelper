@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import {
-    Comment,
     FeedbackResponse,
     FeedbackSet,
     SummaryRateByTargetResponse,
@@ -20,11 +19,11 @@ import {
 } from "rxjs";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 import { FeedbackService } from "../feedback.service";
-import { AuthService } from "@modules/auth-module/auth.service";
-import { Entity } from "@models/entity.interface";
+import { SlotEntity } from "@models/entity.interface";
 import { DialogService } from "@modules/dialog/dialog.service";
 import { FeedbackContext } from "@models/context";
-import { User } from "@models/user.interface";
+import { Contragent } from "@models/contragent.interface";
+import { SlotService } from "@services/slot.service";
 
 @UntilDestroy()
 @Component({
@@ -38,8 +37,8 @@ export class FeedbackPageComponent {
         private ar: ActivatedRoute,
         private restService: RestService,
         private feedbackService: FeedbackService,
-        private authService: AuthService,
-        private dialogService: DialogService
+        private dialogService: DialogService,
+        private slotService: SlotService
     ) {}
 
     filtersChange$ = new BehaviorSubject<any>({});
@@ -148,10 +147,15 @@ export class FeedbackPageComponent {
         map((mode) => mode === "targetfeedback")
     );
 
-    targetData$: Observable<Entity> = this.target$.pipe(
+    targetData$: Observable<SlotEntity> = this.target$.pipe(
         switchMap((target) =>
-            this.restService.getEntity<Entity>(target.key, target.id)
+            this.restService.getEntity<SlotEntity>(target.key, target.id)
         )
+    );
+
+    parentContragent$: Observable<Contragent> = this.targetData$.pipe(
+        switchMap((data) => this.slotService.getContragentFromSlot(data)),
+        tap((_) => console.log("parentContragent$", _))
     );
 
     rating$: Observable<SummaryRateByTargetResponse> = combineLatest(
@@ -222,5 +226,9 @@ export class FeedbackPageComponent {
             .catch((error) => {
                 console.log("deleteFeedback error: ", error);
             });
+    }
+
+    listTrackByFn(index, item: FeedbackResponse) {
+        return item.id;
     }
 }

@@ -33,6 +33,7 @@ export type FeedbackCommentStatus =
 export type FeedbackCommentType = "master" | "answer" | "reply";
 
 export type LikeType = "comment" | "feedback";
+
 export interface Like {
     id: number;
     target_id: number;
@@ -47,7 +48,8 @@ export interface FeedbackByContragentResponse {
     contragentId: number;
     total: number;
 }
-export interface FeedbackResponse {
+
+export interface FeedbackResponse extends Reactions {
     id: number;
     section: SectionType;
     target_entity_key: string;
@@ -57,10 +59,6 @@ export interface FeedbackResponse {
     user_id: number;
     comment: Comment;
     votes: Array<Vote>;
-    likes: Array<Like>;
-    dislikes: Array<Like>;
-    likeOwner: boolean;
-    dislikeOwner: boolean;
     user: User;
     canEdit: boolean;
     canRemove: boolean;
@@ -68,7 +66,7 @@ export interface FeedbackResponse {
     datetime_create?: string;
 }
 
-export interface Comment {
+export interface Comment extends Reactions {
     id?: number;
     feedback_id: number;
     user_id: number;
@@ -79,6 +77,13 @@ export interface Comment {
     type?: FeedbackCommentType;
     datetime_update?: string;
     datetime_create?: string;
+}
+
+interface Reactions {
+    likes: Array<Like>;
+    dislikes: Array<Like>;
+    likeOwner: boolean;
+    dislikeOwner: boolean;
 }
 
 export interface Vote {
@@ -105,6 +110,7 @@ export interface FeedbackFormDataAnswer {
     votes: VoteResponse[];
     comment: string;
 }
+
 export type FeedbackDislikeCommentRequest = { action: "DISLIKE" } & Pick<
     FeedbackDTO,
     "id" | "section" | "comment_id"
@@ -132,6 +138,10 @@ export type EditFeedbackRequest = { action: "EDIT" } & Pick<
 export type DeleteFeedbackRequest = { action: "REMOVE_FEEDBACK" } & Pick<
     FeedbackDTO,
     "id"
+>;
+export type DeleteFeedbackReplyRequest = { action: "REMOVE_COMMENT" } & Pick<
+    FeedbackDTO,
+    "id" | "comment_id"
 >;
 export type ReplyFeedbackRequest = { action: "REPLY" } & Pick<
     FeedbackDTO,
@@ -196,5 +206,10 @@ export type FeedbackSummaryVotes = { _summary: SummaryVotes };
 
 export interface FeedbackRemoveResponse {
     feedbackID: number;
+    result: string;
+}
+
+export interface ReplyRemoveResponse {
+    returnedId: number;
     result: string;
 }
