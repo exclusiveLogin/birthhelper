@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
-import { Observable } from "rxjs";
+import { combineLatest, Observable } from "rxjs";
 import { DictService, IDictItem } from "../admin/dict.service";
 import { AuthService } from "../auth-module/auth.service";
 import { FormControl, FormGroup } from "@angular/forms";
@@ -9,26 +9,35 @@ import { filter, map, shareReplay, switchMap, take, tap } from "rxjs/operators";
 import { User } from "@models/user.interface";
 import { ImageService } from "@services/image.service";
 import { IImage } from "../admin/Dashboard/Editor/components/image/image.component";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
     selector: "app-profile",
     templateUrl: "./profile.component.html",
     styleUrls: ["./profile.component.scss"],
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent {
     @ViewChild("file") private fileRef: ElementRef;
-    user$: Observable<User> = this.authService.user$.pipe(
+    user$: Observable<User> = this.route.paramMap.pipe(
+        switchMap((params) => {
+            const selectedId = Number(params.get("id"));
+            return selectedId
+                ? this.restService.getUserById(selectedId)
+                : this.authService.user$;
+        }),
         tap((user) => {
-            const nonEmptyKeys = Object.keys(user).filter(
-                (k) => user[k] !== null
-            );
-            nonEmptyKeys.forEach((k) =>
-                this.formGroup.get(k)?.setValue(user[k])
-            );
+            Object.keys(user)
+                .filter((k) => user[k] !== null)
+                .forEach((k) => this.formGroup.get(k)?.setValue(user[k]));
         }),
         tap((user) => console.log("user Data: ", user)),
         shareReplay(1)
     );
+
+    isSelfProfile$ = combineLatest([this.authService.user$, this.user$]).pipe(
+        map(([current, profile]) => current.id === profile.id)
+    );
+
     role$ = this.authService.role$;
     userPhotoData$ = this.user$.pipe(
         filter((user) => !!user.photo_id),
@@ -71,10 +80,9 @@ export class ProfileComponent implements OnInit {
         private dictService: DictService,
         private authService: AuthService,
         private restService: RestService,
-        private imageService: ImageService
+        private imageService: ImageService,
+        private route: ActivatedRoute
     ) {}
-
-    ngOnInit(): void {}
 
     uploadAvatarHandler(): void {
         this.fileRef.nativeElement.click();

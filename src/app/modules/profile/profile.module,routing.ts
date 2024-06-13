@@ -8,6 +8,10 @@ const routes: Routes = [
         component: ProfileComponent,
     },
     {
+        path: ":id",
+        component: ProfileComponent,
+    },
+    {
         path: "**",
         component: NotFoundComponent,
     },
