@@ -4,10 +4,10 @@ import { DictService, IDictItem } from "../admin/dict.service";
 import { AuthService } from "../auth-module/auth.service";
 import { FormControl, FormGroup } from "@angular/forms";
 import { IFileAdditionalData } from "../admin/rest.service";
-import { ISettingsParams, RestService } from "../../services/rest.service";
+import { ISettingsParams, RestService } from "@services/rest.service";
 import { filter, map, shareReplay, switchMap, take, tap } from "rxjs/operators";
-import { User } from "../../models/user.interface";
-import { ImageService } from "../../services/image.service";
+import { User } from "@models/user.interface";
+import { ImageService } from "@services/image.service";
 import { IImage } from "../admin/Dashboard/Editor/components/image/image.component";
 
 @Component({
@@ -115,6 +115,7 @@ export class ProfileComponent implements OnInit {
     reject(): void {
         this.authService.updateUser$.next();
     }
+
     submit(): void {
         this.user$
             .pipe(
@@ -126,6 +127,7 @@ export class ProfileComponent implements OnInit {
                 this.authService.updateUser$.next();
             });
     }
+
     updateUser(data: Partial<User>): Observable<any> {
         // Object.keys(data).forEach(k => data[k] =  data[k] === null ? 'null' : data[k]);
         const path: ISettingsParams = {

@@ -50,6 +50,13 @@ const routes: Routes = [
         component: WrapperComponent,
     },
     {
+        path: "message",
+        loadChildren: () =>
+            import("../modules/chat/chat.module").then((m) => m.ChatModule),
+        // canLoad: [AuthUserGuard],
+        component: WrapperComponent,
+    },
+    {
         path: "**",
         component: NotFoundComponent,
     },

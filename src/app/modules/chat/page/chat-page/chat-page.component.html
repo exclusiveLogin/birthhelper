@@ -1,0 +1,270 @@
+<div class="page_container">
+    <div class="page_body">
+        <div class="page_sector">
+            <div class="page_sector_title">
+                <span>Заявки в друзья</span>
+                <div class="separator"></div>
+                <i
+                    class="btn fa fa-lg fa-chevron-circle-down"
+                    [ngClass]="[
+                        list1.dataset['show'] === '1'
+                            ? 'fa-chevron-circle-up'
+                            : 'fa-chevron-circle-down'
+                    ]"
+                    (click)="
+                        list1.dataset['show'] =
+                            list1.dataset['show'] === '1' ? '0' : '1'
+                    "
+                ></i>
+            </div>
+            <div class="page_sector_body" #list1 data-show="1">
+                <div class="list">
+                    <div class="list_item">
+                        <!-- card-->
+                        <app-lk-user-card [user]="mockUser">
+                            <i class="badge badge-success status">Онлайн</i>
+                        </app-lk-user-card>
+                        <!-- status-->
+
+                        <!-- separator-->
+                        <div class="separator"></div>
+                        <!-- actions-->
+                        <div class="hidable">
+                            <button class="btn card__btn--green">
+                                Принять
+                            </button>
+                            <button class="btn card__btn--offer">
+                                Отклонить
+                            </button>
+                        </div>
+                    </div>
+                    <div class="list_item">
+                        <!-- card-->
+                        <app-lk-user-card [user]="mockUser">
+                            <i class="badge badge-success status">Онлайн</i>
+                        </app-lk-user-card>
+                        <!-- status-->
+
+                        <!-- separator-->
+                        <div class="separator"></div>
+                        <!-- actions-->
+                        <div class="hidable">
+                            <button class="btn card__btn--green">
+                                Принять
+                            </button>
+                            <button class="btn card__btn--offer">
+                                Отклонить
+                            </button>
+                        </div>
+                    </div>
+                    <div class="list_item">
+                        <!-- card-->
+                        <app-lk-user-card [user]="mockUser">
+                            <i class="badge badge-success status">Онлайн</i>
+                        </app-lk-user-card>
+                        <!-- status-->
+
+                        <!-- separator-->
+                        <div class="separator"></div>
+                        <!-- actions-->
+                        <div class="hidable">
+                            <button class="btn card__btn--green">
+                                Принять
+                            </button>
+                            <button class="btn card__btn--offer">
+                                Отклонить
+                            </button>
+                        </div>
+                    </div>
+                    <div class="list_item">
+                        <!-- card-->
+                        <app-lk-user-card [user]="mockUser">
+                            <i class="badge badge-success status">Онлайн</i>
+                        </app-lk-user-card>
+                        <!-- status-->
+
+                        <!-- separator-->
+                        <div class="separator"></div>
+                        <!-- actions-->
+                        <div class="hidable">
+                            <button class="btn card__btn--green">
+                                Принять
+                            </button>
+                            <button class="btn card__btn--offer">
+                                Отклонить
+                            </button>
+                        </div>
+                    </div>
+                    <div class="list_item">
+                        <!-- card-->
+                        <app-lk-user-card [user]="mockUser">
+                            <i class="badge badge-success status">Онлайн</i>
+                        </app-lk-user-card>
+                        <!-- status-->
+
+                        <!-- separator-->
+                        <div class="separator"></div>
+                        <!-- actions-->
+                        <div class="hidable">
+                            <button class="btn card__btn--green">
+                                Принять
+                            </button>
+                            <button class="btn card__btn--offer">
+                                Отклонить
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page_sector">
+            <div class="page_sector_title">
+                <span>Ваши друзья</span>
+                <div class="separator"></div>
+                <i
+                    class="btn fa fa-lg fa-chevron-circle-down"
+                    [ngClass]="[
+                        list2.dataset['show'] === '1'
+                            ? 'fa-chevron-circle-up'
+                            : 'fa-chevron-circle-down'
+                    ]"
+                    (click)="
+                        list2.dataset['show'] =
+                            list2.dataset['show'] === '1' ? '0' : '1'
+                    "
+                ></i>
+            </div>
+            <div class="page_sector_body" #list2 data-show="1">
+                <div class="list">
+                    <div class="list_item">
+                        <!-- card-->
+                        <app-lk-user-card [user]="mockUser">
+                            <i class="badge badge-secondary status"
+                                >Не в сети</i
+                            >
+                        </app-lk-user-card>
+                        <!-- status-->
+
+                        <!-- separator-->
+                        <div class="separator"></div>
+                        <!-- actions-->
+                        <div class="hidable">
+                            <button class="btn card__btn--blue">
+                                Перейти к диалогу
+                            </button>
+                            <i
+                                class="fas fa-trash-alt btn"
+                                title="Удалить из друзей"
+                            ></i>
+                        </div>
+                    </div>
+
+                    <div class="list_item">
+                        <!-- card-->
+                        <app-lk-user-card [user]="mockUser">
+                            <i class="badge badge-success status">Онлайн</i>
+                        </app-lk-user-card>
+                        <!-- status-->
+
+                        <!-- separator-->
+                        <div class="separator"></div>
+                        <!-- actions-->
+                        <div class="hidable">
+                            <button class="btn card__btn--blue">
+                                Перейти к диалогу
+                            </button>
+                            <i
+                                class="fas fa-trash-alt btn"
+                                title="Удалить из друзей"
+                            ></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="chat_container page_container">
+    <div class="page_body">
+        <div class="page_sector">
+            <div class="page_sector_title">
+                <span>Диалог c Admin</span>
+            </div>
+
+            <div class="dialog-container">
+                <div class="contact_list">
+                    <div class="contact_list__list">
+                        <app-lk-user-card [user]="mockUser">
+                            <i class="fa-solid fa-signal status"></i>
+                        </app-lk-user-card>
+                        <app-lk-user-card [user]="mockUser">
+                            <i class="fa-solid fa-signal status online"></i>
+                        </app-lk-user-card>
+                        <app-lk-user-card [user]="mockUser">
+                            <i class="fa-solid fa-signal status"></i>
+                        </app-lk-user-card>
+                    </div>
+                    <div class="contact_list_footer">
+                        <button type="button" class="btn btn-light">
+                            Создать диалог
+                        </button>
+                    </div>
+                </div>
+
+                <div class="message_container">
+                    <div class="message_container_header">
+                        <!--                        <span>Диалог с пользователем Admin</span>-->
+                    </div>
+                    <div class="message_container_list">
+                        <div class="msg_box">
+                            <app-lk-user-card
+                                [avatarOnly]="true"
+                                [user]="mockUser"
+                            ></app-lk-user-card>
+                            <app-lk-feedback-message
+                                [text]="'Test'"
+                                [mode]="'answer'"
+                            ></app-lk-feedback-message>
+                        </div>
+
+                        <div class="msg_box">
+                            <app-lk-feedback-message
+                                [text]="
+                                    'sdfsdfsfsfdsgsdg dfgdsgdfgdf gdfgdsgdsgdfgdgdd gdfgdfgsdgdgdfgdgdsgd sfbsddrgfgbfdbd sfbfgbfgb'
+                                "
+                                [mode]="'reply'"
+                                [color]="'accent'"
+                            ></app-lk-feedback-message>
+                            <app-lk-user-card
+                                [avatarOnly]="true"
+                                [user]="mockUser"
+                            ></app-lk-user-card>
+                        </div>
+
+                        <div class="msg_box">
+                            <app-lk-user-card
+                                [avatarOnly]="true"
+                                [user]="mockUser"
+                            ></app-lk-user-card>
+                            <app-lk-feedback-message
+                                [text]="
+                                    'Test2 sdfgsadfd fgsdfgdfg dsfgdsgd fsgsdgsdfgdfg dsgdsvdfvdfsvdv dsfgvsdd ffdsfgvdfsdfv dsfvsdf vdfdsvsd'
+                                "
+                                [mode]="'answer'"
+                            ></app-lk-feedback-message>
+                        </div>
+                    </div>
+                    <div class="message_container_footer">
+                        <div class="chat_input">
+                            <input />
+                            <button class="btn send_button">
+                                <i class="fas fa-level-up-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
