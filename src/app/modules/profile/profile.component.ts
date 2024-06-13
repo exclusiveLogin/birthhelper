@@ -39,6 +39,7 @@ export class ProfileComponent {
     );
 
     role$ = this.authService.role$;
+    isGuest$ = this.role$.pipe(map((role) => role.slug === "guest"));
     userPhotoData$ = this.user$.pipe(
         filter((user) => !!user.photo_id),
         map((user) => user.photo_id),
