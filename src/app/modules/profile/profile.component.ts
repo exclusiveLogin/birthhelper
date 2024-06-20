@@ -1,29 +1,55 @@
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
-import { combineLatest, Observable } from "rxjs";
+import { Component, ElementRef, ViewChild, OnInit } from "@angular/core";
+import { combineLatest, from, merge, Observable, of } from "rxjs";
 import { DictService, IDictItem } from "../admin/dict.service";
 import { AuthService } from "../auth-module/auth.service";
 import { FormControl, FormGroup } from "@angular/forms";
 import { IFileAdditionalData } from "../admin/rest.service";
 import { ISettingsParams, RestService } from "@services/rest.service";
-import { filter, map, shareReplay, switchMap, take, tap } from "rxjs/operators";
+import {
+    filter,
+    map,
+    mergeMap,
+    shareReplay,
+    switchMap,
+    take,
+    tap,
+} from "rxjs/operators";
 import { User } from "@models/user.interface";
 import { ImageService } from "@services/image.service";
 import { IImage } from "../admin/Dashboard/Editor/components/image/image.component";
-import { ActivatedRoute } from "@angular/router";
+import {
+    ActivatedRoute,
+    ActivationEnd,
+    NavigationEnd,
+    Router,
+} from "@angular/router";
+import { FriendService } from "@services/friend.service";
+import { RoutingService } from "@services/routing.service";
+
+type Mode = "settings" | "friends";
 
 @Component({
     selector: "app-profile",
     templateUrl: "./profile.component.html",
     styleUrls: ["./profile.component.scss"],
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit {
     @ViewChild("file") private fileRef: ElementRef;
+    mode$: Observable<Mode> = this.routingService.routeData$.pipe(
+        map((data) => data?.mode)
+    );
     user$: Observable<User> = this.route.paramMap.pipe(
         switchMap((params) => {
             const selectedId = Number(params.get("id"));
             return selectedId
                 ? this.restService.getUserById(selectedId)
-                : this.authService.user$;
+                : this.authService.user$.pipe(
+                      tap((usr) =>
+                          this.router.navigate([usr.id], {
+                              relativeTo: this.route,
+                          })
+                      )
+                  );
         }),
         tap((user) => {
             Object.keys(user)
@@ -38,8 +64,14 @@ export class ProfileComponent {
         map(([current, profile]) => current.id === profile.id)
     );
 
-    role$ = this.authService.role$;
-    isGuest$ = this.role$.pipe(map((role) => role.slug === "guest"));
+    role$ = this.user$.pipe(
+        map((user) => user.meta.role),
+        shareReplay(1)
+    );
+    isGuest$ = this.role$.pipe(
+        map((role) => role.slug === "guest"),
+        shareReplay(1)
+    );
     userPhotoData$ = this.user$.pipe(
         filter((user) => !!user.photo_id),
         map((user) => user.photo_id),
@@ -82,8 +114,19 @@ export class ProfileComponent {
         private authService: AuthService,
         private restService: RestService,
         private imageService: ImageService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private router: Router,
+        private routingService: RoutingService,
+        private friendService: FriendService
     ) {}
+
+    ngOnInit(): void {
+        console.log("Route:", this.route);
+    }
+
+    goto(path: string): void {
+        this.router.navigate([path ? path : "./"], { relativeTo: this.route });
+    }
 
     uploadAvatarHandler(): void {
         this.fileRef.nativeElement.click();
@@ -145,4 +188,13 @@ export class ProfileComponent {
         };
         return this.restService.postData(path, data);
     }
+
+    friendStatus$ = this.user$.pipe(
+        tap((user) => console.log("User: ", user)),
+        switchMap((user) => this.friendService.checkFriendship(user.id)),
+        map((userFriendshipState) =>
+            this.friendService.getFinalyFriendState(userFriendshipState)
+        ),
+        tap((state) => console.log("state: ", state))
+    );
 }

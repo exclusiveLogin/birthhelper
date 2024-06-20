@@ -6,10 +6,25 @@ const routes: Routes = [
     {
         path: "",
         component: ProfileComponent,
+        data: {
+            mode: "settings",
+        },
     },
     {
         path: ":id",
         component: ProfileComponent,
+        data: {
+            mode: "settings",
+        },
+        children: [
+            {
+                path: "friends",
+                component: ProfileComponent,
+                data: {
+                    mode: "friends",
+                },
+            },
+        ],
     },
     {
         path: "**",

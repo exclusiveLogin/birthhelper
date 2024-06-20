@@ -9,12 +9,14 @@
 <div
     class="profile_container"
     *ngIf="{
+        mode: mode$ | async,
         user: user$ | async,
         photo: userPhoto$ | async,
         signal: userPhotoSignal$ | async,
         role: role$ | async,
         isSelf: isSelfProfile$ | async,
-        isGuest: isGuest$ | async
+        isGuest: isGuest$ | async,
+        friendStatus: friendStatus$ | async
     } as userData"
 >
     <div class="profile_header">
@@ -47,8 +49,9 @@
                 {{ userData?.user?.first_name }}
                 {{ userData?.user?.last_name }}
             </p>
-            <p class="profile_ttl_accent">
-                Роль:
+
+            <p>
+                <span>Роль: &nbsp;</span>
                 <span
                     class="badge badge-info"
                     *ngIf="userData?.role?.slug === 'user'"
@@ -75,8 +78,9 @@
                     >{{ userData.role.title }}</span
                 >
             </p>
-            <p class="profile_ttl_accent">
-                Статус аккаунта:
+
+            <p>
+                <span>Статус аккаунта: &nbsp;</span>
                 <span
                     class="badge badge-success"
                     *ngIf="userData?.user?.active; else deactive"
@@ -86,10 +90,65 @@
                     <span class="badge badge-danger">Не подтвержденный</span>
                 </ng-template>
             </p>
+
+            <ng-container *ngIf="userData.isSelf">
+                <i class="badge badge-success">Это вы</i>
+            </ng-container>
+
+            <ng-container *ngTemplateOutlet="friendState"></ng-container>
+            <ng-template #friendState>
+                <p>
+                    <ng-container [ngSwitch]="userData.friendStatus">
+                        <i
+                            class="badge badge-danger"
+                            *ngSwitchCase="'isYourBanned'"
+                            >Вас забанили</i
+                        >
+
+                        <i
+                            class="badge badge-danger"
+                            *ngSwitchCase="'isBlocked'"
+                            >Вы заблокировали этого пользователя</i
+                        >
+
+                        <i
+                            class="badge badge-success"
+                            *ngSwitchCase="'isFriend'"
+                            >Вы дружите с этим пользователем</i
+                        >
+
+                        <i class="badge badge-info" *ngSwitchCase="'isOffered'"
+                            >Заявка отправлена</i
+                        >
+                    </ng-container>
+                </p>
+
+                <!--                    debug: {{ userData.friendStatus | json }}-->
+            </ng-template>
         </div>
     </div>
+
     <ng-container *ngIf="!userData.isGuest">
         <ng-container *ngIf="userData.isSelf; else userpage">
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a
+                        class="nav-link"
+                        [ngClass]="{ active: userData.mode === 'settings' }"
+                        aria-current="page"
+                        (click)="goto(null)"
+                        >Настройки профиля</a
+                    >
+                </li>
+                <li class="nav-item">
+                    <a
+                        class="nav-link"
+                        [ngClass]="{ active: userData.mode === 'friends' }"
+                        (click)="goto('friends')"
+                        >Друзья</a
+                    >
+                </li>
+            </ul>
             <div class="profile_body">
                 <form class="profile-form" [formGroup]="formGroup">
                     <div class="form-group half">
@@ -368,5 +427,6 @@
             </button>
         </div>
     </ng-template>
-    <ng-template #userpage>TEST</ng-template>
+
+    <ng-template #userpage></ng-template>
 </div>

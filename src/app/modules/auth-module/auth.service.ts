@@ -78,7 +78,10 @@ export class AuthService {
         switchMap((token) => (token ? this.getCurrentRole() : of(null))),
         tap((token) => {
             if (this.urlToRedirect) {
-                location.pathname = this.urlToRedirect;
+                this.router.navigate([this.urlToRedirect], {
+                    queryParams: null,
+                });
+                // location.pathname = this.urlToRedirect;
                 this.urlToRedirect = null;
             }
         }),
@@ -170,6 +173,6 @@ export class AuthService {
     }
 
     gotoLoginPage(): void {
-        this.router.navigate(['/auth']);
+        this.router.navigate(["/auth"]);
     }
 }

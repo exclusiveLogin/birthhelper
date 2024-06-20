@@ -1,3 +1,7 @@
+import { MetaInterface } from "@models/meta.interface";
+import { UserRoleSrc } from "@services/rest.service";
+import { MetaPhoto } from "@models/map-object.interface";
+
 export interface UserSrc {
     id?: number;
     active?: number;
@@ -29,6 +33,11 @@ export interface UserSrc {
     shoes_size?: number;
     datetime_create?: string;
     datetime_update?: string;
+
+    meta?: MetaInterface & {
+        role: UserRoleSrc;
+        photo_id: MetaPhoto;
+    };
 }
 
 export interface UserExit {
@@ -67,6 +76,11 @@ export class User {
     clothes_size: number;
     shoes_size: number;
 
+    meta: MetaInterface & {
+        role: UserRoleSrc;
+        photo_id: MetaPhoto;
+    };
+
     constructor(src: UserSrc) {
         this.multi_pregnant = !!src.multi_pregnant;
         this.has_problems = !!src.has_problems;
@@ -96,5 +110,7 @@ export class User {
         this.weight = src.weight;
         this.clothes_size = src.clothes_size;
         this.shoes_size = src.shoes_size;
+
+        this.meta = src.meta;
     }
 }
