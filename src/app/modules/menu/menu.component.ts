@@ -7,14 +7,7 @@ import {
 import { AuthService } from "../auth-module/auth.service";
 import { BehaviorSubject, combineLatest, Observable, of } from "rxjs";
 import { User } from "@models/user.interface";
-import {
-    filter,
-    map,
-    pluck,
-    shareReplay,
-    switchMap,
-    tap,
-} from "rxjs/operators";
+import { map, pluck, shareReplay, switchMap, tap } from "rxjs/operators";
 import { IImage } from "../admin/Dashboard/Editor/components/image/image.component";
 import { RestService } from "@services/rest.service";
 import { ImageService } from "@services/image.service";

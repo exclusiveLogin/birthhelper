@@ -5,24 +5,11 @@ import { AuthService } from "../auth-module/auth.service";
 import { FormControl, FormGroup } from "@angular/forms";
 import { IFileAdditionalData } from "../admin/rest.service";
 import { ISettingsParams, RestService } from "@services/rest.service";
-import {
-    filter,
-    map,
-    mergeMap,
-    shareReplay,
-    switchMap,
-    take,
-    tap,
-} from "rxjs/operators";
+import { filter, map, shareReplay, switchMap, take, tap } from "rxjs/operators";
 import { User } from "@models/user.interface";
 import { ImageService } from "@services/image.service";
 import { IImage } from "../admin/Dashboard/Editor/components/image/image.component";
-import {
-    ActivatedRoute,
-    ActivationEnd,
-    NavigationEnd,
-    Router,
-} from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { FriendService } from "@services/friend.service";
 import { RoutingService } from "@services/routing.service";
 
@@ -34,6 +21,13 @@ type Mode = "settings" | "friends";
     styleUrls: ["./profile.component.scss"],
 })
 export class ProfileComponent implements OnInit {
+    mockUser = new User({
+        id: 1,
+        first_name: "Test",
+        last_name: "Rest",
+        login: "Admin",
+    });
+
     @ViewChild("file") private fileRef: ElementRef;
     mode$: Observable<Mode> = this.routingService.routeData$.pipe(
         map((data) => data?.mode)
