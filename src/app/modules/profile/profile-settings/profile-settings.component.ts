@@ -1,13 +1,8 @@
-import {
-    Component,
-    EventEmitter,
-    Input,
-    Output,
-    ViewEncapsulation,
-} from "@angular/core";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { User } from "@models/user.interface";
 import { FormControl, FormGroup } from "@angular/forms";
 import { IDictItem } from "@modules/admin/dict.service";
+import * as moment from "moment";
 
 @Component({
     selector: "app-profile-settings",
@@ -18,6 +13,9 @@ import { IDictItem } from "@modules/admin/dict.service";
 export class ProfileSettingsComponent {
     _user: User;
     @Input() set user(user: User) {
+        user.client_birthday_datetime = moment(
+            user.client_birthday_datetime
+        ).format("yyyy-MM-DD");
         this._user = user;
 
         Object.keys(user)
@@ -61,15 +59,15 @@ export class ProfileSettingsComponent {
     });
 
     submit() {
-        if (this.formGroup.get("client_birthday_datetime").value) {
-            this.formGroup
-                .get("client_birthday_datetime")
-                .setValue(
-                    new Date(
-                        this.formGroup.get("client_birthday_datetime").value
-                    ).valueOf()
-                );
-        }
+        // if (this.formGroup.get("client_birthday_datetime").value) {
+        //     this.formGroup
+        //         .get("client_birthday_datetime")
+        //         .setValue(
+        //             new Date(
+        //                 this.formGroup.get("client_birthday_datetime").value
+        //             ).valueOf()
+        //         );
+        // }
         this.refresh.emit({ ...this.user, ...this.formGroup.value } as User);
     }
 

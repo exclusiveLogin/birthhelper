@@ -47,6 +47,10 @@
                 type="date"
                 id="client_birthday_datetime"
                 placeholder="Ввыберите дату"
+                [value]="
+                    formGroup.get('client_birthday_datetime').value
+                        | date : 'yyyy-MM-dd'
+                "
                 class="form-control"
                 formControlName="client_birthday_datetime"
             />
