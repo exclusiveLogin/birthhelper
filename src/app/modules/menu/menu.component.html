@@ -28,7 +28,7 @@
         <div class="menu__user menu-user">
             <div class="menu__user-avatar">
                 <ng-container
-                    *ngIf="userData.photo | async as image; else blankuser"
+                    *ngIf="userData.photo | async as image; else blankAvatar"
                 >
                     <img
                         [src]="image"
@@ -133,7 +133,7 @@
                         '/',
                         'system',
                         'profile',
-                        userData.user.id,
+                        userData?.user?.id,
                         'friends'
                     ]"
                     class="menu__link"
@@ -274,7 +274,7 @@
         <!--    </button>-->
     </div>
 </ng-container>
-<ng-template #blankuser>
+<ng-template #blankAvatar>
     <img class="menu__user-avatar-img" src="/img/blank-user.jpg" />
 </ng-template>
 

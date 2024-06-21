@@ -1,8 +1,7 @@
 import { Component, ElementRef, ViewChild, OnInit } from "@angular/core";
-import { combineLatest, from, merge, Observable, of } from "rxjs";
+import { BehaviorSubject, combineLatest, merge, Observable } from "rxjs";
 import { DictService, IDictItem } from "../admin/dict.service";
 import { AuthService } from "../auth-module/auth.service";
-import { FormControl, FormGroup } from "@angular/forms";
 import { IFileAdditionalData } from "../admin/rest.service";
 import { ISettingsParams, RestService } from "@services/rest.service";
 import { filter, map, shareReplay, switchMap, take, tap } from "rxjs/operators";
@@ -29,11 +28,17 @@ export class ProfileComponent implements OnInit {
     });
 
     @ViewChild("file") private fileRef: ElementRef;
+
+    refresh$ = new BehaviorSubject<void>(void 0);
     mode$: Observable<Mode> = this.routingService.routeData$.pipe(
         map((data) => data?.mode)
     );
-    user$: Observable<User> = this.route.paramMap.pipe(
-        switchMap((params) => {
+
+    user$: Observable<User> = combineLatest([
+        this.refresh$,
+        this.route.paramMap,
+    ]).pipe(
+        switchMap(([_, params]) => {
             const selectedId = Number(params.get("id"));
             return selectedId
                 ? this.restService.getUserById(selectedId)
@@ -45,12 +50,7 @@ export class ProfileComponent implements OnInit {
                       )
                   );
         }),
-        tap((user) => {
-            Object.keys(user)
-                .filter((k) => user[k] !== null)
-                .forEach((k) => this.formGroup.get(k)?.setValue(user[k]));
-        }),
-        tap((user) => console.log("user Data: ", user)),
+        tap((_) => console.log("user data: ", _)),
         shareReplay(1)
     );
 
@@ -79,29 +79,6 @@ export class ProfileComponent implements OnInit {
     statuses$: Observable<IDictItem[]> = this.dictService.getDict(
         "dict_user_status_type"
     );
-    formGroup = new FormGroup({
-        login: new FormControl(),
-        first_name: new FormControl(),
-        last_name: new FormControl(),
-        patronymic: new FormControl(),
-        client_birthday_datetime: new FormControl(),
-        status_type: new FormControl("null"),
-        conception_datetime: new FormControl(),
-        multi_pregnant: new FormControl(),
-        weight: new FormControl(),
-        height: new FormControl(),
-        clothes_size: new FormControl(),
-        shoes_size: new FormControl(),
-        phone: new FormControl(),
-        email: new FormControl(),
-        skype: new FormControl(),
-        ch_phone: new FormControl(),
-        ch_viber: new FormControl(),
-        ch_whatsapp: new FormControl(),
-        ch_telegram: new FormControl(),
-        ch_email: new FormControl(),
-        ch_skype: new FormControl(),
-    });
 
     constructor(
         private dictService: DictService,
@@ -126,7 +103,7 @@ export class ProfileComponent implements OnInit {
         this.fileRef.nativeElement.click();
     }
 
-    upload(ev): void {
+    async upload(ev) {
         console.log("Ready to load", ev);
         const file = ev.target.files[0];
         console.log("file", file);
@@ -135,26 +112,18 @@ export class ProfileComponent implements OnInit {
                 folder: "/user-images",
             };
 
-            this.restService
+            const fileSaveResponce = await this.restService
                 .uploadImage(file, _data)
-                .pipe(
-                    switchMap((data) =>
-                        this.user$.pipe(
-                            take(1),
-                            map(
-                                (user) =>
-                                    ({
-                                        ...user,
-                                        photo_id: data?.file?.id,
-                                    } as User)
-                            )
-                        )
-                    ),
-                    switchMap((user) => this.updateUser(user))
-                )
-                .subscribe((data) => {
-                    this.authService.updateUser$.next();
-                });
+                .toPromise();
+
+            const user = await this.user$.pipe(take(1)).toPromise();
+
+            const userRequestData = {
+                ...user,
+                photo_id: fileSaveResponce?.file?.id,
+            } as User;
+
+            await this.updateUser(userRequestData);
         }
     }
 
@@ -162,28 +131,17 @@ export class ProfileComponent implements OnInit {
         this.authService.updateUser$.next();
     }
 
-    submit(): void {
-        this.user$
-            .pipe(
-                take(1),
-                map((user) => ({ ...user, ...this.formGroup.value } as User)),
-                switchMap((userData) => this.updateUser(userData))
-            )
-            .subscribe((_) => {
-                this.authService.updateUser$.next();
-            });
-    }
-
-    updateUser(data: Partial<User>): Observable<any> {
+    async updateUser(data: Partial<User>) {
         // Object.keys(data).forEach(k => data[k] =  data[k] === null ? 'null' : data[k]);
         const path: ISettingsParams = {
             mode: "api",
             segment: "ent_users",
         };
-        return this.restService.postData(path, data);
+        await this.restService.postData(path, data).toPromise();
+        this.refresh$.next();
     }
 
-    friendStatus$ = this.user$.pipe(
+    friendState$ = this.user$.pipe(
         tap((user) => console.log("User: ", user)),
         switchMap((user) => this.friendService.checkFriendship(user.id)),
         map((userFriendshipState) =>

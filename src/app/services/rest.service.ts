@@ -110,6 +110,7 @@ export class RestService {
     }
 
     cacheStore = {};
+
     public uploadImage(
         file: File,
         _data?: IFileAdditionalData
@@ -150,6 +151,21 @@ export class RestService {
         return this.http
             .get(url, { observe: "response", responseType: "arraybuffer" })
             .pipe(map((data) => data.body));
+    }
+
+    public getEntityNoCache<T = Entity>(
+        key: string,
+        id: number
+    ): Observable<T> {
+        const entSetting: ISettingsParams = {
+            mode: "api",
+            segment: key,
+            resource: id.toString(),
+        };
+
+        return this.fetchData<T>(entSetting, null, true).pipe(
+            map((d) => d?.[0])
+        );
     }
 
     public getEntity<T = Entity>(key: string, id: number): Observable<T> {
@@ -400,7 +416,7 @@ export class RestService {
     }
 
     public getUserById(id: number): Observable<User> {
-        return this.getEntity<UserSrc>("ent_users", id).pipe(
+        return this.getEntityNoCache<UserSrc>("ent_users", id).pipe(
             map((userSrc) => new User(userSrc))
         );
     }

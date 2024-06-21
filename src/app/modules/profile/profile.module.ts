@@ -4,9 +4,11 @@ import { ProfileComponent } from "./profile.component";
 import { ProfileModuleRouting } from "app/modules/profile/profile.module,routing";
 import { ReactiveFormsModule } from "@angular/forms";
 import { LKCommonComponentModule } from "@modules/admin/lk/common/lk.common.module";
+import { ProfileSettingsComponent } from './profile-settings/profile-settings.component';
+import { ProfileFriendsComponent } from './profile-friends/profile-friends.component';
 
 @NgModule({
-    declarations: [ProfileComponent],
+    declarations: [ProfileComponent, ProfileSettingsComponent, ProfileFriendsComponent],
     imports: [
         CommonModule,
         ProfileModuleRouting,
