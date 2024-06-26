@@ -1,0 +1,21 @@
+<div class="page_sector">
+    <div class="page_sector_title">
+        <span>Заявки в друзья</span>
+        <div class="separator"></div>
+        <i
+            class="btn fa fa-lg fa-chevron-circle-down"
+            [ngClass]="[
+                list1.dataset['show'] === '1'
+                    ? 'fa-chevron-circle-up'
+                    : 'fa-chevron-circle-down'
+            ]"
+            (click)="
+                list1.dataset['show'] =
+                    list1.dataset['show'] === '1' ? '0' : '1'
+            "
+        ></i>
+    </div>
+    <div class="page_sector_body" #list1 data-show="1">
+        <ng-content></ng-content>
+    </div>
+</div>

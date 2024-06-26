@@ -20,13 +20,6 @@ type Mode = "settings" | "friends";
     styleUrls: ["./profile.component.scss"],
 })
 export class ProfileComponent implements OnInit {
-    mockUser = new User({
-        id: 1,
-        first_name: "Test",
-        last_name: "Rest",
-        login: "Admin",
-    });
-
     @ViewChild("file") private fileRef: ElementRef;
 
     refresh$ = new BehaviorSubject<void>(void 0);

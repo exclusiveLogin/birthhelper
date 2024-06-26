@@ -1,0 +1,26 @@
+:host {
+    display: contents;
+}
+
+.page_sector {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    .page_sector_title {
+        margin: 8px;
+        font-size: 1.1rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    .page_sector_body[data-show = '0'] {
+        display: none;
+    }
+}
+
+.separator {
+    flex-grow: 1;
+}
