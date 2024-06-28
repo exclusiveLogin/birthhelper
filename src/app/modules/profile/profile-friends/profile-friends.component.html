@@ -1,78 +1,21 @@
-<div class="profile_body">
+<div
+    class="profile_body"
+    *ngIf="{
+        friends: friends$ | async,
+        offered: offered$ | async,
+        blacklist: blacklist$ | async,
+        pending: pending$ | async
+    } as data"
+>
     <div class="page_body">
-        <app-toggle-container>
-            <div class="list">
-                <div class="list_item">
+        <app-toggle-container
+            [title]="'Заявки в друзья'"
+            [collapsed]="!data.offered?.length"
+        >
+            <div class="list" *ngIf="data.offered?.length; else empty">
+                <div class="list_item" *ngFor="let item of data.offered">
                     <!-- card-->
-                    <app-lk-user-card [user]="mockUser">
-                        <i class="badge badge-success status">Онлайн</i>
-                    </app-lk-user-card>
-                    <!-- status-->
-
-                    <!-- separator-->
-                    <div class="separator"></div>
-                    <!-- actions-->
-                    <div class="hidable">
-                        <button class="btn card__btn--green">
-                            <span class="card__btn-txt"> Принять </span>
-                        </button>
-                        <button class="btn card__btn--offer">Отклонить</button>
-                    </div>
-                </div>
-                <div class="list_item">
-                    <!-- card-->
-                    <app-lk-user-card [user]="mockUser">
-                        <i class="badge badge-success status">Онлайн</i>
-                    </app-lk-user-card>
-                    <!-- status-->
-
-                    <!-- separator-->
-                    <div class="separator"></div>
-                    <!-- actions-->
-                    <div class="hidable">
-                        <button class="btn card__btn--green">
-                            <span class="card__btn-txt"> Принять </span>
-                        </button>
-                        <button class="btn card__btn--offer">Отклонить</button>
-                    </div>
-                </div>
-                <div class="list_item">
-                    <!-- card-->
-                    <app-lk-user-card [user]="mockUser">
-                        <i class="badge badge-success status">Онлайн</i>
-                    </app-lk-user-card>
-                    <!-- status-->
-
-                    <!-- separator-->
-                    <div class="separator"></div>
-                    <!-- actions-->
-                    <div class="hidable">
-                        <button class="btn card__btn--green">
-                            <span class="card__btn-txt"> Принять </span>
-                        </button>
-                        <button class="btn card__btn--offer">Отклонить</button>
-                    </div>
-                </div>
-                <div class="list_item">
-                    <!-- card-->
-                    <app-lk-user-card [user]="mockUser">
-                        <i class="badge badge-success status">Онлайн</i>
-                    </app-lk-user-card>
-                    <!-- status-->
-
-                    <!-- separator-->
-                    <div class="separator"></div>
-                    <!-- actions-->
-                    <div class="hidable">
-                        <button class="btn card__btn--green">
-                            <span class="card__btn-txt"> Принять </span>
-                        </button>
-                        <button class="btn card__btn--offer">Отклонить</button>
-                    </div>
-                </div>
-                <div class="list_item">
-                    <!-- card-->
-                    <app-lk-user-card [user]="mockUser">
+                    <app-lk-user-card [user]="item.target | async">
                         <i class="badge badge-success status">Онлайн</i>
                     </app-lk-user-card>
                     <!-- status-->
@@ -90,32 +33,14 @@
             </div>
         </app-toggle-container>
         <hr />
-        <app-toggle-container>
-            <div class="list">
-                <div class="list_item">
+        <app-toggle-container
+            [title]="'Список друзей'"
+            [collapsed]="!data?.friends?.length"
+        >
+            <div class="list" *ngIf="data?.friends?.length; else empty">
+                <div class="list_item" *ngFor="let item of data.friends">
                     <!-- card-->
-                    <app-lk-user-card [user]="mockUser">
-                        <i class="badge badge-secondary status">Не в сети</i>
-                    </app-lk-user-card>
-                    <!-- status-->
-
-                    <!-- separator-->
-                    <div class="separator"></div>
-                    <!-- actions-->
-                    <div class="hidable">
-                        <button class="btn card__btn--blue">
-                            <span class="card__btn-txt">Перейти к диалогу</span>
-                        </button>
-                        <i
-                            class="fas fa-trash-alt btn"
-                            title="Удалить из друзей"
-                        ></i>
-                    </div>
-                </div>
-
-                <div class="list_item">
-                    <!-- card-->
-                    <app-lk-user-card [user]="mockUser">
+                    <app-lk-user-card [user]="item.target | async">
                         <i class="badge badge-success status">Онлайн</i>
                     </app-lk-user-card>
                     <!-- status-->
@@ -124,18 +49,67 @@
                     <div class="separator"></div>
                     <!-- actions-->
                     <div class="hidable">
-                        <button class="btn card__btn--blue">
-                            <span class="card__btn-txt">
-                                Перейти к диалогу
-                            </span>
+                        <button class="btn card__btn--green">
+                            <span class="card__btn-txt"> Принять </span>
                         </button>
-                        <i
-                            class="fas fa-trash-alt btn"
-                            title="Удалить из друзей"
-                        ></i>
+                        <button class="btn card__btn--offer">Отклонить</button>
+                    </div>
+                </div>
+            </div>
+        </app-toggle-container>
+        <hr />
+        <app-toggle-container
+            [title]="'Черный список'"
+            [collapsed]="!data?.blacklist?.length"
+        >
+            <div class="list" *ngIf="data?.blacklist?.length; else empty">
+                <div class="list_item" *ngFor="let item of data.blacklist">
+                    <!-- card-->
+                    <app-lk-user-card [user]="item.target | async">
+                        <i class="badge badge-success status">Онлайн</i>
+                    </app-lk-user-card>
+                    <!-- status-->
+
+                    <!-- separator-->
+                    <div class="separator"></div>
+                    <!-- actions-->
+                    <div class="hidable">
+                        <button class="btn card__btn--green">
+                            <span class="card__btn-txt"> Принять </span>
+                        </button>
+                        <button class="btn card__btn--offer">Отклонить</button>
+                    </div>
+                </div>
+            </div>
+        </app-toggle-container>
+        <hr />
+        <app-toggle-container
+            [title]="'Заявки, которые ожидают подтверждения'"
+            [collapsed]="!data?.pending?.length"
+        >
+            <div class="list" *ngIf="data?.pending?.length; else empty">
+                <div class="list_item" *ngFor="let item of data.pending">
+                    <!-- card-->
+                    <app-lk-user-card [user]="item.target | async">
+                        <i class="badge badge-success status">Онлайн</i>
+                    </app-lk-user-card>
+                    <!-- status-->
+
+                    <!-- separator-->
+                    <div class="separator"></div>
+                    <!-- actions-->
+                    <div class="hidable">
+                        <button class="btn card__btn--green">
+                            <span class="card__btn-txt"> Принять </span>
+                        </button>
+                        <button class="btn card__btn--offer">Отклонить</button>
                     </div>
                 </div>
             </div>
         </app-toggle-container>
     </div>
 </div>
+
+<ng-template #empty>
+    <div class="empty">Список пуст</div>
+</ng-template>

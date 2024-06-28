@@ -1,16 +1,13 @@
 import { User } from "@models/user.interface";
 import { Entity } from "@models/entity.interface";
+import { RestService } from "@services/rest.service";
 
-export type BannedModel = Omit<FriendModel, "status"> & {
-    status: BlockedStatus;
-};
 export type FriendStatus =
     | "approved"
     | "blocked"
     | "declined"
     | "pending"
     | "deleted";
-export type BlockedStatus = "blocked";
 
 export interface FriendModel {
     id: number;
@@ -38,7 +35,21 @@ export interface FriendsRequestDTO {
     active: ReturnType<Friend["getSnapshot"]>[];
     offered: ReturnType<Friend["getSnapshot"]>[];
     pending: ReturnType<Friend["getSnapshot"]>[];
-    banned: ReturnType<Banned["getSnapshot"]>[];
+    banned: ReturnType<Friend["getSnapshot"]>[];
+    blacklist: ReturnType<Friend["getSnapshot"]>[];
+    meta?: {
+        active: FriendMeta;
+        offered: FriendMeta;
+        banned: FriendMeta;
+    };
+}
+
+export interface GetFriends {
+    active: Friend[];
+    offered: Friend[];
+    pending: Friend[];
+    banned: Friend[];
+    blacklist: Friend[];
     meta?: {
         active: FriendMeta;
         offered: FriendMeta;
@@ -64,38 +75,30 @@ export class Friend implements FriendModel {
     datetime_create: string;
     datetime_delete: string;
 
-    user?: User;
-    target?: User | Entity;
+    user?: Promise<User | Entity>;
+    target?: Promise<User | Entity>;
 
-    getSnapshot() {
-        return {
-            id: this.id,
-            status: this.status,
-            user_id: this.user_id,
-            target_id: this.target_id,
-            target_key: this.target_key,
-            datetime_update: this.datetime_update,
-            datetime_create: this.datetime_create,
-            datetime_delete: this.datetime_delete,
+    constructor(model: FriendModel, rest: RestService, selfUserId: number) {
+        Object.assign(this, model);
 
-            user: this.user,
-            target: this.target,
-        };
+        const authorship = selfUserId === this.user_id;
+
+        if (authorship) {
+            this.user = rest
+                .getEntity<User>("ent_users", this.user_id)
+                .toPromise();
+            this.target = rest
+                .getEntity(this.target_key, this.target_id)
+                .toPromise();
+        } else {
+            this.user = rest
+                .getEntity(this.target_key, this.target_id)
+                .toPromise();
+            this.target = rest
+                .getEntity<User>("ent_users", this.user_id)
+                .toPromise();
+        }
     }
-}
-
-export class Banned implements BannedModel {
-    id: number;
-    status: BlockedStatus;
-    user_id: number;
-    target_id: number;
-    target_key: string;
-    datetime_update: string;
-    datetime_create: string;
-    datetime_delete: string;
-
-    user?: User;
-    target?: User | Entity;
 
     getSnapshot() {
         return {

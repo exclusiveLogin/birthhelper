@@ -1,12 +1,14 @@
-import { Component, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { User } from "@models/user.interface";
+import { FriendService } from "@services/friend.service";
 
 @Component({
     selector: "app-profile-friends",
     templateUrl: "./profile-friends.component.html",
     styleUrls: ["./profile-friends.component.scss"],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProfileFriendsComponent implements OnInit {
+export class ProfileFriendsComponent {
     mockUser = new User({
         id: 1,
         first_name: "Test",
@@ -14,7 +16,14 @@ export class ProfileFriendsComponent implements OnInit {
         login: "Admin",
     });
 
-    constructor() {}
+    friends$ = this.friendService.getMyFriendList();
+    banned$ = this.friendService.getMyBannedList();
+    pending$ = this.friendService.getMyPendingList();
+    offered$ = this.friendService.getMyOfferList();
+    blacklist$ = this.friendService.getMyBlackList();
 
-    ngOnInit(): void {}
+    constructor(private friendService: FriendService) {}
+
+    protected readonly User = User;
+    protected readonly Promise = Promise;
 }

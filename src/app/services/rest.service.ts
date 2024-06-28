@@ -37,6 +37,7 @@ export interface ISettingsParams {
     segment: string;
     script?: string;
     resource?: string;
+    cached?: boolean;
 }
 
 export interface IRestParams {
@@ -475,10 +476,13 @@ export class RestService {
         return this.fetchData<IDictItem[]>(dictSetting, data);
     }
 
-    pathGen(path: ISettingsParams): void {
+    pathGen(path: ISettingsParams) {
+        let settings: ISettingsParams = { mode: "", segment: "" };
         Object.keys(path)
             .filter((key) => path[key])
-            .forEach((key) => (path[key] = "/" + path[key]));
+            .forEach((key) => (settings[key] = "/" + path[key]));
+
+        return { ...settings };
     }
 
     createUrl(path: ISettingsParams): string {
@@ -492,16 +496,13 @@ export class RestService {
         data?: IRestParams,
         nocache = false
     ): Observable<T> {
-        // console.log('fetchData', path);
         if (path?.mode === "auth") {
             nocache = true;
         }
-        if (path) {
-            this.pathGen(path);
-        }
+        path = this.pathGen(path);
         const cacheKey = md5(`${JSON.stringify(path)}_${JSON.stringify(data)}`);
 
-        if (this.cacheStore[cacheKey] && !nocache) {
+        if (this.cacheStore[cacheKey] && (!nocache || path.cached)) {
             return this.cacheStore[cacheKey] as Observable<T>;
         }
 
@@ -523,7 +524,7 @@ export class RestService {
             switchMap(http),
             shareReplay(1)
         );
-        if (!nocache) {
+        if (!nocache || path.cached) {
             this.cacheStore[cacheKey] = req;
         }
         return req as Observable<T>;
@@ -534,12 +535,8 @@ export class RestService {
         data?: any,
         insecure?: boolean
     ): Observable<T> {
-        if (path) {
-            this.pathGen(path);
-        }
-
+        path = this.pathGen(path);
         const url = this.createUrl(path);
-
         const http = (token?: string) =>
             this.http
                 .post(url, data, {
@@ -563,12 +560,8 @@ export class RestService {
         data?: any,
         insecure?: boolean
     ): Observable<T> {
-        if (path) {
-            this.pathGen(path);
-        }
-
+        path = this.pathGen(path);
         const url = this.createUrl(path);
-
         const http = (token?: string) =>
             this.http
                 .put(url, data, {
@@ -591,10 +584,7 @@ export class RestService {
         path: ISettingsParams,
         data?: IRestBody
     ): Observable<T> {
-        if (path) {
-            this.pathGen(path);
-        }
-
+        path = this.pathGen(path);
         const url = this.createUrl(path);
 
         const http = (token) =>
@@ -617,10 +607,7 @@ export class RestService {
         path: ISettingsParams,
         data?: IRestParams
     ): Observable<T> {
-        if (path) {
-            this.pathGen(path);
-        }
-
+        path = this.pathGen(path);
         const url = this.createUrl(path);
 
         const http = (token) =>

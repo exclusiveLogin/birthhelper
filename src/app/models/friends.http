@@ -1,0 +1,5 @@
+### GET request to example server
+GET http://localhost:3000/api/friends
+Token: 8e5ff6fe-d834-4712-9cc7-68abcb09c64e
+
+###
