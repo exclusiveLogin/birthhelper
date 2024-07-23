@@ -1,3 +1,5 @@
+@import 'sass/variables';
+
 :host {
     display: flex;
     align-items: center;
@@ -25,9 +27,19 @@
         background-color: #f9f9f9;
         flex-grow: 1;
         gap: 8px;
+        justify-content: space-around;
+        padding: 0 8px;
+
+        & .hidable {
+            display: flex;
+            gap: 8px;
+            transition: all 0.2s ease-in;
+            opacity: 1;
+        }
 
         &:not(:hover) .hidable {
-            display: none;
+            opacity: 0;
+            transform: scaleY(0);
         }
     }
 }
@@ -47,4 +59,12 @@
     border: 2px solid lightgrey;
     margin: 5%;
     text-align: center;
+}
+
+.btn:has(> .fa-trash-alt, .fa-xmark):hover {
+    background-color: $red;
+}
+
+.btn:has(> .fa-check):hover {
+    background-color: $green;
 }
