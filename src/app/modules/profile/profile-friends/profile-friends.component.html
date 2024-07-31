@@ -14,11 +14,17 @@
         >
             <div class="list" *ngIf="data.offered?.length; else empty">
                 <div class="list_item" *ngFor="let item of data.offered">
-                    <!-- card-->
-                    <app-lk-user-card [user]="item.target | async">
-                        <i class="badge badge-success status">Онлайн</i>
-                    </app-lk-user-card>
-                    <!-- status-->
+                    <ng-container
+                        *ngIf="{ target: item.target | async } as target"
+                    >
+                        <!-- card-->
+                        <app-lk-user-card
+                            [user]="target.target"
+                            (click)="gotoUserPage(target.target)"
+                        >
+                            <i class="badge badge-success status">Онлайн</i>
+                        </app-lk-user-card>
+                    </ng-container>
 
                     <!-- separator-->
                     <div class="separator"></div>
@@ -50,17 +56,29 @@
         >
             <div class="list" *ngIf="data?.friends?.length; else empty">
                 <div class="list_item" *ngFor="let item of data.friends">
-                    <!-- card-->
-                    <app-lk-user-card [user]="item.target | async">
-                        <i class="badge badge-success status">Онлайн</i>
-                    </app-lk-user-card>
-                    <!-- status-->
-                    <button type="button" class="btn btn-light">
-                        <i
-                            class="fa-solid fa-pen btn"
-                            title="Перейти к диалогу"
-                        ></i>
-                    </button>
+                    <ng-container
+                        *ngIf="{ target: item.target | async } as target"
+                    >
+                        <!-- card-->
+                        <app-lk-user-card
+                            [user]="target.target"
+                            (click)="gotoUserPage(target.target)"
+                        >
+                            <i class="badge badge-success status">Онлайн</i>
+                        </app-lk-user-card>
+                        <ng-container *ngIf="item.state | async as state">
+                            <button
+                                type="button"
+                                class="btn btn-light"
+                                *ngIf="canSendMessage(state)"
+                            >
+                                <i
+                                    class="fa-solid fa-pen btn"
+                                    title="Перейти к диалогу"
+                                ></i>
+                            </button>
+                        </ng-container>
+                    </ng-container>
 
                     <!-- separator-->
                     <div class="separator"></div>
@@ -83,11 +101,16 @@
         >
             <div class="list" *ngIf="data?.blacklist?.length; else empty">
                 <div class="list_item" *ngFor="let item of data.blacklist">
-                    <!-- card-->
-                    <app-lk-user-card [user]="item.target | async">
-                        <i class="badge badge-success status">Онлайн</i>
-                    </app-lk-user-card>
-                    <!-- status-->
+                    <ng-container
+                        *ngIf="{ target: item.target | async } as target"
+                    >
+                        <app-lk-user-card
+                            [user]="target.target"
+                            (click)="gotoUserPage(target.target)"
+                        >
+                            <i class="badge badge-success status">Онлайн</i>
+                        </app-lk-user-card>
+                    </ng-container>
 
                     <!-- separator-->
                     <div class="separator"></div>
@@ -110,11 +133,16 @@
         >
             <div class="list" *ngIf="data?.pending?.length; else empty">
                 <div class="list_item" *ngFor="let item of data.pending">
-                    <!-- card-->
-                    <app-lk-user-card [user]="item.target | async">
-                        <i class="badge badge-success status">Онлайн</i>
-                    </app-lk-user-card>
-                    <!-- status-->
+                    <ng-container
+                        *ngIf="{ target: item.target | async } as target"
+                    >
+                        <app-lk-user-card
+                            [user]="target.target"
+                            (click)="gotoUserPage(target.target)"
+                        >
+                            <i class="badge badge-success status">Онлайн</i>
+                        </app-lk-user-card>
+                    </ng-container>
 
                     <!-- separator-->
                     <div class="separator"></div>

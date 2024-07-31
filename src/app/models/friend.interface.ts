@@ -1,6 +1,8 @@
 import { User } from "@models/user.interface";
 import { Entity } from "@models/entity.interface";
-import { RestService } from "@services/rest.service";
+import { from, Observable } from "rxjs";
+import { FriendService } from "@services/friend.service";
+import { switchMap, take } from "rxjs/operators";
 
 export type FriendStatus =
     | "approved"
@@ -63,6 +65,7 @@ export interface FriendStateDTO {
     isBlocked: boolean;
     isYourBanned: boolean;
     canFriendOffer: boolean;
+    cantMessageMe: boolean;
 }
 
 export class Friend implements FriendModel {
@@ -78,26 +81,36 @@ export class Friend implements FriendModel {
     user?: Promise<User | Entity>;
     target?: Promise<User | Entity>;
 
-    constructor(model: FriendModel, rest: RestService, selfUserId: number) {
+    state: Promise<FriendStateDTO>;
+
+    constructor(
+        model: FriendModel,
+        friendService: FriendService,
+        selfUserId: number
+    ) {
         Object.assign(this, model);
 
         const authorship = selfUserId === this.user_id;
 
         if (authorship) {
-            this.user = rest
-                .getEntity<User>("ent_users", this.user_id)
-                .toPromise();
-            this.target = rest
-                .getEntity(this.target_key, this.target_id)
-                .toPromise();
+            this.user = friendService.getFriendshipUser(this.user_id);
+
+            this.target = friendService.getFriendshipTarget(
+                this.target_key,
+                this.target_id
+            );
         } else {
-            this.user = rest
-                .getEntity(this.target_key, this.target_id)
-                .toPromise();
-            this.target = rest
-                .getEntity<User>("ent_users", this.user_id)
-                .toPromise();
+            this.user = friendService.getFriendshipTarget(
+                this.target_key,
+                this.target_id
+            );
+
+            this.target = friendService.getFriendshipUser(this.user_id);
         }
+        console.log("Friend: ", this, authorship);
+        this.state = this.target.then((target) =>
+            friendService.checkFriendship(target.id).toPromise()
+        );
     }
 
     getSnapshot() {

@@ -64,6 +64,17 @@
 .profile_header {
     display: flex;
     padding: 16px 24px;
+    gap: 16px;
+
+    .profile_action_block {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .profile_action_text {
+            font-size: large;
+        }
+    }
 }
 
 .upload_photo__icon {

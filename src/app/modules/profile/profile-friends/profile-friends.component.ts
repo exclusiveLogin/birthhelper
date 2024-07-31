@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { User } from "@models/user.interface";
 import { FriendService } from "@services/friend.service";
+import { FriendStateDTO } from "@models/friend.interface";
+import { ActivatedRoute, Router } from "@angular/router";
+import { User } from "@models/user.interface";
 
 @Component({
     selector: "app-profile-friends",
@@ -9,21 +11,32 @@ import { FriendService } from "@services/friend.service";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileFriendsComponent {
-    mockUser = new User({
-        id: 1,
-        first_name: "Test",
-        last_name: "Rest",
-        login: "Admin",
-    });
-
     friends$ = this.friendService.getMyFriendList();
     banned$ = this.friendService.getMyBannedList();
     pending$ = this.friendService.getMyPendingList();
     offered$ = this.friendService.getMyOfferList();
     blacklist$ = this.friendService.getMyBlackList();
 
-    constructor(private friendService: FriendService) {}
+    constructor(
+        private friendService: FriendService,
+        private route: ActivatedRoute,
+        private router: Router
+    ) {}
 
-    protected readonly User = User;
-    protected readonly Promise = Promise;
+    canSendMessage(state?: FriendStateDTO) {
+        console.log(
+            "canSendMessage",
+            state,
+            this.friendService.canSendMessage(state)
+        );
+        return this.friendService.canSendMessage(state);
+    }
+
+    gotoUserPage(user: User) {
+        this.router
+            .navigate(["..", user.id], {
+                relativeTo: this.route,
+            })
+            .then((r) => {});
+    }
 }

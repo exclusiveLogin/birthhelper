@@ -17,7 +17,8 @@
         role: role$ | async,
         isSelf: isSelfProfile$ | async,
         isGuest: isGuest$ | async,
-        friendStatus: friendState$ | async
+        friendStatus: friendState$ | async,
+        canSendMessage: canSendMessage$ | async
     } as userData"
 >
     <div class="profile_header">
@@ -126,6 +127,38 @@
 
                 <!--                    debug: {{ userData.friendStatus | json }}-->
             </ng-template>
+        </div>
+        <div class="profile_action_block" *ngIf="!userData.isSelf">
+            <button
+                class="btn btn-success"
+                *ngIf="userData.friendStatus === 'canFriendOffer'"
+            >
+                Добавить в друзья
+            </button>
+            <button
+                class="btn btn-outline-success"
+                *ngIf="userData.canSendMessage"
+            >
+                Написать сообщение
+            </button>
+            <button
+                class="btn btn-outline-danger"
+                *ngIf="userData.friendStatus === 'isFriend'"
+            >
+                Удалить из друзей
+            </button>
+            <button
+                class="btn btn-outline-danger"
+                *ngIf="userData.friendStatus !== 'isBlocked'"
+            >
+                Заблокировать
+            </button>
+            <button
+                class="btn btn-outline-success"
+                *ngIf="userData.friendStatus === 'isBlocked'"
+            >
+                Разблокировать
+            </button>
         </div>
     </div>
 

@@ -8,8 +8,10 @@ import {
 import { OkPacket } from "@models/order.interface";
 import { BehaviorSubject, merge, Observable } from "rxjs";
 import { ISettingsParams, RestService } from "@services/rest.service";
-import { map, pluck, switchMap, tap } from "rxjs/operators";
+import { map, pluck, shareReplay, switchMap } from "rxjs/operators";
 import { AuthService } from "@modules/auth-module/auth.service";
+import { User } from "@models/user.interface";
+import { Entity } from "@models/entity.interface";
 
 @Injectable({
     providedIn: "root",
@@ -46,7 +48,7 @@ export class FriendService {
                             (friend) =>
                                 new Friend(
                                     friend,
-                                    this.restService,
+                                    this,
                                     this.authService.user.id
                                 )
                         ),
@@ -54,7 +56,7 @@ export class FriendService {
                             (friend) =>
                                 new Friend(
                                     friend,
-                                    this.restService,
+                                    this,
                                     this.authService.user.id
                                 )
                         ),
@@ -62,7 +64,7 @@ export class FriendService {
                             (friend) =>
                                 new Friend(
                                     friend,
-                                    this.restService,
+                                    this,
                                     this.authService.user.id
                                 )
                         ),
@@ -70,7 +72,7 @@ export class FriendService {
                             (friend) =>
                                 new Friend(
                                     friend,
-                                    this.restService,
+                                    this,
                                     this.authService.user.id
                                 )
                         ),
@@ -78,15 +80,23 @@ export class FriendService {
                             (friend) =>
                                 new Friend(
                                     friend,
-                                    this.restService,
+                                    this,
                                     this.authService.user.id
                                 )
                         ),
                     };
                 }
             ),
-            tap((_) => console.log("myFriends$ data: ", _))
+            shareReplay(1)
         );
+    }
+
+    getFriendshipUser(id: number): Promise<User> {
+        return this.restService.getEntity<User>("ent_users", id).toPromise();
+    }
+
+    getFriendshipTarget(key: string, id: number): Promise<Entity> {
+        return this.restService.getEntity<Entity>(key, id).toPromise();
     }
 
     getMyFriendList(): Observable<Friend[]> {
@@ -129,12 +139,12 @@ export class FriendService {
         return null;
     }
 
-    checkFriendship(friendshipId: number): Observable<FriendStateDTO> {
+    checkFriendship(friendId: number): Observable<FriendStateDTO> {
         const params: ISettingsParams = {
             mode: "api",
             segment: "friends",
             resource: "check",
-            script: friendshipId.toString(),
+            script: friendId.toString(),
         };
 
         return this.restService.fetchData(params);
@@ -172,5 +182,17 @@ export class FriendService {
             : state.canFriendOffer
             ? "canFriendOffer"
             : null;
+    }
+
+    canSendMessage(state: FriendStateDTO): boolean {
+        if (state.cantMessageMe) return false;
+
+        if (state.isBlocked || state.isYourBanned) {
+            return false;
+        } else if (state.isFriend) {
+            return true;
+        }
+
+        return false;
     }
 }
