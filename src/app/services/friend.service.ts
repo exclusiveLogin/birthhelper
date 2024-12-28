@@ -1,17 +1,25 @@
 import { Injectable } from "@angular/core";
 import {
     Friend,
+    FriendModel,
     FriendsRequestDTO,
     FriendStateDTO,
+    FriendStatus,
     GetFriends,
 } from "@models/friend.interface";
 import { OkPacket } from "@models/order.interface";
-import { BehaviorSubject, merge, Observable } from "rxjs";
+import { BehaviorSubject, merge, Observable, OperatorFunction } from "rxjs";
 import { ISettingsParams, RestService } from "@services/rest.service";
 import { map, pluck, shareReplay, switchMap } from "rxjs/operators";
 import { AuthService } from "@modules/auth-module/auth.service";
 import { User } from "@models/user.interface";
 import { Entity } from "@models/entity.interface";
+
+export interface BlockUserResponse {
+    success: boolean;
+    id: number;
+    userId: number;
+}
 
 @Injectable({
     providedIn: "root",
@@ -26,6 +34,7 @@ export class FriendService {
         private restService: RestService,
         private authService: AuthService
     ) {
+        console.log("FriendService", this);
         const params: ISettingsParams = {
             mode: "api",
             segment: "friends",
@@ -34,60 +43,44 @@ export class FriendService {
             switchMap(() =>
                 this.restService.fetchData<FriendsRequestDTO>(params)
             ),
-            map(
-                ({
-                    active,
-                    pending,
-                    offered,
-                    banned,
-                    blacklist,
-                    ...meta
-                }): GetFriends => {
-                    return {
-                        active: active.map(
-                            (friend) =>
-                                new Friend(
-                                    friend,
-                                    this,
-                                    this.authService.user.id
-                                )
-                        ),
-                        banned: banned.map(
-                            (friend) =>
-                                new Friend(
-                                    friend,
-                                    this,
-                                    this.authService.user.id
-                                )
-                        ),
-                        offered: offered.map(
-                            (friend) =>
-                                new Friend(
-                                    friend,
-                                    this,
-                                    this.authService.user.id
-                                )
-                        ),
-                        pending: pending.map(
-                            (friend) =>
-                                new Friend(
-                                    friend,
-                                    this,
-                                    this.authService.user.id
-                                )
-                        ),
-                        blacklist: blacklist.map(
-                            (friend) =>
-                                new Friend(
-                                    friend,
-                                    this,
-                                    this.authService.user.id
-                                )
-                        ),
-                    };
-                }
-            ),
+            this.friendMapper(),
             shareReplay(1)
+        );
+    }
+
+    friendMapper(): OperatorFunction<FriendsRequestDTO, GetFriends> {
+        return map(
+            ({
+                active,
+                pending,
+                offered,
+                banned,
+                blacklist,
+                ...meta
+            }): GetFriends => {
+                return {
+                    active: active.map(
+                        (friend: FriendModel) =>
+                            new Friend(friend, this, this.authService.user.id)
+                    ),
+                    banned: banned.map(
+                        (friend: FriendModel) =>
+                            new Friend(friend, this, this.authService.user.id)
+                    ),
+                    offered: offered.map(
+                        (friend: FriendModel) =>
+                            new Friend(friend, this, this.authService.user.id)
+                    ),
+                    pending: pending.map(
+                        (friend: FriendModel) =>
+                            new Friend(friend, this, this.authService.user.id)
+                    ),
+                    blacklist: blacklist.map(
+                        (friend: FriendModel) =>
+                            new Friend(friend, this, this.authService.user.id)
+                    ),
+                };
+            }
         );
     }
 
@@ -119,24 +112,53 @@ export class FriendService {
         return this.myFriends$.pipe(pluck("blacklist"));
     }
 
-    getFriedsByUserId(userId: number): Friend[] {
-        return;
+    getFriedsByUserId(userId: number): Observable<GetFriends> {
+        const params: ISettingsParams = {
+            mode: "api",
+            segment: "friends",
+            script: userId.toString(),
+        };
+
+        return this.restService
+            .fetchData<FriendsRequestDTO>(params)
+            .pipe(this.friendMapper());
     }
 
-    sendFriendship(userId: number) {
-        return;
+    sendFriendship(
+        userId: number
+    ): Observable<{ success: boolean; result: OkPacket }> {
+        const params: ISettingsParams = {
+            mode: "api",
+            segment: "friends",
+            script: userId.toString(),
+        };
+
+        return this.restService.postData(params);
     }
 
-    revokeFriendship(id: number): { success: boolean; result: OkPacket } {
-        return null;
+    acceptUserFriendship(
+        id: number
+    ): Observable<{ success: boolean; result: OkPacket }> {
+        const params: ISettingsParams = {
+            mode: "api",
+            segment: "friends",
+            script: id.toString(),
+        };
+
+        const status: FriendStatus = "approved";
+        return this.restService.patchData(params, { status });
     }
 
-    acceptUserFriendship(id: number): { success: boolean; result: OkPacket } {
-        return;
-    }
+    removeFriendship(
+        id: number
+    ): Observable<{ success: boolean; result: OkPacket }> {
+        const params: ISettingsParams = {
+            mode: "api",
+            segment: "friends",
+            script: id.toString(),
+        };
 
-    removeFriendship(id: number): { success: boolean; result: OkPacket } {
-        return null;
+        return this.restService.remData(params);
     }
 
     checkFriendship(friendId: number): Observable<FriendStateDTO> {
@@ -154,20 +176,26 @@ export class FriendService {
         return;
     }
 
-    blockUserByUserId(userId: number): {
-        success: boolean;
-        id: number;
-        userId: number;
-    } {
-        return;
+    blockUserByUserId(userId: number): Observable<BlockUserResponse> {
+        const params: ISettingsParams = {
+            mode: "api",
+            segment: "friends",
+            resource: "block",
+            script: userId.toString(),
+        };
+
+        return this.restService.postData<BlockUserResponse>(params);
     }
 
-    unblockUserByOfferId(id: number): {
-        success: boolean;
-        id: number;
-        userId: number;
-    } {
-        return;
+    unblockUserByOfferId(id: number): Observable<BlockUserResponse> {
+        const params: ISettingsParams = {
+            mode: "api",
+            segment: "friends",
+            resource: "block",
+            script: id.toString(),
+        };
+
+        return this.restService.remData<BlockUserResponse>(params);
     }
 
     getFinalyFriendState(state: FriendStateDTO): keyof FriendStateDTO {

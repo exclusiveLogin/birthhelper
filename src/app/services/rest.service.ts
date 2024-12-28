@@ -580,6 +580,31 @@ export class RestService {
         return req as Observable<T>;
     }
 
+    public patchData<T>(
+        path: ISettingsParams,
+        data?: any,
+        insecure?: boolean
+    ): Observable<T> {
+        path = this.pathGen(path);
+        const url = this.createUrl(path);
+        const http = (token?: string) =>
+            this.http
+                .patch(url, data, {
+                    headers: token ? new HttpHeaders({ token }) : null,
+                })
+                .pipe(
+                    this.interceptor.interceptor(),
+                    filter((d) => !!d),
+                    take(1)
+                );
+
+        const req = insecure
+            ? http()
+            : this.interceptor.token$.pipe(take(1), switchMap(http));
+
+        return req as Observable<T>;
+    }
+
     public postDataContainer<T>(
         path: ISettingsParams,
         data?: IRestBody
