@@ -1,13 +1,12 @@
 import { Component, ElementRef, ViewChild, OnInit } from "@angular/core";
-import { BehaviorSubject, combineLatest, Observable, of } from "rxjs";
+import { BehaviorSubject, combineLatest, Observable, of, Subject } from "rxjs";
+import { debounceTime, distinctUntilChanged } from "rxjs/operators";
 import { DictService, IDictItem } from "../admin/dict.service";
 import { AuthService } from "../auth-module/auth.service";
 import { IFileAdditionalData } from "../admin/rest.service";
 import { ISettingsParams, RestService } from "@services/rest.service";
 import {
     catchError,
-    filter,
-    finalize,
     map,
     shareReplay,
     switchMap,
@@ -88,6 +87,14 @@ export class ProfileComponent implements OnInit {
         "dict_user_status_type"
     );
 
+    userSearchQuery = new Subject<string>();
+    userFriendSuggestions$: Observable<User[]> = this.userSearchQuery.pipe(
+        debounceTime(250),
+        distinctUntilChanged(),
+        switchMap((q) => this.restService.searchUsers(q))
+    );
+    isShowSearchUserInput: boolean = false;
+
     constructor(
         private dictService: DictService,
         private authService: AuthService,
@@ -103,12 +110,76 @@ export class ProfileComponent implements OnInit {
         console.log("Route:", this.route);
     }
 
+    hideSearchUserInput() {
+        setTimeout(() => (this.isShowSearchUserInput = false), 500);
+    }
+
+    showSearchUserInput() {
+        setTimeout(() => (this.isShowSearchUserInput = true), 50);
+    }
+
+    searchUsers(query: string): void {
+        console.log("query:", query);
+        this.userSearchQuery.next(query);
+    }
+
+    selectUserSuggestion(user: User) {
+        console.log("selectUserSuggestion", user);
+        this.gotoUserPage(user);
+    }
+
     goto(path: string): void {
         this.router.navigate([path ? path : "./"], { relativeTo: this.route });
     }
 
+    gotoUserPage(user: User) {
+        this.router.navigate(["system", "profile", user.id]);
+    }
+
     uploadAvatarHandler(): void {
         this.fileRef.nativeElement.click();
+    }
+
+    async sendFriendship() {
+        const user = await this.user$.pipe(take(1)).toPromise();
+        await this.friendService.sendFriendship(user.id).toPromise();
+
+        this.refresh$.next();
+        this.friendService.refresh();
+    }
+
+    async blockUser() {
+        const user = await this.user$.pipe(take(1)).toPromise();
+        await this.friendService.blockUserByUserId(user.id).toPromise();
+
+        this.refresh$.next();
+        this.friendService.refresh();
+    }
+
+    async unblockUser() {
+        const state = await this.userFriendship$.pipe(take(1)).toPromise();
+        const blockRecord = state?.blockList?.[0];
+
+        if (!blockRecord) return;
+
+        await this.friendService
+            .unblockUserByOfferId(blockRecord.id)
+            .toPromise();
+
+        this.refresh$.next();
+        this.friendService.refresh();
+    }
+
+    async removeFriendship() {
+        const state = await this.userFriendship$.pipe(take(1)).toPromise();
+        const friendRecord = state?.friendshipList?.[0];
+
+        if (!friendRecord) return;
+
+        await this.friendService.removeFriendship(friendRecord.id).toPromise();
+
+        this.refresh$.next();
+        this.friendService.refresh();
     }
 
     async upload(ev) {
@@ -149,7 +220,9 @@ export class ProfileComponent implements OnInit {
     }
 
     userFriendship$ = this.user$.pipe(
-        switchMap((user) => this.friendService.checkFriendship(user.id))
+        switchMap((user) => this.friendService.checkFriendship(user.id)),
+        shareReplay(1),
+        tap((data) => console.log("user friendship done", data))
     );
 
     friendState$ = this.userFriendship$.pipe(

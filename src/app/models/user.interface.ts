@@ -56,6 +56,8 @@ export class User {
     first_name: string;
     last_name: string;
     patronymic: string;
+    full_name: string;
+    full_name_login: string;
     photo_id: number;
     status_type: number;
     multi_pregnant: boolean;
@@ -99,6 +101,8 @@ export class User {
         this.first_name = src.first_name;
         this.last_name = src.last_name;
         this.patronymic = src.patronymic;
+        this.full_name = `${this.first_name} ${this.last_name} ${this.patronymic}`;
+        this.full_name_login = `${this.full_name} [${this.login}]`;
         this.photo_id = src.photo_id;
         this.status_type = src.status_type;
         this.client_birthday_datetime = src.client_birthday_datetime;

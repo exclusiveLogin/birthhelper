@@ -41,7 +41,11 @@ export class FriendService {
         };
         this.myFriends$ = merge(this._updaterFriendList).pipe(
             switchMap(() =>
-                this.restService.fetchData<FriendsRequestDTO>(params)
+                this.restService.fetchData<FriendsRequestDTO>(
+                    params,
+                    null,
+                    true
+                )
             ),
             this.friendMapper(),
             shareReplay(1)
@@ -130,10 +134,15 @@ export class FriendService {
         const params: ISettingsParams = {
             mode: "api",
             segment: "friends",
-            script: userId.toString(),
         };
 
-        return this.restService.postData(params);
+        const data: {
+            friend_id: number;
+        } = {
+            friend_id: userId,
+        };
+
+        return this.restService.postData(params, data);
     }
 
     acceptUserFriendship(
@@ -169,7 +178,7 @@ export class FriendService {
             script: friendId.toString(),
         };
 
-        return this.restService.fetchData(params);
+        return this.restService.fetchData(params, null, true);
     }
 
     getBlockedUsersByUserId(userId: number): Friend[] {
@@ -222,5 +231,9 @@ export class FriendService {
         }
 
         return false;
+    }
+
+    refresh() {
+        this._updaterFriendList.next();
     }
 }

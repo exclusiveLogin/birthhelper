@@ -422,6 +422,17 @@ export class RestService {
         );
     }
 
+    public searchUsers(query: string): Observable<User[]> {
+        return this.searchEntity(query, "ent_users").pipe(
+            map((list) => list.map((userScr) => new User(userScr)))
+        );
+    }
+
+    public searchEntity<T>(query: string, entKey: string): Observable<T[]> {
+        const qp: IRestParams = { q: query };
+        return this.getEntityList<T>(entKey, 1, qp).pipe();
+    }
+
     getRepliesByComment(commentId: number, page = 1) {
         const qp: IRestParams = { comment_id: commentId.toString() };
         return this.getEntityList<Comment>("ent_comments", page, qp);

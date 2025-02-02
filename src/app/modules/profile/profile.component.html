@@ -132,30 +132,46 @@
             <button
                 class="btn btn-success"
                 *ngIf="userData.friendStatus === 'canFriendOffer'"
+                (click)="sendFriendship()"
             >
                 Добавить в друзья
             </button>
+
             <button
                 class="btn btn-outline-success"
                 *ngIf="userData.canSendMessage"
             >
                 Написать сообщение
             </button>
+
             <button
                 class="btn btn-outline-danger"
                 *ngIf="userData.friendStatus === 'isFriend'"
+                (click)="removeFriendship()"
             >
                 Удалить из друзей
             </button>
+
+            <button
+                class="btn btn-outline-danger"
+                *ngIf="userData.friendStatus === 'isOffered'"
+                (click)="removeFriendship()"
+            >
+                Удалить заявку в друзья
+            </button>
+
             <button
                 class="btn btn-outline-danger"
                 *ngIf="userData.friendStatus !== 'isBlocked'"
+                (click)="blockUser()"
             >
                 Заблокировать
             </button>
+
             <button
                 class="btn btn-outline-success"
                 *ngIf="userData.friendStatus === 'isBlocked'"
+                (click)="unblockUser()"
             >
                 Разблокировать
             </button>
@@ -181,6 +197,43 @@
                         (click)="goto('friends')"
                         >Друзья</a
                     >
+                </li>
+                <li class="nav-item nav-search">
+                    <div
+                        class="search_input_container"
+                        [class.hidden]="!isShowSearchUserInput"
+                    >
+                        <ng-autocomplete
+                            [data]="userFriendSuggestions$ | async"
+                            [searchKeyword]="'full_name_login'"
+                            placeholder="Начните вводить имя"
+                            (selected)="selectUserSuggestion($event)"
+                            (inputChanged)="searchUsers($event)"
+                            (focusout)="hideSearchUserInput()"
+                            [itemTemplate]="itemTemplate"
+                            [notFoundTemplate]="notFoundTemplate"
+                        >
+                        </ng-autocomplete>
+
+                        <ng-template #itemTemplate let-item>
+                            <div
+                                class="select_item__user"
+                                [innerHTML]="item.full_name_login"
+                            ></div>
+                        </ng-template>
+
+                        <ng-template #notFoundTemplate let-notFound>
+                            <div
+                                class="select_item__user"
+                                [innerHTML]="notFound"
+                            ></div>
+                        </ng-template>
+                    </div>
+                    <i
+                        class="fa-solid fa-magnifying-glass nav-search-icon"
+                        [class.pushed]="isShowSearchUserInput"
+                        (click)="showSearchUserInput()"
+                    ></i>
                 </li>
             </ul>
             <ng-container *ngIf="userData.mode === 'settings'">

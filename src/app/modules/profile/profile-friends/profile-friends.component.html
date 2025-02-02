@@ -11,6 +11,8 @@
         <app-toggle-container
             [title]="'Заявки в друзья'"
             [collapsed]="!data.offered?.length"
+            [count]="data.offered?.length"
+            *ngIf="data.offered?.length"
         >
             <div class="list" *ngIf="data.offered?.length; else empty">
                 <div class="list_item" *ngFor="let item of data.offered">
@@ -48,11 +50,14 @@
                     </div>
                 </div>
             </div>
+            <hr />
         </app-toggle-container>
-        <hr />
+
         <app-toggle-container
             [title]="'Список друзей'"
             [collapsed]="!data?.friends?.length"
+            [count]="data.friends?.length"
+            *ngIf="data?.friends?.length"
         >
             <div class="list" *ngIf="data?.friends?.length; else empty">
                 <div class="list_item" *ngFor="let item of data.friends">
@@ -65,6 +70,11 @@
                             (click)="gotoUserPage(target.target)"
                         >
                             <i class="badge badge-success status">Онлайн</i>
+                            <i
+                                class="badge badge-danger status"
+                                *ngIf="includes(item, data.blacklist)"
+                                >Заблокирован</i
+                            >
                         </app-lk-user-card>
                         <ng-container *ngIf="item.state | async as state">
                             <button
@@ -90,14 +100,28 @@
                                 title="Удалить из друзей"
                             ></i>
                         </button>
+
+                        <button class="btn btn-light">
+                            <i class="fa-solid fa-flag fa-trash-alt"></i>
+                        </button>
+
+                        <button type="button" class="btn btn-danger">
+                            <i
+                                class="fa-solid fa-ban"
+                                title="Заблокировать"
+                            ></i>
+                        </button>
                     </div>
                 </div>
             </div>
+            <hr />
         </app-toggle-container>
-        <hr />
+
         <app-toggle-container
             [title]="'Черный список'"
             [collapsed]="!data?.blacklist?.length"
+            [count]="data.blacklist?.length"
+            *ngIf="data?.blacklist?.length"
         >
             <div class="list" *ngIf="data?.blacklist?.length; else empty">
                 <div class="list_item" *ngFor="let item of data.blacklist">
@@ -125,11 +149,14 @@
                     </div>
                 </div>
             </div>
+            <hr />
         </app-toggle-container>
-        <hr />
+
         <app-toggle-container
             [title]="'Заявки, которые ожидают подтверждения'"
             [collapsed]="!data?.pending?.length"
+            [count]="data.pending?.length"
+            *ngIf="data?.pending?.length"
         >
             <div class="list" *ngIf="data?.pending?.length; else empty">
                 <div class="list_item" *ngFor="let item of data.pending">
@@ -141,6 +168,11 @@
                             (click)="gotoUserPage(target.target)"
                         >
                             <i class="badge badge-success status">Онлайн</i>
+                            <i
+                                class="badge badge-danger status"
+                                *ngIf="includes(item, data.blacklist)"
+                                >Заблокирован</i
+                            >
                         </app-lk-user-card>
                     </ng-container>
 
@@ -148,10 +180,12 @@
                     <div class="separator"></div>
                     <!-- actions-->
                     <div class="hidable">
-                        <button class="btn card__btn--green">
-                            <span class="card__btn-txt"> Принять </span>
+                        <button type="button" class="btn btn-light">
+                            <i
+                                class="fas fa-trash-alt"
+                                title="Удалить из друзей"
+                            ></i>
                         </button>
-                        <button class="btn card__btn--offer">Отклонить</button>
                     </div>
                 </div>
             </div>

@@ -8,6 +8,7 @@ import { Component, Input, OnInit } from "@angular/core";
 export class ToggleContainerComponent {
     @Input() title: string;
     @Input() collapsed: boolean;
+    @Input() count: number;
 
     constructor() {}
 }

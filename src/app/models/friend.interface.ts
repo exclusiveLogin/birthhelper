@@ -11,6 +11,8 @@ export type FriendStatus =
     | "pending"
     | "deleted";
 
+export type BlockedStatus = "blocked";
+
 export interface FriendModel {
     id: number;
     status: FriendStatus;
@@ -21,6 +23,10 @@ export interface FriendModel {
     datetime_create: string;
     datetime_delete: string;
 }
+
+export type BannedModel = Omit<FriendModel, "status"> & {
+    status: BlockedStatus;
+};
 
 export interface EditFriendRequest {
     status: FriendStatus;
@@ -66,6 +72,8 @@ export interface FriendStateDTO {
     isYourBanned: boolean;
     canFriendOffer: boolean;
     cantMessageMe: boolean;
+    blockList: BannedModel[];
+    friendshipList: FriendModel[];
 }
 
 export class Friend implements FriendModel {

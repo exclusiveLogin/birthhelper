@@ -4,6 +4,7 @@ import { CommonModule } from "@angular/common";
 import { RateButtonComponent } from "./rate-button/rate-button.component";
 import { ToggleContainerComponent } from "./toggle-container/toggle-container.component";
 import { LKCommonComponentModule } from "@modules/admin/lk/common/lk.common.module";
+import { AutocompleteLibModule } from "angular-ng-autocomplete";
 
 @NgModule({
     declarations: [
@@ -11,11 +12,12 @@ import { LKCommonComponentModule } from "@modules/admin/lk/common/lk.common.modu
         RateButtonComponent,
         ToggleContainerComponent,
     ],
-    imports: [CommonModule, LKCommonComponentModule],
+    imports: [CommonModule, LKCommonComponentModule, AutocompleteLibModule],
     exports: [
         PaginatorComponent,
         RateButtonComponent,
         ToggleContainerComponent,
+        AutocompleteLibModule,
     ],
 })
 export class SharedModule {}

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { FriendService } from "@services/friend.service";
-import { FriendStateDTO } from "@models/friend.interface";
+import { Friend, FriendStateDTO } from "@models/friend.interface";
 import { ActivatedRoute, Router } from "@angular/router";
 import { User } from "@models/user.interface";
 
@@ -38,5 +38,18 @@ export class ProfileFriendsComponent {
                 relativeTo: this.route,
             })
             .then((r) => {});
+    }
+
+    async addUserToFriendList(id: number) {
+        await this.friendService.acceptUserFriendship(id).toPromise();
+        // this.refresh$.next();
+    }
+
+    includes(friend: Friend, list: Friend[]): boolean {
+        return list.some(
+            (f) =>
+                f.target_id === friend.user_id ||
+                f.target_id === friend.target_id
+        );
     }
 }
