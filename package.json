@@ -2,6 +2,7 @@
     "name": "birthhelper",
     "version": "0.0.0",
     "license": "MIT",
+    "author": "Mudila",
     "scripts": {
         "ng": "ng",
         "start": "ng serve --proxy-config proxy.conf.js",
