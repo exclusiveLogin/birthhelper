@@ -152,12 +152,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    //width: 160px;
-    height: 40px;
+    min-height: 44px;
     margin: 0 0 0 10px;
     border: none;
-    border-radius: 3px;
-    padding: 0 18px;
+    border-radius: 6px;
+    padding: 0 16px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    flex-wrap: wrap;
+
+    @media (min-width: 768px) {
+        padding: 0 24px;
+    }
 
     &--green {
         margin: 0;
@@ -174,22 +180,63 @@
     }
 
     &--blue {
-        background: $blue;
+        background: linear-gradient(to right, $blue, lighten($blue, 10%));
+        box-shadow: 0 4px 15px rgba($blue, 0.2);
+        position: relative;
+        padding-right: 48px;
 
         .card__btn-txt {
             font-size: 14px;
             font-weight: 500;
-            line-height: 1.14;
+            line-height: 1.2;
+            letter-spacing: 0.3px;
+            white-space: normal;
+            text-align: center;
+            margin-right: 0;
+
+            @media (min-width: 768px) {
+                font-size: 15px;
+                white-space: nowrap;
+            }
+        }
+
+        .card__btn-tooltip-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.8;
+            transition: opacity 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 0;
         }
 
         &:hover {
-            background: #6896f5;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba($blue, 0.3);
+            background: linear-gradient(to right, lighten($blue, 5%), lighten($blue, 15%));
+
+            .card__btn-tooltip-icon {
+                opacity: 1;
+            }
+        }
+
+        &:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 10px rgba($blue, 0.2);
         }
     }
 }
 
 .card__btn-txt {
     color: $white;
+    margin-right: 4px;
+
+    @media (min-width: 768px) {
+        margin-right: 8px;
+    }
 }
 
 .card__btn-icon {
@@ -198,13 +245,25 @@
 }
 
 .card__btn-tooltip-icon {
-    width: 18px;
-    height: 18px;
-    margin: 0 0 0 10px;
+    width: 20px;
+    height: 20px;
+    margin: 0 0 0 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+        width: 18px;
+        height: 18px;
+        filter: brightness(0) invert(1);
+        opacity: 0.9;
+    }
 
     &:hover {
         .card__btn-tooltip {
             display: block;
+            opacity: 1;
+            transform: translateY(0);
         }
     }
 }
@@ -220,25 +279,25 @@
 .card__btn-tooltip {
     display: none;
     position: absolute;
-    top: -50px;
+    top: -60px;
     right: 0;
-    width: 247px;
-    padding: 15px;
-    border-radius: 4px;
-    box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.15);
+    width: 200px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     background-color: $white;
     color: $dark;
+    font-size: 13px;
+    line-height: 1.4;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.2s ease;
     z-index: 1000;
 
-    &::before {
-        position: absolute;
-        content: "";
-        bottom: -20px;
-        right: 17px;
-        border-top: 10px solid $white;
-        border-bottom: 10px solid transparent;
-        border-left: 10px solid transparent;
-        border-right: 10px solid transparent;
+    @media (min-width: 768px) {
+        width: 247px;
+        padding: 12px 16px;
+        font-size: 14px;
     }
 }
 

@@ -1,16 +1,22 @@
+// Color system
+// Primary colors
 $darkred: #862a3f;
-$white: #ffffff;
-$dark: #4c4c4c;
-$light-grey: #f8f8f8;
-$border-grey: #eeeeee;
 $blue: #487ff1;
 $light-blue: #6896f5;
-$black: #2d333f;
 $green: #30c469;
 $light-green: #56d888;
 $red: #ef424c;
 $orange: #ed7255;
+
+// Neutral colors
+$white: #ffffff;
+$black: #2d333f;
+$dark: #4c4c4c;
 $dark-grey: #777777;
+$medium-grey: #b0b0b0;
+$light-grey: #f8f8f8;
+$border-grey: #eeeeee;
+$off-white: #f9f9f9;
 
 // Social media colors
 $skype-color: #00aff0;
@@ -18,7 +24,30 @@ $whatsapp-color: #128c7e;
 $telegram-color: #0088cc;
 $viber-color: #59267c;
 
+// Background colors
 $main-bg: #f6f7fb;
+$card-bg: $white;
+$hover-bg: rgba($black, 0.05);
+
+// Text colors
+$text-primary: $dark;
+$text-secondary: $dark-grey;
+$text-muted: $medium-grey;
+$text-light: $white;
+
+// Border colors
+$border-color: $border-grey;
+$border-light: #f0f0f0;
+
+// Shadow colors
+$shadow-color: rgba($black, 0.1);
+$shadow-light: rgba($black, 0.06);
+
+// Status colors
+$success: $green;
+$error: $red;
+$warning: $orange;
+$info: $blue;
 
 // Spacing variables
 $spacing-xs: 4px;

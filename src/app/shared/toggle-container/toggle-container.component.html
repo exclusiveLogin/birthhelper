@@ -3,12 +3,9 @@
         <span>{{ title || "" }} ({{ count || "0" }})</span>
         <div class="separator"></div>
         <i
-            class="btn fa fa-lg fa-chevron-circle-down"
-            [ngClass]="[
-                list.dataset['show'] === '1'
-                    ? 'fa-chevron-circle-up'
-                    : 'fa-chevron-circle-down'
-            ]"
+            class="fas toggle-btn"
+            [class.fa-chevron-up]="list.dataset['show'] === '1'"
+            [class.fa-chevron-down]="list.dataset['show'] !== '1'"
             (click)="
                 list.dataset['show'] = list.dataset['show'] === '1' ? '0' : '1'
             "

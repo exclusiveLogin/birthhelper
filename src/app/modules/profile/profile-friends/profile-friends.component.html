@@ -77,16 +77,17 @@
                             >
                         </app-lk-user-card>
                         <ng-container *ngIf="item.state | async as state">
-                            <button
-                                type="button"
-                                class="btn btn-light"
-                                *ngIf="canSendMessage(state)"
-                            >
-                                <i
-                                    class="fa-solid fa-pen btn"
+                            <div class="button-container">
+                                <button
+                                    type="button"
+                                    class="btn btn-primary message-btn"
+                                    *ngIf="canSendMessage(state)"
                                     title="Перейти к диалогу"
-                                ></i>
-                            </button>
+                                >
+                                    <i class="fa-solid fa-message"></i>
+                                    <span class="btn-text">Написать сообщение</span>
+                                </button>
+                            </div>
                         </ng-container>
                     </ng-container>
 
@@ -96,7 +97,7 @@
                     <div class="hidable">
                         <button type="button" class="btn btn-light">
                             <i
-                                class="fas fa-trash-alt"
+                                class="fa-solid fa-trash-alt"
                                 title="Удалить из друзей"
                             ></i>
                         </button>
@@ -182,7 +183,7 @@
                     <div class="hidable">
                         <button type="button" class="btn btn-light">
                             <i
-                                class="fas fa-trash-alt"
+                                class="fa-solid fa-trash-alt"
                                 title="Удалить из друзей"
                             ></i>
                         </button>

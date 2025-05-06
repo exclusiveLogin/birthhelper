@@ -1,0 +1,103 @@
+// Common mixins for reusable style patterns
+
+// Card mixin for consistent card styling
+@mixin card($padding: $spacing-base, $radius: $border-radius-base, $shadow-level: 1) {
+  background-color: $card-bg;
+  border-radius: $radius;
+  padding: $padding;
+
+  @if $shadow-level == 1 {
+    box-shadow: 0 2px 4px $shadow-light;
+  } @else if $shadow-level == 2 {
+    box-shadow: 0 4px 8px $shadow-light;
+  } @else if $shadow-level == 3 {
+    box-shadow: 0 10px 24px 0 $shadow-light;
+  }
+}
+
+// Button mixin for consistent button styling
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: $border-radius-base;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+@mixin button-size($size: 'md') {
+  @if $size == 'sm' {
+    padding: $spacing-xs $spacing-sm;
+    font-size: 0.875rem;
+  } @else if $size == 'md' {
+    padding: $spacing-sm $spacing-base;
+    font-size: 1rem;
+  } @else if $size == 'lg' {
+    padding: $spacing-base $spacing-md;
+    font-size: 1.125rem;
+  }
+}
+
+@mixin button-variant($bg-color, $text-color: $text-light) {
+  background-color: $bg-color;
+  color: $text-color;
+
+  &:hover, &:focus {
+    background-color: darken($bg-color, 10%);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// Text truncation mixin
+@mixin text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// List reset mixin (extends the no-list mixin)
+@mixin list-reset {
+  @include no-list;
+
+  li {
+    margin: 0;
+  }
+}
+
+// Avatar mixin for consistent avatar styling
+@mixin avatar($size: 44px) {
+  width: $size;
+  height: $size;
+  border-radius: $border-radius-circle;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: $light-grey;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: $border-radius-circle;
+    display: block;
+  }
+}
+
+// Divider mixin for consistent dividers
+@mixin divider($color: $border-light, $direction: 'horizontal') {
+  @if $direction == 'horizontal' {
+    border-bottom: 1px solid $color;
+  } @else if $direction == 'vertical' {
+    border-left: 1px solid $color;
+  }
+}
