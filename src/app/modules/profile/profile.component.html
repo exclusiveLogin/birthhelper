@@ -198,7 +198,7 @@
                         >Друзья</a
                     >
                 </li>
-                <li class="nav-item nav-search">
+                <li class="nav-item nav-search" *ngIf="userData.mode === 'friends'">
                     <div
                         class="search_input_container"
                         [class.hidden]="!isShowSearchUserInput"

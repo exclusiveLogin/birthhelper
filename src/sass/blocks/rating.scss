@@ -1,3 +1,5 @@
+@import "../variables.scss";
+
 .rating-list {
     display: flex;
     flex-wrap: wrap;
@@ -10,6 +12,7 @@
     min-width: 130px;
     margin-bottom: 15px;
 }
+
 .rating__title {
     margin: 0;
     max-width: 180px;
@@ -23,7 +26,8 @@
 
     .rating__input {
         display: none;
-        & + .rating__label {
+
+        &+.rating__label {
             display: inline-block;
             vertical-align: middle;
             position: relative;
@@ -34,13 +38,12 @@
             transition: all 100ms ease-in;
         }
 
-        &:hover + .rating__label {
+        &:hover+.rating__label {
             transform: scale(1.2);
         }
 
-        &:checked + .rating__label ~ .rating__label {
-            background: url("/img/icons/ic-star-border-24px.svg") no-repeat
-                center;
+        &:checked+.rating__label~.rating__label {
+            background: url("/img/icons/ic-star-border-24px.svg") no-repeat center;
         }
     }
 }

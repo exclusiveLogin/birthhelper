@@ -12,8 +12,45 @@ $red: #ef424c;
 $orange: #ed7255;
 $dark-grey: #777777;
 
+// Social media colors
+$skype-color: #00aff0;
+$whatsapp-color: #128c7e;
+$telegram-color: #0088cc;
+$viber-color: #59267c;
+
 $main-bg: #f6f7fb;
 
+// Spacing variables
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-base: 16px;
+$spacing-md: 24px;
+$spacing-lg: 32px;
+$spacing-xl: 48px;
+$spacing-xxl: 64px;
+
+// Border radius
+$border-radius-sm: 3px;
+$border-radius-base: 5px;
+$border-radius-lg: 10px;
+$border-radius-circle: 50%;
+
+// Z-index layers
+$z-layers: (
+    'header': 1000,
+    'modal': 2000,
+    'tooltip': 3000,
+    'overlay': 4000
+);
+
+// Breakpoint values
 $mobile-width-only: 767px;
 $tablet-width: 768px;
 $desktop-width: 1280px;
+
+// Breakpoints map for responsive design
+$breakpoints: (
+    'sm': $mobile-width-only,
+    'md': $tablet-width,
+    'lg': $desktop-width
+);

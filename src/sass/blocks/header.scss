@@ -1,3 +1,6 @@
+@import "../variables.scss";
+@import "../mixins/responsive";
+
 .header {
     padding: 12px 0 16px;
     background: $white;
@@ -28,5 +31,47 @@
         width: 100%;
         display: flex;
         justify-content: center;
+    }
+}
+
+.app-header {
+    @include flex(row, flex-start, center);
+    background: $white;
+    box-shadow: 0 2px 8px rgba($black, 0.04);
+    padding: $spacing-sm $spacing-base;
+    min-height: 56px;
+    position: sticky;
+    top: 0;
+    z-index: map-get($z-layers, 'header');
+
+    @include respond-to('md') {
+        padding: $spacing-md $spacing-lg;
+        min-height: 64px;
+    }
+
+    .app-logo {
+        width: 40px;
+        height: 40px;
+        border-radius: $border-radius-circle;
+        background: $blue;
+        color: $white;
+        font-weight: bold;
+        font-size: 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: $spacing-base;
+        box-shadow: 0 2px 8px rgba($blue, 0.08);
+    }
+
+    .app-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: $dark;
+        letter-spacing: 0.01em;
+
+        @include respond-to('md') {
+            font-size: 1.5rem;
+        }
     }
 }

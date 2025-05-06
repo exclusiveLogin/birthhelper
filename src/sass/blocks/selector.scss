@@ -1,3 +1,5 @@
+@import "../variables.scss";
+
 .selector {
     position: relative;
     display: flex;
@@ -11,6 +13,7 @@
     text-align: left;
     color: $black;
 }
+
 label.selector__label {
     margin-bottom: 0;
 }
@@ -22,7 +25,7 @@ label.selector__label {
 .selector__input {
     display: none;
 
-    &:checked + .selector__label {
+    &:checked+.selector__label {
         opacity: 1;
     }
 }

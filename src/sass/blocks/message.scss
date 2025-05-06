@@ -1,3 +1,5 @@
+@import "../variables.scss";
+
 .message {
     position: relative;
     display: flex;
@@ -43,7 +45,7 @@
         background: $white;
     }
 
-    & + .message {
+    &+.message {
         margin-top: 35px;
     }
 }

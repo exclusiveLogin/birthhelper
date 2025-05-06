@@ -1,3 +1,6 @@
+@import "../variables.scss";
+@import "../mixins/responsive";
+
 .content {
     max-width: 1022px;
     height: 100%;
@@ -18,4 +21,31 @@
     opacity: 0.6;
     filter: grayscale(0.8);
     pointer-events: none;
+}
+
+.main-content {
+    @include container(700px, $spacing-base);
+    margin-top: $spacing-lg;
+    margin-bottom: $spacing-lg;
+    background: $white;
+    border-radius: $border-radius-lg;
+    box-shadow: 0 4px 24px rgba($black, 0.06);
+    padding: $spacing-lg $spacing-base;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @include respond-to('md') {
+        padding: $spacing-xl $spacing-lg;
+    }
+}
+
+.main-image {
+    width: 100%;
+    max-width: 400px;
+    border-radius: $border-radius-lg;
+    box-shadow: 0 4px 24px rgba($black, 0.10);
+    margin-bottom: $spacing-lg;
+    object-fit: cover;
+    display: block;
 }

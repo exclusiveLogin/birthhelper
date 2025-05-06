@@ -1,3 +1,5 @@
+@import "../variables.scss";
+
 .popup-wrapper {
     display: flex;
     justify-content: center;
@@ -128,7 +130,7 @@
 }
 
 .popup__input-row {
-    & + & {
+    &+& {
         margin-top: 25px;
     }
 
@@ -215,7 +217,7 @@
     line-height: 1.33;
     color: rgba($black, 0.7);
 
-    & + .popup__desc {
+    &+.popup__desc {
         margin-top: 15px;
     }
 }
@@ -340,7 +342,7 @@
     margin-top: 15px;
     border: none;
 
-    & + & {
+    &+& {
         margin-top: 10px;
     }
 
@@ -383,7 +385,7 @@
     text-align: center;
     color: rgba($black, 0.7);
 
-    & + & {
+    &+& {
         margin-top: 5px;
     }
 }
@@ -522,7 +524,7 @@
     line-height: 1.33;
     color: rgba($black, 0.7);
 
-    & + & {
+    &+& {
         margin-top: 15px;
     }
 }

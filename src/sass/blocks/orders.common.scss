@@ -1,7 +1,10 @@
+@import "../variables.scss";
+
 .order_actions {
   display: flex;
   margin-left: auto;
   margin-right: 16px;
+
   .order_btn {
     width: 24px;
     height: 24px;
@@ -12,12 +15,15 @@
     &.order_resolve {
       background-image: url("/img/icons/resolve_btn.png");
     }
+
     &.order_reject {
       background-image: url("/img/icons/reject_btn.png");
     }
+
     &.order_edit {
       background-image: url("/img/icons/edit_btn.png");
     }
+
     &.order_remove {
       background-image: url("/img/icons/remove_btn.png");
     }
@@ -28,16 +34,19 @@
   display: flex;
   flex-grow: 1;
   flex-wrap: wrap;
+
   .order_container_head {
     display: flex;
     flex-grow: 1;
     width: 100%;
     flex-wrap: wrap;
     background-color: #f3f3f3;
+
     .header_led {
       height: 8px;
       width: 100%;
     }
+
     .header_bar {
       width: 100%;
       background-color: #eee;
@@ -47,6 +56,7 @@
       align-items: center;
       padding: 0 15px;
     }
+
     .user_info {
       display: flex;
       flex-grow: 1;
@@ -59,6 +69,7 @@
           font-size: 1.8rem;
           margin: 0;
         }
+
         .user_info__login {
           font-size: 1.8rem;
           color: #019af4;
@@ -70,11 +81,13 @@
           font-size: 0.8rem;
           margin: 0;
         }
+
         .user_price__price {
           font-size: 1.8rem;
           color: #019af4;
         }
       }
+
       .user_contacts {
         flex-grow: 1;
         display: flex;
@@ -99,13 +112,16 @@
         border-bottom: none;
         margin-right: 28px;
       }
+
       .cart-pack-options {
         border-bottom: none;
       }
+
       .user_contacts {
         .user_contacts__phone {
           font-size: 1.8rem;
         }
+
         .user_contacts__email {
           font-size: 1.6rem;
           color: #019af4;
@@ -113,19 +129,23 @@
       }
     }
   }
+
   .ctg_orders {
     width: 100%;
     display: flex;
     flex-direction: column;
     padding: 24px;
+
     .section__title {
       width: 100%;
       font-size: 16px;
       border-bottom: 2px solid grey;
     }
+
     background-color: #eeeeee;
   }
 }
+
 .order {
   margin-top: 10px;
   display: grid;
@@ -139,23 +159,29 @@
   display: contents;
   cursor: pointer;
 }
+
 .ellipsis {
   text-overflow: ellipsis;
   overflow-x: hidden;
   white-space: nowrap;
 }
+
 .small {
   width: 50px;
 }
+
 .mid {
   width: 90px;
 }
+
 .long {
   width: 150px;
 }
+
 .extra {
   width: 210px;
 }
+
 .order_tbl__item {
   margin: 15px;
 
@@ -174,11 +200,13 @@
   flex-direction: column;
   align-items: flex-end;
 }
+
 .order_status_btn {
   margin-top: 32px;
   width: calc(100% - 30px);
   height: 32px;
 }
+
 .ctg_phone {
   display: flex;
   flex-direction: column;
@@ -191,39 +219,43 @@
     font-size: 1.3rem;
     margin-bottom: 5px;
   }
+
   .ctg_phone__number {
     font-size: 2.4rem;
   }
 }
-$skype-color: #00aff0;
-$whatsapp-color: #128c7e;
-$telegram-color: #0088cc;
-$viber-color: #59267c;
+
 .fa-viber {
   color: $viber-color;
 }
+
 .fa-whatsapp {
   color: $whatsapp-color;
 }
+
 .fa-skype {
   color: $skype-color;
 }
+
 .fa-telegram-plane {
   color: $telegram-color;
 }
+
 .loading_container {
   display: flex;
   justify-content: center;
+
   .loading {
     opacity: 60%;
   }
 }
+
 .floor_ttl {
   font-weight: lighter;
   text-decoration: underline;
   margin: 16px 5px;
 }
+
 .tab_ttl {
   margin-top: 0.5rem;
 }
-

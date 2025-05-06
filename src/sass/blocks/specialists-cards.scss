@@ -1,3 +1,5 @@
+@import "../variables.scss";
+
 .specialists-cards {
     display: flex;
     flex-wrap: wrap;
@@ -14,15 +16,12 @@
     padding: 20px 0 0;
     text-align: center;
     border-radius: 5px;
-    background: #fff url("../../img/specialists-cards/specialist-card-bg.png")
-        no-repeat 0 0 / contain;
+    background: #fff url("../../img/specialists-cards/specialist-card-bg.png") no-repeat 0 0 / contain;
     box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.03);
     //overflow: hidden;
 
     &.active {
-        background: #487ff1
-            url("../../img/clinic-cards/clinic-card-active-bg.png") no-repeat 0
-            0 / 100%;
+        background: #487ff1 url("../../img/clinic-cards/clinic-card-active-bg.png") no-repeat 0 0 / 100%;
         color: #fff;
 
         &.invalid {
@@ -32,17 +31,14 @@
                 background: #487ff1;
 
                 &-check {
-                    background: #862a3f
-                        url("../../img/icons/close-solid-white.svg") no-repeat
-                        center center;
+                    background: #862a3f url("../../img/icons/close-solid-white.svg") no-repeat center center;
                     border-radius: 0 5px 0 0;
                     background-size: 44.5px;
                     margin-top: -1px;
                 }
 
                 &-favorites {
-                    background: #862a3f
-                        url("../../img/icons/heart-solid-white.svg") no-repeat;
+                    background: #862a3f url("../../img/icons/heart-solid-white.svg") no-repeat;
                 }
             }
         }
@@ -85,16 +81,14 @@
             background: #487ff1;
 
             &-check {
-                background: #487ff1 url("../../img/icons/close-solid-white.svg")
-                    no-repeat center center;
+                background: #487ff1 url("../../img/icons/close-solid-white.svg") no-repeat center center;
                 border-radius: 0 5px 0 0;
                 background-size: 44.5px;
                 margin-top: -1px;
             }
 
             &-favorites {
-                background: #487ff1 url("../../img/icons/heart-solid-white.svg")
-                    no-repeat;
+                background: #487ff1 url("../../img/icons/heart-solid-white.svg") no-repeat;
             }
         }
 
@@ -201,7 +195,7 @@
     line-height: 1.15;
     color: rgba(45, 51, 63, 0.7);
 
-    & + & {
+    &+& {
         margin: 5px 0 0;
     }
 }
@@ -266,7 +260,7 @@
 .specialists-card__actions-checkbox {
     margin: 8px 0;
 
-    .checkbox__input + .checkbox__label {
+    .checkbox__input+.checkbox__label {
         font-size: 12px;
         line-height: 22px;
     }
