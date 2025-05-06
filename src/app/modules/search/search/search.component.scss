@@ -3,3 +3,217 @@
     flex-direction: column;
     flex-grow: 1;
 }
+
+.search {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 0 15px;
+
+    &__input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    &__btn {
+        padding: 10px 20px;
+        background: #2d333f;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+}
+
+.main-clinic__columns {
+    display: flex;
+    gap: 20px;
+    position: relative;
+    flex: 1;
+}
+
+.main-clinic__filter {
+    width: 300px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+    padding: 15px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1001;
+    opacity: 0;
+    transform: translateX(-32px);
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    height: auto;
+    overflow-y: auto;
+    max-height: 100vh;
+    visibility: hidden;
+}
+
+.main-clinic__filter.filter--active {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    visibility: visible;
+    position: static;
+}
+
+.filter-toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 24px;
+    background: #487ff1;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+    box-shadow: 0 2px 8px rgba(72, 127, 241, 0.08);
+    margin-right: 16px;
+    outline: none;
+    min-width: 120px;
+    justify-content: center;
+
+    img {
+        width: 20px;
+        height: 20px;
+        margin-right: 6px;
+    }
+}
+
+.filter-toggle-btn:hover,
+.filter-toggle-btn:focus {
+    background: #335fc1;
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(72, 127, 241, 0.13);
+}
+
+.mobile-filter-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    background: #2d333f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 15px 15px;
+
+    img {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+.result {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    &__header {
+        padding: 0 15px;
+    }
+
+    &__body {
+        display: flex;
+        gap: 20px;
+        flex: 1;
+        position: relative;
+    }
+}
+
+.clinics__list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 0 15px;
+}
+
+.map {
+    flex: 1;
+    min-height: 400px;
+    background: #f5f5f5;
+    border-radius: 5px;
+}
+
+.map__mode {
+    .clinics__list {
+        display: none;
+    }
+}
+
+.filter__close-btn {
+    display: none;
+}
+
+@media (min-width: 769px) {
+    .filter__close-btn {
+        display: none !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-clinic__columns {
+        flex-direction: column;
+    }
+
+    .result__body {
+        flex-direction: column;
+    }
+
+    .map {
+        min-height: 300px;
+    }
+
+    .main-clinic__filter {
+        position: fixed;
+        top: 0;
+        left: -100vw;
+        width: 100vw;
+        height: 100vh;
+        z-index: 2000;
+        border-radius: 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+        opacity: 0;
+        transform: translateY(32px);
+        pointer-events: none;
+        transition: left 0.18s ease, opacity 0.18s ease, transform 0.18s ease;
+        visibility: hidden;
+    }
+
+    .main-clinic__filter.filter--active {
+        left: 0;
+        opacity: 1;
+        transform: none;
+        pointer-events: auto;
+        visibility: visible;
+        position: fixed;
+    }
+
+    .filter__close-btn {
+        display: block;
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: transparent;
+        border: none;
+        padding: 6px;
+        z-index: 2100;
+        cursor: pointer;
+    }
+
+    .filter__close-btn svg {
+        width: 28px;
+        height: 28px;
+    }
+}

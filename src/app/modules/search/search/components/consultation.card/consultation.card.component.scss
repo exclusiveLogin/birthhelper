@@ -1,10 +1,57 @@
 :host {
     flex-grow: 1;
 }
+
+.card {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
+
+    &:hover {
+        transform: translateY(-2px);
+    }
+
+    &.selected {
+        animation: highlight 1.2s ease;
+    }
+}
+
+.card__image {
+    width: 200px;
+    height: 150px;
+    border-radius: 5px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
 .img_clinic {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.card__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.card__title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #2d333f;
+}
+
+.card__description {
+    color: #666;
+    line-height: 1.5;
 }
 
 .txtUnWrap {
@@ -19,4 +66,88 @@
     white-space: nowrap;
     align-self: flex-end;
     font-size: 0.8rem;
+}
+
+@keyframes highlight {
+    0% {
+        background: rgba(45, 51, 63, 0.1);
+    }
+
+    100% {
+        background: white;
+    }
+}
+
+@media (max-width: 768px) {
+    .card {
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .card__image,
+    .card__photo {
+        width: 100%;
+        max-width: 100%;
+        height: 200px;
+    }
+
+    .card__description {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0;
+    }
+
+    .card__description-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .card__controls {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .card-controls__btn-group {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .card__tags,
+    .card__map,
+    .card__footer {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .card__btn-group {
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .card__title {
+        font-size: 1.1rem;
+    }
+
+    .txtUnWrap {
+        height: 3.5rem;
+    }
+
+    .readmore {
+        white-space: normal;
+    }
+
+    .card-controls__btn-group,
+    .card__btn-group {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        width: 100%;
+    }
 }

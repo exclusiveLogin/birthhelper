@@ -7,15 +7,26 @@
 body {
     margin: 0;
     height: 100%;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 html {
     margin: 0;
     height: 100%;
+    width: 100%;
 }
 
 .full {
     display: flex;
     width: 100%;
     justify-content: center;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .content {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
 }

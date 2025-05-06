@@ -93,6 +93,7 @@
                                 'consultations'
                             ]"
                             class="menu__link"
+                            (click)="closeMenuOnMobile()"
                         >
                             <span class="menu__link-txt">Ведение</span>
                         </a>
@@ -101,6 +102,7 @@
                         <a
                             [routerLink]="['/system', 'search', 'clinics']"
                             class="menu__link"
+                            (click)="closeMenuOnMobile()"
                         >
                             <span class="menu__link-txt">Родовспоможение</span>
                         </a>
@@ -118,6 +120,7 @@
                 <a
                     [routerLink]="['/', 'system', 'feedback']"
                     class="menu__link"
+                    (click)="closeMenuOnMobile()"
                 >
                     <img
                         src="img/icons/star-primary.svg"
@@ -137,6 +140,7 @@
                         'friends'
                     ]"
                     class="menu__link"
+                    (click)="closeMenuOnMobile()"
                 >
                     <i class="fa-solid fa-user-group menu__link-icon"></i>
                     <span class="menu__link-txt">Мои друзья</span>
@@ -186,7 +190,11 @@
                 </a>
             </li> -->
             <li class="menu__item">
-                <a [routerLink]="['/system', 'cart']" class="menu__link">
+                <a
+                    [routerLink]="['/system', 'cart']"
+                    class="menu__link"
+                    (click)="closeMenuOnMobile()"
+                >
                     <img
                         src="img/icons/shopping-cart.svg"
                         class="menu__link-icon"

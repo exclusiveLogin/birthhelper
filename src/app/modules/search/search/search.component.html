@@ -1,18 +1,29 @@
 <!--<div class="container">-->
-<div class="search muted">
+<div class="search muted" style="display: none;">
     <input class="search__input" type="text" placeholder="Где рожать" />
     <button class="search__btn">Роддома</button>
 </div>
 <div class="main-clinic__columns">
-    <aside class="main-clinic__filter filter">
+    <aside class="main-clinic__filter filter" [class.filter--active]="isFilterVisible">
+        <button class="filter__close-btn" (click)="toggleFilters()" aria-label="Закрыть фильтры">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <line x1="7" y1="7" x2="21" y2="21" stroke="#333" stroke-width="2"/>
+                <line x1="21" y1="7" x2="7" y2="21" stroke="#333" stroke-width="2"/>
+            </svg>
+        </button>
         <app-filter
             *ngIf="filterList$ | async as list"
             [filterConfig]="list"
             (filterChange)="selectFilters($event)"
+            (filterReset)="onFilterReset()"
         ></app-filter>
     </aside>
     <div class="result">
         <div class="result__header">
+            <button class="filter-toggle-btn" (click)="toggleFilters()">
+                <img src="img/icons/burger.svg" alt="Фильтры" />
+                Фильтры
+            </button>
             <div class="result__selector selector">
                 <span class="selector__txt">Вид:</span>
                 <div class="selector__item">
@@ -50,7 +61,7 @@
             </div>
         </div>
         <div
-            class="result__body map__mode"
+            class="result__body"
             [ngClass]="{ map__mode: mode === 'map' }"
         >
             <div class="clinics__list" *ngIf="mainList$ | async as list">

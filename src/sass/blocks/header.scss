@@ -9,9 +9,24 @@
     align-items: center;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 768px) {
+    .header {
+        padding: 10px 0;
+    }
+
     .header__content {
         align-items: center;
         flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .logo {
+        margin-bottom: 10px;
+    }
+
+    .contacts {
+        width: 100%;
+        display: flex;
+        justify-content: center;
     }
 }

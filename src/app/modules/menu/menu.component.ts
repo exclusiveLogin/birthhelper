@@ -3,6 +3,9 @@ import {
     ChangeDetectorRef,
     Component,
     HostBinding,
+    OnInit,
+    OnDestroy,
+    ElementRef,
 } from "@angular/core";
 import { AuthService } from "../auth-module/auth.service";
 import { BehaviorSubject, combineLatest, Observable, of } from "rxjs";
@@ -30,12 +33,32 @@ type MenuMode = "default" | "lk" | "contragents";
     styleUrls: ["./menu.component.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MenuComponent {
-    mql = window.matchMedia("(min-width: 480px)");
+export class MenuComponent implements OnInit, OnDestroy {
+    mql = window.matchMedia("(min-width: 768px)");
     hide = !this.mql.matches;
 
     @HostBinding("class.menuhide") get host_class() {
         return this.hide;
+    }
+
+    ngOnInit() {
+        // Add listener for window resize events
+        window.addEventListener("resize", this.handleResize.bind(this));
+    }
+
+    ngOnDestroy() {
+        // Remove listeners when component is destroyed
+        window.removeEventListener("resize", this.handleResize.bind(this));
+    }
+
+    handleResize() {
+        this.mql = window.matchMedia("(min-width: 768px)");
+        if (this.mql.matches) {
+            this.hide = false;
+        } else {
+            this.hide = true;
+        }
+        this.cdr.detectChanges();
     }
 
     // Modes
@@ -109,7 +132,8 @@ export class MenuComponent {
         private imageService: ImageService,
         private lkService: LkService,
         private routingService: RoutingService,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        private el: ElementRef
     ) {
         this.selectedContragents$
             .pipe(
@@ -123,8 +147,16 @@ export class MenuComponent {
 
     menuToggle(): void {
         console.log("menu");
-        this.hide = !this.hide;
+        this.hide = !!!this.hide;
         this.cdr.detectChanges();
+    }
+
+    closeMenuOnMobile(): void {
+        // Only close the menu on mobile devices
+        if (!this.mql.matches) {
+            this.hide = true;
+            this.cdr.detectChanges();
+        }
     }
 
     selectCTG(ctg: CTG): void {

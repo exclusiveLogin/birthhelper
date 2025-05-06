@@ -23,6 +23,7 @@ export interface FilterResult {
 export class FilterComponent implements OnInit {
     @Input() filterConfig: SearchSection[];
     @Output() filterChange = new EventEmitter();
+    @Output() filterReset = new EventEmitter<void>();
 
     resetForm(): void {
         this.filterConfig.forEach((section) => {
@@ -35,6 +36,7 @@ export class FilterComponent implements OnInit {
         });
 
         this.submitForm();
+        this.filterReset.emit();
     }
 
     submitForm(): void {

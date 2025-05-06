@@ -44,6 +44,7 @@ import { IConsultationMini } from "@models/consultation.interface";
 export class SearchComponent implements OnInit, AfterViewInit {
     sectionKey: SectionType = "clinic";
     hash: string = null;
+    isFilterVisible = false;
 
     onInitSectionType$: Observable<SectionType> = this.ar.data.pipe(
         map((data) => data.section as SectionType)
@@ -217,6 +218,17 @@ export class SearchComponent implements OnInit, AfterViewInit {
 
     selectFilters(filters: FilterResult): void {
         this.onFilters$.next(filters);
+        if (this.isFilterVisible) {
+            this.isFilterVisible = false;
+            this.cdr.detectChanges();
+        }
+    }
+
+    onFilterReset(): void {
+        if (this.isFilterVisible) {
+            this.isFilterVisible = false;
+            this.cdr.detectChanges();
+        }
     }
 
     modeMap(fitlock = false): void {
@@ -285,5 +297,10 @@ export class SearchComponent implements OnInit, AfterViewInit {
 
     getCeilPages(totalPages: number): number {
         return Math.ceil(totalPages / 20) || 1
+    }
+
+    toggleFilters(): void {
+        this.isFilterVisible = !this.isFilterVisible;
+        this.cdr.detectChanges();
     }
 }
