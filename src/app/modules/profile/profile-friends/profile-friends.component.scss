@@ -7,49 +7,61 @@
 
 app-lk-user-card {
     cursor: pointer;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
 }
 
 .profile_body {
-    margin-top: 25px;
-    border-radius: 5px;
-    box-shadow: 0 10px 24px 0 rgb(0 0 0 / 6%);
+    margin-top: 0;
+    border-radius: 0;
+    box-shadow: none;
     background-color: #fff;
     flex-grow: 1;
+    padding: 0;
 }
 
 .list {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    padding: 20px;
+    gap: 10px;
+    padding: 8px;
+}
 
-    .list_item {
-        align-items: center;
+.list_item {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    border-radius: 15px;
+    box-shadow: 5px 5px 10px rgba(200, 200, 200, 0.5);
+    background-color: #f9f9f9;
+    flex-grow: 1;
+    gap: 8px;
+    justify-content: flex-start;
+    padding: 8px 4px;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+
+    & .hidable {
         display: flex;
-        border-radius: 15px;
-        box-shadow: 5px 5px 10px rgba(200, 200, 200, 0.5);
-        background-color: #f9f9f9;
-        flex-grow: 1;
         gap: 8px;
-        justify-content: space-around;
-        padding: 0 8px;
+        transition: all 0.2s ease-in;
+        opacity: 1;
+        justify-content: center;
+        width: 100%;
+        transform: scale(1);
+    }
 
-        & .hidable {
-            display: flex;
-            gap: 8px;
-            transition: all 0.2s ease-in;
-            opacity: 1;
-        }
-
-        &:not(:hover) .hidable {
-            opacity: 0;
-            transform: scaleY(0);
-        }
+    &:not(:hover) .hidable {
+        opacity: 0;
+        transform: scaleY(0);
     }
 }
 
 .separator {
-    flex-grow: 1;
+    display: none;
 }
 
 .empty {
@@ -71,4 +83,66 @@ app-lk-user-card {
 
 .btn:has(> .fa-check):hover {
     background-color: $green;
+}
+
+.btn.btn-light .fa-pen {
+    color: #666;
+    background: #f0f0f0;
+    border-radius: 6px;
+    padding: 6px 8px;
+    font-weight: bold;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    transition: background 0.2s;
+}
+
+.btn.btn-light .fa-pen:hover {
+    background: #e0e0e0;
+    color: #333;
+}
+
+@media (min-width: 769px) {
+    .profile_body {
+        margin-top: 25px;
+        border-radius: 5px;
+        box-shadow: 0 10px 24px 0 rgb(0 0 0 / 6%);
+        padding: 0;
+    }
+
+    .list {
+        padding: 20px;
+        gap: 16px;
+    }
+
+    .list_item {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+        padding: 0 8px;
+    }
+
+    app-lk-user-card {
+        width: auto;
+        min-width: unset;
+        max-width: unset;
+    }
+
+    .hidable {
+        justify-content: flex-end;
+        width: auto;
+    }
+
+    .separator {
+        display: block;
+        flex-grow: 1;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .list_item .hidable,
+    .list_item:not(:hover) .hidable {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
 }
