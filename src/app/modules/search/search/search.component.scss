@@ -3,6 +3,12 @@
     flex-direction: column;
     flex-grow: 1;
     overflow: hidden;
+    --header-height: 60px;
+    --paginator-height: 40px;
+    --result-header-height: 50px;
+    --map-mode-padding: 20px;
+    --app-header-height: 160px;
+    --gap-size: 10px;
 }
 
 .search {
@@ -164,8 +170,8 @@
     flex: 1;
 
     .clinics__list {
-        width: 50%;
-        max-height: calc(100vh - 250px);
+        width: 50% !important;
+        max-height: calc(100vh - 250px) !important;
         overflow-y: auto;
         padding-right: 15px;
         margin-bottom: 0;
@@ -174,7 +180,6 @@
         scrollbar-width: thin;
         scrollbar-color: rgba(72, 127, 241, 0.3) transparent;
 
-        /* Стилизация скроллбара для Chrome/Safari */
         &::-webkit-scrollbar {
             width: 8px;
         }
@@ -190,8 +195,8 @@
     }
 
     .map {
-        width: 50%;
-        height: calc(100vh - 250px);
+        width: 50% !important;
+        height: calc(100vh - 250px) !important;
         min-height: 450px;
         margin: 0;
         box-sizing: border-box;
@@ -211,44 +216,83 @@
 @media (max-width: 768px) {
     .main-clinic__columns {
         flex-direction: column;
+        width: 100%;
+        overflow: hidden;
     }
 
     .result {
-        height: calc(100vh - 60px);
+        height: calc(100vh - var(--app-header-height));
         display: flex;
         flex-direction: column;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .result__header {
+        padding: 0 15px;
+        flex-shrink: 0;
+        height: var(--result-header-height);
     }
 
     .result__body {
         flex-direction: column;
         flex: 1;
         overflow: hidden;
+        width: 100%;
+        height: calc(100vh - var(--app-header-height) - var(--result-header-height) - var(--paginator-height) - var(--gap-size));
+    }
+
+    app-paginator {
+        margin: 5px 15px;
+        display: block;
+        flex-shrink: 0;
+        height: var(--paginator-height);
     }
 
     .map {
-        min-height: 300px;
+        min-height: 200px;
+    }
+
+    .clinics__list {
+        flex-direction: column;
+        padding: 0 10px;
+        width: 100%;
+        flex-wrap: nowrap;
+        align-items: stretch;
     }
 
     .map__mode {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        overflow: hidden;
+        display: flex !important;
+        flex-direction: column !important;
+        flex-wrap: nowrap !important;
+        width: 100% !important;
+        height: calc(100vh - var(--app-header-height) - var(--result-header-height) - var(--paginator-height) - var(--gap-size)) !important;
+        overflow: hidden !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
 
-        .clinics__list {
-            width: 100%;
-            height: 40%;
-            max-height: 40%;
-            overflow-y: auto;
-        }
+    .map__mode .clinics__list {
+        width: 100% !important;
+        height: 30vh !important;
+        max-height: 30vh !important;
+        min-height: 150px !important;
+        overflow-y: auto !important;
+        padding: 0 10px !important;
+        margin: 0 0 5px 0 !important;
+        flex-direction: column !important;
+        flex-wrap: nowrap !important;
+        flex-shrink: 0 !important;
+        display: block !important;
+    }
 
-        .map {
-            width: 100%;
-            height: 60%;
-            min-height: 0;
-            flex: 1;
-        }
+    .map__mode .map {
+        width: 100% !important;
+        height: calc(100vh - var(--app-header-height) - var(--result-header-height) - var(--paginator-height) - 30vh - 15px) !important;
+        min-height: 200px !important;
+        margin: 0 !important;
+        border-radius: 5px !important;
+        flex: none !important;
     }
 
     .main-clinic__filter {

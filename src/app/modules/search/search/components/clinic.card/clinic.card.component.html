@@ -1,21 +1,19 @@
 <div class="clinics__item" *ngIf="{ rating: rating$ | async } as data">
     <div class="card">
-        <div class="card__photo" 
-             [style]="photoStyle"
-             [attr.aria-label]="viewClinic?.title">
+        <div
+            class="card__photo"
+            [style]="photoStyle"
+            [attr.aria-label]="viewClinic?.title"
+        >
             <div class="card__photo-mark-block mark-block">
                 <div class="mark-block__item">
                     <img
                         src="img/icons/person.svg"
                         class="mark-block__icon"
                         [ngClass]="{ muted: !viewClinic?.features?.status_iho }"
-                        alt=""
+                        alt="Клиника доброжелательная к ребёнку"
+                        title="Клиника доброжелательная к ребёнку"
                     />
-                    <div class="mark-block__tooltip">
-                        <span class="mark-block__tooltip-txt"
-                            >Клиника доброжелательная к ребёнку</span
-                        >
-                    </div>
                 </div>
                 <div class="mark-block__item">
                     <img
@@ -24,13 +22,9 @@
                         [ngClass]="{
                             muted: !viewClinic?.features?.mom_with_baby
                         }"
-                        alt=""
+                        alt="Совместное пребывание матери и ребенка"
+                        title="Совместное пребывание матери и ребенка"
                     />
-                    <div class="mark-block__tooltip">
-                        <span class="mark-block__tooltip-txt"
-                            >Совместное пребывание матери и ребенка</span
-                        >
-                    </div>
                 </div>
             </div>
         </div>
@@ -83,9 +77,10 @@
                                 alt=""
                             />
                         </button>
-                        <app-rate-button 
+                        <app-rate-button
                             [rate]="data?.rating?.avr ?? 0"
-                            (click)="gotoRatingPage()"></app-rate-button>
+                            (click)="gotoRatingPage()"
+                        ></app-rate-button>
                     </div>
                     <div class="card-controls__cnt">
                         <a
