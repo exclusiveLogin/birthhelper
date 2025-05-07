@@ -9,13 +9,13 @@
 
 // Особые стили для режима обычного списка
 .clinics__item {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 // Специфичные стили для клиники
 .txtUnWrap {
     height: auto;
-    max-height: 4.2rem;
+    max-height: 3.6rem;
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -28,8 +28,8 @@
     cursor: pointer;
     white-space: nowrap;
     align-self: flex-start;
-    font-size: 14px;
-    margin-top: 8px;
+    font-size: 13px;
+    margin-top: 6px;
 
     &:hover {
         text-decoration: underline;
@@ -39,18 +39,18 @@
 // Стили для меток статуса клиники
 .card__status-badges {
     position: absolute;
-    top: 16px;
-    left: 16px;
+    top: 12px;
+    left: 12px;
     display: flex;
-    gap: 8px;
+    gap: 6px;
     z-index: 10;
 
     .badge {
         background: rgba(255, 255, 255, 0.85);
         backdrop-filter: blur(4px);
         border-radius: 6px;
-        padding: 6px 10px;
-        font-size: 13px;
+        padding: 4px 8px;
+        font-size: 12px;
         font-weight: 500;
         color: #4f566b;
 
@@ -70,20 +70,20 @@
     --card-photo-display: none;
     --card-tags-display: none;
     --card-footer-display: none;
-    --card-title-size: 1.1rem;
+    --card-title-size: 1rem;
     --card-title-lines: 2;
-    --card-padding: 15px;
+    --card-padding: 12px;
     --card-layout: column;
     --desc-top-layout: column;
     --card-controls-width: 100%;
 
     @media (min-width: 768px) {
-        --card-title-size: 1.2rem;
-        --card-padding: 15px;
+        --card-title-size: 1.1rem;
+        --card-padding: 12px;
     }
 
     @media (min-width: 992px) {
-        --card-title-size: 1.3rem;
+        --card-title-size: 1.2rem;
         --desc-top-layout: row;
         --card-controls-width: auto;
     }
@@ -92,12 +92,12 @@
         --card-photo-display: block;
         --card-tags-display: block;
         --card-footer-display: flex;
-        --card-title-size: 1.4rem;
+        --card-title-size: 1.3rem;
     }
 
     @media (min-width: 1400px) {
-        --card-padding: 20px;
-        --card-title-size: 1.5rem;
+        --card-padding: 16px;
+        --card-title-size: 1.4rem;
     }
 
     // Применение CSS переменных
@@ -107,7 +107,7 @@
         height: auto;
         max-height: none;
         padding: var(--card-padding);
-        margin-bottom: 10px;
+        margin-bottom: 8px;
         max-width: 100%;
         width: 100%;
         box-sizing: border-box;
@@ -124,7 +124,7 @@
         max-width: 100%;
         box-sizing: border-box;
         overflow-x: hidden;
-        padding: 15px;
+        padding: 12px;
     }
 
     // Верхняя часть с заголовком
@@ -136,7 +136,7 @@
 
         // Размещаем кнопки управления
         .card__controls {
-            margin-top: 5px;
+            margin-top: 4px;
             align-self: flex-start;
             width: var(--card-controls-width);
             transition: width 0.3s ease, margin-top 0.3s ease;
@@ -160,8 +160,8 @@
     // Фото в режиме карты
     .card__photo {
         display: var(--card-photo-display);
-        max-height: 120px;
-        width: 120px;
+        max-height: 110px;
+        width: 110px;
         transition: max-height 0.3s ease, width 0.3s ease;
     }
 
@@ -170,7 +170,7 @@
         display: var(--card-tags-display);
         flex: 0 1 auto;
         overflow-x: auto;
-        max-height: 60px;
+        max-height: 50px;
     }
 
     // Футер всегда внизу
@@ -181,14 +181,14 @@
 
     // Блок с картой более компактный
     .card__map {
-        margin: 10px 0 0;
+        margin: 8px 0 0;
         flex-wrap: wrap;
         width: 100%;
 
         // Адрес занимает всю ширину
         .card__address {
-            margin: 8px 0 0 0;
-            font-size: 0.9rem;
+            margin: 6px 0 0 0;
+            font-size: 0.85rem;
             width: 100%;
             white-space: normal;
             overflow: hidden;
@@ -205,7 +205,7 @@
     .txtUnWrap {
         height: auto;
         max-height: none;
-        -webkit-line-clamp: 4;
+        -webkit-line-clamp: 3;
     }
 
     .readmore {
@@ -214,23 +214,23 @@
     }
 
     .card__description {
-        font-size: 14px;
+        font-size: 13px;
     }
 
     .card__ttl {
-        font-size: 1.15rem;
+        font-size: 1.1rem;
         font-weight: 600;
-        margin-bottom: 4px;
+        margin-bottom: 3px;
     }
 
     .card__map {
-        margin: 16px 0;
-        padding: 12px;
-        width: calc(100% - 24px);
+        margin: 12px 0;
+        padding: 10px;
+        width: calc(100% - 20px);
 
         &-btn {
             width: auto;
-            padding: 6px 8px;
+            padding: 5px 6px;
         }
     }
 
@@ -245,8 +245,8 @@
 
         // Упрощенная компактная карточка для мобильных
         .card {
-            padding: 12px;
-            margin-bottom: 8px;
+            padding: 10px;
+            margin-bottom: 6px;
             overflow-x: hidden;
         }
 
@@ -280,7 +280,7 @@
             .card__controls {
                 margin-top: 0;
                 width: auto;
-                min-width: 90px;
+                min-width: 80px;
 
                 // Оставляем только рейтинг, скрываем остальные кнопки
                 .card-controls__btn-bookmark,
