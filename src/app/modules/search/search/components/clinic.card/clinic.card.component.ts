@@ -9,7 +9,7 @@ import { IClinicMini } from "app/models/clinic.interface";
 import { Router } from "@angular/router";
 import { BehaviorSubject, Observable } from "rxjs";
 import { ImageService } from "@services/image.service";
-import { SafeUrl } from "@angular/platform-browser";
+import { SafeStyle, SafeUrl } from "@angular/platform-browser";
 import { Entity } from "@models/entity.interface";
 import { FeedbackService } from "@modules/feedback/feedback.service";
 import { map, shareReplay, switchMap } from "rxjs/operators";
@@ -48,15 +48,13 @@ export class ClinicCardComponent {
             foreign_service: null,
         },
     };
-    photoUrl$: Observable<SafeUrl>;
-    imageSignal$: BehaviorSubject<null>;
+    photoStyle: SafeStyle;
 
     @Input()
     public set clinic(data: Entity) {
         this.viewClinic = data as IClinicMini;
-        const imgData = this.imageService.getImage$(data.photo);
-        this.photoUrl$ = imgData[0];
-        this.imageSignal$ = imgData[1];
+        this.photoStyle = this.imageService.getImageStyle(data.photo);
+        console.log(this.photoStyle);
     }
 
     @Output() private gotoMap = new EventEmitter<IClinicMini>();

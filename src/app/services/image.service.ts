@@ -5,7 +5,7 @@ import { IImage } from "../modules/admin/Dashboard/Editor/components/image/image
 import { catchError, map, shareReplay, switchMap, tap } from "rxjs/operators";
 import { environment } from "@environments/environment";
 import { MetaPhoto } from "../models/map-object.interface";
-import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
+import { DomSanitizer, SafeStyle, SafeUrl } from "@angular/platform-browser";
 
 @Injectable({
     providedIn: "root",
@@ -82,5 +82,18 @@ export class ImageService {
             ),
             signal,
         ];
+    }
+
+    getImageStyle(image: IImage | MetaPhoto): SafeStyle {
+        const mainURL: string =
+            image?.aws ??
+            `${environment.static}${image?.folder ?? ""}/${
+                image?.filename || "noimage"
+            }`;
+        const fallbackURL = `${environment.static}${image?.folder ?? ""}/${
+            image?.filename || "noimage"
+        }`;
+
+        return this.sanitizer.bypassSecurityTrustStyle( `background-image: url("${mainURL}"), url("${fallbackURL}"); background-size: cover; background-position: center;`);
     }
 }

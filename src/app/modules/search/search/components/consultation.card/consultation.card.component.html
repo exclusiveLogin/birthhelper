@@ -1,12 +1,8 @@
 <div class="clinics__item" *ngIf="{ rating: rating$ | async } as data">
     <div class="card">
-        <div class="card__photo">
-            <img
-                class="img_clinic"
-                [src]="photoUrl$ | async"
-                [alt]="viewConsultation?.title"
-                (error)="imageSignal$.next(null)"
-            />
+        <div class="card__photo"
+             [style]="photoStyle"
+             [attr.aria-label]="viewConsultation?.title">
             <div class="card__photo-mark-block mark-block">
                 <!--                <div class="mark-block__item">-->
                 <!--                    <img src="img/icons/person.svg"-->

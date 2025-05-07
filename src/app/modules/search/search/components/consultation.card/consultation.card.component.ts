@@ -8,7 +8,7 @@ import {
 import { Router } from "@angular/router";
 import { BehaviorSubject, Observable } from "rxjs";
 import { ImageService } from "../../../../../services/image.service";
-import { SafeUrl } from "@angular/platform-browser";
+import { SafeStyle } from "@angular/platform-browser";
 import { IConsultationMini } from "@models/consultation.interface";
 import { Entity } from "@models/entity.interface";
 import { FeedbackService } from "@modules/feedback/feedback.service";
@@ -49,15 +49,12 @@ export class ConsultationCardComponent {
             anemy: null,
         },
     };
-    photoUrl$: Observable<SafeUrl>;
-    imageSignal$: BehaviorSubject<null>;
+    photoStyle: SafeStyle;
 
     @Input()
-    private set clinic(data: Entity) {
+    public set clinic(data: Entity) {
         this.viewConsultation = data as IConsultationMini;
-        const imgData = this.imageService.getImage$(data.photo);
-        this.photoUrl$ = imgData[0];
-        this.imageSignal$ = imgData[1];
+        this.photoStyle = this.imageService.getImageStyle(data.photo);
     }
 
     @Output() private gotoMap = new EventEmitter<IConsultationMini>();

@@ -1,59 +1,36 @@
+@import 'sass/blocks/card-base';
+
 :host {
     flex-grow: 1;
 }
 
 .card {
-    display: flex;
-    gap: 20px;
-    padding: 20px;
-    background: white;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease;
-    width: 100%;
-    box-sizing: border-box;
+    @extend .card-base;
 
     &:hover {
-        transform: translateY(-2px);
-    }
-
-    &.selected {
-        animation: highlight 1.2s ease;
+        transform: none !important;
+        background: linear-gradient(to right bottom, rgba(72, 127, 241, 0.1), rgba(72, 127, 241, 0.05));
+        box-shadow: 0 4px 8px rgba(72, 127, 241, 0.1), 0 8px 20px rgba(72, 127, 241, 0.08);
     }
 }
 
 .card__image {
-    width: 200px;
-    height: 150px;
-    border-radius: 5px;
-    overflow: hidden;
-    flex-shrink: 0;
-}
-
-.img_clinic {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    @extend .card-image;
 }
 
 .card__content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    @extend .card-content;
 }
 
 .card__title {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #2d333f;
+    @extend .card-title;
 }
 
 .card__description {
-    color: #666;
-    line-height: 1.5;
+    @extend .card-description;
 }
 
+// Специфичные стили для консультации
 .txtUnWrap {
     height: 4.2rem;
     overflow: hidden;
@@ -68,86 +45,12 @@
     font-size: 0.8rem;
 }
 
-@keyframes highlight {
-    0% {
-        background: rgba(45, 51, 63, 0.1);
-    }
-
-    100% {
-        background: white;
-    }
-}
-
 @media (max-width: 768px) {
-    .card {
-        flex-direction: column;
-        gap: 15px;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .card__image,
-    .card__photo {
-        width: 100%;
-        max-width: 100%;
-        height: 200px;
-    }
-
-    .card__description {
-        width: 100%;
-        box-sizing: border-box;
-        padding: 0;
-    }
-
-    .card__description-top {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-        width: 100%;
-    }
-
-    .card__controls {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-        width: 100%;
-    }
-
-    .card-controls__btn-group {
-        flex-wrap: wrap;
-        gap: 8px;
-    }
-
-    .card__tags,
-    .card__map,
-    .card__footer {
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .card__btn-group {
-        flex-direction: column;
-        gap: 8px;
-        width: 100%;
-    }
-
-    .card__title {
-        font-size: 1.1rem;
-    }
-
     .txtUnWrap {
         height: 3.5rem;
     }
 
     .readmore {
         white-space: normal;
-    }
-
-    .card-controls__btn-group,
-    .card__btn-group {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 8px;
-        width: 100%;
     }
 }
