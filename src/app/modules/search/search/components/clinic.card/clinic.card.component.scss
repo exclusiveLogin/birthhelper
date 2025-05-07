@@ -14,6 +14,9 @@
     height: auto;
     max-height: 4.2rem;
     overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
 }
 
 .readmore {
@@ -21,7 +24,7 @@
     color: #487ff1;
     cursor: pointer;
     white-space: nowrap;
-    align-self: flex-end;
+    align-self: flex-start;
     font-size: 14px;
     margin-top: 8px;
 
@@ -185,7 +188,8 @@
 @media (max-width: 767px) {
     .txtUnWrap {
         height: auto;
-        max-height: 3.5rem;
+        max-height: none;
+        -webkit-line-clamp: 4;
     }
 
     .readmore {
@@ -200,14 +204,16 @@
     .card__ttl {
         font-size: 1.15rem;
         font-weight: 600;
-        margin-bottom: 2px;
+        margin-bottom: 4px;
     }
 
     .card__map {
-        margin-top: 8px;
+        margin: 16px 0;
+        padding: 12px;
+        width: calc(100% - 24px);
 
         &-btn {
-            width: 100%;
+            width: auto;
             padding: 6px 8px;
         }
     }
@@ -223,8 +229,8 @@
 
         // Упрощенная компактная карточка для мобильных
         .card {
-            padding: 10px;
-            margin-bottom: 5px;
+            padding: 12px;
+            margin-bottom: 8px;
             overflow-x: hidden;
         }
 
