@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    overflow: hidden;
 }
 
 .search {
@@ -32,6 +33,7 @@
     gap: 20px;
     position: relative;
     flex: 1;
+    overflow: hidden;
 }
 
 .main-clinic__filter {
@@ -52,14 +54,14 @@
     overflow-y: auto;
     max-height: 100vh;
     visibility: hidden;
-}
 
-.main-clinic__filter.filter--active {
-    opacity: 1;
-    transform: none;
-    pointer-events: auto;
-    visibility: visible;
-    position: static;
+    &.filter--active {
+        opacity: 1;
+        transform: none;
+        pointer-events: auto;
+        visibility: visible;
+        position: static;
+    }
 }
 
 .filter-toggle-btn {
@@ -86,13 +88,13 @@
         height: 20px;
         margin-right: 6px;
     }
-}
 
-.filter-toggle-btn:hover,
-.filter-toggle-btn:focus {
-    background: #335fc1;
-    color: #fff;
-    box-shadow: 0 4px 16px rgba(72, 127, 241, 0.13);
+    &:hover,
+    &:focus {
+        background: #335fc1;
+        color: #fff;
+        box-shadow: 0 4px 16px rgba(72, 127, 241, 0.13);
+    }
 }
 
 .mobile-filter-btn {
@@ -118,9 +120,11 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+    overflow: hidden;
 
     &__header {
         padding: 0 15px;
+        flex-shrink: 0;
     }
 
     &__body {
@@ -128,6 +132,13 @@
         gap: 20px;
         flex: 1;
         position: relative;
+        overflow: hidden;
+    }
+
+    app-paginator {
+        margin: 10px 15px;
+        display: block;
+        flex-shrink: 0;
     }
 }
 
@@ -146,11 +157,44 @@
 }
 
 .map__mode {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+    margin-bottom: 0;
+    flex: 1;
+
     .clinics__list {
-        width: 100%;
-        height: 50vh;
+        width: 50%;
+        max-height: calc(100vh - 250px) !important;
         overflow-y: auto;
-        flex: 1 0 50vh;
+        padding-right: 15px;
+        margin-bottom: 0;
+        padding-bottom: 20px;
+        box-sizing: border-box;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(72, 127, 241, 0.3) transparent;
+
+        /* Стилизация скроллбара для Chrome/Safari */
+        &::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: rgba(72, 127, 241, 0.3);
+            border-radius: 4px;
+        }
+    }
+
+    .map {
+        width: 50%;
+        height: calc(100vh - 250px) !important;
+        min-height: 450px;
+        margin: 0;
+        box-sizing: border-box;
     }
 }
 
@@ -169,12 +213,42 @@
         flex-direction: column;
     }
 
+    .result {
+        height: calc(100vh - 60px);
+        display: flex;
+        flex-direction: column;
+    }
+
     .result__body {
         flex-direction: column;
+        flex: 1;
+        overflow: hidden;
     }
 
     .map {
         min-height: 300px;
+    }
+
+    .map__mode {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: hidden;
+
+        .clinics__list {
+            width: 100%;
+            height: 40%;
+            max-height: 40%;
+            overflow-y: auto;
+        }
+
+        .map {
+            width: 100%;
+            height: 60%;
+            min-height: 0;
+            flex: 1;
+        }
     }
 
     .main-clinic__filter {
@@ -191,15 +265,15 @@
         pointer-events: none;
         transition: left 0.18s ease, opacity 0.18s ease, transform 0.18s ease;
         visibility: hidden;
-    }
 
-    .main-clinic__filter.filter--active {
-        left: 0;
-        opacity: 1;
-        transform: none;
-        pointer-events: auto;
-        visibility: visible;
-        position: fixed;
+        &.filter--active {
+            left: 0;
+            opacity: 1;
+            transform: none;
+            pointer-events: auto;
+            visibility: visible;
+            position: fixed;
+        }
     }
 
     .filter__close-btn {
@@ -212,10 +286,10 @@
         padding: 6px;
         z-index: 2100;
         cursor: pointer;
-    }
 
-    .filter__close-btn svg {
-        width: 28px;
-        height: 28px;
+        svg {
+            width: 28px;
+            height: 28px;
+        }
     }
 }
