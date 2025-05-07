@@ -7,7 +7,10 @@
     box-sizing: border-box;
 }
 
-// Общие стили перемещены в глобальный файл _card-base.scss
+// Особые стили для режима обычного списка
+.clinics__item {
+    margin-bottom: 20px;
+}
 
 // Специфичные стили для клиники
 .txtUnWrap {
@@ -33,23 +36,35 @@
     }
 }
 
-.card__map-btn {
-    padding: 4px 8px;
-    border-radius: 5px;
-    background-color: rgba(72, 127, 241, 0.1);
-    color: #487ff1;
-    border: none;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: all 0.2s ease;
+// Стили для меток статуса клиники
+.card__status-badges {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    display: flex;
+    gap: 8px;
+    z-index: 10;
 
-    &:hover {
-        background-color: rgba(72, 127, 241, 0.15);
+    .badge {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(4px);
+        border-radius: 6px;
+        padding: 6px 10px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #4f566b;
+
+        &--premium {
+            color: #F26522;
+        }
+
+        &--special {
+            color: #2ecc40;
+        }
     }
 }
 
 // Новые продуманные брейкпоинты с CSS переменными
-
 :host-context(.map__mode) {
     // CSS переменные для элементов, изменяющихся в зависимости от ширины экрана
     --card-photo-display: none;
@@ -109,6 +124,7 @@
         max-width: 100%;
         box-sizing: border-box;
         overflow-x: hidden;
+        padding: 15px;
     }
 
     // Верхняя часть с заголовком

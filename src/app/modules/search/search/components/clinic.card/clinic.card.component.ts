@@ -4,6 +4,7 @@ import {
     EventEmitter,
     Input,
     Output,
+    ViewEncapsulation
 } from "@angular/core";
 import { IClinicMini } from "app/models/clinic.interface";
 import { Router } from "@angular/router";
@@ -20,6 +21,7 @@ import { SummaryVotes } from "@modules/feedback/models";
     templateUrl: "./clinic.card.component.html",
     styleUrls: ["./clinic.card.component.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None
 })
 export class ClinicCardComponent {
     viewClinic: IClinicMini = {

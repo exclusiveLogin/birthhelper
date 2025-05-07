@@ -1,50 +1,30 @@
-.card {
-    position: relative;
-    display: flex;
-    padding: 8px 16px;
-    flex-direction: row;
-    transition: all 0.25s ease;
-    justify-content: center;
-    background-color: $white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    z-index: 1;
-    transform: translateZ(0);
-    will-change: box-shadow, background-color, z-index;
+// .card styles are now in _card-base.scss
 
-    &:hover {
-        background-color: rgba(255, 255, 255, 0.98);
-        box-shadow: 0 12px 32px rgba(72, 127, 241, 0.12),
-            0 4px 8px rgba(72, 127, 241, 0.06);
-        z-index: 10;
-    }
-}
-
-.card.selected {
-    border: 1px #487ff1 solid;
-    background-color: #e0f0fb;
-    box-shadow: 0 2px 8px rgba(72, 127, 241, 0.15);
-    z-index: 5;
-
-    &:hover {
-        background-color: #d5ebfa;
-        box-shadow: 0 14px 36px rgba(72, 127, 241, 0.15),
-            0 6px 10px rgba(72, 127, 241, 0.1);
-        z-index: 10;
-    }
-}
+// .card.selected styles are now in _card-base.scss
 
 .map__mode {
     .card__photo {
         display: none;
+
+        @media (min-width: 1600px) {
+            display: block;
+        }
     }
 
     .card__tags {
         display: none;
+
+        @media (min-width: 1600px) {
+            display: block;
+        }
     }
 
     .card__footer {
         display: none;
+
+        @media (min-width: 1600px) {
+            display: flex;
+        }
     }
 
     .card__description-top {
@@ -58,21 +38,10 @@
     .card__map-icon {
         display: none;
     }
-
-
 }
 
+// .card__photo base styles are now in _card-base.scss
 .card__photo {
-    width: 220px;
-    margin: 0 15px 0 0;
-    border-radius: 5px 5px 10px 10px;
-    overflow: hidden;
-    flex-basis: 220px;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    min-height: 160px;
-
     &--error {
         background-color: #f5f5f5;
         background-image: url('/img/no-image.svg');
@@ -80,9 +49,7 @@
     }
 }
 
-.card__description {
-    flex: 1 0;
-}
+// .card__description styles are now in _card-base.scss
 
 .card__description-top {
     position: relative;
@@ -134,33 +101,14 @@
     color: #2d333f;
 }
 
-.card__tags {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    margin: 10px 0 0;
-    font-size: 1.1rem;
-}
-
-.card__tags-ttl {
-    margin: 0 10px 0 0;
-    color: transparentize($black, 0.5);
-}
-
-.card__tags-txt {
-    margin: 0;
-    color: $black;
-}
+// .card__tags styles are now in _card-base.scss
 
 .card__controls {
     right: 0;
 }
 
+// .card__footer styles are now in _card-base.scss
 .card__footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 30px 0 0;
     padding: 0 0 0 30px;
 }
 
@@ -170,45 +118,21 @@
     justify-content: flex-end;
 }
 
+// .card__price base styles are now in _card-base.scss
 .card__price {
-    display: inline-block;
-    vertical-align: middle;
     font-size: 14px;
     line-height: 1.14;
-}
 
-.card__price-ttl {
-    color: transparentize($black, 0.5);
-    margin: 0 10px 0 0;
-}
-
-.card__price-cnt {
-    color: $black;
-    font-weight: 500;
-    font-size: 1.3rem;
-
-    &--green {
-        color: $green;
-    }
-
-    &.no-slot {
-        font-size: 0.8rem;
+    &-cnt {
+        &.no-slot {
+            font-size: 0.8rem;
+        }
     }
 }
 
+// .card__btn base styles are now in _card-base.scss
 .card__btn {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 44px;
     margin: 0 0 0 10px;
-    border: none;
-    border-radius: 6px;
-    padding: 0 16px;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    flex-wrap: wrap;
 
     @media (min-width: 768px) {
         padding: 0 24px;
@@ -227,57 +151,10 @@
             background: #56d888;
         }
     }
-
-    &--blue {
-        background: linear-gradient(to right, $blue, lighten($blue, 10%));
-        box-shadow: 0 4px 15px rgba($blue, 0.2);
-        position: relative;
-        padding-right: 48px;
-        transition: all 0.2s ease;
-
-        .card__btn-txt {
-            font-size: 14px;
-            font-weight: 500;
-            line-height: 1.2;
-            letter-spacing: 0.3px;
-            white-space: normal;
-            text-align: center;
-            margin-right: 0;
-
-            @media (min-width: 768px) {
-                font-size: 15px;
-                white-space: nowrap;
-            }
-        }
-
-        .card__btn-tooltip-icon {
-            position: absolute;
-            right: 16px;
-            top: 50%;
-            margin-top: -10px;
-            opacity: 0.8;
-            transition: opacity 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: 0;
-        }
-
-        &:hover {
-            background: linear-gradient(to right, lighten($blue, 5%), lighten($blue, 15%));
-            box-shadow: 0 6px 20px rgba($blue, 0.3);
-
-            .card__btn-tooltip-icon {
-                opacity: 1;
-            }
-        }
-    }
 }
 
+// .card__btn-txt and tooltip styles are now in _card-base.scss
 .card__btn-txt {
-    color: $white;
-    margin-right: 4px;
-
     @media (min-width: 768px) {
         margin-right: 8px;
     }
@@ -288,56 +165,12 @@
     font-size: 0;
 }
 
-.card__btn-tooltip-icon {
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    margin-top: -10px;
-    opacity: 0.8;
-    transition: opacity 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 0;
-}
-
-.card__btn-tooltip__anchor {
-    &:hover {
-        .card__btn-tooltip {
-            display: block;
-        }
-    }
-}
-
 .card__btn-tooltip {
-    display: none;
-    position: absolute;
-    top: -60px;
-    right: 0;
-    width: 200px;
-    padding: 8px 12px;
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    background-color: $white;
-    color: $dark;
-    font-size: 13px;
-    line-height: 1.4;
-    opacity: 0;
-    top: -50px;
-    transition: all 0.2s ease;
-    z-index: 1000;
-
     @media (min-width: 768px) {
         width: 247px;
         padding: 12px 16px;
         font-size: 14px;
     }
-}
-
-.card__btn-tooltip-icon:hover .card__btn-tooltip {
-    display: block;
-    opacity: 1;
-    top: -60px;
 }
 
 .result__body--map {

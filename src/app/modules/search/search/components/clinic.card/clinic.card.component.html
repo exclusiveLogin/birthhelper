@@ -5,27 +5,9 @@
             [style]="photoStyle"
             [attr.aria-label]="viewClinic?.title"
         >
-            <div class="card__photo-mark-block mark-block">
-                <div class="mark-block__item">
-                    <img
-                        src="img/icons/person.svg"
-                        class="mark-block__icon"
-                        [ngClass]="{ muted: !viewClinic?.features?.status_iho }"
-                        alt="Клиника доброжелательная к ребёнку"
-                        title="Клиника доброжелательная к ребёнку"
-                    />
-                </div>
-                <div class="mark-block__item">
-                    <img
-                        src="img/icons/hearts.svg"
-                        class="mark-block__icon muted"
-                        [ngClass]="{
-                            muted: !viewClinic?.features?.mom_with_baby
-                        }"
-                        alt="Совместное пребывание матери и ребенка"
-                        title="Совместное пребывание матери и ребенка"
-                    />
-                </div>
+            <div class="card__status-badges">
+                <div class="badge" *ngIf="viewClinic?.features?.status_iho">Клиника доброжелательная к ребёнку</div>
+                <div class="badge" *ngIf="viewClinic?.features?.mom_with_baby">Совместное пребывание</div>
             </div>
         </div>
         <div class="card__description">
@@ -95,6 +77,12 @@
                     </div>
                 </div>
             </div>
+            
+            <div class="card__subtitle-tags" *ngIf="viewClinic.address">
+                <div class="tag-item tag-item--metro" *ngIf="viewClinic?.features?.metro">{{ viewClinic?.features?.metro }}</div>
+                <div class="tag-item" *ngIf="viewClinic?.features?.walking_time">{{ viewClinic?.features?.walking_time }} мин. пешком</div>
+            </div>
+            
             <div class="card__tags">
                 <span class="card__tags-ttl">Описание:</span>
                 <span
@@ -134,9 +122,6 @@
                     </ng-template>
                 </p>
                 <div class="card__btn-group">
-                    <!--                    <button class="card__btn card__btn&#45;&#45;green card__btn&#45;&#45;offer"><span class="card__btn-txt">Спецпредложение<br>+5 опций в подарок</span>-->
-                    <!--                        <span class="card__btn-icon"><img src="img/icons/ic-new-releases-24px.svg" alt=""></span>-->
-                    <!--                    </button>-->
                     <button
                         class="card__btn card__btn--blue"
                         (click)="gotoConfigurator()"
@@ -144,15 +129,6 @@
                         <span class="card__btn-txt"
                             >Перейти на страницу роддома</span
                         >
-                        <span class="card__btn-tooltip-icon">
-                            <img
-                                src="img/icons/ic-info-outline-24px.svg"
-                                alt=""
-                            />
-                            <span class="card__btn-tooltip"
-                                >Перейти к конфигуратору</span
-                            >
-                        </span>
                     </button>
                 </div>
             </div>

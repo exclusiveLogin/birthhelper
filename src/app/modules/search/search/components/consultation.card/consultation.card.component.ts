@@ -4,6 +4,7 @@ import {
     EventEmitter,
     Input,
     Output,
+    ViewEncapsulation
 } from "@angular/core";
 import { Router } from "@angular/router";
 import { BehaviorSubject, Observable } from "rxjs";
@@ -20,6 +21,7 @@ import { map, shareReplay, switchMap, tap } from "rxjs/operators";
     templateUrl: "./consultation.card.component.html",
     styleUrls: ["./consultation.card.component.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None
 })
 export class ConsultationCardComponent {
     viewConsultation: IConsultationMini = {
