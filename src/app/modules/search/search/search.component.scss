@@ -150,9 +150,19 @@
 
 .clinics__list {
     flex: 1;
-    display: flex;
+    display: block;
     gap: 15px;
     padding: 0 15px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+
+    app-clinic-card,
+    app-consultation-card {
+        display: block;
+        margin-bottom: 15px;
+    }
 }
 
 .map {
@@ -165,20 +175,31 @@
 .map__mode {
     display: flex;
     flex-wrap: wrap;
-    overflow: hidden;
+    overflow: visible;
     margin-bottom: 0;
     flex: 1;
+    transition: all 0.3s ease;
 
     .clinics__list {
         width: 50% !important;
+        max-width: 50% !important;
+        height: auto !important;
         max-height: calc(100vh - 250px) !important;
         overflow-y: auto;
+        overflow-x: hidden !important;
         padding-right: 15px;
+        padding-left: 15px;
         margin-bottom: 0;
         padding-bottom: 20px;
         box-sizing: border-box;
         scrollbar-width: thin;
         scrollbar-color: rgba(72, 127, 241, 0.3) transparent;
+        display: block;
+        gap: 10px;
+        flex-basis: 50%;
+        flex-grow: 0;
+        flex-shrink: 0;
+        transition: all 0.3s ease;
 
         &::-webkit-scrollbar {
             width: 8px;
@@ -192,6 +213,24 @@
             background-color: rgba(72, 127, 241, 0.3);
             border-radius: 4px;
         }
+
+        app-clinic-card,
+        app-consultation-card {
+            display: block;
+            width: 100%;
+            min-width: 0;
+            max-width: 100%;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            overflow: visible;
+
+            ::ng-deep .card {
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+                overflow: visible;
+            }
+        }
     }
 
     .map {
@@ -200,6 +239,7 @@
         min-height: 450px;
         margin: 0;
         box-sizing: border-box;
+        transition: all 0.3s ease;
     }
 }
 
@@ -215,13 +255,14 @@
 
 @media (max-width: 768px) {
     .main-clinic__columns {
+        display: flex;
         flex-direction: column;
-        width: 100%;
+        height: calc(100vh - var(--app-header-height));
         overflow: hidden;
     }
 
     .result {
-        height: calc(100vh - var(--app-header-height));
+        flex: 1;
         display: flex;
         flex-direction: column;
         width: 100%;
@@ -231,22 +272,17 @@
     .result__header {
         padding: 0 15px;
         flex-shrink: 0;
-        height: var(--result-header-height);
+        position: sticky;
+        top: 0;
+        background: #fff;
+        z-index: 10;
     }
 
     .result__body {
-        flex-direction: column;
         flex: 1;
-        overflow: hidden;
+        overflow-y: auto;
+        overflow-x: hidden;
         width: 100%;
-        height: calc(100vh - var(--app-header-height) - var(--result-header-height) - var(--paginator-height) - var(--gap-size));
-    }
-
-    app-paginator {
-        margin: 5px 15px;
-        display: block;
-        flex-shrink: 0;
-        height: var(--paginator-height);
     }
 
     .map {
@@ -257,8 +293,11 @@
         flex-direction: column;
         padding: 0 10px;
         width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
         flex-wrap: nowrap;
         align-items: stretch;
+        overflow-x: hidden;
     }
 
     .map__mode {
@@ -266,7 +305,7 @@
         flex-direction: column !important;
         flex-wrap: nowrap !important;
         width: 100% !important;
-        height: calc(100vh - var(--app-header-height) - var(--result-header-height) - var(--paginator-height) - var(--gap-size)) !important;
+        height: auto !important;
         overflow: hidden !important;
         padding: 0 !important;
         margin: 0 !important;
@@ -274,25 +313,45 @@
 
     .map__mode .clinics__list {
         width: 100% !important;
-        height: 30vh !important;
+        max-width: 100% !important;
+        height: auto !important;
+        min-height: 100px !important;
         max-height: 30vh !important;
-        min-height: 150px !important;
         overflow-y: auto !important;
+        overflow-x: hidden !important;
         padding: 0 10px !important;
         margin: 0 0 5px 0 !important;
-        flex-direction: column !important;
-        flex-wrap: nowrap !important;
-        flex-shrink: 0 !important;
         display: block !important;
+        gap: 0 !important;
+
+        app-clinic-card,
+        app-consultation-card {
+            width: 100% !important;
+            max-width: 100% !important;
+            display: block !important;
+            margin-bottom: 5px !important;
+            box-sizing: border-box !important;
+        }
     }
 
     .map__mode .map {
         width: 100% !important;
-        height: calc(100vh - var(--app-header-height) - var(--result-header-height) - var(--paginator-height) - 30vh - 15px) !important;
+        height: 50vh !important;
         min-height: 200px !important;
         margin: 0 !important;
         border-radius: 5px !important;
         flex: none !important;
+    }
+
+    app-paginator {
+        margin: 5px 15px;
+        padding: 5px 0;
+        display: block;
+        flex-shrink: 0;
+        position: sticky;
+        bottom: 0;
+        background: #fff;
+        z-index: 10;
     }
 
     .main-clinic__filter {

@@ -2,55 +2,17 @@
 
 :host {
     flex-grow: 1;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
-.card {
-    @extend .card-base;
-}
-
-.card__image {
-    @extend .card-image;
-}
-
-.card__content {
-    @extend .card-content;
-}
-
-.card__title {
-    @extend .card-title;
-}
-
-.card__description {
-    @extend .card-description;
-}
-
-.card__rating {
-    @extend .rating-badge;
-}
-
-.card__location {
-    @extend .card-location;
-}
-
-.card__price {
-    @extend .card-price;
-
-    &-label {
-        @extend .card-price-label;
-    }
-
-    &-value {
-        @extend .card-price-value;
-    }
-}
-
-.card__action {
-    @extend .card-action;
-}
+// Общие стили перемещены в глобальный файл _card-base.scss
 
 // Специфичные стили для консультации
 .txtUnWrap {
-    height: 4.2rem;
+    height: auto;
+    max-height: 4.2rem;
     overflow: hidden;
 }
 
@@ -68,44 +30,162 @@
     }
 }
 
-.card__controls {
-    @extend .card-controls;
+.card__map-btn {
+    padding: 6px 12px;
+    border-radius: 5px;
+    background-color: rgba(72, 127, 241, 0.1);
+    color: #487ff1;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background-color: rgba(72, 127, 241, 0.15);
+    }
 }
 
-.card__footer {
-    @extend .card-footer;
-}
+// Новые продуманные брейкпоинты с CSS переменными
 
-.card__tags {
-    @extend .card-tags;
-}
+:host-context(.map__mode) {
+    // CSS переменные для элементов, изменяющихся в зависимости от ширины экрана
+    --card-photo-display: none;
+    --card-tags-display: none;
+    --card-footer-display: none;
+    --card-title-size: 1.1rem;
+    --card-title-lines: 2;
+    --card-padding: 15px;
+    --card-layout: column;
+    --desc-top-layout: column;
+    --card-controls-width: 100%;
 
-.card__map {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 12px;
+    @media (min-width: 768px) {
+        --card-title-size: 1.2rem;
+        --card-padding: 15px;
+    }
 
-    &-btn {
-        padding: 6px 12px;
-        border-radius: 5px;
-        background-color: rgba(72, 127, 241, 0.1);
-        color: #487ff1;
-        border: none;
-        cursor: pointer;
-        font-size: 0.9rem;
-        transition: all 0.2s ease;
+    @media (min-width: 992px) {
+        --card-title-size: 1.3rem;
+        --desc-top-layout: row;
+        --card-controls-width: auto;
+    }
 
-        &:hover {
-            background-color: rgba(72, 127, 241, 0.15);
+    @media (min-width: 1200px) {
+        --card-photo-display: block;
+        --card-tags-display: block;
+        --card-footer-display: flex;
+        --card-title-size: 1.4rem;
+    }
+
+    @media (min-width: 1400px) {
+        --card-padding: 20px;
+        --card-title-size: 1.5rem;
+    }
+
+    // Применение CSS переменных
+    .card {
+        display: flex;
+        flex-direction: var(--card-layout);
+        height: auto;
+        max-height: none;
+        padding: var(--card-padding);
+        margin-bottom: 10px;
+        max-width: 100%;
+        width: 100%;
+        box-sizing: border-box;
+        overflow-x: hidden;
+        transition: padding 0.3s ease;
+    }
+
+    // Содержимое карточки
+    .card__description {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-x: hidden;
+    }
+
+    // Верхняя часть с заголовком
+    .card__description-top {
+        flex-shrink: 0;
+        flex-direction: var(--desc-top-layout);
+        align-items: flex-start;
+        transition: flex-direction 0.3s ease;
+
+        // Размещаем кнопки управления
+        .card__controls {
+            margin-top: 5px;
+            align-self: flex-start;
+            width: var(--card-controls-width);
+            transition: width 0.3s ease, margin-top 0.3s ease;
+        }
+    }
+
+    // Заголовок компактнее
+    .card__ttl {
+        font-size: var(--card-title-size);
+        min-height: unset;
+        width: 100%;
+        white-space: normal;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: var(--card-title-lines);
+        transition: font-size 0.3s ease;
+    }
+
+    // Фото в режиме карты
+    .card__photo {
+        display: var(--card-photo-display);
+        max-height: 120px;
+        width: 120px;
+        transition: max-height 0.3s ease, width 0.3s ease;
+    }
+
+    // Теги с ограничением по высоте и скроллом
+    .card__tags {
+        display: var(--card-tags-display);
+        flex: 0 1 auto;
+        overflow-x: auto;
+        max-height: 60px;
+    }
+
+    // Футер всегда внизу
+    .card__footer {
+        display: var(--card-footer-display);
+        flex-shrink: 0;
+    }
+
+    // Блок с картой более компактный
+    .card__map {
+        margin: 10px 0 0;
+        flex-wrap: wrap;
+        width: 100%;
+
+        // Адрес занимает всю ширину
+        .card__address {
+            margin: 8px 0 0 0;
+            font-size: 0.9rem;
+            width: 100%;
+            white-space: normal;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
         }
     }
 }
 
 // Дополнительные стили для мобильных устройств
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     .txtUnWrap {
-        height: 3.5rem;
+        height: auto;
+        max-height: 3.5rem;
     }
 
     .readmore {
@@ -136,5 +216,57 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 4px;
+    }
+
+    // Явное переопределение для мобильных устройств в режиме карты
+    :host-context(.map__mode) {
+
+        // Упрощенная компактная карточка для мобильных
+        .card {
+            padding: 10px;
+            margin-bottom: 5px;
+            overflow-x: hidden;
+        }
+
+        .card__photo,
+        .card__tags,
+        .card__footer {
+            display: none !important;
+        }
+
+        .card__ttl {
+            font-size: 1rem;
+            display: -webkit-box;
+            overflow: hidden;
+            -webkit-line-clamp: 1;
+        }
+
+        .card__address {
+            font-size: 0.8rem;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+        }
+
+        // Особая компоновка для card__description-top на мобильных
+        .card__description-top {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+
+            .card__controls {
+                margin-top: 0;
+                width: auto;
+                min-width: 90px;
+
+                // Оставляем только рейтинг, скрываем остальные кнопки
+                .card-controls__btn-bookmark,
+                .card-controls__btn-other,
+                .card-controls__cnt {
+                    display: none;
+                }
+            }
+        }
     }
 }
