@@ -165,7 +165,7 @@
 
     .clinics__list {
         width: 50%;
-        max-height: calc(100vh - 250px) !important;
+        max-height: calc(100vh - 250px);
         overflow-y: auto;
         padding-right: 15px;
         margin-bottom: 0;
@@ -191,7 +191,7 @@
 
     .map {
         width: 50%;
-        height: calc(100vh - 250px) !important;
+        height: calc(100vh - 250px);
         min-height: 450px;
         margin: 0;
         box-sizing: border-box;
@@ -204,7 +204,7 @@
 
 @media (min-width: 769px) {
     .filter__close-btn {
-        display: none !important;
+        display: none;
     }
 }
 

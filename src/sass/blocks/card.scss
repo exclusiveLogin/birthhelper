@@ -75,7 +75,7 @@
 
     &--error {
         background-color: #f5f5f5;
-        background-image: url('/img/no-image.svg') !important;
+        background-image: url('/img/no-image.svg');
         background-size: 64px;
     }
 }
@@ -97,7 +97,7 @@
     font-weight: 500;
     line-height: 1.19;
     color: $black;
-    text-decoration: none !important;
+    text-decoration: none;
     flex: 1;
     font-family: sans-serif;
 }
@@ -417,3 +417,18 @@
 }
 
 // Эффект блюра для карточек перенесен в _card-base.scss
+
+// Стили для изображений без контента
+.card__photo.no-image {
+    background-image: url('/img/no-image.svg');
+}
+
+// Специальный стиль для ссылок в карточках
+.card__link {
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+        text-decoration: none;
+    }
+}
