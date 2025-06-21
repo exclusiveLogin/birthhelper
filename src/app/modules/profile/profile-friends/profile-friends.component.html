@@ -1,196 +1,48 @@
-<div
-    class="profile_body"
-    *ngIf="{
-        friends: friends$ | async,
-        offered: offered$ | async,
-        blacklist: blacklist$ | async,
-        pending: pending$ | async
-    } as data"
->
+<div class="profile_body">
     <div class="page_body">
-        <app-toggle-container
-            [title]="'Заявки в друзья'"
-            [collapsed]="!data.offered?.length"
-            [count]="data.offered?.length"
-            *ngIf="data.offered?.length"
-        >
-            <div class="list" *ngIf="data.offered?.length; else empty">
-                <div class="list_item" *ngFor="let item of data.offered">
-                    <ng-container
-                        *ngIf="{ target: item.target | async } as target"
-                    >
-                        <!-- card-->
-                        <app-lk-user-card
-                            [user]="target.target"
-                            (click)="gotoUserPage(target.target)"
-                        >
-                            <i class="badge badge-success status">Онлайн</i>
-                        </app-lk-user-card>
-                    </ng-container>
+        <!-- Заявки в друзья -->
+        <ng-container *ngIf="offered$ | async as offered">
+            <profile-friends-section
+                [title]="'Заявки в друзья'"
+                [count]="offered.length"
+                [collapsed]="!offered.length"
+                [items]="offered"
+                type="offered"
+            ></profile-friends-section>
+        </ng-container>
 
-                    <!-- separator-->
-                    <div class="separator"></div>
-                    <!-- actions-->
-                    <div class="hidable">
-                        <button type="button" class="btn btn-light">
-                            <i
-                                class="fa-solid fa-check"
-                                title="Принять заявку"
-                            ></i>
-                        </button>
-                        <button class="btn card__btn--offer">
-                            <i class="fa-solid fa-xmark" title="Отклонить"></i>
-                        </button>
-                        <button type="button" class="btn btn-danger">
-                            <i
-                                class="fa-solid fa-ban"
-                                title="Заблокировать"
-                            ></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <hr />
-        </app-toggle-container>
+        <!-- Список друзей -->
+        <ng-container *ngIf="friends$ | async as friends">
+            <profile-friends-section
+                [title]="'Список друзей'"
+                [count]="friends.length"
+                [collapsed]="!friends.length"
+                [items]="friends"
+                type="friends"
+            ></profile-friends-section>
+        </ng-container>
 
-        <app-toggle-container
-            [title]="'Список друзей'"
-            [collapsed]="!data?.friends?.length"
-            [count]="data.friends?.length"
-            *ngIf="data?.friends?.length"
-        >
-            <div class="list" *ngIf="data?.friends?.length; else empty">
-                <div class="list_item" *ngFor="let item of data.friends">
-                    <ng-container
-                        *ngIf="{ target: item.target | async } as target"
-                    >
-                        <!-- card-->
-                        <app-lk-user-card
-                            [user]="target.target"
-                            (click)="gotoUserPage(target.target)"
-                        >
-                            <i class="badge badge-success status">Онлайн</i>
-                            <i
-                                class="badge badge-danger status"
-                                *ngIf="includes(item, data.blacklist)"
-                                >Заблокирован</i
-                            >
-                        </app-lk-user-card>
-                        <ng-container *ngIf="item.state | async as state">
-                            <div class="button-container">
-                                <button
-                                    type="button"
-                                    class="btn btn-primary message-btn"
-                                    *ngIf="canSendMessage(state)"
-                                    title="Перейти к диалогу"
-                                >
-                                    <i class="fa-solid fa-message"></i>
-                                    <span class="btn-text">Написать сообщение</span>
-                                </button>
-                            </div>
-                        </ng-container>
-                    </ng-container>
+        <!-- Черный список -->
+        <ng-container *ngIf="blacklist$ | async as blacklist">
+            <profile-friends-section
+                [title]="'Черный список'"
+                [count]="blacklist.length"
+                [collapsed]="!blacklist.length"
+                [items]="blacklist"
+                type="blacklist"
+            ></profile-friends-section>
+        </ng-container>
 
-                    <!-- separator-->
-                    <div class="separator"></div>
-                    <!-- actions-->
-                    <div class="hidable">
-                        <button type="button" class="btn btn-light">
-                            <i
-                                class="fa-solid fa-trash-alt"
-                                title="Удалить из друзей"
-                            ></i>
-                        </button>
-
-                        <button class="btn btn-light">
-                            <i class="fa-solid fa-flag fa-trash-alt"></i>
-                        </button>
-
-                        <button type="button" class="btn btn-danger">
-                            <i
-                                class="fa-solid fa-ban"
-                                title="Заблокировать"
-                            ></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <hr />
-        </app-toggle-container>
-
-        <app-toggle-container
-            [title]="'Черный список'"
-            [collapsed]="!data?.blacklist?.length"
-            [count]="data.blacklist?.length"
-            *ngIf="data?.blacklist?.length"
-        >
-            <div class="list" *ngIf="data?.blacklist?.length; else empty">
-                <div class="list_item" *ngFor="let item of data.blacklist">
-                    <ng-container
-                        *ngIf="{ target: item.target | async } as target"
-                    >
-                        <app-lk-user-card
-                            [user]="target.target"
-                            (click)="gotoUserPage(target.target)"
-                        >
-                            <i class="badge badge-success status">Онлайн</i>
-                        </app-lk-user-card>
-                    </ng-container>
-
-                    <!-- separator-->
-                    <div class="separator"></div>
-                    <!-- actions-->
-                    <div class="hidable">
-                        <button class="btn btn-light">
-                            <i class="fa-solid fa-check"></i>
-                        </button>
-                        <button class="btn btn-light">
-                            <i class="fa-solid fa-flag fa-trash-alt"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <hr />
-        </app-toggle-container>
-
-        <app-toggle-container
-            [title]="'Заявки, которые ожидают подтверждения'"
-            [collapsed]="!data?.pending?.length"
-            [count]="data.pending?.length"
-            *ngIf="data?.pending?.length"
-        >
-            <div class="list" *ngIf="data?.pending?.length; else empty">
-                <div class="list_item" *ngFor="let item of data.pending">
-                    <ng-container
-                        *ngIf="{ target: item.target | async } as target"
-                    >
-                        <app-lk-user-card
-                            [user]="target.target"
-                            (click)="gotoUserPage(target.target)"
-                        >
-                            <i class="badge badge-success status">Онлайн</i>
-                            <i
-                                class="badge badge-danger status"
-                                *ngIf="includes(item, data.blacklist)"
-                                >Заблокирован</i
-                            >
-                        </app-lk-user-card>
-                    </ng-container>
-
-                    <!-- separator-->
-                    <div class="separator"></div>
-                    <!-- actions-->
-                    <div class="hidable">
-                        <button type="button" class="btn btn-light">
-                            <i
-                                class="fa-solid fa-trash-alt"
-                                title="Удалить из друзей"
-                            ></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </app-toggle-container>
+        <!-- Заявки, которые ожидают подтверждения -->
+        <ng-container *ngIf="pending$ | async as pending">
+            <profile-friends-section
+                [title]="'Заявки, которые ожидают подтверждения'"
+                [count]="pending.length"
+                [collapsed]="!pending.length"
+                [items]="pending"
+                type="pending"
+            ></profile-friends-section>
+        </ng-container>
     </div>
 </div>
 

@@ -1,0 +1,63 @@
+<div class="list_item">
+  <div class="avatar-col">
+    <div class="avatar" [ngStyle]="{background: item.avatarColor || '#a259c6'}">
+      {{ item.initials || (item.nickname ? item.nickname[0] : '?') }}
+    </div>
+  </div>
+  <div class="info-col">
+    <div class="nickname">{{ item.nickname }}</div>
+    <div class="fullname">{{ item.fullName }}</div>
+    <div class="status-row">
+      <span class="status" *ngIf="item.isOnline">Онлайн</span>
+      <span class="status badge-danger" *ngIf="item.isBlocked || item.isYourBanned">Заблокирован</span>
+    </div>
+  </div>
+  <div class="actions-col">
+    <ng-container [ngSwitch]="type">
+      <ng-container *ngSwitchCase="'offered'">
+        <button type="button" class="btn btn-success" (click)="accept()">
+          <i class="fa-solid fa-check" title="Принять заявку"></i>
+        </button>
+        <button class="btn card__btn--offer" (click)="decline()">
+          <i class="fa-solid fa-xmark" title="Отклонить"></i>
+        </button>
+        <button type="button" class="btn btn-danger" (click)="block()">
+          <i class="fa-solid fa-ban" title="Заблокировать"></i>
+        </button>
+      </ng-container>
+      <ng-container *ngSwitchCase="'friends'">
+        <button type="button" class="btn btn-light" (click)="remove()">
+          <i class="fa-solid fa-trash-alt" title="Удалить из друзей"></i>
+        </button>
+        <button class="btn btn-light">
+          <i class="fa-solid fa-flag fa-trash-alt"></i>
+        </button>
+        <button type="button" class="btn btn-danger" (click)="block()">
+          <i class="fa-solid fa-ban" title="Заблокировать"></i>
+        </button>
+        <button
+          type="button"
+          class="btn message-btn"
+          *ngIf="friendService.canSendMessage(item.state)"
+          title="Перейти к диалогу"
+          (click)="message()"
+        >
+          <i class="fa-solid fa-message"></i>
+        </button>
+      </ng-container>
+      <ng-container *ngSwitchCase="'blacklist'">
+        <button class="btn btn-success" (click)="unblock()">
+          <i class="fa-solid fa-check"></i>
+        </button>
+        <button class="btn btn-light">
+          <i class="fa-solid fa-flag fa-trash-alt"></i>
+        </button>
+      </ng-container>
+      <ng-container *ngSwitchCase="'pending'">
+        <button type="button" class="btn btn-light" (click)="remove()">
+          <i class="fa-solid fa-trash-alt" title="Удалить из друзей"></i>
+        </button>
+      </ng-container>
+    </ng-container>
+  </div>
+</div> 

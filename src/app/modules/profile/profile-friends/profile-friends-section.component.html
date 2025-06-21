@@ -1,0 +1,19 @@
+<div class="section-container">
+  <div class="section-title" (click)="toggle()" style="cursor:pointer; user-select:none;">
+    {{ title }}
+    <span class="section-count">({{ count }})</span>
+    <i class="fas toggle-btn"
+       [class.fa-chevron-up]="!collapsed"
+       [class.fa-chevron-down]="collapsed"
+       style="margin-left:8px;"></i>
+  </div>
+  <ng-container *ngIf="items && items.length">
+    <div *ngIf="!collapsed">
+      <profile-friends-list [items]="items" [type]="type"></profile-friends-list>
+      <div class="profile-separator"></div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!items || !items.length">
+    <profile-friends-empty></profile-friends-empty>
+  </ng-container>
+</div> 

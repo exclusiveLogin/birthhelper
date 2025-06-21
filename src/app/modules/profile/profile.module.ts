@@ -7,12 +7,20 @@ import { LKCommonComponentModule } from "@modules/admin/lk/common/lk.common.modu
 import { ProfileSettingsComponent } from "./profile-settings/profile-settings.component";
 import { ProfileFriendsComponent } from "./profile-friends/profile-friends.component";
 import { SharedModule } from "@shared/shared.module";
+import { ProfileFriendsSectionComponent } from './profile-friends/profile-friends-section.component';
+import { ProfileFriendsListComponent } from './profile-friends/profile-friends-list.component';
+import { ProfileFriendItemComponent } from './profile-friends/profile-friend-item.component';
+import { ProfileFriendsEmptyComponent } from './profile-friends/profile-friends-empty.component';
 
 @NgModule({
     declarations: [
         ProfileComponent,
         ProfileSettingsComponent,
         ProfileFriendsComponent,
+        ProfileFriendsSectionComponent,
+        ProfileFriendsListComponent,
+        ProfileFriendItemComponent,
+        ProfileFriendsEmptyComponent,
     ],
     imports: [
         CommonModule,
