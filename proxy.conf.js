@@ -1,14 +1,14 @@
 const PROXY_CONFIG = [
   {
-    context: [ '/static' ],
-    target: 'http://birthhelper.ru/api',
+    context: ['/static'],
+    target: 'http://localhost:3000/api',
     changeOrigin: true,
     logLevel: "debug",
     secure: false
   },
   {
-    context: [ '/' ],
-    target: 'http://birthhelper.ru',
+    context: ['/'],
+    target: 'http://localhost:3000',
     changeOrigin: true,
     logLevel: "debug",
     secure: false
