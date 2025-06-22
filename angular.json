@@ -116,10 +116,12 @@
               "browserTarget": "birthhelper:build:production"
             },
             "local": {
-              "browserTarget": "birthhelper:build:local"
+              "browserTarget": "birthhelper:build:local",
+              "proxyConfig": "proxy.local.conf.js"
             },
             "remote": {
-              "browserTarget": "birthhelper:build:remote"
+              "browserTarget": "birthhelper:build:remote",
+              "proxyConfig": "proxy.conf.js"
             }
           }
         },

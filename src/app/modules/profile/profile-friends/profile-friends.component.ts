@@ -41,7 +41,7 @@ export class ProfileFriendsComponent {
     }
 
     async addUserToFriendList(id: number) {
-        await this.friendService.acceptUserFriendship(id).toPromise();
+        await this.friendService.acceptUserFriendship(id);
         // this.refresh$.next();
     }
 

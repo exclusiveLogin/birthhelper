@@ -10,7 +10,7 @@ import {
 import { OkPacket } from "@models/order.interface";
 import { BehaviorSubject, merge, Observable, OperatorFunction } from "rxjs";
 import { ISettingsParams, RestService } from "@services/rest.service";
-import { map, pluck, shareReplay, switchMap } from "rxjs/operators";
+import { map, pluck, shareReplay, switchMap, tap } from "rxjs/operators";
 import { AuthService } from "@modules/auth-module/auth.service";
 import { User } from "@models/user.interface";
 import { Entity } from "@models/entity.interface";
@@ -145,29 +145,27 @@ export class FriendService {
         return this.restService.postData(params, data);
     }
 
-    acceptUserFriendship(
-        id: number
-    ): Observable<{ success: boolean; result: OkPacket }> {
+    async acceptUserFriendship(id: number): Promise<{ success: boolean; result: OkPacket }> {
         const params: ISettingsParams = {
             mode: "api",
             segment: "friends",
             script: id.toString(),
         };
-
         const status: FriendStatus = "approved";
-        return this.restService.patchData(params, { status });
+        const result = await this.restService.patchData<{ success: boolean; result: OkPacket }>(params, { status }).toPromise();
+        this.refresh();
+        return result;
     }
 
-    removeFriendship(
-        id: number
-    ): Observable<{ success: boolean; result: OkPacket }> {
+    async removeFriendship(id: number): Promise<{ success: boolean; result: OkPacket }> {
         const params: ISettingsParams = {
             mode: "api",
             segment: "friends",
             script: id.toString(),
         };
-
-        return this.restService.remData(params);
+        const result = await this.restService.remData<{ success: boolean; result: OkPacket }>(params).toPromise();
+        this.refresh();
+        return result;
     }
 
     checkFriendship(friendId: number): Observable<FriendStateDTO> {
@@ -185,26 +183,28 @@ export class FriendService {
         return;
     }
 
-    blockUserByUserId(userId: number): Observable<BlockUserResponse> {
+    async blockUserByUserId(userId: number): Promise<BlockUserResponse> {
         const params: ISettingsParams = {
             mode: "api",
             segment: "friends",
             resource: "block",
             script: userId.toString(),
         };
-
-        return this.restService.postData<BlockUserResponse>(params);
+        const result = await this.restService.postData<BlockUserResponse>(params).toPromise();
+        this.refresh();
+        return result;
     }
 
-    unblockUserByOfferId(id: number): Observable<BlockUserResponse> {
+    async unblockUserByOfferId(id: number): Promise<BlockUserResponse> {
         const params: ISettingsParams = {
             mode: "api",
             segment: "friends",
             resource: "block",
             script: id.toString(),
         };
-
-        return this.restService.remData<BlockUserResponse>(params);
+        const result = await this.restService.remData<BlockUserResponse>(params).toPromise();
+        this.refresh();
+        return result;
     }
 
     getFinalyFriendState(state: FriendStateDTO): keyof FriendStateDTO {

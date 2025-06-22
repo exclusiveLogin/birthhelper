@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FriendService } from '@services/friend.service';
 import { Router } from '@angular/router';
+import { Friend } from '@models/friend.interface';
 // ВАЖНО: Не забудьте добавить CommonModule в imports модуля, где объявлен этот компонент!
 
 @Component({
@@ -9,36 +10,32 @@ import { Router } from '@angular/router';
   styleUrls: ['./profile-friend-item.component.scss']
 })
 export class ProfileFriendItemComponent {
-  @Input() item: any;
+  @Input() item: Friend;
   @Input() type: string;
 
   constructor(public friendService: FriendService, private router: Router) {}
 
-  accept() {
-    this.friendService.acceptUserFriendship(this.item.id).subscribe(() => this.friendService.refresh());
+  async accept() {
+    await this.friendService.acceptUserFriendship(this.item.id);
   }
 
-  decline() {
-    this.friendService.removeFriendship(this.item.id).subscribe(() => this.friendService.refresh());
+  async decline() {
+    await this.friendService.removeFriendship(this.item.id);
   }
 
-  block() {
-    this.friendService.blockUserByUserId(this.item.id).subscribe(() => this.friendService.refresh());
+  async block(id: number) {
+    await this.friendService.blockUserByUserId(id);
   }
 
-  unblock() {
-    this.friendService.unblockUserByOfferId(this.item.id).subscribe(() => this.friendService.refresh());
+  async unblock() {
+    await this.friendService.unblockUserByOfferId(this.item.id);
   }
 
-  remove() {
-    this.friendService.removeFriendship(this.item.id).subscribe(() => this.friendService.refresh());
+  async remove() {
+    await this.friendService.removeFriendship(this.item.id);
   }
 
   message() {
     this.router.navigate(['/chat', this.item.id]);
-  }
-
-  gotoUserPage(user: any) {
-    this.router.navigate(['/profile', user.id]);
   }
 } 

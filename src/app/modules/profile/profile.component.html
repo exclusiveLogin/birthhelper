@@ -130,50 +130,56 @@
         </div>
         <div class="profile_action_block" *ngIf="!userData.isSelf">
             <button
-                class="btn btn-success"
+                class="profile-action-btn success"
                 *ngIf="userData.friendStatus === 'canFriendOffer'"
                 (click)="sendFriendship()"
             >
-                Добавить в друзья
+                <i class="fa fa-user-plus"></i>
+                <span class="btn-text">Добавить в друзья</span>
             </button>
 
             <button
-                class="btn btn-outline-success"
+                class="profile-action-btn success"
                 *ngIf="userData.canSendMessage"
             >
-                Написать сообщение
+                <i class="fa fa-comment"></i>
+                <span class="btn-text">Написать сообщение</span>
             </button>
 
             <button
-                class="btn btn-outline-danger"
+                class="profile-action-btn danger"
                 *ngIf="userData.friendStatus === 'isFriend'"
                 (click)="removeFriendship()"
             >
-                Удалить из друзей
+                <i class="fa fa-user-times"></i>
+                <span class="btn-text">Удалить из друзей</span>
             </button>
 
             <button
-                class="btn btn-outline-danger"
+                class="profile-action-btn danger"
                 *ngIf="userData.friendStatus === 'isOffered'"
                 (click)="removeFriendship()"
             >
-                Удалить заявку в друзья
+                <i class="fa fa-user-times"></i>
+                <span class="btn-text">Удалить заявку в друзья</span>
             </button>
 
             <button
-                class="btn btn-outline-danger"
+                class="profile-action-btn danger"
                 *ngIf="userData.friendStatus !== 'isBlocked'"
                 (click)="blockUser()"
             >
-                Заблокировать
+                <i class="fa fa-ban"></i>
+                <span class="btn-text">Заблокировать</span>
             </button>
 
             <button
-                class="btn btn-outline-success"
+                class="profile-action-btn success"
                 *ngIf="userData.friendStatus === 'isBlocked'"
                 (click)="unblockUser()"
             >
-                Разблокировать
+                <i class="fa fa-unlock"></i>
+                <span class="btn-text">Разблокировать</span>
             </button>
         </div>
     </div>
@@ -199,41 +205,63 @@
                     >
                 </li>
                 <li class="nav-item nav-search" *ngIf="userData.mode === 'friends'">
-                    <div
-                        class="search_input_container"
-                        [class.hidden]="!isShowSearchUserInput"
-                    >
+                    <!-- Для больших экранов: сразу показываем поиск -->
+                    <div class="search-bar search-bar-inline" *ngIf="isWideScreen">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <span class="search-btn-text">Поиск</span>
                         <ng-autocomplete
                             [data]="userFriendSuggestions$ | async"
                             [searchKeyword]="'full_name_login'"
                             placeholder="Начните вводить имя"
                             (selected)="selectUserSuggestion($event)"
                             (inputChanged)="searchUsers($event)"
-                            (focusout)="hideSearchUserInput()"
                             [itemTemplate]="itemTemplate"
                             [notFoundTemplate]="notFoundTemplate"
                         >
                         </ng-autocomplete>
-
                         <ng-template #itemTemplate let-item>
-                            <div
-                                class="select_item__user"
-                                [innerHTML]="item.full_name_login"
-                            ></div>
+                            <div class="select_item__user" [innerHTML]="item.full_name_login"></div>
                         </ng-template>
-
                         <ng-template #notFoundTemplate let-notFound>
-                            <div
-                                class="select_item__user"
-                                [innerHTML]="notFound"
-                            ></div>
+                            <div class="select_item__user" [innerHTML]="notFound"></div>
                         </ng-template>
                     </div>
-                    <i
-                        class="fa-solid fa-magnifying-glass nav-search-icon"
-                        [class.pushed]="isShowSearchUserInput"
-                        (click)="showSearchUserInput()"
-                    ></i>
+                    <!-- Для остальных: старая логика -->
+                    <ng-container *ngIf="!isWideScreen">
+                        <button
+                            class="search-btn"
+                            type="button"
+                            (click)="showSearchUserInput()"
+                            *ngIf="!isShowSearchUserInput"
+                        >
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <span class="search-btn-text" *ngIf="isMobileScreen">Поиск</span>
+                        </button>
+                        <ng-container *ngIf="isShowSearchUserInput">
+                            <div class="search-bar">
+                                <ng-autocomplete
+                                    [data]="userFriendSuggestions$ | async"
+                                    [searchKeyword]="'full_name_login'"
+                                    placeholder="Начните вводить имя"
+                                    (selected)="selectUserSuggestion($event)"
+                                    (inputChanged)="searchUsers($event)"
+                                    (focusout)="hideSearchUserInput()"
+                                    [itemTemplate]="itemTemplate"
+                                    [notFoundTemplate]="notFoundTemplate"
+                                >
+                                </ng-autocomplete>
+                                <ng-template #itemTemplate let-item>
+                                    <div class="select_item__user" [innerHTML]="item.full_name_login"></div>
+                                </ng-template>
+                                <ng-template #notFoundTemplate let-notFound>
+                                    <div class="select_item__user" [innerHTML]="notFound"></div>
+                                </ng-template>
+                                <button class="search-close-btn" type="button" (click)="hideSearchUserInput()" *ngIf="!searchValue">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                        </ng-container>
+                    </ng-container>
                 </li>
             </ul>
             <ng-container *ngIf="userData.mode === 'settings'">

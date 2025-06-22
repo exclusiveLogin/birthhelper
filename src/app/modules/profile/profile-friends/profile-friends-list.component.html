@@ -3,5 +3,6 @@
     *ngFor="let item of items"
     [item]="item"
     [type]="type"
+    (click)="gotoUserPage(item)"
   ></profile-friend-item>
 </div> 

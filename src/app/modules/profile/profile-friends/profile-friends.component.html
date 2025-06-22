@@ -36,7 +36,7 @@
         <!-- Заявки, которые ожидают подтверждения -->
         <ng-container *ngIf="pending$ | async as pending">
             <profile-friends-section
-                [title]="'Заявки, которые ожидают подтверждения'"
+                [title]="'Ваши заявки, которые ожидают подтверждения'"
                 [count]="pending.length"
                 [collapsed]="!pending.length"
                 [items]="pending"

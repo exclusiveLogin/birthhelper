@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, OnInit } from "@angular/core";
+import { Component, ElementRef, ViewChild, OnInit, OnDestroy } from "@angular/core";
 import { BehaviorSubject, combineLatest, Observable, of, Subject } from "rxjs";
 import { debounceTime, distinctUntilChanged } from "rxjs/operators";
 import { DictService, IDictItem } from "../admin/dict.service";
@@ -27,7 +27,7 @@ type Mode = "settings" | "friends";
     templateUrl: "./profile.component.html",
     styleUrls: ["./profile.component.scss"],
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
     @ViewChild("file") private fileRef: ElementRef;
 
     refresh$ = new BehaviorSubject<void>(void 0);
@@ -95,6 +95,10 @@ export class ProfileComponent implements OnInit {
     );
     isShowSearchUserInput: boolean = false;
 
+    isMobileScreen = false;
+    isWideScreen = false;
+    searchValue: string = '';
+
     constructor(
         private dictService: DictService,
         private authService: AuthService,
@@ -108,6 +112,17 @@ export class ProfileComponent implements OnInit {
 
     ngOnInit(): void {
         console.log("Route:", this.route);
+        this.checkScreenSize();
+        window.addEventListener('resize', this.checkScreenSize.bind(this));
+    }
+
+    checkScreenSize() {
+        this.isMobileScreen = window.innerWidth <= 768;
+        this.isWideScreen = window.innerWidth > 1200;
+    }
+
+    ngOnDestroy() {
+        window.removeEventListener('resize', this.checkScreenSize.bind(this));
     }
 
     hideSearchUserInput() {
@@ -118,9 +133,10 @@ export class ProfileComponent implements OnInit {
         setTimeout(() => (this.isShowSearchUserInput = true), 50);
     }
 
-    searchUsers(query: string): void {
-        console.log("query:", query);
-        this.userSearchQuery.next(query);
+    searchUsers(value: string) {
+        this.searchValue = value;
+        console.log("query:", value);
+        this.userSearchQuery.next(value);
     }
 
     selectUserSuggestion(user: User) {
@@ -142,7 +158,7 @@ export class ProfileComponent implements OnInit {
 
     async sendFriendship() {
         const user = await this.user$.pipe(take(1)).toPromise();
-        await this.friendService.sendFriendship(user.id).toPromise();
+        await this.friendService.sendFriendship(user.id);
 
         this.refresh$.next();
         this.friendService.refresh();
@@ -150,7 +166,7 @@ export class ProfileComponent implements OnInit {
 
     async blockUser() {
         const user = await this.user$.pipe(take(1)).toPromise();
-        await this.friendService.blockUserByUserId(user.id).toPromise();
+        await this.friendService.blockUserByUserId(user.id);
 
         this.refresh$.next();
         this.friendService.refresh();
@@ -162,9 +178,7 @@ export class ProfileComponent implements OnInit {
 
         if (!blockRecord) return;
 
-        await this.friendService
-            .unblockUserByOfferId(blockRecord.id)
-            .toPromise();
+        await this.friendService.unblockUserByOfferId(blockRecord.id);
 
         this.refresh$.next();
         this.friendService.refresh();
@@ -176,7 +190,7 @@ export class ProfileComponent implements OnInit {
 
         if (!friendRecord) return;
 
-        await this.friendService.removeFriendship(friendRecord.id).toPromise();
+        await this.friendService.removeFriendship(friendRecord.id);
 
         this.refresh$.next();
         this.friendService.refresh();

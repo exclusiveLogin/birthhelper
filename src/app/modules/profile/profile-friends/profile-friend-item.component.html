@@ -29,7 +29,7 @@
           <button class="btn btn-icon btn-light" (click)="decline()">
             <i class="fa-solid fa-xmark" title="Отклонить"></i>
           </button>
-          <button type="button" class="btn btn-icon btn-danger" (click)="block()">
+          <button type="button" class="btn btn-icon btn-danger" (click)="block(data.target.id)">
             <i class="fa-solid fa-ban" title="Заблокировать"></i>
           </button>
         </ng-container>
@@ -40,7 +40,7 @@
           <button class="btn btn-icon btn-light">
             <i class="fa-solid fa-flag fa-trash-alt"></i>
           </button>
-          <button type="button" class="btn btn-icon btn-danger" (click)="block()">
+          <button type="button" class="btn btn-icon btn-danger" (click)="block(data.target.id)">
             <i class="fa-solid fa-ban" title="Заблокировать"></i>
           </button>
           <button
