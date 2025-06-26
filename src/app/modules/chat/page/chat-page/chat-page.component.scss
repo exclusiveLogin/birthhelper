@@ -81,7 +81,7 @@
     display: flex;
     min-height: 600px;
     overflow: hidden;
-    height: calc(100vh - 64px);
+    height: calc(100vh - 90px);
 }
 
 .chat_contacts {
@@ -311,4 +311,36 @@
     padding: 0%;
     display: block;
     align-self: baseline;
+}
+
+.user-status {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #bdbdbd;
+    border: 1px solid #ffffff77;
+    margin-left: 6px;
+    box-shadow: 0 0 0 1.5px #e3e9f3;
+    transition: background 0.2s;
+
+    &.online {
+        background: #22c55e;
+        box-shadow: 0 0 6px 2px #22c55e55, 0 0 0 1.5px #e3e9f3;
+        animation: pulse 1.2s infinite;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 6px 2px #22c55e55, 0 0 0 1.5px #e3e9f3;
+    }
+
+    50% {
+        box-shadow: 0 0 12px 6px #22c55e33, 0 0 0 1.5px #e3e9f3;
+    }
+
+    100% {
+        box-shadow: 0 0 6px 2px #22c55e55, 0 0 0 1.5px #e3e9f3;
+    }
 }
