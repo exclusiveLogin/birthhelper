@@ -8,7 +8,7 @@
   &-date {
     flex-basis: 100%;
     text-align: right;
-      opacity: 50%;
+    opacity: 50%;
 
     &-right {
       text-align: left;
@@ -19,10 +19,9 @@
     display: flex;
     gap: 6px 45px;
     flex-wrap: wrap;
-    margin-bottom: 16px;
     flex-grow: 1;
 
-    .official{
+    .official {
       position: absolute;
     }
   }

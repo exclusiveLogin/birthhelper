@@ -1,82 +1,80 @@
-<div class="chat_container page_container">
-    <div class="page_body">
-        <div class="page_sector">
-            <div class="page_sector_title">
-                <span>Диалог c Admin</span>
+<div class="chat_container">
+    <div class="chat_contacts">
+        <div class="page_sector_title">
+            <span>Диалог c Admin</span>
+        </div>
+        <div class="contact_list_footer">
+            <button type="button" class="btn btn-light">
+                Создать диалог
+            </button>
+        </div>
+        <div class="contact_list__list">
+            <app-lk-user-card [user]="mockUser" class="lk-user-card">
+                <i class="fa-solid fa-signal status"></i>
+            </app-lk-user-card>
+            <app-lk-user-card [user]="mockUser" class="lk-user-card">
+                <i class="fa-solid fa-signal status online"></i>
+            </app-lk-user-card>
+            <app-lk-user-card [user]="mockUser" class="lk-user-card">
+                <i class="fa-solid fa-signal status"></i>
+            </app-lk-user-card>
+        </div>
+    </div>
+    <div class="message_container">
+        <div class="message_container_header">
+            <!--                        <span>Диалог с пользователем Admin</span>-->
+        </div>
+        <div class="message_container_list">
+            <div class="msg_box">
+                <app-lk-user-card
+                    class="lk-user-card"
+                    [avatarOnly]="true"
+                    [user]="mockUser"
+                ></app-lk-user-card>
+                <app-lk-feedback-message
+                    class="feedback-message"
+                    [text]="'Test'"
+                    [mode]="'answer'"
+                ></app-lk-feedback-message>
             </div>
 
-            <div class="dialog-container">
-                <div class="contact_list">
-                    <div class="contact_list__list">
-                        <app-lk-user-card [user]="mockUser">
-                            <i class="fa-solid fa-signal status"></i>
-                        </app-lk-user-card>
-                        <app-lk-user-card [user]="mockUser">
-                            <i class="fa-solid fa-signal status online"></i>
-                        </app-lk-user-card>
-                        <app-lk-user-card [user]="mockUser">
-                            <i class="fa-solid fa-signal status"></i>
-                        </app-lk-user-card>
-                    </div>
-                    <div class="contact_list_footer">
-                        <button type="button" class="btn btn-light">
-                            Создать диалог
-                        </button>
-                    </div>
-                </div>
+            <div class="msg_box">
+                <app-lk-feedback-message
+                    class="feedback-message"
+                    [text]="
+                        'sdfsdfsfsfdsgsdg dfgdsgdfgdf gdfgdsgdsgdfgdgdd gdfgdfgsdgdgdfgdgdsgd sfbsddrgfgbfdbd sfbfgbfgb'
+                    "
+                    [mode]="'reply'"
+                    [color]="'accent'"
+                ></app-lk-feedback-message>
+                <app-lk-user-card
+                    class="lk-user-card"
+                    [avatarOnly]="true"
+                    [user]="mockUser"
+                ></app-lk-user-card>
+            </div>
 
-                <div class="message_container">
-                    <div class="message_container_header">
-                        <!--                        <span>Диалог с пользователем Admin</span>-->
-                    </div>
-                    <div class="message_container_list">
-                        <div class="msg_box">
-                            <app-lk-user-card
-                                [avatarOnly]="true"
-                                [user]="mockUser"
-                            ></app-lk-user-card>
-                            <app-lk-feedback-message
-                                [text]="'Test'"
-                                [mode]="'answer'"
-                            ></app-lk-feedback-message>
-                        </div>
-
-                        <div class="msg_box">
-                            <app-lk-feedback-message
-                                [text]="
-                                    'sdfsdfsfsfdsgsdg dfgdsgdfgdf gdfgdsgdsgdfgdgdd gdfgdfgsdgdgdfgdgdsgd sfbsddrgfgbfdbd sfbfgbfgb'
-                                "
-                                [mode]="'reply'"
-                                [color]="'accent'"
-                            ></app-lk-feedback-message>
-                            <app-lk-user-card
-                                [avatarOnly]="true"
-                                [user]="mockUser"
-                            ></app-lk-user-card>
-                        </div>
-
-                        <div class="msg_box">
-                            <app-lk-user-card
-                                [avatarOnly]="true"
-                                [user]="mockUser"
-                            ></app-lk-user-card>
-                            <app-lk-feedback-message
-                                [text]="
-                                    'Test2 sdfgsadfd fgsdfgdfg dsfgdsgd fsgsdgsdfgdfg dsgdsvdfvdfsvdv dsfgvsdd ffdsfgvdfsdfv dsfvsdf vdfdsvsd'
-                                "
-                                [mode]="'answer'"
-                            ></app-lk-feedback-message>
-                        </div>
-                    </div>
-                    <div class="message_container_footer">
-                        <div class="chat_input">
-                            <input />
-                            <button class="btn send_button">
-                                <i class="fas fa-level-up-alt"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+            <div class="msg_box">
+                <app-lk-user-card
+                    class="lk-user-card"
+                    [avatarOnly]="true"
+                    [user]="mockUser"
+                ></app-lk-user-card>
+                <app-lk-feedback-message
+                    class="feedback-message"
+                    [text]="
+                        'Test2 sdfgsadfd fgsdfgdfg dsfgdsgd fsgsdgsdfgdfg dsgdsvdfvdfsvdv dsfgvsdd ffdsfgvdfsdfv dsfvsdf vdfdsvsd'
+                    "
+                    [mode]="'answer'"
+                ></app-lk-feedback-message>
+            </div>
+        </div>
+        <div class="message_container_footer">
+            <div class="chat_input">
+                <input />
+                <button class="btn send_button">
+                    <i class="fas fa-level-up-alt"></i>
+                </button>
             </div>
         </div>
     </div>

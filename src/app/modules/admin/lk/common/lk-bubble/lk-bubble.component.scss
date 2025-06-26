@@ -4,18 +4,17 @@
 
 .speech-bubble {
     --bubble-color: #f7f7f7;
-    --arrow-color: #e9e9e9;
+    --arrow-color: #ffb500;
     position: relative;
     background-color: var(--bubble-color);
-    border-radius: .4em;
-    padding: 16px;
-    padding-bottom: 0;
+    border-radius: 22px;
+    padding: 22px 24px 10px 24px;
     font-size: 1.2rem;
     flex-grow: 1;
-    box-shadow: 0px 13px 16px -9px rgb(195 195 195 / 70%);
+    box-shadow: 0 6px 24px 0 rgba(60, 60, 120, 0.10);
     border-bottom: 2px #ffb500 solid;
 
-    :not(&-main) > & {
+    :not(&-main)>& {
         max-width: calc(100% - 64px - 36px - 16px);
     }
 
@@ -42,7 +41,7 @@
     }
 
     &-left {
-        margin-left: 36px;
+        margin-left: 24px;
 
         &::after {
             content: "";
@@ -51,12 +50,12 @@
             top: 30px;
             width: 0;
             height: 0;
-            border: 36px solid transparent;
+            border: 24px solid transparent;
             border-right-color: var(--arrow-color);
             border-left: 16px;
             border-top: 16px;
             margin-top: -6px;
-            margin-left: -36px;
+            margin-left: -24px;
         }
     }
 
@@ -70,23 +69,24 @@
             bottom: 0%;
             width: 0;
             height: 0;
-            border: 36px solid transparent;
+            border: 24px solid transparent;
             border-left-color: var(--arrow-color);
             border-top: 0px;
             margin-left: 0;
-            margin-top: 27px;
+            margin-top: 24px;
         }
     }
 }
 
 .speech-bubble-accent {
-    --bubble-color: #ffc507;
-    --arrow-color: #e9b200;
+    --bubble-color: #e8f1fd; // светлый фирменный синий
+    --arrow-color: #3b82f6; // корпоративный синий
+    border-bottom: 2px #3b82f6 solid;
 }
 
 .speech-bubble-accent-secondary {
-    --bubble-color: #ffbd73;
-    --arrow-color: #d79d5d;
+    --bubble-color: #f0f6fe; // ещё светлее, для вариаций
+    --arrow-color: #60a5fa; // светло-синий, но ближе к фирменному
 }
 
 textarea {
