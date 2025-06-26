@@ -23,24 +23,24 @@
     <div class="actions-col">
       <ng-container [ngSwitch]="type">
         <ng-container *ngSwitchCase="'offered'">
-          <button type="button" class="btn btn-icon btn-success" (click)="accept()">
+          <button type="button" class="btn btn-icon btn-success" (click)="accept($event)">
             <i class="fa-solid fa-check" title="Принять заявку"></i>
           </button>
-          <button class="btn btn-icon btn-light" (click)="decline()">
+          <button class="btn btn-icon btn-light" (click)="decline($event)">
             <i class="fa-solid fa-xmark" title="Отклонить"></i>
           </button>
-          <button type="button" class="btn btn-icon btn-danger" (click)="block(data.target.id)">
+          <button type="button" class="btn btn-icon btn-danger" (click)="block($event, data.target.id)">
             <i class="fa-solid fa-ban" title="Заблокировать"></i>
           </button>
         </ng-container>
         <ng-container *ngSwitchCase="'friends'">
-          <button type="button" class="btn btn-icon btn-light" (click)="remove()">
+          <button type="button" class="btn btn-icon btn-light" (click)="remove($event)">
             <i class="fa-solid fa-trash-alt" title="Удалить из друзей"></i>
           </button>
           <button class="btn btn-icon btn-light">
             <i class="fa-solid fa-flag fa-trash-alt"></i>
           </button>
-          <button type="button" class="btn btn-icon btn-danger" (click)="block(data.target.id)">
+          <button type="button" class="btn btn-icon btn-danger" (click)="block($event, data.target.id)">
             <i class="fa-solid fa-ban" title="Заблокировать"></i>
           </button>
           <button
@@ -54,7 +54,7 @@
           </button>
         </ng-container>
         <ng-container *ngSwitchCase="'blacklist'">
-          <button class="btn btn-icon btn-success" (click)="unblock()">
+          <button class="btn btn-icon btn-success" (click)="unblock($event)">
             <i class="fa-solid fa-check"></i>
           </button>
           <button class="btn btn-icon btn-light">
@@ -62,7 +62,7 @@
           </button>
         </ng-container>
         <ng-container *ngSwitchCase="'pending'">
-          <button type="button" class="btn btn-icon btn-light" (click)="remove()">
+          <button type="button" class="btn btn-icon btn-light" (click)="remove($event)">
             <i class="fa-solid fa-trash-alt" title="Удалить из друзей"></i>
           </button>
         </ng-container>

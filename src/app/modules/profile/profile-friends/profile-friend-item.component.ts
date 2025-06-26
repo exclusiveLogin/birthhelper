@@ -15,23 +15,28 @@ export class ProfileFriendItemComponent {
 
   constructor(public friendService: FriendService, private router: Router) {}
 
-  async accept() {
+  async accept(event: Event) {
+    event.stopPropagation();
     await this.friendService.acceptUserFriendship(this.item.id);
   }
 
-  async decline() {
+  async decline(event: Event) {
+    event.stopPropagation();
     await this.friendService.removeFriendship(this.item.id);
   }
 
-  async block(id: number) {
+  async block(event: Event, id: number) {
+    event.stopPropagation();
     await this.friendService.blockUserByUserId(id);
   }
 
-  async unblock() {
+  async unblock(event: Event) {
+    event.stopPropagation();
     await this.friendService.unblockUserByOfferId(this.item.id);
   }
 
-  async remove() {
+  async remove(event: Event) {
+    event.stopPropagation();
     await this.friendService.removeFriendship(this.item.id);
   }
 
