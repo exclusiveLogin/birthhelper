@@ -5,4 +5,20 @@
     padding: 8px;
     gap: 16px;
     align-items: center;
+
+    // avatarOnly mode: только аватар, без фона и отступов
+    &.avatar-only {
+        padding: 0;
+        gap: 0;
+        background: transparent;
+    }
+}
+
+.lk-user-card.avatar-only,
+.lk-user-card-container.avatar-only {
+    background: transparent !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
 }

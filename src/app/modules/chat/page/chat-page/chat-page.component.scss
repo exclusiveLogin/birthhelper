@@ -283,7 +283,7 @@
 }
 
 .feedback-message {
-    margin-top: 8px;
+    // margin-top: 8px;
 }
 
 @media (max-width: 900px) {
@@ -303,4 +303,12 @@
     .message_container_footer {
         padding: 8px 4px;
     }
+}
+
+.lk-user-card.avatar-only {
+    background: transparent !important;
+    border-radius: 50%;
+    padding: 0%;
+    display: block;
+    align-self: baseline;
 }

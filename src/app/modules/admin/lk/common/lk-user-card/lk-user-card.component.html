@@ -1,4 +1,4 @@
-<div class="lk-user-card-container">
+<div class="lk-user-card-container" [ngClass]="{'avatar-only': avatarOnly}">
     <app-lk-avatar
         [size]="64"
         [image]="userPhotoImage$ | async"
@@ -16,7 +16,7 @@
             [phone]="user?.phone"
             [skype]="user?.skype"
         ></app-lk-contacts>
-        <ng-content select="'.status'"></ng-content>
+        <ng-content select=".status"></ng-content>
         <app-lk-confirm-chanel
             [skype]="user?.skype && user?.ch_skype"
             [phone]="user?.phone && user?.ch_phone"
