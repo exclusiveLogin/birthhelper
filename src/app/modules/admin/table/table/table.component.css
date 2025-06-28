@@ -3,6 +3,7 @@
     line-height: 25px;
     padding: 10px;
 }
+
 .bh_table_head {
     border: 1px orange dotted;
     min-height: 35px;
@@ -11,7 +12,7 @@
     justify-content: space-around;
 }
 
-.container {
+.bh-container {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -22,6 +23,7 @@
     color: antiquewhite;
     padding: 5px;
 }
+
 .img_block {
     width: 35px;
     height: 35px;
@@ -29,12 +31,14 @@
     border-radius: 5px;
     background-size: cover;
 }
+
 .img_block:hover {
     transition: all 0.1s ease-in-out;
     transform: scale(10);
     /*width: unset;*/
     /*height: unset;*/
 }
+
 .imagerow {
     max-width: 40px;
 }

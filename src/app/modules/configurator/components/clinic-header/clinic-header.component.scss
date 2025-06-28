@@ -1,11 +1,17 @@
 .clinic-header {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .clinic-ttl {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
 }
 
 .clinic-header__ttl {
@@ -15,6 +21,8 @@
     line-height: 1.2;
     color: #487ff1;
     cursor: pointer;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .clinic-header__address {
@@ -24,6 +32,8 @@
     line-height: 1.17;
     color: #2d333f;
     opacity: 0.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .clinic-header__license {
@@ -31,16 +41,19 @@
     font-weight: 500;
     line-height: 1.17;
     color: #2d333f;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .clinic-header-actions {
     flex-shrink: 0;
-    margin-left: 164px;
     text-align: right;
     padding-top: 15px;
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
+    gap: 10px;
+    min-width: 200px;
 }
 
 .clinic-header-actions__review {
@@ -51,10 +64,13 @@
     font-weight: 500;
     line-height: 1.19;
     color: #2d333f;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 .clinic-header-actions__review-icon {
     margin-right: 15px;
+    flex-shrink: 0;
 }
 
 .clinic-header-actions-link {
@@ -65,6 +81,8 @@
     line-height: 1.14;
     color: #487ff1;
     text-decoration: underline;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .clinic-header-actions-btn {
@@ -79,21 +97,33 @@
     border: none;
     border-radius: 5px;
     background: #487ff1;
+    white-space: nowrap;
+    flex-shrink: 0;
 
     &:hover {
         background: #6896f5;
     }
 }
+
 .info_container {
     display: flex;
     padding-left: 45px;
     background: url("/img/icons/doctor.svg") no-repeat 0 6px;
     gap: 16px;
+    flex-wrap: wrap;
+    align-items: center;
 }
 
 .phone_container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+
     .phone_item {
         white-space: nowrap;
+        flex-shrink: 0;
+
         .phone_ttl {
             font-size: 1.2rem;
         }
@@ -103,10 +133,13 @@
             font-weight: 500;
         }
     }
+
     @media screen and (max-width: 1200px) {
         line-height: 1.1;
+
         .phone_item {
             white-space: nowrap;
+
             .phone_ttl {
                 font-size: 0.8rem;
             }
@@ -116,5 +149,78 @@
                 font-weight: 500;
             }
         }
+    }
+}
+
+@media (max-width: 768px) {
+    .clinic-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .clinic-header__ttl {
+        font-size: 1.4rem;
+    }
+
+    .clinic-header__address,
+    .clinic-header__license {
+        font-size: 16px;
+    }
+
+    .clinic-header-actions {
+        width: 100%;
+        min-width: auto;
+        align-items: flex-start;
+    }
+
+    .clinic-header-actions__review {
+        justify-content: flex-start;
+    }
+
+    .clinic-header-actions-btn {
+        width: 100%;
+        max-width: 200px;
+    }
+
+    .info_container {
+        padding-left: 35px;
+        background-size: 24px;
+        gap: 12px;
+    }
+
+    .phone_container {
+        .phone_item {
+            .phone_ttl {
+                font-size: 0.7rem;
+            }
+
+            .phone_number {
+                font-size: 1rem;
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .clinic-header__ttl {
+        font-size: 1.2rem;
+    }
+
+    .clinic-header__address,
+    .clinic-header__license {
+        font-size: 14px;
+    }
+
+    .clinic-header-actions-btn {
+        height: 40px;
+        padding: 0 20px;
+        font-size: 14px;
+    }
+
+    .info_container {
+        padding-left: 30px;
+        background-size: 20px;
+        gap: 8px;
     }
 }

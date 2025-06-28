@@ -11,23 +11,6 @@
 .clinic-tabs__item {
     position: relative;
     padding: 0 6px;
-
-    &:after {
-        position: absolute;
-        content: "";
-        right: 0;
-        top: 50%;
-        margin-top: -10px;
-        height: 20px;
-        width: 1px;
-        background: rgba(45, 51, 63, 0.1);
-    }
-
-    &:last-child {
-        &:after {
-            display: none;
-        }
-    }
 }
 
 .clinic-tabs-rbt {
@@ -38,7 +21,7 @@
 .clinic-tabs-rbt__input {
     display: none;
 
-    & + .clinic-tabs-rbt__label {
+    &+.clinic-tabs-rbt__label {
         position: relative;
         display: flex;
         align-items: center;
@@ -61,7 +44,7 @@
         }
     }
 
-    &:checked + .clinic-tabs-rbt__label {
+    &:checked+.clinic-tabs-rbt__label {
         color: #fff;
         background-color: #487ff1;
 

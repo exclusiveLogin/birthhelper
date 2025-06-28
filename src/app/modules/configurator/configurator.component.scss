@@ -1,11 +1,38 @@
+.main,
+.page__main {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+}
+
+.menu {
+    flex: 0 0 220px;
+    max-width: 220px;
+}
+
+.bh-container.search_container {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    box-sizing: border-box;
+}
+
 .clinic {
     position: relative;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 0 1rem;
+    overflow-x: hidden;
 }
 
 .clinic__close {
     position: absolute;
     top: -30px;
-    right: 0;
+    right: 1rem;
     z-index: 10;
 }
 
@@ -15,6 +42,7 @@
     height: 26px;
     padding: 0;
     background: transparent;
+    cursor: pointer;
 }
 
 .clinic-close__img {
@@ -23,11 +51,38 @@
 }
 
 .clinic__cards {
-    margin-top: 25px;
-    margin-bottom: 30px;
     display: flex;
     flex-wrap: wrap;
-    gap: 25px 30px;
+    gap: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 1rem;
+    justify-content: flex-start;
+}
+
+@media (max-width: 480px) {
+    .clinic__cards {
+        gap: 0.75rem;
+        justify-content: center;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    .clinic__cards {
+        gap: 0.75rem;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .clinic__cards {
+        gap: 1rem;
+    }
+}
+
+@media (min-width: 1025px) {
+    .clinic__cards {
+        gap: 1.5rem;
+    }
 }
 
 .clinic_block {
@@ -36,7 +91,6 @@
 
 .clinic__specialists-category {
     display: inline-block;
-    width: 242px;
     margin: 25px 24px 0 0;
     font-size: 14px;
     font-weight: 500;
@@ -52,4 +106,39 @@
 
 .title-h3 {
     margin-top: 55px;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #2d333f;
+}
+
+.clinic__cards-item {
+    width: 280px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+    .clinic__cards-item {
+        width: 100%;
+        max-width: 320px;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    .clinic__cards-item {
+        width: 240px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .clinic__cards-item {
+        width: 260px;
+    }
+}
+
+@media (min-width: 1025px) {
+    .clinic__cards-item {
+        width: 280px;
+    }
 }

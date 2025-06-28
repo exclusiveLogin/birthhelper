@@ -1,5 +1,8 @@
 <div class="clinic__tabs">
-    <div class="clinic-tabs" *ngIf="tabs$ | async as t">
+    <button class="tabs-arrow left" (click)="scrollTabs('left')" *ngIf="showLeftArrow">
+        &#8592;
+    </button>
+    <div class="clinic-tabs" #tabsScroll *ngIf="tabs$ | async as t">
         <ng-container *ngFor="let tab of t">
             <ng-container
                 *ngIf="{
@@ -49,6 +52,9 @@
             </ng-container>
         </ng-container>
     </div>
+    <button class="tabs-arrow right" (click)="scrollTabs('right')" *ngIf="true">
+        &#8594;
+    </button>
 
     <ng-container *ngIf="{ invalid: onValidationState$ | async } as state">
         <button

@@ -1,6 +1,29 @@
+// Основной контейнер с правильным расчетом ширины
+.bh-container.search_container {
+    width: calc(100vw - 220px); // 100vw минус ширина меню
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden; // Предотвращаем горизонтальный скролл
+}
+
+// Адаптивные стили для разных размеров экрана
 @media (max-width: 1920px) {
     .search_container {
         margin-left: unset;
         margin-right: unset;
+    }
+}
+
+// Мобильные устройства - меню скрывается или становится меньше
+@media (max-width: 768px) {
+    .bh-container.search_container {
+        width: 100vw; // На мобильных занимаем всю ширину
+        padding: 0 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .bh-container.search_container {
+        padding: 0 8px;
     }
 }

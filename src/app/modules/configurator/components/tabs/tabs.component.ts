@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output, AfterViewInit, ViewChild, ElementRef } from "@angular/core";
 import { TabRxInput } from "app/modules/configurator/configurator.model";
 import { Observable, combineLatest } from "rxjs";
 import { delay, map, switchMap, tap } from "rxjs/operators";
@@ -11,10 +11,13 @@ import { Router } from "@angular/router";
     templateUrl: "./tabs.component.html",
     styleUrls: ["./tabs.component.scss"],
 })
-export class TabsComponent implements OnInit {
+export class TabsComponent implements OnInit, AfterViewInit {
     @Input() tabs$: Observable<TabRxInput[]>;
     @Output() currentTab = new EventEmitter<string>();
 
+    @ViewChild('tabsScroll', { static: false }) tabsScroll: ElementRef<HTMLDivElement>;
+    showLeftArrow = false;
+    showRightArrow = false;
     activeTab: string;
 
     constructor(
@@ -56,6 +59,33 @@ export class TabsComponent implements OnInit {
                   )
               )
             : null;
+    }
+
+    ngAfterViewInit(): void {
+        setTimeout(() => this.updateArrows(), 200);
+        if (this.tabsScroll) {
+            this.tabsScroll.nativeElement.addEventListener('scroll', () => this.updateArrows());
+        }
+        window.addEventListener('resize', () => this.updateArrows());
+    }
+
+    updateArrows(): void {
+        if (!this.tabsScroll) return;
+        const el = this.tabsScroll.nativeElement;
+        this.showLeftArrow = el.scrollLeft > 1;
+        this.showRightArrow = el.scrollWidth - el.clientWidth - el.scrollLeft > 1;
+    }
+
+    scrollTabs(direction: 'left' | 'right'): void {
+        if (!this.tabsScroll) return;
+        const el = this.tabsScroll.nativeElement;
+        const scrollAmount = el.clientWidth * 0.7;
+        if (direction === 'left') {
+            el.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        } else {
+            el.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
+        setTimeout(() => this.updateArrows(), 350);
     }
 
     isActiveTab(key: string): boolean {
