@@ -103,7 +103,7 @@ export class LkFeedbackItemComponent implements OnInit {
         return StatusRusMap[feedback.status] ?? "---";
     }
 
-    async setFeddbackStatusApproved(e: MouseEvent) {
+    async setFeedbackStatusApproved(e: MouseEvent) {
         e?.stopImmediatePropagation();
         const changed = await this.restService
             .changeFeedbackStatus("approved", this.feedback.id)

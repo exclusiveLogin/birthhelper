@@ -50,13 +50,13 @@
         <div class="order_tbl__item extra">
             <button
                 class="btn dicline__btn btn-sm"
-                (click)="setFbStatusDeclined($event)"
+                (click)="setFeedbackStatusDeclined($event)"
             >
                 Отклонить
             </button>
             <button
                 class="btn approve__btn btn-sm"
-                (click)="setFbStatusApproved($event)"
+                (click)="setFeedbackStatusApproved($event)"
             >
                 Одобрить
             </button>
@@ -96,13 +96,13 @@
             </div>
             <button
                 class="btn dicline__btn"
-                (click)="setFeedbackStatusDeclined()"
+                (click)="setFeedbackStatusDeclined($event)"
             >
                 Отклонить
             </button>
             <button
                 class="btn approve__btn"
-                (click)="setFeedbackStatusApproved()"
+                (click)="setFeedbackStatusApproved($event)"
             >
                 Одобрить
             </button>
