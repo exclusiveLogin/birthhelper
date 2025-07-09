@@ -34,11 +34,4 @@ export class LkSimpleCardComponent implements OnInit {
             // tap((image) => console.log("photoImage$", image))
         );
     }
-
-    rateLevelClass(stat: number): string {
-        if (stat < 2) return "red";
-        if (stat >= 2 && stat <= 3.5) return "orange";
-        if (stat > 3.5) return "green";
-        return "";
-    }
 }

@@ -135,4 +135,11 @@ export class LkFeedbackItemComponent implements OnInit {
     refresh(): void {
         this.updater$.next(null);
     }
+
+    rateLevelClass(stat: number): string {
+        if (stat < 2) return "red";
+        if (stat >= 2 && stat <= 3.5) return "orange";
+        if (stat > 3.5) return "green";
+        return "";
+    }
 }

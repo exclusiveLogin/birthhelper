@@ -1,20 +1,27 @@
-.lk-view-block__head {
-    ._row {
-        background-color: whitesmoke;
-        display: flex;
-        flex: 1;
-        .lk-view-block__head__item {
-            margin: 15px;
+.lk-view-block {
+    width: 960px;
+
+    &__head {
+        & ._row {
+            background-color: #f5f5f5;
+            display: flex;
+            flex-grow: 1;
+
+            & .lk-view-block__head__item {
+                margin: 15px;
+            }
         }
     }
-}
-.lk-view-block__body {
-    ._row {
-        background-color: #ffffff;
-        display: flex;
-        flex: 1;
-        &:nth-child(odd) {
-            background-color: #dbe9ff;
+
+    &__body {
+        & ._row {
+            background-color: #fff;
+            display: flex;
+            flex-grow: 1;
+
+            &:nth-child(odd) {
+                background-color: #dbe9ff;
+            }
         }
     }
 }

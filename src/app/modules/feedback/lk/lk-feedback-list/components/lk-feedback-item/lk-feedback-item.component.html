@@ -65,18 +65,43 @@
 </ng-template>
 <ng-template #tpl_wrap>
     <div class="lk-rating-row">
-        <app-lk-user-card
-            *ngIf="user$ | async as usr"
-            [user]="usr"
-        ></app-lk-user-card>
-        <i class="fas fa-chevron-right fa-3x" style="align-self: center"></i>
-        <app-lk-simple-card
-            *ngIf="entity$ | async as entity"
-            [title]="entity.title"
-            [subTitle]="entity.description ?? ''"
-            [photoId]="entity.image_id ?? entity?._entity?.image_id"
-            [rating]="rating$ | async"
-        ></app-lk-simple-card>
+        <div class="lk-rating-row__item">
+
+            <app-lk-user-card
+                *ngIf="user$ | async as usr"
+                [user]="usr"
+            ></app-lk-user-card>
+
+            <i class="fas fa-chevron-right fa-3x" style="align-self: center"></i>
+            
+            <app-lk-simple-card
+                *ngIf="entity$ | async as entity"
+                [title]="entity.title"
+                [subTitle]="entity.description ?? ''"
+                [photoId]="entity.image_id ?? entity?._entity?.image_id"
+                [rating]="rating$ | async"
+            ></app-lk-simple-card>
+            
+        </div>
+
+        <ng-container *ngIf="rating$ | async as rating">
+            <div class="lk-simple-rating" *ngIf="rating?.summary?.avr">
+                <div
+                    class="rate-count"
+                    [ngClass]="rateLevelClass(rating?.summary?.avr)"
+                >
+                    {{ rating?.summary?.avr | number : "1.0-2" ?? "-" }}
+                </div>
+                <app-lk-rating
+                    [rateCurrent]="rating?.summary?.avr"
+                    class="lk-simple-rating-rating"
+                ></app-lk-rating>
+                <span class="lk-rating-total-text"
+                    >Всего {{ rating?.summary?.total || "0" }} отзывов</span
+                >
+            </div>
+        </ng-container>
+        
         <div class="action_grp">
             <div class="cart-pack-item__inner-value">
                 <p
